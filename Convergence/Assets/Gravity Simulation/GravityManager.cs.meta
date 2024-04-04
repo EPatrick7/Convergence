@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: dfc543134f17b8c44a95e7065bf0a54d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _compute: {fileID: 7200000, guid: e46cf39337ba95247be72d3e4bbe7d2d, type: 3}
+  - Pixel: {fileID: 5954944233520970111, guid: 2d7617e98652aad4a89abf25d9d6791a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

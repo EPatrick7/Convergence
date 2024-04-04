@@ -1,0 +1,85 @@
+#pragma kernel GravitySimulation
+
+//Ideas:
+
+//It might be possible to use a texture2d as a fast 2D storage site to keep track of relationship data between bodies
+//This could for example could be made to create a "Who has been close to me for awhile" detection
+//Just increase the darkness when close, brightness when far, then just run special code in compute when
+//O(1) lookup finds that this particle-particle pair has been together for a hot minute
+
+//By passing in a float2 for mouse pos, and a bool/uint/float2 for the rest of the mouse movement/click data,
+//We can add custom movement for planets (Basically all circles within range move), alternatively
+//The above method can be used to move only related particles close to mouse.
+
+
+struct GravityBody {
+    float x;
+    float y;
+    float dx;
+    float dy;
+    float mass;
+};
+
+RWStructuredBuffer<GravityBody> bodyBuffer;
+float g;
+float distance_scale;
+float min_dist;
+float drift_power;
+float2 drift;
+uint numBodies;
+
+
+float distanceTo(GravityBody p1,GravityBody p2);
+
+
+
+float distanceTo(GravityBody p1,GravityBody p2)
+{
+   float distX = abs(p2.x - p1.x);
+   float distY = abs(p2.y - p1.y);
+   return(sqrt(distX*distX + distY*distY));
+}
+
+[numthreads(8, 8, 1)]
+void GravitySimulation (uint3 id : SV_DispatchThreadID)
+{
+    //Loop through each x,y combination possible between any planet x and another planet y.
+    uint index1 = id.x;
+    uint index2=id.y;
+
+    //Root out when x==y, (we dont want self gravitation)
+    if (index1!=index2)
+    {
+        GravityBody body1=bodyBuffer[index1];
+        GravityBody body2=bodyBuffer[index2];
+        float dist=max(min_dist,distanceTo(body1,body2)/distance_scale);
+        
+        //F= ma, so a= F/m (we can remove our mass from gravity calculation)
+        float acceleration= (body2.mass*g)/(dist*dist);
+    
+        float2 dir =-normalize(float2(body1.x-body2.x,body1.y-body2.y));
+
+        
+        
+        body1.dx+=(acceleration)*dir.x;
+        body1.dy+=(acceleration)*dir.y;
+
+
+        bodyBuffer[index1]=body1;
+        //We only calculate for x's attraction to y here, y will calculate its attraction to x another time.
+    }
+    else{
+        //Apply drift here in case when body1==body1;
+        GravityBody body1=bodyBuffer[index1];
+        float acceleration= drift_power;
+    
+        float2 dir =-normalize(float2(body1.x-drift.x,body1.y-drift.y));
+
+        
+        body1.dx+=acceleration*dir.x;
+        body1.dy+=acceleration*dir.y;
+
+
+        bodyBuffer[index1]=body1;
+    }
+}
