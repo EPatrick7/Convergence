@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -12,6 +13,9 @@ public struct GravityBody
     public float dy;
 
     public float mass;
+    public float close_neighbors;
+
+    public float last_neighbor;
 
 
     public Vector2 acceleration()
@@ -31,6 +35,7 @@ public class GravityManager : MonoBehaviour
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     private float timeStart; //The time in which the simulation began
     bool asyncDone; // Whether or not the compute shader is done working
+    int NUM_FLOATS=7;
     public enum RunType { Static, Dynamic };
 
 
@@ -66,6 +71,14 @@ public class GravityManager : MonoBehaviour
     public Vector2 offset_drift;
     [Tooltip("How strong the offset drift pull is for each particle.")]
     public float drift_power;
+
+    [Tooltip("How close a pixel has to be to be considered as a neighboring particle")]
+    public float neighbor_cutoff;
+    [Tooltip("How many neighbors must a particle have before culling neighbor gravity")]
+    public float max_neighbors;
+    [Tooltip("Multiplier of cutoff radius of which a pixel with neigbhors > max_neighbors will ignore")]
+    public float ignore_mult;
+
     [Header("Time Managers")]
     [Min(1),Tooltip("How many calculations to run per frame maximum in a static simulation.")]
     public float StaticDelayTime = 2000; 
@@ -162,7 +175,15 @@ public class GravityManager : MonoBehaviour
         if (bodyBuffer != null)
             bodyBuffer.Release();
     }
-
+    Transform recurseParent(Transform t)
+    {
+        if (t.transform.parent == null)
+        {
+            return t;
+        }
+        else
+            return recurseParent(t.transform.parent);
+    }
     public IEnumerator DynamicRun()
     {
         //Run forever
@@ -189,6 +210,19 @@ public class GravityManager : MonoBehaviour
                 //Reset for next pass (each of the multithreaded gravity calcs just += acceleration, so we must reset after fetching)
                 bodies[i].dx=0;
                 bodies[i].dy= 0;
+                bodies[i].close_neighbors = 0;
+                bodies[i].last_neighbor = 0;
+
+                if (bodies[i].close_neighbors>5)
+                {
+                    int last_neighbor = (int)bodies[i].last_neighbor;
+
+                    pixels[i].transform.parent=pixels[last_neighbor].transform;
+                }
+                else
+                {
+                    pixels[i].transform.parent = null;
+                }
 
                 //Update position for next pass
                 bodies[i].x = pixels[i].transform.position.x;
@@ -202,6 +236,12 @@ public class GravityManager : MonoBehaviour
             _compute.SetFloat("drift_power", drift_power);
             _compute.SetFloat("min_dist", min_dist);
             _compute.SetVector("drift", offset_drift);
+
+
+            _compute.SetFloat("neighbor_cutoff", neighbor_cutoff);
+            _compute.SetFloat("max_neighbors", max_neighbors);
+            _compute.SetFloat("ignore_mult", ignore_mult);
+
             //
 
 
@@ -210,7 +250,7 @@ public class GravityManager : MonoBehaviour
             {
                 if (bodyBuffer != null)
                     bodyBuffer.Release();
-                bodyBuffer = new ComputeBuffer(pixels.Length, sizeof(float) * 5);
+                bodyBuffer = new ComputeBuffer(pixels.Length, sizeof(float) * NUM_FLOATS);
                 bodyBuffer.SetData(bodies);
 
                 _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
@@ -222,7 +262,7 @@ public class GravityManager : MonoBehaviour
 
                 if (bodyBuffer == null)
                 {
-                    bodyBuffer = new ComputeBuffer(1, sizeof(float) * 5);
+                    bodyBuffer = new ComputeBuffer(1, sizeof(float) * NUM_FLOATS);
                     _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
                 }
 

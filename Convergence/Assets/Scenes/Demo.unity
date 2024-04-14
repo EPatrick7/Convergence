@@ -266,19 +266,22 @@ MonoBehaviour:
   PixelSize: 96
   SpawnRadius: 400
   ClusterRadius: 0.1
-  InitVelocityScale: 0
+  InitVelocityScale: 4
   simulationSelection: 1
   distance_scale: 4
   g: 6.6743
   min_dist: 7
   offset_drift: {x: 0, y: 0}
-  drift_power: 10
+  drift_power: 0
+  neighbor_cutoff: 5
+  max_neighbors: 99
+  ignore_mult: 1
   StaticDelayTime: 2000
   OverridePhysics: 1
   targetStepsPerSecond: 30
   SimStep: 0
   StepsPerSecond: 0
-  TimePerGravitySample: 0.25
+  TimePerGravitySample: 0.5
   DoStressColors: 1
   AccelerationColoring:
     serializedVersion: 2
