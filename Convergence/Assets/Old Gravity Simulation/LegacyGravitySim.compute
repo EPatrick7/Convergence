@@ -18,6 +18,8 @@ struct GravityBody {
     float dx;
     float dy;
     float mass;
+    float close_neighbors;
+    float last_neighbor;
 };
 
 RWStructuredBuffer<GravityBody> bodyBuffer;
@@ -30,6 +32,8 @@ uint numBodies;
 
 
 float neighbor_cutoff;
+float max_neighbors;
+float ignore_mult;
 
 float distanceTo(GravityBody p1,GravityBody p2);
 
@@ -57,10 +61,17 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
         GravityBody body2=bodyBuffer[index2];
         float dist=max(min_dist,distanceTo(body1,body2)/distance_scale);
 
-       // if(dist<neighbor_cutoff)
-      //  {
-      //  }
+        if(dist<neighbor_cutoff)
+        {
+            body1.close_neighbors++;
+            body1.last_neighbor=index2;
+        }
 
+        if(body1.close_neighbors>max_neighbors && dist < neighbor_cutoff*ignore_mult)
+        {
+            bodyBuffer[index1]=body1;
+            return;
+        }
         
         //F= ma, so a= F/m (we can remove our mass from gravity calculation)
         float acceleration= (body2.mass*g)/(dist*dist);

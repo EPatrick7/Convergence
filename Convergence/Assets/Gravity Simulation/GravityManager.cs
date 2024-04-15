@@ -13,10 +13,6 @@ public struct GravityBody
     public float dy;
 
     public float mass;
-    public float close_neighbors;
-
-    public float last_neighbor;
-
 
     public Vector2 acceleration()
     {
@@ -35,8 +31,7 @@ public class GravityManager : MonoBehaviour
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     private float timeStart; //The time in which the simulation began
     bool asyncDone; // Whether or not the compute shader is done working
-    int NUM_FLOATS=7;
-    public enum RunType { Static, Dynamic };
+    int NUM_FLOATS=5;
 
 
 
@@ -49,17 +44,13 @@ public class GravityManager : MonoBehaviour
     public int RandomSeed = -1;
     [Min(0), Tooltip("How many clusters will be spawned")]
     public int SpawnCount=100;
-    [Min(1), Tooltip("How many pixels are in each cluster")]
-    public int PixelSize = 1;
+    [Min(1), Tooltip("How large should the starting clusters be")]
+    public int InitialSize=1;
     [Min(0), Tooltip("How large the radius of spawning is for cluster cores")]
     public float SpawnRadius=100;
-    [Min(0.001f), Tooltip("How far particles spawn from the cluster core")]
-    public float ClusterRadius = 1/25f;
-    [Min(0),Tooltip("Intensity of initial impulse for each cluster")]
+    [Min(0),Tooltip("Intensity of initial random impulse for each cluster")]
     public float InitVelocityScale;
 
-    [Tooltip("What simulation to use (Classical or Compute Shader)")]
-    public RunType simulationSelection;
     [Header("Constants")]
     [Tooltip("How much the distance between each pixel is dampened in the gravity calculation")]
     public float distance_scale = 1;
@@ -74,22 +65,8 @@ public class GravityManager : MonoBehaviour
 
     [Tooltip("How close a pixel has to be to be considered as a neighboring particle")]
     public float neighbor_cutoff;
-    [Tooltip("How many neighbors must a particle have before culling neighbor gravity")]
-    public float max_neighbors;
-    [Tooltip("Multiplier of cutoff radius of which a pixel with neigbhors > max_neighbors will ignore")]
-    public float ignore_mult;
 
     [Header("Time Managers")]
-    [Min(1),Tooltip("How many calculations to run per frame maximum in a static simulation.")]
-    public float StaticDelayTime = 2000; 
-    [Tooltip("Whether or not this script will be overriding physics steps.")]
-    public bool OverridePhysics;
-    [Tooltip("How many gravity simulations should ideally occur each second")]
-    public float targetStepsPerSecond = 13;
-    [Tooltip("How many steps have occured in the simulation so far (cannot change)")]
-    public int SimStep;
-    [Tooltip("How many steps are actually occuring each second (average)")]
-    public float StepsPerSecond;
     [Tooltip("How much physics time should occur between each gravity check.")]
     public float TimePerGravitySample = 0.1f;
     [Header("Debug"),Tooltip("Should the pixles get colors based on acceleration")]
@@ -105,16 +82,16 @@ public class GravityManager : MonoBehaviour
             RandomSeed = Random.Range(10,100000000);
 
         //This should only run at most 7 times, we run this because our multithreading demands that total particle count MUST be divisible by 8
-        while(SpawnCount*PixelSize % 8 !=0)
+        while(SpawnCount % 8 !=0)
         {
-            PixelSize += 1;
+            SpawnCount += 1;
         }
 
         Random.InitState(RandomSeed);
 
 
         //Spawn and fill arrays with new generated particles
-        int TotalSize = SpawnCount * PixelSize;
+        int TotalSize = SpawnCount;
         pixels = new GameObject[TotalSize];
         bodies = new GravityBody[TotalSize];
         for (int i = 0; i < SpawnCount; i++)
@@ -122,52 +99,33 @@ public class GravityManager : MonoBehaviour
 
             Vector2 loc = Random.insideUnitCircle * SpawnRadius;
             Vector2 sharedVelocity = Random.insideUnitCircle * InitVelocityScale;
-            for (int j = 0; j < PixelSize; j++)
-            {
-                int index = (i*PixelSize) + j;
 
-                float inflated_radius=1;
-                Vector2 fpos = loc+Random.insideUnitCircle*PixelSize* ClusterRadius* inflated_radius;
-                for(int k=0;k<j;k++)
-                {
-                    int index2 = (i * PixelSize) + k;
-                    if (pixels[index2] != null && Vector2.Distance(fpos, pixels[index2].transform.position) < (pixels[index2].transform.localScale.x* pixels[index2].GetComponent<CircleCollider2D>().radius))
-                    {
-                        inflated_radius += 0.1f;
-                        fpos = loc + Random.insideUnitCircle * PixelSize * ClusterRadius * inflated_radius;
-                        k = 0;
-                    }
-                }
-                pixels[index] = Instantiate(Pixel, transform.position + new Vector3(fpos.x, fpos.y, 0), Pixel.transform.rotation, transform);
-                pixels[index].GetComponent<Rigidbody2D>().velocity = sharedVelocity;
+            int index = i;
 
-                bodies[index] = new GravityBody();
-                bodies[index].x = pixels[index].transform.position.x;
-                bodies[index].y = pixels[index].transform.position.y;
-                bodies[index].mass = pixels[index].GetComponent<Rigidbody2D>().mass;
+            pixels[index] = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
+            pixels[index].GetComponent<Rigidbody2D>().velocity = sharedVelocity;
+
+            bodies[index] = new GravityBody();
+            bodies[index].x = pixels[index].transform.position.x;
+            bodies[index].y = pixels[index].transform.position.y;
+            pixels[index].GetComponent<Rigidbody2D>().mass = InitialSize;
+            bodies[index].mass = pixels[index].GetComponent<Rigidbody2D>().mass;
+
+            pixels[index].transform.localScale = new Vector3(bodies[i].mass, bodies[i].mass, bodies[i].mass);
 
 
-            }
+
         }
     }
     void Start()
     {
-        if (!OverridePhysics&&Physics2D.simulationMode==SimulationMode2D.Script)
-        {
-            Physics2D.simulationMode= SimulationMode2D.FixedUpdate;
-        }
-        else if (OverridePhysics && Physics2D.simulationMode != SimulationMode2D.Script)
-        {
-            Physics2D.simulationMode = SimulationMode2D.Script;
-        }
+
+        Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
 
         timeStart = Time.timeSinceLevelLoad;
         Initialize();
 
-        if(simulationSelection== RunType.Static)
-            StartCoroutine(StaticRun());
-        else if(simulationSelection==RunType.Dynamic)
-            StartCoroutine(DynamicRun());
+        StartCoroutine(GravRun());
     }
 
     void OnDestroy()
@@ -184,7 +142,7 @@ public class GravityManager : MonoBehaviour
         else
             return recurseParent(t.transform.parent);
     }
-    public IEnumerator DynamicRun()
+    public IEnumerator GravRun()
     {
         //Run forever
         while (true)
@@ -201,6 +159,8 @@ public class GravityManager : MonoBehaviour
                     {
                         pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(pixels[i].GetComponent<SpriteRenderer>().color,AccelerationColoring.Evaluate(new Vector2(bodies[i].dx, bodies[i].dy).sqrMagnitude / MaxStress),0.1f);
                     }
+                    pixels[i].transform.localScale = new Vector3(bodies[i].mass, bodies[i].mass, bodies[i].mass);
+                    pixels[i].GetComponent<Rigidbody2D>().mass = bodies[i].mass;
                     pixels[i].GetComponent<Rigidbody2D>().velocity += bodies[i].acceleration();
                 }
                 else
@@ -210,19 +170,7 @@ public class GravityManager : MonoBehaviour
                 //Reset for next pass (each of the multithreaded gravity calcs just += acceleration, so we must reset after fetching)
                 bodies[i].dx=0;
                 bodies[i].dy= 0;
-                bodies[i].close_neighbors = 0;
-                bodies[i].last_neighbor = 0;
 
-                if (bodies[i].close_neighbors>5)
-                {
-                    int last_neighbor = (int)bodies[i].last_neighbor;
-
-                    pixels[i].transform.parent=pixels[last_neighbor].transform;
-                }
-                else
-                {
-                    pixels[i].transform.parent = null;
-                }
 
                 //Update position for next pass
                 bodies[i].x = pixels[i].transform.position.x;
@@ -239,9 +187,6 @@ public class GravityManager : MonoBehaviour
 
 
             _compute.SetFloat("neighbor_cutoff", neighbor_cutoff);
-            _compute.SetFloat("max_neighbors", max_neighbors);
-            _compute.SetFloat("ignore_mult", ignore_mult);
-
             //
 
 
@@ -279,25 +224,9 @@ public class GravityManager : MonoBehaviour
             yield return new WaitUntil(isAsyncDone);
             //Wait until it is done^
 
-
-            //Adjust the rest of reality for physics simulations if needed or wait for proper timing if too fast in simulating
-            SimStep++;
-            StepsPerSecond = (SimStep / (Time.timeSinceLevelLoad - timeStart));
-            yield return new WaitForFixedUpdate();
-
-            if (OverridePhysics)
-            {
-                Physics2D.Simulate(TimePerGravitySample);
-            }
-
-            if (StepsPerSecond > targetStepsPerSecond)
-                yield return new WaitUntil(isTargetSteps);
+            //Wait for next sample time
+            yield return new WaitForSecondsRealtime(TimePerGravitySample);
         }
-    }
-    //Is our simulation per second speed acceptable (not too fast)?
-    bool isTargetSteps()
-    {
-        return (SimStep / (Time.timeSinceLevelLoad - timeStart)) <= targetStepsPerSecond;
     }
     //Is the compute shader done cooking?
     bool isAsyncDone()
@@ -317,63 +246,6 @@ public class GravityManager : MonoBehaviour
 
 
         asyncDone=true;
-    }
-
-    //This is the CPU based O(n^2) gravity implementation (very slow for large sims but more stable)
-    public IEnumerator StaticRun()
-    {
-        //Run forever
-        while(true)
-        {
-            int delayTime = 0;
-            //O(n^2) run for each particle combination a gravity simulation, slightly optimized to run both sides at once
-            for(int i = 0; i < pixels.Length; i++)
-            {
-                //Static simulation does not simulate the offset drift features at this time.
-
-
-                if (pixels[i] != null)
-                {
-                    for (int j = i + 1; j < pixels.Length; j++)
-                    {
-
-                        if (pixels[j] != null)
-                        {
-
-                            //Run the gravity simulation:
-
-                            float dist = Vector2.Distance(pixels[i].transform.position, pixels[j].transform.position);
-                            Vector2 dir = (pixels[i].transform.position - pixels[j].transform.position).normalized;
-
-
-                            dist = Mathf.Max(min_dist, dist / distance_scale);
-
-                            pixels[i].GetComponent<Rigidbody2D>().velocity += -dir * ((pixels[j].GetComponent<Rigidbody2D>().mass * g) / (dist * dist));
-                            pixels[j].GetComponent<Rigidbody2D>().velocity += dir * ((pixels[i].GetComponent<Rigidbody2D>().mass * g) / (dist * dist));
-
-                            //Keep track of how much work we have done and rest accordingly 
-                            delayTime++;
-                            if (delayTime % StaticDelayTime == 0)
-                            {
-                                yield return new WaitForEndOfFrame();
-                            }
-                        }
-                    }
-                }
-            }
-
-            //Adjust simulation/physics steps and wait if going to fast
-            SimStep++;
-            StepsPerSecond = (SimStep / (Time.timeSinceLevelLoad - timeStart));
-            yield return new WaitForFixedUpdate();
-
-            if (OverridePhysics)
-            {
-                Physics2D.Simulate(TimePerGravitySample);
-            }
-            if (StepsPerSecond > targetStepsPerSecond)
-                yield return new WaitUntil(isTargetSteps);
-        }
     }
 
 }

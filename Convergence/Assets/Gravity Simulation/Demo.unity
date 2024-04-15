@@ -256,32 +256,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1828242100}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfc543134f17b8c44a95e7065bf0a54d, type: 3}
+  m_Script: {fileID: 11500000, guid: 164aba5a90847234395fd77bdfa9ec20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _compute: {fileID: 7200000, guid: e46cf39337ba95247be72d3e4bbe7d2d, type: 3}
-  Pixel: {fileID: 5954944233520970111, guid: 2d7617e98652aad4a89abf25d9d6791a, type: 3}
+  _compute: {fileID: 7200000, guid: 51367e2e17cdecb47a2a0c86c915bda0, type: 3}
+  Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   RandomSeed: -1
-  SpawnCount: 24
-  PixelSize: 96
-  SpawnRadius: 400
-  ClusterRadius: 0.1
-  InitVelocityScale: 4
-  simulationSelection: 1
+  SpawnCount: 100
+  InitialSize: 6
+  SpawnRadius: 100
+  InitVelocityScale: 10
   distance_scale: 4
   g: 6.6743
   min_dist: 7
   offset_drift: {x: 0, y: 0}
   drift_power: 0
   neighbor_cutoff: 5
-  max_neighbors: 99
-  ignore_mult: 1
-  StaticDelayTime: 2000
-  OverridePhysics: 1
-  targetStepsPerSecond: 30
-  SimStep: 0
-  StepsPerSecond: 0
-  TimePerGravitySample: 0.5
+  TimePerGravitySample: 0.1
   DoStressColors: 1
   AccelerationColoring:
     serializedVersion: 2
