@@ -1,10 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 //If you ever add more floats to GravityBody, be sure to adjust the sizeof(float) * # of floats in buffer setup, and the corresponding struct in compute shader!
+[System.Serializable]
 public struct GravityBody
 {
     public float x;
@@ -14,6 +16,16 @@ public struct GravityBody
 
     public float mass;
 
+    public uint id;
+    public GravityBody(uint id)
+    {
+        this.id = id;
+        x = 0;
+        y = 0;
+        dx = 0;
+        dy = 0;
+        mass = 0;
+    }
     public Vector2 acceleration()
     {
         return new Vector2(dx, dy);
@@ -22,16 +34,87 @@ public struct GravityBody
     {
         return new Vector2(x, y);
     }
+    public void setVectors(Vector2 vel,Vector2 pos)
+    {
+        dx = vel.x;
+        dy = vel.y;
+        x = pos.x;
+        y = pos.y;
+    }
+}
+public class BodyComparer : IComparer<GravityBody>
+{
+
+    public int Compare(GravityBody x, GravityBody y)
+    {
+        return x.id.CompareTo(y.id);
+    }
+
 }
 public class GravityManager : MonoBehaviour
 {
     [SerializeField, HideInInspector] ComputeShader _compute;
-    GravityBody[] bodies;//The array of all bodies in use (bodies and pixels should have 1 to 1 correspondance)
-    GameObject[] pixels; //The array of all pixels in use
+
+    [System.Serializable]
+    public class GravUniverse
+    {
+        public GravUniverse()
+        {
+            bodies = new List<GravityBody>();
+            pixels = new List<GameObject>();
+        }
+        public void AddBody(GameObject g,Vector2 initialVel,float InitialSize)
+        {
+            GravityBody b=new GravityBody(genBodies);
+
+            g.GetComponent<Rigidbody2D>().velocity = initialVel;
+
+            b.x = g.transform.position.x;
+            b.y = g.transform.position.y;
+            g.GetComponent<Rigidbody2D>().mass = InitialSize;
+            b.mass = g.GetComponent<Rigidbody2D>().mass;
+
+            g.transform.localScale = new Vector3(b.mass, b.mass, b.mass);
+
+
+            pixels.Add(g);
+            bodies.Add(b);
+
+            genBodies++;
+
+            numBodies++;
+        }
+        public int FetchBody(uint id)
+        {
+            return bodies.BinarySearch(new GravityBody(id), new BodyComparer());
+        }
+        public void RemoveBody(uint id)
+        {
+            int tid = FetchBody(id);
+            bodies.RemoveAt(tid);
+            pixels.RemoveAt(tid);
+            numBodies--;
+        }
+        public void ReplaceBody(int id, GravityBody b)
+        {
+            bodies.RemoveAt(id);
+            bodies.Insert(id, b);
+        }
+        public GravityBody[] bodyArray()
+        {
+            return bodies.ToArray();
+        }
+        public List<GravityBody> bodies;//The array of all bodies in use (bodies and pixels should have 1 to 1 correspondance)
+        public List<GameObject> pixels; //The array of all pixels in use
+        public int numBodies;//Number of bodies in use;
+        private uint genBodies;//Number of generated bodies;
+    }
+    public GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     private float timeStart; //The time in which the simulation began
     bool asyncDone; // Whether or not the compute shader is done working
     int NUM_FLOATS=5;
+    int NUM_UINTS = 1;
 
 
 
@@ -79,7 +162,7 @@ public class GravityManager : MonoBehaviour
     public void Initialize()
     {
         if (RandomSeed <= 0)
-            RandomSeed = Random.Range(10,100000000);
+            RandomSeed = UnityEngine.Random.Range(10,100000000);
 
         //This should only run at most 7 times, we run this because our multithreading demands that total particle count MUST be divisible by 8
         while(SpawnCount % 8 !=0)
@@ -87,32 +170,21 @@ public class GravityManager : MonoBehaviour
             SpawnCount += 1;
         }
 
-        Random.InitState(RandomSeed);
-
+        UnityEngine.Random.InitState(RandomSeed);
+        gravUniverse = new GravUniverse();
 
         //Spawn and fill arrays with new generated particles
         int TotalSize = SpawnCount;
-        pixels = new GameObject[TotalSize];
-        bodies = new GravityBody[TotalSize];
         for (int i = 0; i < SpawnCount; i++)
         {
 
-            Vector2 loc = Random.insideUnitCircle * SpawnRadius;
-            Vector2 sharedVelocity = Random.insideUnitCircle * InitVelocityScale;
+            Vector2 loc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
+            Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
 
             int index = i;
 
-            pixels[index] = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
-            pixels[index].GetComponent<Rigidbody2D>().velocity = sharedVelocity;
-
-            bodies[index] = new GravityBody();
-            bodies[index].x = pixels[index].transform.position.x;
-            bodies[index].y = pixels[index].transform.position.y;
-            pixels[index].GetComponent<Rigidbody2D>().mass = InitialSize;
-            bodies[index].mass = pixels[index].GetComponent<Rigidbody2D>().mass;
-
-            pixels[index].transform.localScale = new Vector3(bodies[i].mass, bodies[i].mass, bodies[i].mass);
-
+            gravUniverse.AddBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform),sharedVelocity, InitialSize);
+            
 
 
         }
@@ -149,35 +221,47 @@ public class GravityManager : MonoBehaviour
         {
 
             //O(n) run through each body and update it according to the last compute shader run
-            int numBodies = bodies.Length;
+            int numBodies = gravUniverse.numBodies;
             for (int i = 0; i < numBodies; i++)
             {
-                if (!float.IsNaN(bodies[i].dx) && !float.IsNaN(bodies[i].dy))
+                if (gravUniverse.pixels[i] == null)
                 {
-                    //Update acceleration of gravity
-                    if (DoStressColors)
-                    {
-                        pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(pixels[i].GetComponent<SpriteRenderer>().color,AccelerationColoring.Evaluate(new Vector2(bodies[i].dx, bodies[i].dy).sqrMagnitude / MaxStress),0.1f);
-                    }
-                    pixels[i].transform.localScale = new Vector3(bodies[i].mass, bodies[i].mass, bodies[i].mass);
-                    pixels[i].GetComponent<Rigidbody2D>().mass = bodies[i].mass;
-                    pixels[i].GetComponent<Rigidbody2D>().velocity += bodies[i].acceleration();
+                    gravUniverse.RemoveBody(gravUniverse.bodies[i].id);
+                    i--;
+                    numBodies--;
                 }
                 else
                 {
-                    Debug.Log("NAN at bodies[" + i + "]");
+                    if (!float.IsNaN(gravUniverse.bodies[i].dx) && !float.IsNaN(gravUniverse.bodies[i].dy))
+                    {
+                        //Update acceleration of gravity
+                        if (DoStressColors)
+                        {
+                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, AccelerationColoring.Evaluate(new Vector2(gravUniverse.bodies[i].dx, gravUniverse.bodies[i].dy).sqrMagnitude / MaxStress), 0.1f);
+                        }
+                        gravUniverse.pixels[i].transform.localScale = new Vector3(gravUniverse.bodies[i].mass, gravUniverse.bodies[i].mass, gravUniverse.bodies[i].mass);
+                        gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass = gravUniverse.bodies[i].mass;
+                        gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += gravUniverse.bodies[i].acceleration();
+                    }
+                    else
+                    {
+                        Debug.Log("NAN at bodies[" + i + "]");
+                    }
+                    //Reset for next pass (each of the multithreaded gravity calcs just += acceleration, so we must reset after fetching)
+                    GravityBody body = gravUniverse.bodies[i];
+                    body.setVectors(Vector2.zero, new Vector2(gravUniverse.pixels[i].transform.position.x, gravUniverse.pixels[i].transform.position.y));
+                    gravUniverse.ReplaceBody(i, body);
+
+                    //Update position for next pass
+                    if (gravUniverse.FetchBody(gravUniverse.bodies[i].id) != (uint)i)
+                    {
+                        Debug.LogError("Fetch Failed..." + gravUniverse.FetchBody(gravUniverse.bodies[i].id) +" != " +(uint)i);
+                    }
                 }
-                //Reset for next pass (each of the multithreaded gravity calcs just += acceleration, so we must reset after fetching)
-                bodies[i].dx=0;
-                bodies[i].dy= 0;
-
-
-                //Update position for next pass
-                bodies[i].x = pixels[i].transform.position.x;
-                bodies[i].y = pixels[i].transform.position.y;
             }
 
 
+            GravityBody[] bodies = gravUniverse.bodyArray();
             //O(1) Update compute shader internal values (These can change freely, and cost little to just resend so we dont mind this)
             _compute.SetFloat("g", g);
             _compute.SetFloat("distance_scale", distance_scale);
@@ -191,11 +275,11 @@ public class GravityManager : MonoBehaviour
 
 
             //O(n) Update body buffer in the shader with new gravity body information (With new acclerations / pos etc.)
-            if (pixels.Length > 0)
+            if (numBodies > 0)
             {
                 if (bodyBuffer != null)
                     bodyBuffer.Release();
-                bodyBuffer = new ComputeBuffer(pixels.Length, sizeof(float) * NUM_FLOATS);
+                bodyBuffer = new ComputeBuffer(numBodies, sizeof(float) * NUM_FLOATS+sizeof(uint)*NUM_UINTS);
                 bodyBuffer.SetData(bodies);
 
                 _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
@@ -207,13 +291,17 @@ public class GravityManager : MonoBehaviour
 
                 if (bodyBuffer == null)
                 {
-                    bodyBuffer = new ComputeBuffer(1, sizeof(float) * NUM_FLOATS);
+                    bodyBuffer = new ComputeBuffer(1, sizeof(float) * NUM_FLOATS + sizeof(uint) * NUM_UINTS);
                     _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
                 }
 
             }
             
             //O(n^2) Request the compute shader to pass through each combiation of x,y from x in [0..numBodies) and y in [0..numBodies]
+            while(numBodies%8!=0)
+            {
+                numBodies++;
+            }
             _compute.Dispatch(_compute.FindKernel("GravitySimulation"), numBodies / 8, numBodies/8,1);
             //This is still blazing fast despite O(n^2) because it runs on GPU in 8x8x1 Threads
 
@@ -242,7 +330,7 @@ public class GravityManager : MonoBehaviour
             UnityEngine.Debug.Log("GPU readback error detected.");
             return;
         }
-        bodies = request.GetData<GravityBody>().ToArray();
+        gravUniverse.bodies = request.GetData<GravityBody>().ToList<GravityBody>();
 
 
         asyncDone=true;

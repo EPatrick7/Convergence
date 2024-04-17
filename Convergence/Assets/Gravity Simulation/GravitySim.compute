@@ -18,6 +18,8 @@ struct GravityBody {
     float dx;
     float dy;
     float mass;
+
+    uint id;
 };
 
 RWStructuredBuffer<GravityBody> bodyBuffer;
@@ -49,8 +51,13 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
     uint index1 = id.x;
     uint index2=id.y;
 
+
+    if(index1 >= numBodies || index2 >= numBodies)
+    {
+    //Dont do anything if we are only here because the number of bodies % 8 != 0
+    }
     //Root out when x==y, (we dont want self gravitation)
-    if (index1!=index2)
+    else if (index1!=index2)
     {
         
         GravityBody body1=bodyBuffer[index1];
@@ -72,22 +79,18 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
         body1.dx+=(acceleration)*dir.x;
         body1.dy+=(acceleration)*dir.y;
 
+        if (abs(drift_power)>0.01)
+        {
+            //Calculate drift here:
+            acceleration= drift_power/numBodies;
+            dir =-normalize(float2(body1.x-drift.x,body1.y-drift.y));
+            body1.dx+=acceleration*dir.x;
+            body1.dy+=acceleration*dir.y;
+            //
+        }
 
         bodyBuffer[index1]=body1;
         //We only calculate for x's attraction to y here, y will calculate its attraction to x another time.
-    }
-    else{
-        //Apply drift here in case when body1==body1;
-        GravityBody body1=bodyBuffer[index1];
-        float acceleration= drift_power;
     
-        float2 dir =-normalize(float2(body1.x-drift.x,body1.y-drift.y));
-
-        
-        body1.dx+=acceleration*dir.x;
-        body1.dy+=acceleration*dir.y;
-
-
-        bodyBuffer[index1]=body1;
     }
 }

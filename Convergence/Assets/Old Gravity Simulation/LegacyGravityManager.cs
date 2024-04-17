@@ -227,6 +227,9 @@ public class LegacyGravityManager : MonoBehaviour
                 //Update position for next pass
                 bodies[i].x = pixels[i].transform.position.x;
                 bodies[i].y = pixels[i].transform.position.y;
+
+
+
             }
 
 

@@ -260,6 +260,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _compute: {fileID: 7200000, guid: 51367e2e17cdecb47a2a0c86c915bda0, type: 3}
+  gravUniverse:
+    bodies: []
+    pixels: []
+    numBodies: 0
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   RandomSeed: -1
   SpawnCount: 100
@@ -270,9 +274,9 @@ MonoBehaviour:
   g: 6.6743
   min_dist: 7
   offset_drift: {x: 0, y: 0}
-  drift_power: 0
+  drift_power: 10
   neighbor_cutoff: 5
-  TimePerGravitySample: 0.1
+  TimePerGravitySample: 0.025
   DoStressColors: 1
   AccelerationColoring:
     serializedVersion: 2
