@@ -15,6 +15,7 @@ public struct GravityBody
     public float dy;
 
     public float mass;
+    public float dense;
 
     public uint id;
     public GravityBody(uint id)
@@ -25,6 +26,7 @@ public struct GravityBody
         dx = 0;
         dy = 0;
         mass = 0;
+        dense = 1;
     }
     public Vector2 acceleration()
     {
@@ -73,7 +75,7 @@ public class GravityManager : MonoBehaviour
             b.y = g.transform.position.y;
             g.GetComponent<Rigidbody2D>().mass = InitialSize;
             b.mass = g.GetComponent<Rigidbody2D>().mass;
-
+            b.dense = g.GetComponent<PixelManager>().Density;
             g.transform.localScale = new Vector3(b.mass, b.mass, b.mass);
 
 
@@ -109,11 +111,10 @@ public class GravityManager : MonoBehaviour
         public int numBodies;//Number of bodies in use;
         private uint genBodies;//Number of generated bodies;
     }
-    public GravUniverse gravUniverse;//Where the simulation data is stored.
+    GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
-    private float timeStart; //The time in which the simulation began
     bool asyncDone; // Whether or not the compute shader is done working
-    int NUM_FLOATS=5;
+    int NUM_FLOATS=6;
     int NUM_UINTS = 1;
 
 
@@ -127,8 +128,6 @@ public class GravityManager : MonoBehaviour
     public int RandomSeed = -1;
     [Min(0), Tooltip("How many clusters will be spawned")]
     public int SpawnCount=100;
-    [Min(1), Tooltip("How large should the starting clusters be")]
-    public int InitialSize=1;
     [Min(0), Tooltip("How large the radius of spawning is for cluster cores")]
     public float SpawnRadius=100;
     [Min(0),Tooltip("Intensity of initial random impulse for each cluster")]
@@ -146,8 +145,6 @@ public class GravityManager : MonoBehaviour
     [Tooltip("How strong the offset drift pull is for each particle.")]
     public float drift_power;
 
-    [Tooltip("How close a pixel has to be to be considered as a neighboring particle")]
-    public float neighbor_cutoff;
 
     [Header("Time Managers")]
     [Tooltip("How much physics time should occur between each gravity check.")]
@@ -174,7 +171,6 @@ public class GravityManager : MonoBehaviour
         gravUniverse = new GravUniverse();
 
         //Spawn and fill arrays with new generated particles
-        int TotalSize = SpawnCount;
         for (int i = 0; i < SpawnCount; i++)
         {
 
@@ -183,18 +179,21 @@ public class GravityManager : MonoBehaviour
 
             int index = i;
 
-            gravUniverse.AddBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform),sharedVelocity, InitialSize);
+            RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform),sharedVelocity);
             
 
 
         }
+    }
+    public void RegisterBody(GameObject g,Vector2 velocity)
+    {
+        gravUniverse.AddBody(g,velocity,g.transform.localScale.x);
     }
     void Start()
     {
 
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
 
-        timeStart = Time.timeSinceLevelLoad;
         Initialize();
 
         StartCoroutine(GravRun());
@@ -214,6 +213,7 @@ public class GravityManager : MonoBehaviour
         else
             return recurseParent(t.transform.parent);
     }
+
     public IEnumerator GravRun()
     {
         //Run forever
@@ -232,6 +232,9 @@ public class GravityManager : MonoBehaviour
                 }
                 else
                 {
+                    GravityBody body = gravUniverse.bodies[i];
+                    body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
+                    body.dense = gravUniverse.pixels[i].GetComponent<PixelManager>().Density;
                     if (!float.IsNaN(gravUniverse.bodies[i].dx) && !float.IsNaN(gravUniverse.bodies[i].dy))
                     {
                         //Update acceleration of gravity
@@ -239,8 +242,8 @@ public class GravityManager : MonoBehaviour
                         {
                             gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, AccelerationColoring.Evaluate(new Vector2(gravUniverse.bodies[i].dx, gravUniverse.bodies[i].dy).sqrMagnitude / MaxStress), 0.1f);
                         }
-                        gravUniverse.pixels[i].transform.localScale = new Vector3(gravUniverse.bodies[i].mass, gravUniverse.bodies[i].mass, gravUniverse.bodies[i].mass);
-                        gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass = gravUniverse.bodies[i].mass;
+                        gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(body.mass);
+                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.bodies[i].mass/gravUniverse.pixels[i].GetComponent<PixelManager>().Density,0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += gravUniverse.bodies[i].acceleration();
                     }
                     else
@@ -248,15 +251,12 @@ public class GravityManager : MonoBehaviour
                         Debug.Log("NAN at bodies[" + i + "]");
                     }
                     //Reset for next pass (each of the multithreaded gravity calcs just += acceleration, so we must reset after fetching)
-                    GravityBody body = gravUniverse.bodies[i];
+                   
+
+                    //Update position for next pass
                     body.setVectors(Vector2.zero, new Vector2(gravUniverse.pixels[i].transform.position.x, gravUniverse.pixels[i].transform.position.y));
                     gravUniverse.ReplaceBody(i, body);
 
-                    //Update position for next pass
-                    if (gravUniverse.FetchBody(gravUniverse.bodies[i].id) != (uint)i)
-                    {
-                        Debug.LogError("Fetch Failed..." + gravUniverse.FetchBody(gravUniverse.bodies[i].id) +" != " +(uint)i);
-                    }
                 }
             }
 
@@ -270,7 +270,6 @@ public class GravityManager : MonoBehaviour
             _compute.SetVector("drift", offset_drift);
 
 
-            _compute.SetFloat("neighbor_cutoff", neighbor_cutoff);
             //
 
 

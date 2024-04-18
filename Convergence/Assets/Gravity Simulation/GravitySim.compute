@@ -18,6 +18,7 @@ struct GravityBody {
     float dx;
     float dy;
     float mass;
+    float dense;
 
     uint id;
 };
@@ -30,8 +31,6 @@ float drift_power;
 float2 drift;
 uint numBodies;
 
-
-float neighbor_cutoff;
 
 float distanceTo(GravityBody p1,GravityBody p2);
 
@@ -64,9 +63,6 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
         GravityBody body2=bodyBuffer[index2];
         float dist=max(min_dist,distanceTo(body1,body2)/distance_scale);
 
-       // if(dist<neighbor_cutoff)
-      //  {
-      //  }
 
         
         //F= ma, so a= F/m (we can remove our mass from gravity calculation)
