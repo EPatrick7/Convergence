@@ -263,7 +263,7 @@ MonoBehaviour:
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   RandomSeed: -1
   SpawnCount: 100
-  SpawnRadius: 100
+  SpawnRadius: 400
   InitVelocityScale: 10
   distance_scale: 4
   g: 6.6743

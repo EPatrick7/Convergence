@@ -162,4 +162,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Density: 1
-  AbsorptionSpeed: 0.1
+  AbsorptionSpeed: 0.5

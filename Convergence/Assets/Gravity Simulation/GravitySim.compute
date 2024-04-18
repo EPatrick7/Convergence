@@ -34,12 +34,25 @@ uint numBodies;
 
 float distanceTo(GravityBody p1,GravityBody p2);
 
+float2 pointTowards(GravityBody origin, GravityBody target);
+
+
+//Gets a point on the surface of the GravityBody origin that points towards target.
+float2 pointTowards(GravityBody origin, GravityBody target)
+{
+    float radius = origin.mass/origin.dense;
+
+    return float2(origin.x,origin.y)+ (normalize(float2(target.x,target.y) - float2(origin.x,origin.y)) * radius);
+}
 
 
 float distanceTo(GravityBody p1,GravityBody p2)
 {
-   float distX = abs(p2.x - p1.x);
-   float distY = abs(p2.y - p1.y);
+   float2 pos1=pointTowards(p1,p2);
+   float2 pos2=pointTowards(p2,p1);
+
+   float distX = abs(pos2.x - pos1.x);
+   float distY = abs(pos2.y - pos1.y);
    return(sqrt(distX*distX + distY*distY));
 }
 
