@@ -1,0 +1,86 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Windows.WebCam;
+
+public class PlayerPixelManager : PixelManager
+{
+    [Tooltip("The prefab of the ejected pixel")]
+    public GameObject Pixel;
+
+    [Min(0), Tooltip("The proportional size the ejected pixel will be")]
+    public float SplitScale = 0.1f;
+
+    [Min(0), Tooltip("The scale the pixel will be propelled based on the mass of the ejected pixel")]
+    public float ForceScale = 50.0f;
+
+    [Min(0), Tooltip("The cooldown in seconds for ejecting pixels")]
+    public float EjectRate = 1.0f;
+
+    private bool canEject = true;
+
+    private GravityManager gravityManager;
+
+    private InputSystemActions playerInput;
+
+    private Camera cam;
+
+    private void Start()
+    {
+        gravityManager = GetComponentInParent<GravityManager>();
+
+        playerInput = new InputSystemActions();
+        playerInput.Enable();
+
+        playerInput.Player.Eject.performed += Eject;
+
+        cam = Camera.main;
+    }
+
+    private void Update()
+    {
+        if (cam != null)
+        {
+            cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
+        }
+    }
+
+    private void Eject(InputAction.CallbackContext context)
+    {
+        if (!canEject) return;
+
+        if (cam == null) return;
+
+        if (GetComponent<Rigidbody2D>().mass < 1.0f) return;
+
+        Vector2 mousePos = playerInput.Player.MousePosition.ReadValue<Vector2>();
+        Vector2 ejectDirection = (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
+
+        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * transform.localScale.x, Pixel.transform.rotation, transform.parent);
+
+        float ejectedMass = GetComponent<Rigidbody2D>().mass * SplitScale;
+        GetComponent<Rigidbody2D>().mass -= ejectedMass;
+        
+        pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;
+        pixel.transform.localScale = Vector3.one * ejectedMass / pixel.GetComponent<PixelManager>().Density;
+
+        float force = ejectedMass * ForceScale;
+
+        gravityManager.RegisterBody(pixel, ejectDirection * force);
+
+        GetComponent<Rigidbody2D>().velocity += ejectDirection * force * -1;
+
+        StartCoroutine(EjectReset(EjectRate));
+    }
+
+    private IEnumerator EjectReset(float duration)
+    {
+        canEject = false;
+
+        yield return new WaitForSeconds(duration);
+
+        canEject = true;
+    }
+}

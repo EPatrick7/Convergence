@@ -1,0 +1,65 @@
+{
+    "name": "InputSystemActions",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "18e06f70-1e1a-4294-ab48-61bf83cde102",
+            "actions": [
+                {
+                    "name": "Eject",
+                    "type": "Button",
+                    "id": "feb79c3a-47af-46cb-95df-dcf52c2e36d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MousePosition",
+                    "type": "Value",
+                    "id": "a3225751-a5e5-415c-a580-d1194941ebff",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fa7e4298-db70-4ea2-84cd-f85fb26362e1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Eject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9e00a491-ace7-4cd0-98ad-3fad57338b8c",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Eject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a50df11-f741-4d28-8c52-2368c6e7eb8f",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
