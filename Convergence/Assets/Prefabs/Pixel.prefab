@@ -163,3 +163,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Density: 1
   AbsorptionSpeed: 0.5
+  StickyFactor: 10

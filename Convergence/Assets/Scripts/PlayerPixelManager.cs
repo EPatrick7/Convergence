@@ -47,6 +47,11 @@ public class PlayerPixelManager : PixelManager
         }
     }
 
+    private void OnDestroy()
+    {
+        playerInput.Player.Eject.performed -= Eject;
+    }
+
     private void Eject(InputAction.CallbackContext context)
     {
         if (!canEject) return;

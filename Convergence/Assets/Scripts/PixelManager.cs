@@ -8,6 +8,9 @@ public class PixelManager : MonoBehaviour
     public float Density=1;
     [Tooltip("How fast this pixel will absorb the mass from other pixels it touches."),Range(0,1)]
     public float AbsorptionSpeed=0.25f;
+
+    [Tooltip("How strong the force of attraction is when two pixels collide.")]
+    public float StickyFactor=0.5f;
     bool isKilled;
     //Transfers mass from other and then kills other pixel if its mass drops <=0
     public void StealMass(PixelManager other,float percentage)
@@ -35,8 +38,16 @@ public class PixelManager : MonoBehaviour
         PixelManager other = collision.gameObject.GetComponent<PixelManager>();
         if (other != null && !other.isKilled && !isKilled && GetComponent<Rigidbody2D>() != null)
         {
-            if(other.mass()<=mass())
+
+
+
+            if (other.mass() <= mass())
+            {
+                collision.rigidbody.AddForce((transform.position - collision.transform.position).normalized * StickyFactor);
+                GetComponent<Rigidbody2D>().AddForce((collision.transform.position - transform.position).normalized * other.StickyFactor);
+
                 StealMass(other, AbsorptionSpeed);
+            }
         }
     }
 }

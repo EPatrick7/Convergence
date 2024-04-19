@@ -76,26 +76,30 @@ public class GravityManager : MonoBehaviour
             g.GetComponent<Rigidbody2D>().mass = InitialSize;
             b.mass = g.GetComponent<Rigidbody2D>().mass;
             b.dense = g.GetComponent<PixelManager>().Density;
-            g.transform.localScale = new Vector3(b.mass, b.mass, b.mass);
+            g.transform.localScale =Vector3.one * b.mass/b.dense;
 
 
             pixels.Add(g);
             bodies.Add(b);
 
             genBodies++;
-
             numBodies++;
         }
         public int FetchBody(uint id)
         {
             return bodies.BinarySearch(new GravityBody(id), new BodyComparer());
         }
-        public void RemoveBody(uint id)
+        public bool RemoveBody(uint id)
         {
             int tid = FetchBody(id);
-            bodies.RemoveAt(tid);
-            pixels.RemoveAt(tid);
-            numBodies--;
+            if (tid != -1)
+            {
+                bodies.RemoveAt(tid);
+                pixels.RemoveAt(tid);
+                numBodies--;
+                return true;
+            }
+            return false;
         }
         public void ReplaceBody(int id, GravityBody b)
         {
@@ -193,7 +197,7 @@ public class GravityManager : MonoBehaviour
     }
     public void RegisterBody(GameObject g,Vector2 velocity)
     {
-        gravUniverse.AddBody(g,velocity,g.transform.localScale.x);
+        gravUniverse.AddBody(g,velocity,g.GetComponent<Rigidbody2D>().mass);
     }
     void Start()
     {
@@ -227,16 +231,14 @@ public class GravityManager : MonoBehaviour
         {
 
             //O(n) run through each body and update it according to the last compute shader run
-            int numBodies = gravUniverse.numBodies;
-            for (int i = 0; i < numBodies; i++)
+            for (int i = 0; i < gravUniverse.numBodies; i++)
             {
                 if (gravUniverse.pixels[i] == null)
                 {
-                    gravUniverse.RemoveBody(gravUniverse.bodies[i].id);
-                    i--;
-                    numBodies--;
+                    if(gravUniverse.RemoveBody(gravUniverse.bodies[i].id))
+                        i--;
                 }
-                else
+                else if (i < gravUniverse.bodies.Count)
                 {
                     GravityBody body = gravUniverse.bodies[i];
                     body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
@@ -277,7 +279,7 @@ public class GravityManager : MonoBehaviour
 
 
             //
-
+            int numBodies = gravUniverse.numBodies;
 
             //O(n) Update body buffer in the shader with new gravity body information (With new acclerations / pos etc.)
             if (numBodies > 0)
