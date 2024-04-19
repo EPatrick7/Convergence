@@ -53,14 +53,14 @@ public class PlayerPixelManager : PixelManager
 
         if (cam == null) return;
 
-        if (GetComponent<Rigidbody2D>().mass < 1.0f) return;
+        if (mass() < 1.0f) return;
 
         Vector2 mousePos = playerInput.Player.MousePosition.ReadValue<Vector2>();
         Vector2 ejectDirection = (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
 
         GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * transform.localScale.x, Pixel.transform.rotation, transform.parent);
 
-        float ejectedMass = GetComponent<Rigidbody2D>().mass * SplitScale;
+        float ejectedMass = Mathf.Round(mass() * SplitScale * 64) / 64f;
         GetComponent<Rigidbody2D>().mass -= ejectedMass;
         
         pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;
