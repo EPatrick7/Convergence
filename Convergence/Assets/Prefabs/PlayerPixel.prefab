@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Density: 1
   AbsorptionSpeed: 0.5
-  StickyFactor: 0.5
+  StickyFactor: 10
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   SplitScale: 0.05
   ForceScale: 30

@@ -92,7 +92,7 @@ public class GravityManager : MonoBehaviour
         public bool RemoveBody(uint id)
         {
             int tid = FetchBody(id);
-            if (tid != -1)
+            if (tid >=0)
             {
                 bodies.RemoveAt(tid);
                 pixels.RemoveAt(tid);
@@ -223,13 +223,13 @@ public class GravityManager : MonoBehaviour
         else
             return recurseParent(t.transform.parent);
     }
-
+    public int SimulationStep;
     public IEnumerator GravRun()
     {
         //Run forever
         while (true)
         {
-
+            SimulationStep++;
             //O(n) run through each body and update it according to the last compute shader run
             for (int i = 0; i < gravUniverse.numBodies; i++)
             {
