@@ -15,8 +15,8 @@
 struct GravityBody {
     float x;
     float y;
-    float dx;
-    float dy;
+    float4 dx;
+    float4 dy;
     float mass;
     float dense;
 
@@ -32,9 +32,11 @@ float2 drift;
 uint numBodies;
 
 
-float distanceTo(GravityBody p1,GravityBody p2);
+float distanceTo(float2 p1,float2 p2);
+
 
 float2 pointTowards(GravityBody origin, GravityBody target);
+float2 pointAway(GravityBody origin, GravityBody target);
 
 
 //Gets a point on the surface of the GravityBody origin that points towards target.
@@ -44,15 +46,20 @@ float2 pointTowards(GravityBody origin, GravityBody target)
 
     return float2(origin.x,origin.y)+ (normalize(float2(target.x,target.y) - float2(origin.x,origin.y)) * radius);
 }
-
-
-float distanceTo(GravityBody p1,GravityBody p2)
+//Gets a point on the surface of the GravityBody origin that points away from target.
+float2 pointAway(GravityBody origin, GravityBody target)
 {
-   float2 pos1=pointTowards(p1,p2);
-   float2 pos2=pointTowards(p2,p1);
+    float radius = -origin.mass/origin.dense;
 
-   float distX = abs(pos2.x - pos1.x);
-   float distY = abs(pos2.y - pos1.y);
+    return float2(origin.x,origin.y)+ (normalize(float2(target.x,target.y) - float2(origin.x,origin.y)) * radius);
+}
+
+
+float distanceTo(float2 p1,float2 p2)
+{
+
+   float distX = abs(p2.x - p1.x);
+   float distY = abs(p2.y - p1.y);
    return(sqrt(distX*distX + distY*distY));
 }
 
@@ -64,37 +71,77 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
     uint index2=id.y;
 
 
-    if(index1 >= numBodies || index2 >= numBodies)
-    {
     //Dont do anything if we are only here because the number of bodies % 8 != 0
-    }
-    //Root out when x==y, (we dont want self gravitation)
-    else if (index1!=index2)
+    //Also root out when x==y, (we dont want self gravitation)
+    if (index1!=index2 && index1 < numBodies && index2 <numBodies)
     {
         
         GravityBody body1=bodyBuffer[index1];
         GravityBody body2=bodyBuffer[index2];
-        float dist=max(min_dist,distanceTo(body1,body2)/distance_scale);
-
-
-        
-        //F= ma, so a= F/m (we can remove our mass from gravity calculation)
-        float acceleration= (body2.mass*g)/(dist*dist);
-    
+        float numSamples=4;
         float2 dir =-normalize(float2(body1.x-body2.x,body1.y-body2.y));
 
+
+        //float2 pos1=pointTowards(body1,body2);
+        //float2 pos2=pointTowards(body2,body1); //The point on the surface of body2 pointing towards body1
+        
+        float body1_radius = body1.mass/body1.dense;
+
+        //SAMPLE 0: Right Vector:
+        float2 pos1=float2(body1.x+(1*body1_radius),body1.y);
+        float2 pos2=float2(body2.x,body2.y);
+        float dist=max(min_dist,distanceTo(pos1,pos2)/distance_scale);
+        //F= ma, so a= F/m (we can remove our mass from gravity calculation)
+        float acceleration= (body2.mass*g)/(dist*dist);
+        acceleration/=numSamples;
+        //Apply acceleration...
+        body1.dx[0]+=(acceleration)*dir.x;
+        body1.dy[0]+=(acceleration)*dir.y;
         
         
-        body1.dx+=(acceleration)*dir.x;
-        body1.dy+=(acceleration)*dir.y;
+        //SAMPLE 1: Left Vector:
+        pos1=float2(body1.x-(1*body1_radius),body1.y);
+        pos2=float2(body2.x,body2.y);
+        dist=max(min_dist,distanceTo(pos1,pos2)/distance_scale);
+        //F= ma, so a= F/m (we can remove our mass from gravity calculation)
+        acceleration= (body2.mass*g)/(dist*dist);
+        acceleration/=numSamples;
+        //Apply acceleration...
+        body1.dx[1]+=(acceleration)*dir.x;
+        body1.dy[1]+=(acceleration)*dir.y;
+
+        
+        //SAMPLE 2: Up Vector:
+        pos1=float2(body1.x,body1.y+(1*body1_radius));
+        pos2=float2(body2.x,body2.y);
+        dist=max(min_dist,distanceTo(pos1,pos2)/distance_scale);
+        //F= ma, so a= F/m (we can remove our mass from gravity calculation)
+        acceleration= (body2.mass*g)/(dist*dist);
+        acceleration/=numSamples;
+        //Apply acceleration...
+        body1.dx[2]+=(acceleration)*dir.x;
+        body1.dy[2]+=(acceleration)*dir.y;
+        
+        //SAMPLE 3: Down Vector:
+        pos1=float2(body1.x,body1.y-(1*body1_radius));
+        pos2=float2(body2.x,body2.y);
+        dist=max(min_dist,distanceTo(pos1,pos2)/distance_scale);
+        //F= ma, so a= F/m (we can remove our mass from gravity calculation)
+        acceleration= (body2.mass*g)/(dist*dist);
+        acceleration/=numSamples;
+        //Apply acceleration...
+        body1.dx[3]+=(acceleration)*dir.x;
+        body1.dy[3]+=(acceleration)*dir.y;
+
+
 
         if (abs(drift_power)>0.01)
         {
             //Calculate drift here:
             acceleration= drift_power/numBodies;
             dir =-normalize(float2(body1.x-drift.x,body1.y-drift.y));
-            body1.dx+=acceleration*dir.x;
-            body1.dy+=acceleration*dir.y;
+            body1.dx+=float4(1,1,1,1)* acceleration*dir.x;
+            body1.dy+=float4(1,1,1,1)*acceleration*dir.y;
             //
         }
 

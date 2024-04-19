@@ -11,8 +11,8 @@ public struct GravityBody
 {
     public float x;
     public float y;
-    public float dx;
-    public float dy;
+    public Vector4 dx;
+    public Vector4 dy;
 
     public float mass;
     public float dense;
@@ -23,23 +23,23 @@ public struct GravityBody
         this.id = id;
         x = 0;
         y = 0;
-        dx = 0;
-        dy = 0;
+        dx = Vector4.zero;
+        dy = Vector4.zero;
         mass = 0;
         dense = 1;
     }
     public Vector2 acceleration()
     {
-        return new Vector2(dx, dy);
+        return new Vector2((dx.x+ dx.y+ dx.z+ dx.w)/4f, (dy.x+ dy.y+ dy.z+ dy.w)/4f);
     }
     public Vector2 pos()
     {
         return new Vector2(x, y);
     }
-    public void setVectors(Vector2 vel,Vector2 pos)
+    public void resetVectors(Vector2 pos)
     {
-        dx = vel.x;
-        dy = vel.y;
+        dx = Vector4.zero;
+        dy = Vector4.zero;
         x = pos.x;
         y = pos.y;
     }
@@ -118,7 +118,7 @@ public class GravityManager : MonoBehaviour
     GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     bool asyncDone; // Whether or not the compute shader is done working
-    int NUM_FLOATS=6;
+    int NUM_FLOATS=12;
     int NUM_UINTS = 1;
 
 
@@ -161,6 +161,8 @@ public class GravityManager : MonoBehaviour
     public Gradient AccelerationColoring;
     [Tooltip("The upper bound on stress gravity (Final Color = Gravity Force / MaxStress)")]
     public float MaxStress;
+    [Tooltip("The number of gravity steps that have been applied so far.")]
+    public int SimulationStep;
 
     public void Initialize()
     {
@@ -223,7 +225,6 @@ public class GravityManager : MonoBehaviour
         else
             return recurseParent(t.transform.parent);
     }
-    public int SimulationStep;
     public IEnumerator GravRun()
     {
         //Run forever
@@ -243,16 +244,17 @@ public class GravityManager : MonoBehaviour
                     GravityBody body = gravUniverse.bodies[i];
                     body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
                     body.dense = gravUniverse.pixels[i].GetComponent<PixelManager>().Density;
-                    if (!float.IsNaN(gravUniverse.bodies[i].dx) && !float.IsNaN(gravUniverse.bodies[i].dy))
+                    Vector2 acceleration = gravUniverse.bodies[i].acceleration();
+                    if (!float.IsNaN(acceleration.x) && !float.IsNaN(acceleration.y))
                     {
                         //Update acceleration of gravity
                         if (DoStressColors)
                         {
-                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, AccelerationColoring.Evaluate(new Vector2(gravUniverse.bodies[i].dx, gravUniverse.bodies[i].dy).sqrMagnitude / MaxStress), 0.1f);
+                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, AccelerationColoring.Evaluate(new Vector2(acceleration.x, acceleration.y).sqrMagnitude / MaxStress), 0.1f);
                         }
                         gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(body.mass);
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.bodies[i].mass/gravUniverse.pixels[i].GetComponent<PixelManager>().Density,0.1f);
-                        gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += gravUniverse.bodies[i].acceleration();
+                        gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
                     }
                     else
                     {
@@ -262,7 +264,7 @@ public class GravityManager : MonoBehaviour
                    
 
                     //Update position for next pass
-                    body.setVectors(Vector2.zero, new Vector2(gravUniverse.pixels[i].transform.position.x, gravUniverse.pixels[i].transform.position.y));
+                    body.resetVectors(new Vector2(gravUniverse.pixels[i].transform.position.x, gravUniverse.pixels[i].transform.position.y));
                     gravUniverse.ReplaceBody(i, body);
 
                 }
