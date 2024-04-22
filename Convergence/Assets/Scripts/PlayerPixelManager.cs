@@ -63,9 +63,10 @@ public class PlayerPixelManager : PixelManager
         Vector2 mousePos = playerInput.Player.MousePosition.ReadValue<Vector2>();
         Vector2 ejectDirection = (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
 
-        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * transform.localScale.x, Pixel.transform.rotation, transform.parent);
+        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.5f), Pixel.transform.rotation, transform.parent);
 
         float ejectedMass = Mathf.Round(mass() * SplitScale * 64) / 64f;
+
         GetComponent<Rigidbody2D>().mass -= ejectedMass;
         
         pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;
@@ -73,9 +74,10 @@ public class PlayerPixelManager : PixelManager
 
         float force = ejectedMass * ForceScale;
 
-        gravityManager.RegisterBody(pixel, ejectDirection * force);
+        gravityManager.RegisterBody(pixel, (ejectDirection * force) / pixel.GetComponent<PixelManager>().mass());
 
-        GetComponent<Rigidbody2D>().velocity += ejectDirection * force * -1;
+
+        GetComponent<Rigidbody2D>().velocity += (ejectDirection * force) / mass() * -1;
 
         StartCoroutine(EjectReset(EjectRate));
     }
