@@ -17,6 +17,9 @@ public struct GravityBody
     public float mass;
     public float dense;
 
+    public Vector3 elements;
+    
+
     public uint id;
     public GravityBody(uint id)
     {
@@ -26,8 +29,10 @@ public struct GravityBody
         dx = Vector4.zero;
         dy = Vector4.zero;
         mass = 0;
+        elements = new Vector3(1,0,0);
         dense = 1;
     }
+
     public Vector2 acceleration()
     {
         return new Vector2((dx.x+ dx.y+ dx.z+ dx.w)/4f, (dy.x+ dy.y+ dy.z+ dy.w)/4f);
@@ -42,6 +47,10 @@ public struct GravityBody
         dy = Vector4.zero;
         x = pos.x;
         y = pos.y;
+    }
+    public void updateElements(Vector3 el)
+    {
+        elements = el;
     }
 }
 public class BodyComparer : IComparer<GravityBody>
@@ -76,6 +85,7 @@ public class GravityManager : MonoBehaviour
             g.GetComponent<Rigidbody2D>().mass = InitialSize;
             b.mass = g.GetComponent<Rigidbody2D>().mass;
             b.dense = g.GetComponent<PixelManager>().Density;
+            b.elements = g.GetComponent<PixelManager>().elements();
             g.transform.localScale =Vector3.one * b.mass/b.dense;
 
 
@@ -118,7 +128,7 @@ public class GravityManager : MonoBehaviour
     GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     bool asyncDone; // Whether or not the compute shader is done working
-    int NUM_FLOATS=12;
+    int NUM_FLOATS=15;
     int NUM_UINTS = 1;
 
 
@@ -139,6 +149,9 @@ public class GravityManager : MonoBehaviour
     [Min(0),Tooltip("Intensity of initial random impulse for each cluster")]
     public float InitVelocityScale;
 
+    [Tooltip("Should random element compositions be generated for non player bodies")]
+    public bool InitRandomElementComposition;
+
     [Header("Constants")]
     [Tooltip("How much the distance between each pixel is dampened in the gravity calculation")]
     public float distance_scale = 1;
@@ -157,10 +170,14 @@ public class GravityManager : MonoBehaviour
     public float TimePerGravitySample = 0.1f;
     [Header("Debug"),Tooltip("Should the pixles get colors based on acceleration")]
     public bool DoStressColors = true;
+    [Tooltip("Should the pixels get colors based on elements")]
+    public bool DoElementalColors = false;
     [Tooltip("What the stress colors are (left is no movement, right is heavy gravity)")]
     public Gradient AccelerationColoring;
     [Tooltip("The upper bound on stress gravity (Final Color = Gravity Force / MaxStress)")]
     public float MaxStress;
+    [Tooltip("The color upper bound on elemental color (Final Color = Element Amount / ElementScale)")]
+    public float ElementScale=1;
     [Tooltip("The number of gravity steps that have been applied so far.")]
     public int SimulationStep;
 
@@ -184,11 +201,30 @@ public class GravityManager : MonoBehaviour
 
             Vector2 loc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
             Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
+            Vector3 elements = Vector3.zero;
+            int randomEl = UnityEngine.Random.Range(0, 3);
+            switch(randomEl)
+            {
+                case 0: 
+                    elements = new Vector3(1, 0, 0);
+                    break;
+                case 1:
+                    elements = new Vector3(0, 1, 0);
+                    break;
+                case 2:
+                    elements = new Vector3(0, 0, 1);
+                    break;
+            }
+            elements *= 255;
 
-            int index = i;
-
-            RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform),sharedVelocity);
-            
+            if (InitRandomElementComposition)
+            {
+                RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform), sharedVelocity, elements);
+            }
+            else
+            {
+                RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform), sharedVelocity);
+            }
 
 
         }
@@ -196,6 +232,14 @@ public class GravityManager : MonoBehaviour
         Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
         Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
         RegisterBody(Instantiate(Player, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0), Player.transform.rotation, transform), playerVelocity);
+    }
+    public void RegisterBody(GameObject g, Vector2 velocity,Vector3 elements)
+    {
+        
+        g.GetComponent<PixelManager>().Terra = elements.x;
+        g.GetComponent<PixelManager>().Ice = elements.y;
+        g.GetComponent<PixelManager>().Gas = elements.z;
+        gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
     }
     public void RegisterBody(GameObject g,Vector2 velocity)
     {
@@ -252,6 +296,10 @@ public class GravityManager : MonoBehaviour
                         {
                             gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, AccelerationColoring.Evaluate(new Vector2(acceleration.x, acceleration.y).sqrMagnitude / MaxStress), 0.1f);
                         }
+                        else if(DoElementalColors)
+                        {
+                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, new Color(gravUniverse.bodies[i].elements.x/ElementScale, gravUniverse.bodies[i].elements.y / ElementScale, gravUniverse.bodies[i].elements.z / ElementScale, 1), 0.1f);
+                        }
                         gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(body.mass);
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.bodies[i].mass/gravUniverse.pixels[i].GetComponent<PixelManager>().Density,0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
@@ -265,6 +313,7 @@ public class GravityManager : MonoBehaviour
 
                     //Update position for next pass
                     body.resetVectors(new Vector2(gravUniverse.pixels[i].transform.position.x, gravUniverse.pixels[i].transform.position.y));
+                    body.updateElements(new Vector3(gravUniverse.pixels[i].GetComponent<PixelManager>().Terra, gravUniverse.pixels[i].GetComponent<PixelManager>().Ice, gravUniverse.pixels[i].GetComponent<PixelManager>().Gas));
                     gravUniverse.ReplaceBody(i, body);
 
                 }

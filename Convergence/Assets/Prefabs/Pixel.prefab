@@ -164,3 +164,6 @@ MonoBehaviour:
   Density: 1
   AbsorptionSpeed: 0.5
   StickyFactor: 10
+  Terra: 255
+  Ice: 0
+  Gas: 0

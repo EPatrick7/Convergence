@@ -266,6 +266,7 @@ MonoBehaviour:
   SpawnCount: 400
   SpawnRadius: 600
   InitVelocityScale: 10
+  InitRandomElementComposition: 1
   distance_scale: 7
   g: 6.6743
   min_dist: 7
@@ -273,6 +274,7 @@ MonoBehaviour:
   drift_power: 0
   TimePerGravitySample: 0.01
   DoStressColors: 1
+  DoElementalColors: 0
   AccelerationColoring:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -304,6 +306,7 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   MaxStress: 0.1
+  ElementScale: 1
   SimulationStep: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
