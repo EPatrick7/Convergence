@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class PixelManager : MonoBehaviour
 {
-    [Tooltip("The size of this pixel = mass/density")]
-    public float Density=1;
+    [Tooltip("The size of this pixel = mass/density, Density is sampled from this curve via mass")]
+    public AnimationCurve Density;
+    [Tooltip("How much the density curve is at val=1")]
+    public float DensityScale;
+    [Tooltip("How much the density curve is offset by (equal to this when val=0)")]
+    public float DensityOffset;
+    [Tooltip("How much mass to increase the animation curve to val =1 (Real Mass / Mass Scale)")]
+    public float MassScale;
+    [Tooltip("How much mass is offset before being scaled (Real Mass - MassOffset)/Mass Scale")]
+    public float MassOffset;
     [Tooltip("How fast this pixel will absorb the mass from other pixels it touches."),Range(0,1)]
     public float AbsorptionSpeed=0.25f;
 
@@ -74,6 +82,10 @@ public class PixelManager : MonoBehaviour
         }
     }
 
+    public float density()
+    {
+        return Density.Evaluate(mass()/MassScale)* DensityScale+DensityOffset;
+    }
     public Vector3 elements()
     {
         return new Vector3(Terra, Ice, Gas);

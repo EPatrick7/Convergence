@@ -84,7 +84,7 @@ public class GravityManager : MonoBehaviour
             b.y = g.transform.position.y;
             g.GetComponent<Rigidbody2D>().mass = InitialSize;
             b.mass = g.GetComponent<Rigidbody2D>().mass;
-            b.dense = g.GetComponent<PixelManager>().Density;
+            b.dense = g.GetComponent<PixelManager>().density();
             b.elements = g.GetComponent<PixelManager>().elements();
             g.transform.localScale =Vector3.one * b.mass/b.dense;
 
@@ -287,7 +287,7 @@ public class GravityManager : MonoBehaviour
                 {
                     GravityBody body = gravUniverse.bodies[i];
                     body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
-                    body.dense = gravUniverse.pixels[i].GetComponent<PixelManager>().Density;
+                    body.dense = gravUniverse.pixels[i].GetComponent<PixelManager>().density();
                     Vector2 acceleration = gravUniverse.bodies[i].acceleration();
                     if (!float.IsNaN(acceleration.x) && !float.IsNaN(acceleration.y))
                     {
@@ -301,7 +301,7 @@ public class GravityManager : MonoBehaviour
                             gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, new Color(gravUniverse.bodies[i].elements.x/ElementScale, gravUniverse.bodies[i].elements.y / ElementScale, gravUniverse.bodies[i].elements.z / ElementScale, 1), 0.1f);
                         }
                         gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(body.mass);
-                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.bodies[i].mass/gravUniverse.pixels[i].GetComponent<PixelManager>().Density,0.1f);
+                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.bodies[i].mass/gravUniverse.pixels[i].GetComponent<PixelManager>().density(),0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
                     }
                     else
