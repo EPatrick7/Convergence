@@ -126,12 +126,12 @@ MonoBehaviour:
   DensityOffset: 1
   MassScale: 25
   MassOffset: 3
-  AbsorptionSpeed: 0.5
-  StickyFactor: 10
+  AbsorptionSpeed: 0.7
+  StickyFactor: 50
   Terra: 0
   Ice: 255
   Gas: 0
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   SplitScale: 0.05
-  ForceScale: 250
-  EjectRate: 1
+  ForceScale: 300
+  EjectRate: 0.5
