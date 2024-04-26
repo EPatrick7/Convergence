@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2158811227314957677, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_Radius
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_Name
@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6458838302973239873, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_Mass
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8665647537876394839, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_LocalScale.x
@@ -124,9 +124,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   DensityScale: 1
   DensityOffset: 1
-  MassScale: 25
+  MassScale: 50
   MassOffset: 3
-  AbsorptionSpeed: 0.7
+  AbsorptionSpeed: 0.5
   StickyFactor: 50
   Terra: 0
   Ice: 255
