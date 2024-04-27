@@ -21,9 +21,9 @@ public class PlayerPixelManager : PixelManager
 
     private bool canEject = true;
 
-    private GravityManager gravityManager;
+    private bool ejectIsHeld = false;
 
-    private InputSystemActions playerInput;
+    private GravityManager gravityManager;
 
     private Camera cam;
 
@@ -31,28 +31,36 @@ public class PlayerPixelManager : PixelManager
     {
         gravityManager = GetComponentInParent<GravityManager>();
 
-        playerInput = new InputSystemActions();
-        playerInput.Enable();
-
-        playerInput.Player.Eject.performed += Eject;
+        InputManager.Instance.playerInput.Player.Eject.started += EjectStart;
+        InputManager.Instance.playerInput.Player.Eject.canceled += EjectCancel;
 
         cam = Camera.main;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        if (ejectIsHeld)
+        {
+            Eject();
+        }
+
         if (cam != null)
         {
             cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
         }
     }
 
-    private void OnDestroy()
+    #region Eject
+    private void EjectStart(InputAction.CallbackContext context)
     {
-        playerInput.Player.Eject.performed -= Eject;
+        ejectIsHeld = true;
     }
 
-    private void Eject(InputAction.CallbackContext context)
+    private void EjectCancel(InputAction.CallbackContext context)
+    {
+        ejectIsHeld = false;
+    }
+    private void Eject()
     {
         if (!canEject) return;
 
@@ -60,7 +68,7 @@ public class PlayerPixelManager : PixelManager
 
         if (mass() < 1.0f) return;
 
-        Vector2 mousePos = playerInput.Player.MousePosition.ReadValue<Vector2>();
+        Vector2 mousePos = InputManager.Instance.playerInput.Player.MousePosition.ReadValue<Vector2>();
         Vector2 ejectDirection = (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
 
         GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.5f), Pixel.transform.rotation, transform.parent);
@@ -89,5 +97,32 @@ public class PlayerPixelManager : PixelManager
         yield return new WaitForSeconds(duration);
 
         canEject = true;
+    }
+
+    #endregion
+
+
+    #region Pause Menu
+    private void OpenMenu(InputAction.CallbackContext context)
+    {
+        InputManager.Instance.playerInput.Player.Disable();
+        InputManager.Instance.playerInput.UI.Enable();
+    }
+
+    private void CloseMenu(InputAction.CallbackContext context)
+    {
+        InputManager.Instance.playerInput.Player.Enable();
+        InputManager.Instance.playerInput.UI.Disable();
+    }
+
+    #endregion
+
+    private void OnDestroy()
+    {
+        InputManager.Instance.playerInput.Player.Eject.started -= EjectStart;
+        InputManager.Instance.playerInput.Player.Eject.canceled -= EjectCancel;
+
+        InputManager.Instance.playerInput.Player.OpenMenu.performed -= OpenMenu;
+        InputManager.Instance.playerInput.UI.CloseMenu.performed -= CloseMenu;
     }
 }
