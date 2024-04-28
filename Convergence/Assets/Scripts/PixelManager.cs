@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,14 +24,54 @@ public class PixelManager : MonoBehaviour
 
 
     [Tooltip("How much terra element this pixel has"), Min(0)]
-    public float Terra;
+    [SerializeField]
+    private float terra;
+
+    public float Terra
+    {
+        get{ return terra; }
+        set
+        {
+            terra = value;
+
+            ElementsChanged?.Invoke(Terra, Ice, Gas);
+        }
+    }
+
     [Tooltip("How much ice element this pixel has"), Min(0)]
-    public float Ice;
+    [SerializeField]
+    private float ice;
+
+    public float Ice
+    {
+        get { return ice; }
+        set
+        {
+            ice = value;
+
+            ElementsChanged?.Invoke(Terra, Ice, Gas);
+        }
+    }
     [Tooltip("How much gas element this pixel has"), Min(0)]
-    public float Gas;
+    [SerializeField]
+    private float gas;
+
+    public float Gas
+    {
+        get { return gas; }
+        set
+        {
+            gas = value;
+
+            ElementsChanged?.Invoke(Terra, Ice, Gas);
+        }
+    }
 
     bool isKilled;
 
+    public event Action<float, float, float> ElementsChanged;
+
+    public event Action Destroyed;
     public enum ElementType {Terra,Ice,Gas };
     //Steals elements from other
     public void StealElement(PixelManager other,float percentage,ElementType target)
@@ -113,5 +154,10 @@ public class PixelManager : MonoBehaviour
                 StealElement(other, AbsorptionSpeed, ElementType.Gas);
             }
         }
+    }
+
+    protected virtual void OnDestroy()
+    {
+        Destroyed?.Invoke();
     }
 }

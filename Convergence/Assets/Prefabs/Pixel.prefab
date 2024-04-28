@@ -191,6 +191,6 @@ MonoBehaviour:
   MassOffset: 3
   AbsorptionSpeed: 0.5
   StickyFactor: 50
-  Terra: 255
-  Ice: 0
-  Gas: 0
+  terra: 255
+  ice: 0
+  gas: 0

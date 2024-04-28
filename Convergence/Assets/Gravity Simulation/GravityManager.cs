@@ -181,6 +181,8 @@ public class GravityManager : MonoBehaviour
     [Tooltip("The number of gravity steps that have been applied so far.")]
     public int SimulationStep;
 
+    public event Action Initialized;
+
     public void Initialize()
     {
         if (RandomSeed <= 0)
@@ -232,6 +234,8 @@ public class GravityManager : MonoBehaviour
         Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
         Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
         RegisterBody(Instantiate(Player, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0), Player.transform.rotation, transform), playerVelocity);
+
+        Initialized?.Invoke();
     }
     public void RegisterBody(GameObject g, Vector2 velocity,Vector3 elements)
     {

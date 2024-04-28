@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -50,6 +51,7 @@ public class PlayerPixelManager : PixelManager
         }
     }
 
+
     #region Eject
     private void EjectStart(InputAction.CallbackContext context)
     {
@@ -101,28 +103,11 @@ public class PlayerPixelManager : PixelManager
 
     #endregion
 
-
-    #region Pause Menu
-    private void OpenMenu(InputAction.CallbackContext context)
+    protected override void OnDestroy()
     {
-        InputManager.Instance.playerInput.Player.Disable();
-        InputManager.Instance.playerInput.UI.Enable();
-    }
+        base.OnDestroy();
 
-    private void CloseMenu(InputAction.CallbackContext context)
-    {
-        InputManager.Instance.playerInput.Player.Enable();
-        InputManager.Instance.playerInput.UI.Disable();
-    }
-
-    #endregion
-
-    private void OnDestroy()
-    {
         InputManager.Instance.playerInput.Player.Eject.started -= EjectStart;
         InputManager.Instance.playerInput.Player.Eject.canceled -= EjectCancel;
-
-        InputManager.Instance.playerInput.Player.OpenMenu.performed -= OpenMenu;
-        InputManager.Instance.playerInput.UI.CloseMenu.performed -= CloseMenu;
     }
 }

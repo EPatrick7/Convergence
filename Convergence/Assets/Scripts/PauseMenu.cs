@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
         InputManager.Instance.playerInput.Player.OpenMenu.performed += OpenMenu;
         InputManager.Instance.playerInput.UI.CloseMenu.performed += CloseMenu;
@@ -24,10 +24,7 @@ public class PauseMenu : MonoBehaviour
 
     private void CloseMenu(InputAction.CallbackContext context)
     {
-        InputManager.Instance.playerInput.Player.Enable();
-        InputManager.Instance.playerInput.UI.Disable();
-
-        gameObject.SetActive(false);
+        Resume();
     }
 
     public void Resume()
