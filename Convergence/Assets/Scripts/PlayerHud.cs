@@ -48,23 +48,18 @@ public class PlayerHud : MonoBehaviour
     {
         float total = terra + ice + gas;
 
-        if (total <= 0)
-        {
-            terraSlider.gameObject.SetActive(false);
-            iceSlider.gameObject.SetActive(false);
-            gasSlider.gameObject.SetActive(false);
-        }
-        else
-        {
-            terraSlider.value = terra / total;
-            iceSlider.value = ice / total;
-            gasSlider.value = gas / total;
-        }
+        if (total <= 0) return;
+
+        terraSlider.value = terra / total;
+        iceSlider.value = ice / total;
+        gasSlider.value = gas / total;
     }
 
     private void Destroyed()
     {
-        UpdateSliders(0, 0, 0);
+        terraSlider.gameObject.SetActive(false);
+        iceSlider.gameObject.SetActive(false);
+        gasSlider.gameObject.SetActive(false);
     }
 
     private void OnDestroy()
@@ -79,7 +74,5 @@ public class PlayerHud : MonoBehaviour
             player.ElementsChanged -= UpdateSliders;
             player.Destroyed -= Destroyed;
         }
-
-
     }
 }
