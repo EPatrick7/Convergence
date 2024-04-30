@@ -34,7 +34,8 @@ public class PixelManager : MonoBehaviour
         {
             terra = value;
 
-            ElementsChanged?.Invoke(Terra, Ice, Gas);
+            // TODO: Pass actual mass
+            ElementChanged?.Invoke(ElementType.Terra, Terra, 1000f);
         }
     }
 
@@ -49,7 +50,7 @@ public class PixelManager : MonoBehaviour
         {
             ice = value;
 
-            ElementsChanged?.Invoke(Terra, Ice, Gas);
+            ElementChanged?.Invoke(ElementType.Ice, Ice, 1000f);
         }
     }
     [Tooltip("How much gas element this pixel has"), Min(0)]
@@ -63,13 +64,13 @@ public class PixelManager : MonoBehaviour
         {
             gas = value;
 
-            ElementsChanged?.Invoke(Terra, Ice, Gas);
+            ElementChanged?.Invoke(ElementType.Gas, Gas, 1000f);
         }
     }
 
     bool isKilled;
 
-    public event Action<float, float, float> ElementsChanged;
+    public event Action<ElementType, float, float> ElementChanged;
 
     public event Action Destroyed;
     public enum ElementType {Terra,Ice,Gas };
