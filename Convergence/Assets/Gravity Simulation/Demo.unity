@@ -599,7 +599,7 @@ MonoBehaviour:
   min_dist: 7
   offset_drift: {x: 0, y: 0}
   drift_power: 0.1
-  respawn_dist: 0
+  respawn_dist: 600
   TimePerGravitySample: 0.01
   DoStressColors: 0
   DoElementalColors: 0
