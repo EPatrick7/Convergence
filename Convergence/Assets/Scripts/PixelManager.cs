@@ -22,10 +22,16 @@ public class PixelManager : MonoBehaviour
     [Tooltip("How strong the force of attraction is when two pixels collide.")]
     public float StickyFactor=0.5f;
 
+    [Tooltip("If the mass of the particle should not increase ever.")]
+    public bool ConstantMass;
+    [Tooltip("How much mass is needed to consume this object = (Real Mass + OverrideMass)")]
+    public int MassOverride;
+
 
     [Tooltip("How much terra element this pixel has"), Min(0)]
     [SerializeField]
     private float terra;
+
 
     public float Terra
     {
@@ -83,7 +89,8 @@ public class PixelManager : MonoBehaviour
 
             damage = Mathf.Round(damage * 64) / 64f;
 
-            Terra += damage;
+            if (!ConstantMass)
+                Terra += damage;
             other.Terra -= damage;
         }
         else if (target == ElementType.Ice)
@@ -92,7 +99,8 @@ public class PixelManager : MonoBehaviour
 
             damage = Mathf.Round(damage * 64) / 64f;
 
-            Ice += damage;
+            if (!ConstantMass)
+                Ice += damage;
             other.Ice -= damage;
         }
         else if (target == ElementType.Gas)
@@ -101,7 +109,8 @@ public class PixelManager : MonoBehaviour
 
             damage = Mathf.Round(damage * 64) / 64f;
 
-            Gas += damage;
+            if (!ConstantMass)
+                Gas += damage;
             other.Gas -= damage;
         }
     }
@@ -113,12 +122,14 @@ public class PixelManager : MonoBehaviour
         
         damage = Mathf.Round(damage * 64) / 64f;
         
-        GetComponent<Rigidbody2D>().mass += damage;
+        if(!ConstantMass)
+            GetComponent<Rigidbody2D>().mass += damage;
         other.GetComponent<Rigidbody2D>().mass -=damage;
-        if (other.mass() <=0.1)
+        if (other.mass() <=1)
         {
             //Floating point artithmetic means we loose some net mass overall here :(
-            GetComponent<Rigidbody2D>().mass += other.mass();
+            if(!ConstantMass)
+                GetComponent<Rigidbody2D>().mass += other.mass();
             other.isKilled = true;
             Destroy(other.gameObject);
         }
@@ -134,7 +145,7 @@ public class PixelManager : MonoBehaviour
     }
     public float mass()
     {
-        return GetComponent<Rigidbody2D>().mass;
+        return GetComponent<Rigidbody2D>().mass+ MassOverride;
     }
     private void OnCollisionStay2D(Collision2D collision)
     {

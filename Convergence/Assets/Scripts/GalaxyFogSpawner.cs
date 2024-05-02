@@ -12,10 +12,7 @@ public class GalaxyFogSpawner : MonoBehaviour
     private int objMax;
 
     [SerializeField]
-    private int minVal;
-
-    [SerializeField]
-    private int maxVal;
+    private int spawnRadius;
 
     [SerializeField]
     private float alphaVal;
@@ -31,7 +28,9 @@ public class GalaxyFogSpawner : MonoBehaviour
 
         for (var i = 0; i < Random.Range(5, objMax); i++)
 		{
-            GameObject obj = Instantiate(prefab, new Vector3(Random.Range(minVal, maxVal), Random.Range(minVal, maxVal), 0), Quaternion.identity);
+
+            Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * spawnRadius;
+            GameObject obj = Instantiate(prefab, playerLoc, Quaternion.identity,transform);
             ParticleSystem objPS = obj.GetComponentInChildren<ParticleSystem>();
             var col = objPS.colorOverLifetime;
             col.enabled = true;

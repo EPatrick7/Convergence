@@ -140,17 +140,26 @@ public class GravityManager : MonoBehaviour
     public GameObject Player;
     [Tooltip("The pixel prefab for spawning")]
     public GameObject Pixel;
+    [Tooltip("The Black Hole prefab for spawning")]
+    public GameObject BlackHole;
     [Min(-1), Tooltip("Randomized seed for world gen")]
     public int RandomSeed = -1;
     [Min(0), Tooltip("How many clusters will be spawned")]
     public int SpawnCount=100;
     [Min(0), Tooltip("How large the radius of spawning is for cluster cores")]
     public float SpawnRadius=100;
+    [Min(0),Tooltip("How large the radius of where cluster cores cannot spawn is")]
+    public float InnerSpawnRadius = 25;
     [Min(0),Tooltip("Intensity of initial random impulse for each cluster")]
     public float InitVelocityScale;
+    [Tooltip("Intensity of the oribtal speed around the black hole.")]
+    public float InitOrbitScale;
 
     [Tooltip("Should random element compositions be generated for non player bodies")]
     public bool InitRandomElementComposition;
+
+    [Tooltip("Should particles respawn when lost?")]
+    public bool DoParticleRespawn;
 
     [Header("Constants")]
     [Tooltip("How much the distance between each pixel is dampened in the gravity calculation")]
@@ -163,7 +172,8 @@ public class GravityManager : MonoBehaviour
     public Vector2 offset_drift;
     [Tooltip("How strong the offset drift pull is for each particle.")]
     public float drift_power;
-
+    [Tooltip("How far from the camera are respawning particles allowed?")]
+    public float respawn_dist;
 
     [Header("Time Managers")]
     [Tooltip("How much physics time should occur between each gravity check.")]
@@ -182,7 +192,54 @@ public class GravityManager : MonoBehaviour
     public int SimulationStep;
 
     public event Action Initialized;
+    public void Respawn()
+    {
+        if (gravUniverse.numBodies < SpawnCount)
+        {
+            Vector2 loc = UnityEngine.Random.insideUnitCircle * (SpawnRadius);
 
+            if(Camera.main!=null)
+            {
+                if(Vector2.Distance(loc,Camera.main.transform.position)< respawn_dist)
+                {
+                    return;
+                }
+            }
+
+            if (loc.sqrMagnitude <= (2*InnerSpawnRadius) * (2*InnerSpawnRadius))
+            {
+                loc = loc.normalized * (SpawnRadius + loc.sqrMagnitude);
+            }
+            Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
+
+            sharedVelocity += OrbitalVector(loc);
+            Vector3 elements = Vector3.zero;
+            int randomEl = UnityEngine.Random.Range(0, 3);
+            switch (randomEl)
+            {
+                case 0:
+                    elements = new Vector3(1, 0, 0);
+                    break;
+                case 1:
+                    elements = new Vector3(0, 1, 0);
+                    break;
+                case 2:
+                    elements = new Vector3(0, 0, 1);
+                    break;
+            }
+            elements *= 255;
+
+            if (InitRandomElementComposition)
+            {
+                RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform), sharedVelocity, elements);
+            }
+            else
+            {
+                RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform), sharedVelocity);
+            }
+        }
+
+    }
     public void Initialize()
     {
         if (RandomSeed <= 0)
@@ -197,12 +254,20 @@ public class GravityManager : MonoBehaviour
         UnityEngine.Random.InitState(RandomSeed);
         gravUniverse = new GravUniverse();
 
+        RegisterBody(Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform), Vector2.zero);
+
         //Spawn and fill arrays with new generated particles
         for (int i = 0; i < SpawnCount; i++)
         {
 
             Vector2 loc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
+            if(loc.sqrMagnitude <= InnerSpawnRadius* InnerSpawnRadius)
+            {
+                loc = loc.normalized * (SpawnRadius + loc.sqrMagnitude);
+            }
             Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
+
+            sharedVelocity += OrbitalVector(loc);
             Vector3 elements = Vector3.zero;
             int randomEl = UnityEngine.Random.Range(0, 3);
             switch(randomEl)
@@ -232,10 +297,21 @@ public class GravityManager : MonoBehaviour
         }
 
         Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
+
+        if (playerLoc.sqrMagnitude <= InnerSpawnRadius * InnerSpawnRadius)
+        {
+            playerLoc = playerLoc.normalized * (SpawnRadius + playerLoc.sqrMagnitude);
+        }
         Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
+
+        playerVelocity += OrbitalVector(playerLoc);
         RegisterBody(Instantiate(Player, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0), Player.transform.rotation, transform), playerVelocity);
 
         Initialized?.Invoke();
+    }
+    public Vector2 OrbitalVector(Vector2 loc)
+    {
+        return (Vector2)Vector3.Cross(new Vector3(loc.x, loc.y, 0), new Vector3(loc.x, loc.y, 1)) * -InitOrbitScale*Mathf.Log10(Vector2.Distance(Vector2.zero,loc)/100f);
     }
     public void RegisterBody(GameObject g, Vector2 velocity,Vector3 elements)
     {
@@ -255,6 +331,7 @@ public class GravityManager : MonoBehaviour
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
 
         Initialize();
+
 
         StartCoroutine(GravRun());
     }
@@ -278,6 +355,11 @@ public class GravityManager : MonoBehaviour
         //Run forever
         while (true)
         {
+            if(DoParticleRespawn)
+            {
+                for(int i =1;i%8!=0&&gravUniverse.numBodies < SpawnCount;i++)
+                    Respawn();
+            }
             SimulationStep++;
             //O(n) run through each body and update it according to the last compute shader run
             for (int i = 0; i < gravUniverse.numBodies; i++)
@@ -310,7 +392,7 @@ public class GravityManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("NAN at bodies[" + i + "]");
+                        //Debug.Log("NAN acceleration at bodies[" + i + "]!");
                     }
                     //Reset for next pass (each of the multithreaded gravity calcs just += acceleration, so we must reset after fetching)
                    

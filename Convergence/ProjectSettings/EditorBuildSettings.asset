@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Gravity Simulation/DemoOLD.unity
-    guid: ca43b1d2075e51b4bb7c2b9ead5cdf99
+    path: Assets/Gravity Simulation/Demo.unity
+    guid: 15345e00b3f231646b83376445e45c86
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9d4bc182247e27f48964850bebdb04f0, type: 2}
