@@ -594,11 +594,11 @@ MonoBehaviour:
   InitOrbitScale: 0.01
   InitRandomElementComposition: 1
   DoParticleRespawn: 1
-  distance_scale: 28
+  distance_scale: 10
   g: 6.6743
   min_dist: 7
   offset_drift: {x: 0, y: 0}
-  drift_power: 0.5
+  drift_power: 0.1
   respawn_dist: 600
   TimePerGravitySample: 0.0075
   DoStressColors: 0
