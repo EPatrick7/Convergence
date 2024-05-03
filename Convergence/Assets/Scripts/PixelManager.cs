@@ -118,7 +118,7 @@ public class PixelManager : MonoBehaviour
     //Transfers mass from other and then kills other pixel if its mass drops <=0
     public void StealMass(PixelManager other,float percentage)
     {
-        float damage = other.mass() * Mathf.Clamp(percentage,0,1);
+        float damage = Mathf.Min(other.mass(),Mathf.Max(1, other.mass() * Mathf.Clamp(percentage,0,1)));
         
         damage = Mathf.Round(damage * 64) / 64f;
         

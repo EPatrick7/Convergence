@@ -335,8 +335,8 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_VertexColorAlwaysGammaSpace: 1
+  m_AdditionalShaderChannelsFlag: 1
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -587,21 +587,21 @@ MonoBehaviour:
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   BlackHole: {fileID: 5954944233520970111, guid: b38adb23eeca1714a83dfa9361f3b5cc, type: 3}
   RandomSeed: -1
-  SpawnCount: 1600
+  SpawnCount: 1200
   SpawnRadius: 1700
   InnerSpawnRadius: 600
   InitVelocityScale: 10
   InitOrbitScale: 0.01
   InitRandomElementComposition: 1
   DoParticleRespawn: 1
-  distance_scale: 7
+  distance_scale: 28
   g: 6.6743
   min_dist: 7
   offset_drift: {x: 0, y: 0}
   drift_power: 0.5
   respawn_dist: 600
-  TimePerGravitySample: 0.01
-  DoStressColors: 0
+  TimePerGravitySample: 0.005
+  DoStressColors: 1
   DoElementalColors: 0
   AccelerationColoring:
     serializedVersion: 2

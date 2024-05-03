@@ -125,6 +125,7 @@ public class GravityManager : MonoBehaviour
         public int numBodies;//Number of bodies in use;
         private uint genBodies;//Number of generated bodies;
     }
+
     GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     bool asyncDone; // Whether or not the compute shader is done working
@@ -300,7 +301,7 @@ public class GravityManager : MonoBehaviour
 
         if (playerLoc.sqrMagnitude <= InnerSpawnRadius * InnerSpawnRadius)
         {
-            playerLoc = playerLoc.normalized * (SpawnRadius + playerLoc.sqrMagnitude);
+            playerLoc = playerLoc.normalized * (SpawnRadius);
         }
         Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
 
@@ -325,6 +326,7 @@ public class GravityManager : MonoBehaviour
     {
         gravUniverse.AddBody(g,velocity,g.GetComponent<Rigidbody2D>().mass);
     }
+    
     void Start()
     {
 

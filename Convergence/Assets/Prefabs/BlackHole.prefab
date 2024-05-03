@@ -190,7 +190,7 @@ MonoBehaviour:
   MassScale: 1
   MassOffset: 1
   AbsorptionSpeed: 0.5
-  StickyFactor: 50000
+  StickyFactor: 5000
   ConstantMass: 1
   MassOverride: 10000
   terra: 255

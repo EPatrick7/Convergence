@@ -37,7 +37,7 @@ public class PlayerHud : MonoBehaviour
     [SerializeField]
     private TMP_Text gasText;
 
-    void Start()
+    void Awake()
     {
         gravityManager = FindObjectOfType<GravityManager>();
         

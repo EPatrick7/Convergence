@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +14,8 @@ public class PlayerPixelManager : PixelManager
 
     [Min(0), Tooltip("The proportional size the ejected pixel will be")]
     public float SplitScale = 0.1f;
+    [Min(0), Tooltip("The proportional elements the ejected pixel will steal")]
+    public float SplitElements = 0.05f;
 
     [Min(0), Tooltip("The scale the pixel will be propelled based on the mass of the ejected pixel")]
     public float ForceScale = 50.0f;
@@ -78,7 +81,32 @@ public class PlayerPixelManager : PixelManager
         float ejectedMass = Mathf.Round(mass() * SplitScale * 64) / 64f;
 
         GetComponent<Rigidbody2D>().mass -= ejectedMass;
-        
+
+
+        int randomElement = UnityEngine.Random.Range(0, 3);
+        if(randomElement == 0)
+        {
+            float ejectedElement = Mathf.Round(Terra * SplitElements * 64) / 64f;
+
+            pixel.GetComponent<PixelManager>().Terra += ejectedElement;
+            Terra -= ejectedElement;
+        }
+        else if(randomElement == 1)
+        {
+            float ejectedElement = Mathf.Round(Ice * SplitElements * 64) / 64f;
+
+            pixel.GetComponent<PixelManager>().Ice += ejectedElement;
+            Ice -= ejectedElement;
+        }
+        else
+        {
+            float ejectedElement = Mathf.Round(Gas * SplitElements * 64) / 64f;
+
+            pixel.GetComponent<PixelManager>().Gas   += ejectedElement;
+            Gas -= ejectedElement;
+        }
+
+
         pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;
         pixel.transform.localScale = Vector3.one * ejectedMass / pixel.GetComponent<PixelManager>().density();
 
