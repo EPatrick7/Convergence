@@ -588,7 +588,7 @@ MonoBehaviour:
   BlackHole: {fileID: 5954944233520970111, guid: b38adb23eeca1714a83dfa9361f3b5cc, type: 3}
   RandomSeed: -1
   SpawnCount: 1600
-  SpawnRadius: 2000
+  SpawnRadius: 1700
   InnerSpawnRadius: 600
   InitVelocityScale: 10
   InitOrbitScale: 0.01
@@ -598,7 +598,7 @@ MonoBehaviour:
   g: 6.6743
   min_dist: 7
   offset_drift: {x: 0, y: 0}
-  drift_power: 0.1
+  drift_power: 0.5
   respawn_dist: 600
   TimePerGravitySample: 0.01
   DoStressColors: 0
