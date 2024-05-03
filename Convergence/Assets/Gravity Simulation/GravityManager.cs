@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.Rendering;
 
 //If you ever add more floats to GravityBody, be sure to adjust the sizeof(float) * # of floats in buffer setup, and the corresponding struct in compute shader!
@@ -191,7 +192,18 @@ public class GravityManager : MonoBehaviour
     public float ElementScale=1;
     [Tooltip("The number of gravity steps that have been applied so far.")]
     public int SimulationStep;
+    [Header("Sprite Replacers")]
 
+    [Tooltip("The sprite applied when terra is the majority element")]
+    public Sprite Terra;
+    [Tooltip("The sprite applied when ice is the majority element")]
+    public Sprite Ice;
+    [Tooltip("The sprite applied when gas is the majority element")]
+    public Sprite Gas;
+    [Tooltip("The sprite applied when the object is a black hole")]
+    public Sprite None;
+    [Tooltip("Should sprites be updated to reflect element amounts")]
+    public bool DoBasicReplacement;
     public event Action Initialized;
     public void Respawn()
     {
@@ -380,7 +392,34 @@ public class GravityManager : MonoBehaviour
                     if (!float.IsNaN(acceleration.x) && !float.IsNaN(acceleration.y))
                     {
                         //Update acceleration of gravity
-                        if (DoStressColors)
+
+                        if(DoBasicReplacement)
+                        {
+                            Sprite targ = Terra;
+                            float terra = gravUniverse.pixels[i].GetComponent<PixelManager>().Terra;
+                            float gas = gravUniverse.pixels[i].GetComponent<PixelManager>().Gas;
+                            float ice = gravUniverse.pixels[i].GetComponent<PixelManager>().Ice;
+                            if (terra>= gas && terra >=ice)
+                            {
+                                //Terra largest!
+                                targ = Terra;
+                            }
+                            else if (gas >= terra && gas >= ice)
+                            {
+                                //Gas largest!
+                                targ = Gas;
+                            }
+                            else if (ice >= terra && ice >= gas)
+                            {
+                                //Ice largest!
+                                targ = Ice;
+                            }
+                            if (gravUniverse.pixels[i].GetComponent<PixelManager>().ConstantMass)
+                                targ = None;
+
+                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sprite=targ;
+                        }
+                        else if (DoStressColors)
                         {
                             gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, AccelerationColoring.Evaluate(new Vector2(acceleration.x, acceleration.y).sqrMagnitude / MaxStress), 0.1f);
                         }
@@ -388,6 +427,7 @@ public class GravityManager : MonoBehaviour
                         {
                             gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, new Color(gravUniverse.bodies[i].elements.x/ElementScale, gravUniverse.bodies[i].elements.y / ElementScale, gravUniverse.bodies[i].elements.z / ElementScale, 1), 0.1f);
                         }
+
                         gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(body.mass);
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.bodies[i].mass/gravUniverse.pixels[i].GetComponent<PixelManager>().density(),0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;

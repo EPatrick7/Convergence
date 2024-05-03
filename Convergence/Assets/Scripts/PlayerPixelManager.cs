@@ -51,6 +51,8 @@ public class PlayerPixelManager : PixelManager
         if (cam != null)
         {
             cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
+
+            cam.orthographicSize = 150 + transform.localScale.x;
         }
     }
 

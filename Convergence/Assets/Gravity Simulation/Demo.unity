@@ -336,7 +336,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 1
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -600,8 +600,8 @@ MonoBehaviour:
   offset_drift: {x: 0, y: 0}
   drift_power: 0.5
   respawn_dist: 600
-  TimePerGravitySample: 0.005
-  DoStressColors: 1
+  TimePerGravitySample: 0.0075
+  DoStressColors: 0
   DoElementalColors: 0
   AccelerationColoring:
     serializedVersion: 2
@@ -636,6 +636,11 @@ MonoBehaviour:
   MaxStress: 0.1
   ElementScale: 1
   SimulationStep: 0
+  Terra: {fileID: 21300000, guid: 2634af64b47bb074eae1238440646102, type: 3}
+  Ice: {fileID: 21300000, guid: b3315022aab99c54cb5599ec46dc81b2, type: 3}
+  Gas: {fileID: 21300000, guid: a94f24df860741443937d92ff5a3ec0c, type: 3}
+  None: {fileID: 21300000, guid: 03f71f1b1c16b03449abb944b72d599a, type: 3}
+  DoBasicReplacement: 1
 --- !u!1 &1955701820
 GameObject:
   m_ObjectHideFlags: 0
