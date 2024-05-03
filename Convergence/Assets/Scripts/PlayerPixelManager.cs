@@ -84,7 +84,6 @@ public class PlayerPixelManager : PixelManager
 
         GetComponent<Rigidbody2D>().mass -= ejectedMass;
 
-
         int randomElement = UnityEngine.Random.Range(0, 3);
         if(randomElement == 0)
         {
@@ -118,6 +117,8 @@ public class PlayerPixelManager : PixelManager
 
 
         GetComponent<Rigidbody2D>().velocity += (ejectDirection * force) / mass() * -1;
+
+        InvokeMassChanged();
 
         StartCoroutine(EjectReset(EjectRate));
     }

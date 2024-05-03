@@ -40,7 +40,7 @@ public class PixelManager : MonoBehaviour
         {
             terra = value;
 
-            // TODO: Pass actual mass
+            // TODO: Pass actual max
             ElementChanged?.Invoke(ElementType.Terra, Terra, 1000f);
         }
     }
@@ -76,6 +76,7 @@ public class PixelManager : MonoBehaviour
 
     bool isKilled;
 
+    public event Action<float, float> MassChanged;
     public event Action<ElementType, float, float> ElementChanged;
 
     public event Action Destroyed;
@@ -133,6 +134,9 @@ public class PixelManager : MonoBehaviour
             other.isKilled = true;
             Destroy(other.gameObject);
         }
+
+        InvokeMassChanged();
+        other.InvokeMassChanged();
     }
 
     public float density()
@@ -171,5 +175,11 @@ public class PixelManager : MonoBehaviour
     protected virtual void OnDestroy()
     {
         Destroyed?.Invoke();
+    }
+
+    // TODO: Make a better solution; not as clean as invoking the action in a setter
+    public void InvokeMassChanged()
+    {
+        MassChanged?.Invoke(mass(), 1000f);
     }
 }

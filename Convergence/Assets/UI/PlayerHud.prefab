@@ -1506,7 +1506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sliderTimeScale: 0.1
-  massSlider: {fileID: 0}
+  massSlider: {fileID: 7748288850508375751}
   terraSlider: {fileID: 8485687169928215450}
   iceSlider: {fileID: 4998992148886644267}
   gasSlider: {fileID: 3417677280779701134}

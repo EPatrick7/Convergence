@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,8 +11,6 @@ public class PlayerHud : MonoBehaviour
     private GravityManager gravityManager;
 
     private PlayerPixelManager player;
-
-    public float sliderTimeScale = 0.1f;
 
     [SerializeField]
     private Slider massSlider;
@@ -53,19 +52,22 @@ public class PlayerHud : MonoBehaviour
 
         if (player != null)
         {
+            player.MassChanged += UpdateMass;
             player.ElementChanged += UpdateElement;
             player.Destroyed += Destroyed;
 
             // TODO: Pass actual max
+            UpdateMass(player.mass(), 1000f);
             UpdateElement(PlayerPixelManager.ElementType.Terra, player.Terra, 1000f);
             UpdateElement(PlayerPixelManager.ElementType.Ice, player.Ice, 1000f);
             UpdateElement(PlayerPixelManager.ElementType.Gas, player.Gas, 1000f);
         }
     }
 
-    private void UpdateMass(float value, float cap)
+    private void UpdateMass(float value, float cap = -1f)
     {
-        // TODO: Implement this method if we decide to use mass slider
+        UpdateSlider(massSlider, value, cap);
+        UpdateText(massText, value, cap);
     }
 
     private void UpdateElement(PixelManager.ElementType type, float value, float cap = -1f)
@@ -89,6 +91,7 @@ public class PlayerHud : MonoBehaviour
 
     private void UpdateSlider(Slider slider, float value, float cap)
     {
+        // TODO: Use a tween to make the change smoother
         cap = Mathf.Max(value, cap, 1f);
         slider.value = value / cap;
     }
@@ -98,11 +101,14 @@ public class PlayerHud : MonoBehaviour
         // If cap is not valid, use the previous cap string instead
         string cap_string = cap >= 0f ? cap.ToString("0") : text.text.Split("/")[1];
 
+        value = Mathf.Min(value, Int32.Parse(cap_string));
+
         text.text = string.Format("{0}/{1}", value.ToString("0"), cap_string);
     }
 
     private void Destroyed()
     {
+        UpdateMass(0f);
         UpdateElement(PlayerPixelManager.ElementType.Terra, 0f);
         UpdateElement(PlayerPixelManager.ElementType.Ice, 0f);
         UpdateElement(PlayerPixelManager.ElementType.Gas, 0f);
@@ -117,6 +123,7 @@ public class PlayerHud : MonoBehaviour
 
         if (player != null)
         {
+            player.MassChanged -= UpdateMass;
             player.ElementChanged -= UpdateElement;
             player.Destroyed -= Destroyed;
         }
