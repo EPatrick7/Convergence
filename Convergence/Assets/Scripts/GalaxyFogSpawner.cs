@@ -9,7 +9,7 @@ public class GalaxyFogSpawner : MonoBehaviour
     private GameObject prefab;
 
     [SerializeField]
-    private int objMax;
+    private int objMin, objMax;
 
     [SerializeField]
     private int spawnRadius;
@@ -26,7 +26,7 @@ public class GalaxyFogSpawner : MonoBehaviour
 
         //Random.InitState(42); //initiates RNG w/ seed
 
-        for (var i = 0; i < Random.Range(5, objMax); i++)
+        for (var i = 0; i < Random.Range(objMin, objMax); i++)
 		{
 
             Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * spawnRadius;

@@ -514,9 +514,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 4663679174155961175, guid: 9311617b76dd8d049b198314d66ddeb5, type: 3}
-  objMax: 700
-  spawnRadius: 2700
-  alphaVal: 0.1
+  objMin: 50
+  objMax: 100
+  spawnRadius: 2000
+  alphaVal: 0.05
   objColor:
   - {r: 0.16785331, g: 0.6896209, b: 0.8679245, a: 0}
   - {r: 0.9716981, g: 0.41179234, b: 0.27959237, a: 0}
