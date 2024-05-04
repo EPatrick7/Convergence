@@ -52,7 +52,7 @@ public class PlayerPixelManager : PixelManager
         {
             cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
 
-            cam.orthographicSize = 150 + transform.localScale.x;
+            cam.orthographicSize = 50 + transform.localScale.x*1.5f;
         }
     }
 
