@@ -7,11 +7,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField]
     private ColorBlock buttonColors = new ColorBlock();
+
+    private PostProcessVolume ppVol;
 
     private void Start()
     {
@@ -30,12 +33,17 @@ public class PauseMenu : MonoBehaviour
         }
 
         gameObject.SetActive(false);
+
+        ppVol = Camera.main.gameObject.GetComponent<PostProcessVolume>();
+        ppVol.enabled = false;
+
     }
 
     private void OpenMenu(InputAction.CallbackContext context)
     {
         InputManager.Instance.playerInput.Player.Disable();
         InputManager.Instance.playerInput.UI.Enable();
+        ppVol.enabled = true;
 
         gameObject.SetActive(true);
     }
@@ -49,6 +57,7 @@ public class PauseMenu : MonoBehaviour
     {
         InputManager.Instance.playerInput.Player.Enable();
         InputManager.Instance.playerInput.UI.Disable();
+        ppVol.enabled = false;
 
         gameObject.SetActive(false);
     }   
