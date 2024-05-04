@@ -84,28 +84,6 @@ public class PlayerPixelManager : PixelManager
 
         GetComponent<Rigidbody2D>().mass -= ejectedMass;
 
-        int randomElement = UnityEngine.Random.Range(0, 3);
-        if(randomElement == 0)
-        {
-            float ejectedElement = Mathf.Round(Terra * SplitElements * 64) / 64f;
-
-            pixel.GetComponent<PixelManager>().Terra += ejectedElement;
-            Terra -= ejectedElement;
-        }
-        else if(randomElement == 1)
-        {
-            float ejectedElement = Mathf.Round(Ice * SplitElements * 64) / 64f;
-
-            pixel.GetComponent<PixelManager>().Ice += ejectedElement;
-            Ice -= ejectedElement;
-        }
-        else
-        {
-            float ejectedElement = Mathf.Round(Gas * SplitElements * 64) / 64f;
-
-            pixel.GetComponent<PixelManager>().Gas   += ejectedElement;
-            Gas -= ejectedElement;
-        }
 
 
         pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;

@@ -16,9 +16,6 @@ public class PlayerHud : MonoBehaviour
     private Slider massSlider;
 
     [SerializeField]
-    private Slider terraSlider;
-
-    [SerializeField]
     private Slider iceSlider;
 
     [SerializeField]
@@ -26,9 +23,6 @@ public class PlayerHud : MonoBehaviour
 
     [SerializeField]
     private TMP_Text massText;
-
-    [SerializeField]
-    private TMP_Text terraText;
 
     [SerializeField]
     private TMP_Text iceText;
@@ -57,8 +51,7 @@ public class PlayerHud : MonoBehaviour
             player.Destroyed += Destroyed;
 
             // TODO: Pass actual max
-            UpdateMass(player.mass(), 1000f);
-            UpdateElement(PlayerPixelManager.ElementType.Terra, player.Terra, 1000f);
+            UpdateMass(player.mass(), 5000f);
             UpdateElement(PlayerPixelManager.ElementType.Ice, player.Ice, 1000f);
             UpdateElement(PlayerPixelManager.ElementType.Gas, player.Gas, 1000f);
         }
@@ -74,10 +67,6 @@ public class PlayerHud : MonoBehaviour
     {
         switch (type)
         {
-            case PlayerPixelManager.ElementType.Terra:
-                UpdateSlider(terraSlider, value, cap);
-                UpdateText(terraText, value, cap);
-                break;
             case PlayerPixelManager.ElementType.Ice:
                 UpdateSlider(iceSlider, value, cap);
                 UpdateText(iceText, value, cap);
@@ -100,7 +89,6 @@ public class PlayerHud : MonoBehaviour
     {
         // If cap is not valid, use the previous cap string instead
         string cap_string = cap >= 0f ? cap.ToString("0") : text.text.Split("/")[1];
-
         value = Mathf.Min(value, Int32.Parse(cap_string));
 
         text.text = string.Format("{0}/{1}", value.ToString("0"), cap_string);
@@ -109,7 +97,6 @@ public class PlayerHud : MonoBehaviour
     private void Destroyed()
     {
         UpdateMass(0f);
-        UpdateElement(PlayerPixelManager.ElementType.Terra, 0f);
         UpdateElement(PlayerPixelManager.ElementType.Ice, 0f);
         UpdateElement(PlayerPixelManager.ElementType.Gas, 0f);
     }

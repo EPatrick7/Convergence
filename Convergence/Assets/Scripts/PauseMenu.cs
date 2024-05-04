@@ -61,6 +61,7 @@ public class PauseMenu : MonoBehaviour
     public void ReturnToMenu()
     {
         // TODO
+        Quit();
     }
 
     public void Quit()

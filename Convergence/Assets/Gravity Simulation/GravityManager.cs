@@ -18,7 +18,7 @@ public struct GravityBody
     public float mass;
     public float dense;
 
-    public Vector3 elements;
+    public Vector2 elements;
     
 
     public uint id;
@@ -30,7 +30,7 @@ public struct GravityBody
         dx = Vector4.zero;
         dy = Vector4.zero;
         mass = 0;
-        elements = new Vector3(1,0,0);
+        elements = new Vector3(0,0);
         dense = 1;
     }
 
@@ -49,7 +49,7 @@ public struct GravityBody
         x = pos.x;
         y = pos.y;
     }
-    public void updateElements(Vector3 el)
+    public void updateElements(Vector2 el)
     {
         elements = el;
     }
@@ -130,7 +130,7 @@ public class GravityManager : MonoBehaviour
     GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     bool asyncDone; // Whether or not the compute shader is done working
-    int NUM_FLOATS=15;
+    int NUM_FLOATS=14;
     int NUM_UINTS = 1;
 
 
@@ -226,18 +226,18 @@ public class GravityManager : MonoBehaviour
             Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
 
             sharedVelocity += OrbitalVector(loc);
-            Vector3 elements = Vector3.zero;
+            Vector2 elements = Vector2.zero;
             int randomEl = UnityEngine.Random.Range(0, 3);
             switch (randomEl)
             {
                 case 0:
-                    elements = new Vector3(1, 0, 0);
+                    elements = new Vector2(0, 0);
                     break;
                 case 1:
-                    elements = new Vector3(0, 1, 0);
+                    elements = new Vector2(1, 0);
                     break;
                 case 2:
-                    elements = new Vector3(0, 0, 1);
+                    elements = new Vector2(0, 1);
                     break;
             }
             elements *= 255;
@@ -326,12 +326,11 @@ public class GravityManager : MonoBehaviour
     {
         return (Vector2)Vector3.Cross(new Vector3(loc.x, loc.y, 0), new Vector3(loc.x, loc.y, 1)) * -InitOrbitScale*Mathf.Log10(Vector2.Distance(Vector2.zero,loc)/100f);
     }
-    public void RegisterBody(GameObject g, Vector2 velocity,Vector3 elements)
+    public void RegisterBody(GameObject g, Vector2 velocity,Vector2 elements)
     {
         
-        g.GetComponent<PixelManager>().Terra = elements.x;
-        g.GetComponent<PixelManager>().Ice = elements.y;
-        g.GetComponent<PixelManager>().Gas = elements.z;
+        g.GetComponent<PixelManager>().Ice = elements.x;
+        g.GetComponent<PixelManager>().Gas = elements.y;
         gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
     }
     public void RegisterBody(GameObject g,Vector2 velocity)
@@ -396,20 +395,20 @@ public class GravityManager : MonoBehaviour
                         if(DoBasicReplacement)
                         {
                             Sprite targ = Terra;
-                            float terra = gravUniverse.pixels[i].GetComponent<PixelManager>().Terra;
+                            float mass = gravUniverse.pixels[i].GetComponent<PixelManager>().mass();
                             float gas = gravUniverse.pixels[i].GetComponent<PixelManager>().Gas;
                             float ice = gravUniverse.pixels[i].GetComponent<PixelManager>().Ice;
-                            if (terra>= gas && terra >=ice)
+                            if (mass >= gas && mass >= ice)
                             {
-                                //Terra largest!
+                                //Mass largest!
                                 targ = Terra;
                             }
-                            else if (gas >= terra && gas >= ice)
+                            else if (gas >= mass && gas >= ice)
                             {
                                 //Gas largest!
                                 targ = Gas;
                             }
-                            else if (ice >= terra && ice >= gas)
+                            else if (ice >= mass && ice >= gas)
                             {
                                 //Ice largest!
                                 targ = Ice;
@@ -425,7 +424,7 @@ public class GravityManager : MonoBehaviour
                         }
                         else if(DoElementalColors)
                         {
-                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, new Color(gravUniverse.bodies[i].elements.x/ElementScale, gravUniverse.bodies[i].elements.y / ElementScale, gravUniverse.bodies[i].elements.z / ElementScale, 1), 0.1f);
+                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, new Color(gravUniverse.bodies[i].mass/ElementScale, gravUniverse.bodies[i].elements.x / ElementScale, gravUniverse.bodies[i].elements.y / ElementScale, 1), 0.1f);
                         }
 
                         gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(body.mass);
@@ -441,7 +440,7 @@ public class GravityManager : MonoBehaviour
 
                     //Update position for next pass
                     body.resetVectors(new Vector2(gravUniverse.pixels[i].transform.position.x, gravUniverse.pixels[i].transform.position.y));
-                    body.updateElements(new Vector3(gravUniverse.pixels[i].GetComponent<PixelManager>().Terra, gravUniverse.pixels[i].GetComponent<PixelManager>().Ice, gravUniverse.pixels[i].GetComponent<PixelManager>().Gas));
+                    body.updateElements(new Vector2(gravUniverse.pixels[i].GetComponent<PixelManager>().Ice, gravUniverse.pixels[i].GetComponent<PixelManager>().Gas));
                     gravUniverse.ReplaceBody(i, body);
 
                 }

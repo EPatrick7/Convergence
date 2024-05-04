@@ -192,7 +192,6 @@ MonoBehaviour:
   AbsorptionSpeed: 0.5
   StickyFactor: 5000
   ConstantMass: 1
-  MassOverride: 10000
-  terra: 255
+  MassOverride: 5000
   ice: 255
   gas: 255

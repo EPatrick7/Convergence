@@ -226,7 +226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2684957214272925045
 RectTransform:
   m_ObjectHideFlags: 0
@@ -320,7 +320,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 26.421204, y: -116.4547}
+  m_AnchoredPosition: {x: 26.421204, y: -39.401}
   m_SizeDelta: {x: 16.966522, y: 16.494873}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6562169722638288656
@@ -484,7 +484,7 @@ RectTransform:
   m_Father: {fileID: 1968674717145254056}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -1.2711, y: 0}
   m_SizeDelta: {x: 7.4577, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -797,7 +797,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 250/1000
+  m_text: 250/5000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -901,7 +901,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 26.421265, y: -39.401}
+  m_AnchoredPosition: {x: 26.421265, y: 35.34973}
   m_SizeDelta: {x: 16.966492, y: 16.494873}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7624051915884130453
@@ -1505,13 +1505,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c06ffd200947cd4696bef18d931bd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sliderTimeScale: 0.1
   massSlider: {fileID: 7748288850508375751}
-  terraSlider: {fileID: 8485687169928215450}
   iceSlider: {fileID: 4998992148886644267}
   gasSlider: {fileID: 3417677280779701134}
   massText: {fileID: 1145196913702546276}
-  terraText: {fileID: 7104604859767893823}
   iceText: {fileID: 8045923219284259414}
   gasText: {fileID: 5511339905051768061}
 --- !u!1 &8222106558649014771

@@ -28,23 +28,6 @@ public class PixelManager : MonoBehaviour
     public int MassOverride;
 
 
-    [Tooltip("How much terra element this pixel has"), Min(0)]
-    [SerializeField]
-    private float terra;
-
-
-    public float Terra
-    {
-        get{ return terra; }
-        set
-        {
-            terra = value;
-
-            // TODO: Pass actual max
-            ElementChanged?.Invoke(ElementType.Terra, Terra, 1000f);
-        }
-    }
-
     [Tooltip("How much ice element this pixel has"), Min(0)]
     [SerializeField]
     private float ice;
@@ -80,21 +63,11 @@ public class PixelManager : MonoBehaviour
     public event Action<ElementType, float, float> ElementChanged;
 
     public event Action Destroyed;
-    public enum ElementType {Terra,Ice,Gas };
+    public enum ElementType {Ice,Gas };
     //Steals elements from other
     public void StealElement(PixelManager other,float percentage,ElementType target)
     {
-        if (target == ElementType.Terra)
-        {
-            float damage = other.Terra * Mathf.Clamp(percentage, 0, 1);
-
-            damage = Mathf.Round(damage * 64) / 64f;
-
-            if (!ConstantMass)
-                Terra += damage;
-            other.Terra -= damage;
-        }
-        else if (target == ElementType.Ice)
+        if (target == ElementType.Ice)
         {
             float damage = other.Ice * Mathf.Clamp(percentage, 0, 1);
 
@@ -143,9 +116,9 @@ public class PixelManager : MonoBehaviour
     {
         return Density.Evaluate(mass()/MassScale)* DensityScale+DensityOffset;
     }
-    public Vector3 elements()
+    public Vector2 elements()
     {
-        return new Vector3(Terra, Ice, Gas);
+        return new Vector2(Ice, Gas);
     }
     public float mass()
     {
@@ -165,7 +138,6 @@ public class PixelManager : MonoBehaviour
                 GetComponent<Rigidbody2D>().AddForce((collision.transform.position - transform.position).normalized * other.StickyFactor);
 
                 StealMass(other, AbsorptionSpeed);
-                StealElement(other, AbsorptionSpeed, ElementType.Terra);
                 StealElement(other, AbsorptionSpeed, ElementType.Ice);
                 StealElement(other, AbsorptionSpeed, ElementType.Gas);
             }
@@ -180,6 +152,6 @@ public class PixelManager : MonoBehaviour
     // TODO: Make a better solution; not as clean as invoking the action in a setter
     public void InvokeMassChanged()
     {
-        MassChanged?.Invoke(mass(), 1000f);
+        MassChanged?.Invoke(mass(), 5000f);
     }
 }

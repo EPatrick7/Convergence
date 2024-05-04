@@ -20,7 +20,7 @@ struct GravityBody {
     float mass;
     float dense;
 
-    float3 elements;
+    float2 elements;
 
     uint id;
 };
