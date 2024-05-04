@@ -5471,7 +5471,7 @@ MonoBehaviour:
   Terra: {fileID: 21300000, guid: ee8c1861373daaa42803a441c5a6b822, type: 3}
   Ice: {fileID: 21300000, guid: 5774def50c95e904db662a350164acdd, type: 3}
   Gas: {fileID: 21300000, guid: 1fd076141ad7fcc45b5ba33932b626be, type: 3}
-  None: {fileID: 21300000, guid: 26c90ea8755c12a4d83be6690bbf3dcb, type: 3}
+  None: {fileID: 21300000, guid: 644176b2d6201934e87bdad0ffe586fa, type: 3}
   DoBasicReplacement: 1
 --- !u!1 &1955701820
 GameObject:
