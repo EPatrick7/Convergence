@@ -387,6 +387,12 @@ public class GravityManager : MonoBehaviour
                     GravityBody body = gravUniverse.bodies[i];
                     body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
                     body.dense = gravUniverse.pixels[i].GetComponent<PixelManager>().density();
+
+                    if(body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius *4)&&Vector2.Distance(body.pos(),Camera.main.transform.position)>100)
+                    {
+                        Destroy(gravUniverse.pixels[i].gameObject);
+                    }
+
                     Vector2 acceleration = gravUniverse.bodies[i].acceleration();
                     if (!float.IsNaN(acceleration.x) && !float.IsNaN(acceleration.y))
                     {
