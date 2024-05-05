@@ -102,7 +102,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -191,6 +191,7 @@ MonoBehaviour:
   MassOffset: 3
   AbsorptionSpeed: 0.5
   StickyFactor: 50
-  terra: 255
+  ConstantMass: 0
+  MassOverride: 0
   ice: 0
   gas: 0

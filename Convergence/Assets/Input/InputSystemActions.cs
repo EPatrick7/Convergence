@@ -33,8 +33,26 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""id"": ""feb79c3a-47af-46cb-95df-dcf52c2e36d1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap(duration=0.15)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Propel"",
+                    ""type"": ""Button"",
+                    ""id"": ""e0ddd610-d8b3-4415-9775-5f58762571f9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.35)"",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Shield"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff1a7566-2c12-4059-90e9-9c54b9fc6657"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""MousePosition"",
@@ -86,6 +104,28 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""OpenMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""183d7b0b-54ad-4aeb-baae-4a04009834fa"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Propel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6901e33-6f1a-4cc1-9b3d-958a32f546d9"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shield"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -633,6 +673,8 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Eject = m_Player.FindAction("Eject", throwIfNotFound: true);
+        m_Player_Propel = m_Player.FindAction("Propel", throwIfNotFound: true);
+        m_Player_Shield = m_Player.FindAction("Shield", throwIfNotFound: true);
         m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         m_Player_OpenMenu = m_Player.FindAction("OpenMenu", throwIfNotFound: true);
         // UI
@@ -710,6 +752,8 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Eject;
+    private readonly InputAction m_Player_Propel;
+    private readonly InputAction m_Player_Shield;
     private readonly InputAction m_Player_MousePosition;
     private readonly InputAction m_Player_OpenMenu;
     public struct PlayerActions
@@ -717,6 +761,8 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         private @InputSystemActions m_Wrapper;
         public PlayerActions(@InputSystemActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Eject => m_Wrapper.m_Player_Eject;
+        public InputAction @Propel => m_Wrapper.m_Player_Propel;
+        public InputAction @Shield => m_Wrapper.m_Player_Shield;
         public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputAction @OpenMenu => m_Wrapper.m_Player_OpenMenu;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -731,6 +777,12 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
             @Eject.started += instance.OnEject;
             @Eject.performed += instance.OnEject;
             @Eject.canceled += instance.OnEject;
+            @Propel.started += instance.OnPropel;
+            @Propel.performed += instance.OnPropel;
+            @Propel.canceled += instance.OnPropel;
+            @Shield.started += instance.OnShield;
+            @Shield.performed += instance.OnShield;
+            @Shield.canceled += instance.OnShield;
             @MousePosition.started += instance.OnMousePosition;
             @MousePosition.performed += instance.OnMousePosition;
             @MousePosition.canceled += instance.OnMousePosition;
@@ -744,6 +796,12 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
             @Eject.started -= instance.OnEject;
             @Eject.performed -= instance.OnEject;
             @Eject.canceled -= instance.OnEject;
+            @Propel.started -= instance.OnPropel;
+            @Propel.performed -= instance.OnPropel;
+            @Propel.canceled -= instance.OnPropel;
+            @Shield.started -= instance.OnShield;
+            @Shield.performed -= instance.OnShield;
+            @Shield.canceled -= instance.OnShield;
             @MousePosition.started -= instance.OnMousePosition;
             @MousePosition.performed -= instance.OnMousePosition;
             @MousePosition.canceled -= instance.OnMousePosition;
@@ -896,6 +954,8 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnEject(InputAction.CallbackContext context);
+        void OnPropel(InputAction.CallbackContext context);
+        void OnShield(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
         void OnOpenMenu(InputAction.CallbackContext context);
     }

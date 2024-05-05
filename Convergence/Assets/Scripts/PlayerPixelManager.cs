@@ -6,26 +6,43 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows.WebCam;
+using static UnityEditorInternal.VersionControl.ListControl;
 
 public class PlayerPixelManager : PixelManager
 {
     [Tooltip("The prefab of the ejected pixel")]
     public GameObject Pixel;
 
+    [Header("Ejection")]
     [Min(0), Tooltip("The proportional size the ejected pixel will be")]
     public float SplitScale = 0.1f;
     [Min(0), Tooltip("The proportional elements the ejected pixel will steal")]
     public float SplitElements = 0.05f;
 
     [Min(0), Tooltip("The scale the pixel will be propelled based on the mass of the ejected pixel")]
-    public float ForceScale = 50.0f;
+    public float EjectionForceScale = 50.0f;
 
     [Min(0), Tooltip("The cooldown in seconds for ejecting pixels")]
-    public float EjectRate = 1.0f;
+    public float EjectionRate = 1.0f;
+
+    [Header("Propulsion")]
+    [Min(0), Tooltip("The scale the pixel will be propelled based on the gas expended")]
+    public float PropulsionForceScale = 10.0f;
+
+    [Min(0), Tooltip("The cooldown in seconds for propelling")]
+    public float PropulsionRate = 0.1f;
+
+    [Min(1), Tooltip("The proportion of gas expended when propelling")]
+    public float PropulsionCost = 0.01f;
+
+    [Header("Shield")]
+    public Shield Shield;
 
     private bool canEject = true;
 
-    private bool ejectIsHeld = false;
+    private bool isPropelling = false;
+
+    private bool isShielding = false;
 
     private GravityManager gravityManager;
 
@@ -35,19 +52,17 @@ public class PlayerPixelManager : PixelManager
     {
         gravityManager = GetComponentInParent<GravityManager>();
 
-        InputManager.Instance.playerInput.Player.Eject.started += EjectStart;
-        InputManager.Instance.playerInput.Player.Eject.canceled += EjectCancel;
+        InputManager.Instance.playerInput.Player.Eject.performed += Eject;
+        InputManager.Instance.playerInput.Player.Propel.started += StartPropel;
+        InputManager.Instance.playerInput.Player.Propel.canceled += CancelPropel;
+        InputManager.Instance.playerInput.Player.Shield.started += StartShield;
+        InputManager.Instance.playerInput.Player.Shield.canceled += CancelShield;
 
         cam = Camera.main;
     }
 
     private void FixedUpdate()
     {
-        if (ejectIsHeld)
-        {
-            Eject();
-        }
-
         if (cam != null)
         {
             cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
@@ -56,49 +71,44 @@ public class PlayerPixelManager : PixelManager
         }
     }
 
+    private Vector2 MouseDirection()
+    {
+        Vector2 mousePos = InputManager.Instance.playerInput.Player.MousePosition.ReadValue<Vector2>();
+        return (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
+    }
 
     #region Eject
-    private void EjectStart(InputAction.CallbackContext context)
-    {
-        ejectIsHeld = true;
-    }
-
-    private void EjectCancel(InputAction.CallbackContext context)
-    {
-        ejectIsHeld = false;
-    }
-    private void Eject()
+    private void Eject(InputAction.CallbackContext context)
     {
         if (!canEject) return;
 
         if (cam == null) return;
 
-        if (mass() < 1.0f) return;
+        if (mass() <= 1.0f) return;
 
-        Vector2 mousePos = InputManager.Instance.playerInput.Player.MousePosition.ReadValue<Vector2>();
-        Vector2 ejectDirection = (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
+        Vector2 ejectDirection = MouseDirection();
 
+        // Create ejected pixel
         GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.5f), Pixel.transform.rotation, transform.parent);
 
+        // Handle mass of player and ejected pixel
         float ejectedMass = Mathf.Round(mass() * SplitScale * 64) / 64f;
 
         GetComponent<Rigidbody2D>().mass -= ejectedMass;
 
-
-
         pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;
         pixel.transform.localScale = Vector3.one * ejectedMass / pixel.GetComponent<PixelManager>().density();
 
-        float force = ejectedMass * ForceScale;
-
-        gravityManager.RegisterBody(pixel, (ejectDirection * force) / pixel.GetComponent<PixelManager>().mass());
-
+        // Handle ejection push
+        float force = (ejectedMass + Mathf.Max(0, Mathf.Log(ejectedMass))) * EjectionForceScale;
 
         GetComponent<Rigidbody2D>().velocity += (ejectDirection * force) / mass() * -1;
 
+        gravityManager.RegisterBody(pixel, (ejectDirection * force) / pixel.GetComponent<PixelManager>().mass());
+
         InvokeMassChanged();
 
-        StartCoroutine(EjectReset(EjectRate));
+        StartCoroutine(EjectReset(EjectionRate));
     }
 
     private IEnumerator EjectReset(float duration)
@@ -109,14 +119,76 @@ public class PlayerPixelManager : PixelManager
 
         canEject = true;
     }
+    #endregion
 
+    #region Propel
+    private void StartPropel(InputAction.CallbackContext context)
+    {
+        if (isPropelling) return;
+
+        isPropelling = true;
+
+        StartCoroutine(Propel(PropulsionRate));
+    }
+
+    private void CancelPropel(InputAction.CallbackContext context)
+    {
+        if (!isPropelling) return;
+
+        isPropelling = false;
+    }
+
+    private IEnumerator Propel(float interval)
+    {
+        if (isPropelling && Gas > 1)
+        {
+            float expendedGas = Gas * PropulsionCost;
+            Gas -= expendedGas;
+
+            Vector2 propelDirection = MouseDirection();
+            float propulsionForce = (Mathf.Max(1, Mathf.Log(mass()))) * expendedGas * PropulsionForceScale * interval;
+
+            GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1;
+
+            yield return new WaitForSeconds(interval);
+
+            StartCoroutine(Propel(interval));
+        }
+    }
+    #endregion
+
+    #region Shield
+    private void StartShield(InputAction.CallbackContext context)
+    {
+        if (Shield == null) return;
+
+        if (isShielding) return;
+
+        isShielding = true;
+
+        Shield.ShieldUp();
+    }
+
+    private void CancelShield(InputAction.CallbackContext context)
+    {
+        if (Shield == null) return;
+
+        if (!isShielding) return;
+
+        isShielding = false;
+
+        Shield.ShieldDown();
+    }
     #endregion
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
 
-        InputManager.Instance.playerInput.Player.Eject.started -= EjectStart;
-        InputManager.Instance.playerInput.Player.Eject.canceled -= EjectCancel;
+        InputManager.Instance.playerInput.Player.Eject.performed -= Eject;
+        InputManager.Instance.playerInput.Player.Propel.started -= StartPropel;
+        InputManager.Instance.playerInput.Player.Propel.canceled -= CancelPropel;
+        InputManager.Instance.playerInput.Player.Shield.started -= StartShield;
+        InputManager.Instance.playerInput.Player.Shield.canceled -= CancelShield;
     }
 }
