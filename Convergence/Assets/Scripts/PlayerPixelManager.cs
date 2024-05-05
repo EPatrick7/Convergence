@@ -87,7 +87,7 @@ public class PlayerPixelManager : PixelManager
 
 
         pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;
-        pixel.transform.localScale = Vector3.one * ejectedMass / pixel.GetComponent<PixelManager>().density();
+        pixel.transform.localScale = Vector3.one * pixel.GetComponent<PixelManager>().radius(ejectedMass);
 
         float force = ejectedMass * ForceScale;
 

@@ -112,6 +112,15 @@ public class PixelManager : MonoBehaviour
         other.InvokeMassChanged();
     }
 
+
+    public float radius(float mass)
+    {
+        return mass / (Density.Evaluate(mass / MassScale) * DensityScale + DensityOffset);
+    }
+    public float radius()
+    {
+        return radius(mass()-MassOverride);
+    }
     public float density()
     {
         return Density.Evaluate(mass()/MassScale)* DensityScale+DensityOffset;

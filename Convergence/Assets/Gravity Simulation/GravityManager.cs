@@ -16,7 +16,7 @@ public struct GravityBody
     public Vector4 dy;
 
     public float mass;
-    public float dense;
+    public float radius;
 
     public Vector2 elements;
     
@@ -31,7 +31,7 @@ public struct GravityBody
         dy = Vector4.zero;
         mass = 0;
         elements = new Vector3(0,0);
-        dense = 1;
+        radius = 1;
     }
 
     public Vector2 acceleration()
@@ -85,9 +85,9 @@ public class GravityManager : MonoBehaviour
             b.y = g.transform.position.y;
             g.GetComponent<Rigidbody2D>().mass = InitialSize;
             b.mass = g.GetComponent<Rigidbody2D>().mass;
-            b.dense = g.GetComponent<PixelManager>().density();
+            b.radius = g.GetComponent<PixelManager>().radius();
             b.elements = g.GetComponent<PixelManager>().elements();
-            g.transform.localScale =Vector3.one * b.mass/b.dense;
+            g.transform.localScale =Vector3.one * b.radius;
 
 
             pixels.Add(g);
@@ -386,7 +386,7 @@ public class GravityManager : MonoBehaviour
                 {
                     GravityBody body = gravUniverse.bodies[i];
                     body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
-                    body.dense = gravUniverse.pixels[i].GetComponent<PixelManager>().density();
+                    body.radius = gravUniverse.pixels[i].GetComponent<PixelManager>().radius();
 
                     if(body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius *4)&&Vector2.Distance(body.pos(),Camera.main.transform.position)>100)
                     {
@@ -434,7 +434,7 @@ public class GravityManager : MonoBehaviour
                         }
 
                         gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(body.mass);
-                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.bodies[i].mass/gravUniverse.pixels[i].GetComponent<PixelManager>().density(),0.1f);
+                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(),0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
                     }
                     else

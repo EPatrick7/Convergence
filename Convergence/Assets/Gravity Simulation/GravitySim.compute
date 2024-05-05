@@ -18,7 +18,7 @@ struct GravityBody {
     float4 dx;
     float4 dy;
     float mass;
-    float dense;
+    float radius;
 
     float2 elements;
 
@@ -44,14 +44,14 @@ float2 pointAway(GravityBody origin, GravityBody target);
 //Gets a point on the surface of the GravityBody origin that points towards target.
 float2 pointTowards(GravityBody origin, GravityBody target)
 {
-    float radius = origin.mass/origin.dense;
+    float radius = origin.radius;
 
     return float2(origin.x,origin.y)+ (normalize(float2(target.x,target.y) - float2(origin.x,origin.y)) * radius);
 }
 //Gets a point on the surface of the GravityBody origin that points away from target.
 float2 pointAway(GravityBody origin, GravityBody target)
 {
-    float radius = -origin.mass/origin.dense;
+    float radius = -origin.radius;
 
     return float2(origin.x,origin.y)+ (normalize(float2(target.x,target.y) - float2(origin.x,origin.y)) * radius);
 }
@@ -87,7 +87,7 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
         //float2 pos1=pointTowards(body1,body2);
         //float2 pos2=pointTowards(body2,body1); //The point on the surface of body2 pointing towards body1
         
-        float body1_radius = body1.mass/body1.dense;
+        float body1_radius = body1.radius;
 
         //SAMPLE 0: Right Vector:
         float2 pos1=float2(body1.x+(1*body1_radius),body1.y);
