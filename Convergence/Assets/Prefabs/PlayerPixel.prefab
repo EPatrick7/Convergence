@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2904936934567489190}
   - component: {fileID: 323006501196449101}
   - component: {fileID: 2769585074338307199}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,8 +134,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShieldCost: 0.01
-  ShieldDelay: 0.25
-  TickRate: 0.25
+  ShieldDelay: 0.1
+  TickRate: 0.1
   activeColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   inactiveColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1001 &2333763443010068657

@@ -99,10 +99,10 @@ CircleCollider2D:
   m_Material: {fileID: 6200000, guid: a6dcb5bc524d6da40ba11c380a0d3b42, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

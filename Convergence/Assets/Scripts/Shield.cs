@@ -101,9 +101,9 @@ public class Shield : MonoBehaviour
 
     private void Enabled(bool enabled)
     {
-        if (col != null) col.enabled = enabled;
+        transform.parent.gameObject.layer = enabled ? LayerMask.NameToLayer("Ignore Pixel") : LayerMask.NameToLayer("Default");
 
-        transform.parent.gameObject.layer = col.enabled ? LayerMask.NameToLayer("Ignore Pixel") : LayerMask.NameToLayer("Default");
+        if (col != null) col.enabled = enabled;
     }
 
     private void OnDestroy()
