@@ -99,7 +99,7 @@ public class PixelManager : MonoBehaviour
         if(!ConstantMass)
             GetComponent<Rigidbody2D>().mass += damage;
         other.GetComponent<Rigidbody2D>().mass -=damage;
-        if (other.mass() <=1)
+        if (other.mass()-other.MassOverride <= 1)
         {
             //Floating point artithmetic means we loose some net mass overall here :(
             if(!ConstantMass)
@@ -152,6 +152,6 @@ public class PixelManager : MonoBehaviour
     // TODO: Make a better solution; not as clean as invoking the action in a setter
     public void InvokeMassChanged()
     {
-        MassChanged?.Invoke(mass(), 5000f);
+        MassChanged?.Invoke(mass(), 10000f);
     }
 }
