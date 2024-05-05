@@ -86,7 +86,8 @@ public class Shield : MonoBehaviour
         {
             if (pixel.Ice > 1.0f)
             {
-                pixel.Ice -= pixel.Ice * ShieldCost * interval;
+                float expendedIce = (Mathf.Max(1f, Mathf.Log(pixel.mass())) + pixel.Ice * ShieldCost) * interval;
+                pixel.Ice -= expendedIce;
 
                 yield return interval;
 

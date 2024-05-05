@@ -32,7 +32,7 @@ public class PlayerPixelManager : PixelManager
     [Min(0), Tooltip("The cooldown in seconds for propelling")]
     public float PropulsionRate = 0.1f;
 
-    [Min(1), Tooltip("The proportion of gas expended when propelling")]
+    [Min(0), Tooltip("The proportion of gas expended when propelling")]
     public float PropulsionCost = 0.01f;
 
     [Header("Shield")]
@@ -142,11 +142,11 @@ public class PlayerPixelManager : PixelManager
     {
         if (isPropelling && Gas > 1)
         {
-            float expendedGas = Gas * PropulsionCost;
+            float expendedGas = (Mathf.Max(1f, Mathf.Log(mass())) + Gas * PropulsionCost) * interval;
             Gas -= expendedGas;
 
             Vector2 propelDirection = MouseDirection();
-            float propulsionForce = (Mathf.Max(1, Mathf.Log(mass()))) * expendedGas * PropulsionForceScale * interval;
+            float propulsionForce = (Mathf.Pow(Mathf.Max(0.0f, Mathf.Log(mass())), 2f) + expendedGas) * PropulsionForceScale;
 
             GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1;
 

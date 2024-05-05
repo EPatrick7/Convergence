@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91d7bed0172ed5744ab827be2da2c337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShieldCost: 0.01
+  ShieldCost: 0.1
   ShieldDelay: 0.1
   TickRate: 0.1
   activeColor: {r: 1, g: 1, b: 1, a: 0.5019608}
@@ -283,7 +283,7 @@ MonoBehaviour:
   SplitElements: 0.05
   EjectionForceScale: 50
   EjectionRate: 1
-  PropulsionForceScale: 35
+  PropulsionForceScale: 1.5
   PropulsionRate: 0.1
-  PropulsionCost: 0.01
+  PropulsionCost: 0.5
   Shield: {fileID: 2769585074338307199}
