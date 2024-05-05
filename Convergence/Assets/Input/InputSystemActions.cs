@@ -33,7 +33,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""id"": ""feb79c3a-47af-46cb-95df-dcf52c2e36d1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Tap(duration=0.2)"",
+                    ""interactions"": ""Tap(duration=0.5)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -42,7 +42,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""id"": ""e0ddd610-d8b3-4415-9775-5f58762571f9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.35)"",
+                    ""interactions"": ""Hold(duration=0.5)"",
                     ""initialStateCheck"": true
                 },
                 {
