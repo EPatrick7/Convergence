@@ -120,9 +120,12 @@ public class PlayerPixelManager : PixelManager
     #endregion
 
     #region Propel
+
+
     private void StartPropel(InputAction.CallbackContext context)
     {
         if (isPropelling) return;
+
 
         isPropelling = true;
 
@@ -138,19 +141,24 @@ public class PlayerPixelManager : PixelManager
 
     private IEnumerator Propel(float interval)
     {
-        if (isPropelling && Gas > 0f)
+
+        yield return new WaitForSeconds(interval);
+        if (InputManager.Instance.playerInput.Player.Propel.IsPressed())
         {
-            float expendedGas = Mathf.Max(1f, (mass() + Gas) * PropulsionCost) * interval;
-            Gas -= expendedGas;
 
-            Vector2 propelDirection = MouseDirection();
-            float propulsionForce = expendedGas * PropulsionForceScale;
+            if (isPropelling && Gas > 0f)
+            {
+                float expendedGas = Mathf.Max(1f, (mass() + Gas) * PropulsionCost) * interval;
+                Gas -= expendedGas;
 
-            GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1;
+                Vector2 propelDirection = MouseDirection();
+                float propulsionForce = expendedGas * PropulsionForceScale;
 
-            yield return new WaitForSeconds(interval);
+                GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1;
 
-            StartCoroutine(Propel(interval));
+
+                StartCoroutine(Propel(interval));
+            }
         }
     }
     #endregion

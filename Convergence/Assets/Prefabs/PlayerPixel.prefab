@@ -284,6 +284,6 @@ MonoBehaviour:
   EjectionForceScale: 150
   EjectionRate: 0.1
   PropulsionForceScale: 7.5
-  PropulsionRate: 0.01
+  PropulsionRate: 0.25
   PropulsionCost: 0.5
   Shield: {fileID: 2769585074338307199}
