@@ -190,7 +190,7 @@ MonoBehaviour:
   MassScale: 25
   MassOffset: 3
   AbsorptionSpeed: 0.5
-  StickyFactor: 50
+  StickyFactor: 150
   ConstantMass: 0
   MassOverride: 0
   ice: 0
