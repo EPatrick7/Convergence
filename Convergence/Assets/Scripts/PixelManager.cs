@@ -37,7 +37,7 @@ public class PixelManager : MonoBehaviour
         get { return ice; }
         set
         {
-            ice = value;
+            ice = Mathf.Max(0f, value);
 
             ElementChanged?.Invoke(ElementType.Ice, Ice, 1000f);
         }
@@ -51,7 +51,7 @@ public class PixelManager : MonoBehaviour
         get { return gas; }
         set
         {
-            gas = value;
+            gas = Mathf.Max(0f, value);
 
             ElementChanged?.Invoke(ElementType.Gas, Gas, 1000f);
         }
