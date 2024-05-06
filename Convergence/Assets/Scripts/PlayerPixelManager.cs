@@ -5,8 +5,6 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows.WebCam;
-using static UnityEditorInternal.VersionControl.ListControl;
 
 public class PlayerPixelManager : PixelManager
 {
