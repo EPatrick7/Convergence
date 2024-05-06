@@ -5434,9 +5434,9 @@ MonoBehaviour:
   Spread: 100
   Scale: 25
   objColor:
-  - {r: 0.16785331, g: 0.6896209, b: 0.8679245, a: 0}
-  - {r: 0.9716981, g: 0.41179234, b: 0.27959237, a: 0}
-  - {r: 0.108668566, g: 0.6226415, b: 0.2422215, a: 0}
+  - {r: 0, g: 0.43849897, b: 1, a: 0}
+  - {r: 1, g: 0.19209038, b: 0, a: 0}
+  - {r: 0.15619439, g: 0.735849, b: 0.3066391, a: 0}
   - {r: 0.26835674, g: 0.109803915, b: 0.62352943, a: 0}
 --- !u!4 &1158691945
 Transform:
@@ -5551,10 +5551,10 @@ MonoBehaviour:
   MaxStress: 0.1
   ElementScale: 1
   SimulationStep: 0
-  Terra: {fileID: 21300000, guid: ee8c1861373daaa42803a441c5a6b822, type: 3}
+  Terra: {fileID: 21300000, guid: 6a5e813801628504189bffab765964a9, type: 3}
   Ice: {fileID: 21300000, guid: 5774def50c95e904db662a350164acdd, type: 3}
   Gas: {fileID: 21300000, guid: 1fd076141ad7fcc45b5ba33932b626be, type: 3}
-  None: {fileID: 21300000, guid: 644176b2d6201934e87bdad0ffe586fa, type: 3}
+  None: {fileID: 21300000, guid: 2a591b681c3dcee4b8dc6ead690b8c41, type: 3}
   DoBasicReplacement: 1
 --- !u!1 &1955701820
 GameObject:
