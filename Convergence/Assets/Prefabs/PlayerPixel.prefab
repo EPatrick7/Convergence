@@ -156,7 +156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6458838302973239873, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_Mass
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8665647537876394839, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_LocalScale.x
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624e8357c9306fa4aaf59040928d3638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Density:
+  Radius:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -268,10 +268,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  DensityScale: 1
-  DensityOffset: 1
-  MassScale: 25
-  MassOffset: 3
+  RadiusScalar: 1000
+  RadiusOffset: 1
+  MassScale: 2000
   AbsorptionSpeed: 0.5
   StickyFactor: 150
   ConstantMass: 0
