@@ -5506,7 +5506,7 @@ MonoBehaviour:
   SpawnRadius: 2700
   InnerSpawnRadius: 600
   InitVelocityScale: 10
-  InitOrbitScale: 0.01
+  InitOrbitScale: 0.005
   InitRandomElementComposition: 1
   DoParticleRespawn: 1
   distance_scale: 10
