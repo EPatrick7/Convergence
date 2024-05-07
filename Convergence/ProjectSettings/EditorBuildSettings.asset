@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/SunSimulation/SunSimulation.unity
+    guid: 659a3782706e3424aab68b92bbd29b81
+  - enabled: 1
     path: Assets/Gravity Simulation/Demo.unity
     guid: 15345e00b3f231646b83376445e45c86
   m_configObjects:

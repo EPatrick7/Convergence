@@ -15,27 +15,30 @@ public class PauseMenu : MonoBehaviour
     private ColorBlock buttonColors = new ColorBlock();
 
     private PostProcessVolume ppVol;
-
+    public bool isPauseMenu = true;
     private void Start()
     {
-        InputManager.Instance.playerInput.Player.OpenMenu.performed += OpenMenu;
-        InputManager.Instance.playerInput.UI.CloseMenu.performed += CloseMenu;
-
-        foreach (Button button in GetComponentsInChildren<Button>())
+        if (isPauseMenu)
         {
-            ColorBlock colors = button.colors;
-            colors.normalColor = buttonColors.normalColor;
-            colors.highlightedColor = buttonColors.highlightedColor;
-            colors.pressedColor = buttonColors.pressedColor;
-            colors.selectedColor = buttonColors.selectedColor;
-            colors.disabledColor = buttonColors.disabledColor;
-            button.colors = colors;
+            InputManager.Instance.playerInput.Player.OpenMenu.performed += OpenMenu;
+            InputManager.Instance.playerInput.UI.CloseMenu.performed += CloseMenu;
+
+            foreach (Button button in GetComponentsInChildren<Button>())
+            {
+                ColorBlock colors = button.colors;
+                colors.normalColor = buttonColors.normalColor;
+                colors.highlightedColor = buttonColors.highlightedColor;
+                colors.pressedColor = buttonColors.pressedColor;
+                colors.selectedColor = buttonColors.selectedColor;
+                colors.disabledColor = buttonColors.disabledColor;
+                button.colors = colors;
+            }
+
+            gameObject.SetActive(false);
+
+            ppVol = Camera.main.gameObject.GetComponent<PostProcessVolume>();
+            ppVol.enabled = false;
         }
-
-        gameObject.SetActive(false);
-
-        ppVol = Camera.main.gameObject.GetComponent<PostProcessVolume>();
-        ppVol.enabled = false;
 
     }
 
@@ -67,10 +70,9 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void ReturnToMenu()
+    public void LoadScene(int id)
     {
-        // TODO
-        Quit();
+        SceneManager.LoadSceneAsync(id);
     }
 
     public void Quit()
@@ -80,7 +82,10 @@ public class PauseMenu : MonoBehaviour
 
     public void OnDestroy()
     {
-        InputManager.Instance.playerInput.Player.OpenMenu.performed -= OpenMenu;
-        InputManager.Instance.playerInput.UI.CloseMenu.performed -= CloseMenu;
+        if (isPauseMenu)
+        {
+            InputManager.Instance.playerInput.Player.OpenMenu.performed -= OpenMenu;
+            InputManager.Instance.playerInput.UI.CloseMenu.performed -= CloseMenu;
+        }
     }
 }
