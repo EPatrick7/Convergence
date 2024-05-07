@@ -162,39 +162,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c10ff227f86eb7342815931962da3ccc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2.662864
-      outSlope: 2.662864
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.036608815
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  RadiusScalar: 1000
-  RadiusOffset: 1
-  MassScale: 2000
+  PlanetState:
+    Radius:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0.173099
+        outSlope: 0.173099
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.12716764
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    RadiusScalar: 250
+    RadiusOffset: 1
+    MassScale: 1000
+  SunState:
+    Radius:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0.173099
+        outSlope: 0.173099
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.12716764
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    RadiusScalar: 250
+    RadiusOffset: 250
+    MassScale: 7500
+  BlackHoleState:
+    Radius:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2.662864
+        outSlope: 2.662864
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.036608815
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    RadiusScalar: 500
+    RadiusOffset: 1
+    MassScale: 10000
   AbsorptionSpeed: 0.1
   StickyFactor: 5
   ConstantMass: 0
   MassOverride: 0
   ice: 0
   gas: 0
+  planetType: 0
+  isShielding: 0
 --- !u!58 &4457582679196189992
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -5,14 +5,27 @@ using UnityEngine;
 
 public class PixelManager : MonoBehaviour
 {
-    [Tooltip("The size of this pixel is sample of this curve(mass/MassScale) * radiusScalar+RadiusOffset")]
-    public AnimationCurve Radius;
-    [Tooltip("How much the radius curve is at val=1")]
-    public float RadiusScalar;
-    [Tooltip("How much the radius curve is offset by (equal to this when val=0)")]
-    public float RadiusOffset;
-    [Tooltip("How much mass to increase the animation curve to val =1 (Real Mass / Mass Scale)")]
-    public float MassScale;
+    [System.Serializable]
+    public class StateTransition
+    {
+        [Tooltip("The size of this pixel is sample of this curve(mass/MassScale) * radiusScalar+RadiusOffset")]
+        public AnimationCurve Radius;
+        [Tooltip("How much the radius curve is at val=1")]
+        public float RadiusScalar;
+        [Tooltip("How much the radius curve is offset by (equal to this when val=0)")]
+        public float RadiusOffset;
+        [Tooltip("How much mass to increase the animation curve to val =1 (Real Mass / Mass Scale)")]
+        public float MassScale;
+
+
+
+    }
+
+    public StateTransition PlanetState;
+    public StateTransition SunState;
+    public StateTransition BlackHoleState;
+
+
     [Tooltip("How fast this pixel will absorb the mass from other pixels it touches."),Range(0,1)]
     public float AbsorptionSpeed=0.25f;
 
@@ -63,9 +76,32 @@ public class PixelManager : MonoBehaviour
     public event Action Destroyed;
     public enum ElementType {Ice,Gas };
 
+    public enum PlanetType {Planet,Sun,BlackHole };
+    public PlanetType planetType = PlanetType.Planet;
+
 
     [HideInInspector]
     public bool isShielding = false;
+
+   
+    //Check if a body should transition between Planet Types.
+    public void CheckTransitions()
+    {
+        if (planetType == PlanetType.Planet)
+        {
+            if (mass() > 750 && Gas >= 1000)
+            {
+                planetType = PlanetType.Sun;
+            }
+        }
+        else if (planetType == PlanetType.Sun)
+        {
+            if (mass() > 7500)
+            {
+                planetType = PlanetType.BlackHole;
+            }
+        }
+    }
 
     //Steals elements from other
     public void StealElement(PixelManager other,float percentage,ElementType target)
@@ -124,13 +160,26 @@ public class PixelManager : MonoBehaviour
 
     public float radius(float mass)
     {
-        float modifier = 0;
-        if(mass/MassScale > 1)
+        if (planetType == PlanetType.Planet)
         {
-            modifier = Mathf.Round(mass/MassScale);
+            return calc_radius(mass, PlanetState.Radius, PlanetState.MassScale, PlanetState.RadiusScalar, PlanetState.RadiusOffset);
+        }
+        else if (planetType == PlanetType.Sun)
+        {
+            return calc_radius(mass, SunState.Radius, SunState.MassScale, SunState.RadiusScalar, SunState.RadiusOffset);
+        }
+        else
+            return calc_radius(mass, BlackHoleState.Radius, BlackHoleState.MassScale, BlackHoleState.RadiusScalar, BlackHoleState.RadiusOffset);
+    }
+    private float calc_radius(float mass,AnimationCurve Radius,float MassScale,float RadiusScalar,float RadiusOffset)
+    {
+        float modifier = 0;
+        if (mass / MassScale > 1)
+        {
+            modifier = Mathf.Round(mass / MassScale);
             mass %= MassScale;
         }
-        return (modifier*Radius.Evaluate(1)*RadiusScalar + Radius.Evaluate((mass) / MassScale) * RadiusScalar + RadiusOffset);
+        return (modifier * Radius.Evaluate(1) * RadiusScalar + Radius.Evaluate((mass) / MassScale) * RadiusScalar + RadiusOffset);
     }
     public float radius()
     {

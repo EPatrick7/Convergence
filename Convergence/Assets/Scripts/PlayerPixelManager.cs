@@ -56,16 +56,7 @@ public class PlayerPixelManager : PixelManager
         InputManager.Instance.playerInput.Player.Shield.canceled += CancelShield;
 
         cam = Camera.main;
-    }
-
-    private void FixedUpdate()
-    {
-        if (cam != null)
-        {
-            cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
-
-            cam.orthographicSize = 50 + transform.localScale.x*1.5f;
-        }
+        cam.GetComponent<CameraLook>().playerPixelManager = this;
     }
 
     private Vector2 MouseDirection()

@@ -154,6 +154,10 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.42
       objectReference: {fileID: 0}
+    - target: {fileID: 4457582679196189992, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_Name
       value: PlayerPixel
@@ -168,15 +172,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8665647537876394839, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 6
+      value: 10.941432
       objectReference: {fileID: 0}
     - target: {fileID: 8665647537876394839, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_LocalScale.y
-      value: 6
+      value: 10.941432
       objectReference: {fileID: 0}
     - target: {fileID: 8665647537876394839, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 6
+      value: 10.941432
       objectReference: {fileID: 0}
     - target: {fileID: 8665647537876394839, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -229,9 +233,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7509056545611062217}
-    - targetCorrespondingSourceObject: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1457541479720877175}
   m_SourcePrefab: {fileID: 100100000, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
 --- !u!4 &6350535042429879270 stripped
 Transform:
@@ -255,39 +256,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624e8357c9306fa4aaf59040928d3638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2.662864
-      outSlope: 2.662864
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.036608815
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  RadiusScalar: 1000
-  RadiusOffset: 1
-  MassScale: 2000
+  PlanetState:
+    Radius:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0.173099
+        outSlope: 0.173099
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.12716764
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    RadiusScalar: 250
+    RadiusOffset: 1
+    MassScale: 1000
+  SunState:
+    Radius:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0.173099
+        outSlope: 0.173099
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.12716764
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    RadiusScalar: 250
+    RadiusOffset: 250
+    MassScale: 7500
+  BlackHoleState:
+    Radius:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2.662864
+        outSlope: 2.662864
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.036608815
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    RadiusScalar: 500
+    RadiusOffset: 1
+    MassScale: 10000
   AbsorptionSpeed: 0.1
   StickyFactor: 10
   ConstantMass: 0
   MassOverride: 0
   ice: 0
   gas: 0
+  planetType: 0
+  isShielding: 0
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   SplitScale: 0.05
   SplitElements: 0.05
@@ -297,38 +357,3 @@ MonoBehaviour:
   PropulsionRate: 0.25
   PropulsionCost: 0.5
   Shield: {fileID: 2769585074338307199}
---- !u!58 &1457541479720877175
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8270587239028709838}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.55

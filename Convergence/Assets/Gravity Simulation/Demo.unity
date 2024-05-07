@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420034}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420035}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -211,7 +212,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 1000, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -294,6 +295,19 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9778c1d370d519041b4b5f71ee788ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPixelManager: {fileID: 0}
 --- !u!1 &690165367
 GameObject:
   m_ObjectHideFlags: 0
@@ -5555,6 +5569,8 @@ MonoBehaviour:
   Ice: {fileID: 21300000, guid: 5774def50c95e904db662a350164acdd, type: 3}
   Gas: {fileID: 21300000, guid: 1fd076141ad7fcc45b5ba33932b626be, type: 3}
   None: {fileID: 21300000, guid: 2a591b681c3dcee4b8dc6ead690b8c41, type: 3}
+  Sun: {fileID: 21300000, guid: 01963a1f89ee9b3408624a878fc3a7b9, type: 3}
+  LateSun: {fileID: 21300000, guid: 94a70502692e8f444bc5621af488a0db, type: 3}
   DoBasicReplacement: 1
 --- !u!1 &1955701820
 GameObject:
