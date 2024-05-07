@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1649820373411464530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1794329209082054581}
+  - component: {fileID: 1269890533375989698}
+  m_Layer: 0
+  m_Name: GravityManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1794329209082054581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649820373411464530}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1269890533375989698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649820373411464530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 164aba5a90847234395fd77bdfa9ec20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _compute: {fileID: 7200000, guid: 51367e2e17cdecb47a2a0c86c915bda0, type: 3}
+  Player: {fileID: 8270587239028709838, guid: fefa662793ae9bc448083d76f3dbfb88, type: 3}
+  Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
+  BlackHole: {fileID: 5954944233520970111, guid: b38adb23eeca1714a83dfa9361f3b5cc, type: 3}
+  RandomSeed: -1
+  SpawnCount: 1600
+  SpawnRadius: 2700
+  InnerSpawnRadius: 600
+  InitVelocityScale: 10
+  InitOrbitScale: 0.005
+  InitRandomElementComposition: 1
+  DoParticleRespawn: 1
+  distance_scale: 10
+  g: 6.6743
+  min_dist: 7
+  offset_drift: {x: 0, y: 0}
+  drift_power: 0.1
+  respawn_dist: 600
+  TimePerGravitySample: 0.0075
+  DoStressColors: 0
+  DoElementalColors: 0
+  AccelerationColoring:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 0.6271844, b: 0, a: 1}
+    key2: {r: 1, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 30840
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  MaxStress: 0.1
+  ElementScale: 1
+  SimulationStep: 0
+  Terra: {fileID: 21300000, guid: 6a5e813801628504189bffab765964a9, type: 3}
+  Ice: {fileID: 21300000, guid: 5774def50c95e904db662a350164acdd, type: 3}
+  Gas: {fileID: 21300000, guid: 1fd076141ad7fcc45b5ba33932b626be, type: 3}
+  None: {fileID: 21300000, guid: 2a591b681c3dcee4b8dc6ead690b8c41, type: 3}
+  Sun: {fileID: 21300000, guid: 01963a1f89ee9b3408624a878fc3a7b9, type: 3}
+  LateSun: {fileID: 21300000, guid: 94a70502692e8f444bc5621af488a0db, type: 3}
+  DoBasicReplacement: 1
+  SunTransition_MassReq: 750
+  SunTransition_GasReq: 1000
+  BlackHoleTransition_MassReq: 7500

@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/SunSimulation/SunSimulation.unity
-    guid: 659a3782706e3424aab68b92bbd29b81
+    path: Assets/Scenes/Main Menu.unity
+    guid: 257b3bc1bdba2c54286ace1d8ad01546
   - enabled: 1
     path: Assets/Scenes/Main.unity
-    guid: d55e118816649154bbf000796aecc897
+    guid: 4574989401e05744485d672c0df0d254
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9d4bc182247e27f48964850bebdb04f0, type: 2}
