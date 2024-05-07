@@ -5179,7 +5179,7 @@ MonoBehaviour:
   ConstantMass: 0
   MassOverride: 0
   ice: 0
-  gas: 999
+  gas: 0
   planetType: 0
   isShielding: 0
   SunTransition_MassReq: 750
