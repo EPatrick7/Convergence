@@ -208,7 +208,7 @@ public class PixelManager : MonoBehaviour
 
 
 
-                if (other.mass() <= mass())
+                if ((other.mass() <= mass() && !(other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole))|| (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole))
                 {
                     Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * StickyFactor);
                     collision.gameObject.GetComponent<Rigidbody2D>().velocity -= sticky_force;
