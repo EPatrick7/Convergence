@@ -40,7 +40,6 @@ public class PlayerPixelManager : PixelManager
 
     private bool isPropelling = false;
 
-    private bool isShielding = false;
 
     private GravityManager gravityManager;
 

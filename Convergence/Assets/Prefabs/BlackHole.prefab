@@ -189,7 +189,7 @@ MonoBehaviour:
   RadiusScalar: 50
   RadiusOffset: 500
   MassScale: 50
-  AbsorptionSpeed: 0.5
+  AbsorptionSpeed: 0.2
   StickyFactor: 5000
   ConstantMass: 1
   MassOverride: 10000
