@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/SunSimulation/SunSimulation.unity
     guid: 659a3782706e3424aab68b92bbd29b81
   - enabled: 1
-    path: Assets/Gravity Simulation/Demo.unity
-    guid: 15345e00b3f231646b83376445e45c86
+    path: Assets/Scenes/Main.unity
+    guid: d55e118816649154bbf000796aecc897
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9d4bc182247e27f48964850bebdb04f0, type: 2}
