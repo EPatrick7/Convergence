@@ -158,6 +158,10 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 6458838302973239873, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8665647537876394839, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_LocalScale.x
       value: 6
@@ -221,6 +225,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7509056545611062217}
+    - targetCorrespondingSourceObject: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1457541479720877175}
   m_SourcePrefab: {fileID: 100100000, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
 --- !u!4 &6350535042429879270 stripped
 Transform:
@@ -271,8 +278,8 @@ MonoBehaviour:
   RadiusScalar: 1000
   RadiusOffset: 1
   MassScale: 2000
-  AbsorptionSpeed: 0.5
-  StickyFactor: 150
+  AbsorptionSpeed: 0.1
+  StickyFactor: 10
   ConstantMass: 0
   MassOverride: 0
   ice: 0
@@ -286,3 +293,38 @@ MonoBehaviour:
   PropulsionRate: 0.25
   PropulsionCost: 0.5
   Shield: {fileID: 2769585074338307199}
+--- !u!58 &1457541479720877175
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8270587239028709838}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.55

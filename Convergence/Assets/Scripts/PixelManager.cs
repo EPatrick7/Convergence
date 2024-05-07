@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PixelManager : MonoBehaviour
 {
@@ -140,7 +139,7 @@ public class PixelManager : MonoBehaviour
     {
         return GetComponent<Rigidbody2D>().mass+ MassOverride;
     }
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         PixelManager other = collision.gameObject.GetComponent<PixelManager>();
         if (other != null && !other.isKilled && !isKilled && GetComponent<Rigidbody2D>() != null)
@@ -150,15 +149,41 @@ public class PixelManager : MonoBehaviour
 
             if (other.mass() <= mass())
             {
-                collision.rigidbody.AddForce((transform.position - collision.transform.position).normalized * StickyFactor);
-                GetComponent<Rigidbody2D>().AddForce((collision.transform.position - transform.position).normalized * other.StickyFactor);
+                Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * StickyFactor);
+                collision.gameObject.GetComponent<Rigidbody2D>().velocity -= sticky_force;
+
+                //   Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * other.StickyFactor);
+                // GetComponent<Rigidbody2D>().velocity += sticky_force;
 
                 StealMass(other, AbsorptionSpeed);
                 StealElement(other, AbsorptionSpeed, ElementType.Ice);
                 StealElement(other, AbsorptionSpeed, ElementType.Gas);
             }
         }
+
     }
+    /*private void OnCollisionStay2D(Collision2D collision)
+    {
+        PixelManager other = collision.gameObject.GetComponent<PixelManager>();
+        if (other != null && !other.isKilled && !isKilled && GetComponent<Rigidbody2D>() != null)
+        {
+
+
+
+            if (other.mass() <= mass())
+            {
+                Vector2 sticky_force= ((collision.transform.position - transform.position).normalized * StickyFactor);
+                collision.rigidbody.velocity -= sticky_force;
+
+             //   Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * other.StickyFactor);
+               // GetComponent<Rigidbody2D>().velocity += sticky_force;
+
+                StealMass(other, AbsorptionSpeed);
+                StealElement(other, AbsorptionSpeed, ElementType.Ice);
+                StealElement(other, AbsorptionSpeed, ElementType.Gas);
+            }
+        }
+    }*/
 
     protected virtual void OnDestroy()
     {

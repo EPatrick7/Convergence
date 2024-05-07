@@ -332,10 +332,19 @@ public class GravityManager : MonoBehaviour
         g.GetComponent<PixelManager>().Ice = elements.x;
         g.GetComponent<PixelManager>().Gas = elements.y;
         gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
+
+        if(DoBasicReplacement)
+        {
+            UpdateTexture(g.GetComponent<PixelManager>());
+        }
     }
     public void RegisterBody(GameObject g,Vector2 velocity)
     {
         gravUniverse.AddBody(g,velocity,g.GetComponent<Rigidbody2D>().mass);
+        if (DoBasicReplacement)
+        {
+            UpdateTexture(g.GetComponent<PixelManager>());
+        }
     }
     
     void Start()
@@ -362,6 +371,33 @@ public class GravityManager : MonoBehaviour
         }
         else
             return recurseParent(t.transform.parent);
+    }
+    public void UpdateTexture(PixelManager pixel)
+    {
+
+        Sprite targ = Terra;
+        float mass = pixel.mass();
+        float gas = pixel.Gas;
+        float ice = pixel.Ice;
+        if (mass >= gas && mass >= ice)
+        {
+            //Mass largest!
+            targ = Terra;
+        }
+        else if (gas >= mass && gas >= ice)
+        {
+            //Gas largest!
+            targ = Gas;
+        }
+        else if (ice >= mass && ice >= gas)
+        {
+            //Ice largest!
+            targ = Ice;
+        }
+        if (pixel.ConstantMass)
+            targ = None;
+
+        pixel.GetComponent<SpriteRenderer>().sprite = targ;
     }
     public IEnumerator GravRun()
     {
@@ -400,29 +436,7 @@ public class GravityManager : MonoBehaviour
 
                         if(DoBasicReplacement)
                         {
-                            Sprite targ = Terra;
-                            float mass = gravUniverse.pixels[i].GetComponent<PixelManager>().mass();
-                            float gas = gravUniverse.pixels[i].GetComponent<PixelManager>().Gas;
-                            float ice = gravUniverse.pixels[i].GetComponent<PixelManager>().Ice;
-                            if (mass >= gas && mass >= ice)
-                            {
-                                //Mass largest!
-                                targ = Terra;
-                            }
-                            else if (gas >= mass && gas >= ice)
-                            {
-                                //Gas largest!
-                                targ = Gas;
-                            }
-                            else if (ice >= mass && ice >= gas)
-                            {
-                                //Ice largest!
-                                targ = Ice;
-                            }
-                            if (gravUniverse.pixels[i].GetComponent<PixelManager>().ConstantMass)
-                                targ = None;
-
-                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sprite=targ;
+                            UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
                         }
                         else if (DoStressColors)
                         {
