@@ -209,6 +209,14 @@ public class GravityManager : MonoBehaviour
     [Tooltip("Should sprites be updated to reflect element amounts")]
     public bool DoBasicReplacement;
     public event Action Initialized;
+
+    [Header("Planetary Transitions")]
+    [Tooltip("The amount of mass required before upgrading to a sun. (Downgrade is 0.9x this)")]
+    public float SunTransition_MassReq = 750;
+    [Tooltip("The amount of gas required before upgrading to a sun.")]
+    public float SunTransition_GasReq = 1000;
+    [Tooltip("The amount of mass required before upgrading to a black hole.")]
+    public float BlackHoleTransition_MassReq = 7500;
     public void Respawn()
     {
         if (gravUniverse.numBodies < SpawnCount)
@@ -337,9 +345,13 @@ public class GravityManager : MonoBehaviour
     }
     public void RegisterBody(GameObject g, Vector2 velocity,Vector2 elements)
     {
-        
-        g.GetComponent<PixelManager>().Ice = elements.x;
-        g.GetComponent<PixelManager>().Gas = elements.y;
+        PixelManager pixel = g.GetComponent<PixelManager>();
+        pixel.SunTransition_MassReq=SunTransition_MassReq;
+        pixel.SunTransition_GasReq=SunTransition_GasReq;
+        pixel.BlackHoleTransition_MassReq=BlackHoleTransition_MassReq;
+
+        pixel.Ice = elements.x;
+        pixel.Gas = elements.y;
         gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
 
         if(DoBasicReplacement)
@@ -349,6 +361,11 @@ public class GravityManager : MonoBehaviour
     }
     public void RegisterBody(GameObject g,Vector2 velocity)
     {
+        PixelManager pixel = g.GetComponent<PixelManager>();
+        pixel.SunTransition_MassReq = SunTransition_MassReq;
+        pixel.SunTransition_GasReq = SunTransition_GasReq;
+        pixel.BlackHoleTransition_MassReq = BlackHoleTransition_MassReq;
+
         gravUniverse.AddBody(g,velocity,g.GetComponent<Rigidbody2D>().mass);
         if (DoBasicReplacement)
         {

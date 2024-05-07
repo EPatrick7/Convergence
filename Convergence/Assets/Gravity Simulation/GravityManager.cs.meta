@@ -5,7 +5,15 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - _compute: {fileID: 7200000, guid: 51367e2e17cdecb47a2a0c86c915bda0, type: 3}
+  - Player: {fileID: 8270587239028709838, guid: fefa662793ae9bc448083d76f3dbfb88, type: 3}
   - Pixel: {fileID: 5954944233520970111, guid: 2d7617e98652aad4a89abf25d9d6791a, type: 3}
+  - BlackHole: {fileID: 5954944233520970111, guid: b38adb23eeca1714a83dfa9361f3b5cc, type: 3}
+  - Terra: {instanceID: 0}
+  - Ice: {instanceID: 0}
+  - Gas: {instanceID: 0}
+  - None: {instanceID: 0}
+  - Sun: {instanceID: 0}
+  - LateSun: {instanceID: 0}
   executionOrder: -20
   icon: {instanceID: 0}
   userData: 

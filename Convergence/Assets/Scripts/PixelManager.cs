@@ -83,24 +83,32 @@ public class PixelManager : MonoBehaviour
     [HideInInspector]
     public bool isShielding = false;
 
-   
+
+
+    [HideInInspector]
+    public float SunTransition_MassReq=750;
+    [HideInInspector]
+    public float SunTransition_GasReq=1000;
+
+    [HideInInspector]
+    public float BlackHoleTransition_MassReq=7500;
     //Check if a body should transition between Planet Types.
     public void CheckTransitions()
     {
         if (planetType == PlanetType.Planet)
         {
-            if (mass() > 750 && Gas >= 1000)
+            if (mass() > SunTransition_MassReq && Gas >= SunTransition_GasReq)
             {
                 planetType = PlanetType.Sun;
             }
         }
         else if (planetType == PlanetType.Sun)
         {
-            if (mass() > 7500)
+            if (mass() > BlackHoleTransition_MassReq)
             {
                 planetType = PlanetType.BlackHole;
             }
-            else if(mass() < 700)
+            else if(mass() < SunTransition_MassReq*0.9f)
             {
                 planetType = PlanetType.Planet;
             }
