@@ -119,19 +119,28 @@ public class PlayerPixelManager : PixelManager
 
     #region Propel
 
+    public void StartParticles()
+    {
 
+        GasJet.transform.localScale = new Vector3(Mathf.Max(1, transform.localScale.x / 20f), Mathf.Max(1, transform.localScale.y / 20f), Mathf.Max(1, transform.localScale.z / 20f));
+        var em = GasJet.emission;
+        em.enabled = true;
+        if (!GasJet.isPlaying)
+            GasJet.Play();
+    }
+    public void StopParticles()
+    {
+
+
+        var em = GasJet.emission;
+        em.enabled = false;
+        if (GasJet.isPlaying)
+            GasJet.Stop();
+    }
     private void StartPropel(InputAction.CallbackContext context)
     {
         if (isPropelling) return;
 
-        if (Gas > 0)
-        {
-            GasJet.transform.localScale =new Vector3(Mathf.Max(1,transform.localScale.x/20f), Mathf.Max(1, transform.localScale.y / 20f), Mathf.Max(1, transform.localScale.z / 20f));
-            var em = GasJet.emission;
-            em.enabled = true;
-            if (!GasJet.isPlaying)
-                GasJet.Play();
-        }
 
         isPropelling = true;
 
@@ -142,12 +151,7 @@ public class PlayerPixelManager : PixelManager
     {
         if (!isPropelling) return;
 
-
-
-        var em = GasJet.emission;
-        em.enabled = false;
-        if (GasJet.isPlaying)
-            GasJet.Stop();
+        StopParticles();
 
         isPropelling = false;
     }
@@ -167,6 +171,8 @@ public class PlayerPixelManager : PixelManager
 
             if (isPropelling && Gas > 0f)
             {
+
+                StartParticles();
                 float expendedGas = Mathf.Max(1f, mass() + Gas) * PropulsionCost * interval;
 
 
@@ -184,10 +190,7 @@ public class PlayerPixelManager : PixelManager
             }
             else
             {
-                var em = GasJet.emission;
-                em.enabled = false;
-                if (GasJet.isPlaying)
-                    GasJet.Stop();
+                StopParticles();
             }
         }
     }
