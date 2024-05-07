@@ -446,7 +446,7 @@ public class GravityManager : MonoBehaviour
                     body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
                     body.radius = gravUniverse.pixels[i].GetComponent<PixelManager>().radius();
 
-                    if(body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius *4)&&Vector2.Distance(body.pos(),Camera.main.transform.position)>100)
+                    if(body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius *8)&&Vector2.Distance(body.pos(),Camera.main.transform.position)>(200+Camera.main.orthographicSize))
                     {
                         Destroy(gravUniverse.pixels[i].gameObject);
                     }

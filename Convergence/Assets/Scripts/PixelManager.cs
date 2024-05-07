@@ -100,6 +100,10 @@ public class PixelManager : MonoBehaviour
             {
                 planetType = PlanetType.BlackHole;
             }
+            else if(mass() < 700)
+            {
+                planetType = PlanetType.Planet;
+            }
         }
     }
 

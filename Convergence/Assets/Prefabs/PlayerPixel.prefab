@@ -148,11 +148,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2158811227314957677, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_Radius
-      value: 0.35
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4457582679196189992, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_Radius
-      value: 0.42
+      value: 0.46
       objectReference: {fileID: 0}
     - target: {fileID: 4457582679196189992, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_Enabled
