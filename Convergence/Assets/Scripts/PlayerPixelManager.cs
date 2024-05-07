@@ -36,6 +36,8 @@ public class PlayerPixelManager : PixelManager
     [Header("Shield")]
     public Shield Shield;
 
+
+
     private bool canEject = true;
 
     private bool isPropelling = false;
@@ -82,6 +84,9 @@ public class PlayerPixelManager : PixelManager
         // Handle mass of player and ejected pixel
         float ejectedMass = Mathf.Round(mass() * SplitScale * 64) / 64f;
 
+        ejectedMass /= Mathf.Min(6, Mathf.Max(1, (mass() / 500f)));
+        
+
         GetComponent<Rigidbody2D>().mass -= ejectedMass;
 
         pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;
@@ -90,7 +95,8 @@ public class PlayerPixelManager : PixelManager
         // Handle ejection push
         float force = (ejectedMass + Mathf.Clamp(ejectedMass / Mathf.Log(ejectedMass), 0f, Mathf.Pow(ejectedMass, 2f))) * EjectionForceScale;
 
-        GetComponent<Rigidbody2D>().velocity += (ejectDirection * force) / mass() * -1;
+
+        GetComponent<Rigidbody2D>().velocity += (ejectDirection * force) / mass() * -1 * Mathf.Max(1, (mass() / 800f));
 
         gravityManager.RegisterBody(pixel, (ejectDirection * force) / pixel.GetComponent<PixelManager>().mass());
 
@@ -139,12 +145,16 @@ public class PlayerPixelManager : PixelManager
             if (isPropelling && Gas > 0f)
             {
                 float expendedGas = Mathf.Max(1f, (mass() + Gas) * PropulsionCost) * interval;
+
+                expendedGas /= Mathf.Max(1, (mass() / 500f));
+
+
                 Gas -= expendedGas;
 
                 Vector2 propelDirection = MouseDirection();
                 float propulsionForce = expendedGas * PropulsionForceScale;
 
-                GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1;
+                GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Max(1,(mass() / 500f));
 
 
                 StartCoroutine(Propel(interval));
