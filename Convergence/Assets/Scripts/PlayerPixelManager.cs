@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerPixelManager : PixelManager
 {
@@ -36,7 +38,8 @@ public class PlayerPixelManager : PixelManager
     [Header("Shield")]
     public Shield Shield;
 
-
+    [Header("Propeller")]
+    public ParticleSystem GasJet;
 
     private bool canEject = true;
 
@@ -122,6 +125,14 @@ public class PlayerPixelManager : PixelManager
     {
         if (isPropelling) return;
 
+        if (Gas > 0)
+        {
+            GasJet.transform.localScale =new Vector3(Mathf.Max(1,transform.localScale.x/20f), Mathf.Max(1, transform.localScale.y / 20f), Mathf.Max(1, transform.localScale.z / 20f));
+            var em = GasJet.emission;
+            em.enabled = true;
+            if (!GasJet.isPlaying)
+                GasJet.Play();
+        }
 
         isPropelling = true;
 
@@ -132,9 +143,22 @@ public class PlayerPixelManager : PixelManager
     {
         if (!isPropelling) return;
 
+
+
+        var em = GasJet.emission;
+        em.enabled = false;
+        if (GasJet.isPlaying)
+            GasJet.Stop();
+
         isPropelling = false;
     }
+    private void FixedUpdate()
+    {
+        Vector2 diff = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
 
+        float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+        GasJet.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+    }
     private IEnumerator Propel(float interval)
     {
 
@@ -144,9 +168,8 @@ public class PlayerPixelManager : PixelManager
 
             if (isPropelling && Gas > 0f)
             {
-                float expendedGas = Mathf.Max(1f, (mass() + Gas) * PropulsionCost) * interval;
+                float expendedGas = Mathf.Max(1f, mass() + Gas) * PropulsionCost * interval;
 
-                expendedGas /= Mathf.Min(10,Mathf.Max(1, (mass() / 500f)));
 
 
                 Gas -= expendedGas;
@@ -154,10 +177,18 @@ public class PlayerPixelManager : PixelManager
                 Vector2 propelDirection = MouseDirection();
                 float propulsionForce = expendedGas * PropulsionForceScale;
 
+
                 GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Max(1,(mass() / 200f));
 
 
                 StartCoroutine(Propel(interval));
+            }
+            else
+            {
+                var em = GasJet.emission;
+                em.enabled = false;
+                if (GasJet.isPlaying)
+                    GasJet.Stop();
             }
         }
     }
