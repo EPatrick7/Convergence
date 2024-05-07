@@ -146,7 +146,7 @@ public class PlayerPixelManager : PixelManager
             {
                 float expendedGas = Mathf.Max(1f, (mass() + Gas) * PropulsionCost) * interval;
 
-                expendedGas /= Mathf.Max(1, (mass() / 500f));
+                expendedGas /= Mathf.Min(10,Mathf.Max(1, (mass() / 500f)));
 
 
                 Gas -= expendedGas;
@@ -154,7 +154,7 @@ public class PlayerPixelManager : PixelManager
                 Vector2 propelDirection = MouseDirection();
                 float propulsionForce = expendedGas * PropulsionForceScale;
 
-                GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Max(1,(mass() / 500f));
+                GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Max(1,(mass() / 200f));
 
 
                 StartCoroutine(Propel(interval));
