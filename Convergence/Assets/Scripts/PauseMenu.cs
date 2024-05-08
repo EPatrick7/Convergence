@@ -44,8 +44,8 @@ public class PauseMenu : MonoBehaviour
 
     private void OpenMenu(InputAction.CallbackContext context)
     {
-        InputManager.Instance.playerInput.Player.Disable();
-        InputManager.Instance.playerInput.UI.Enable();
+        InputManager.SetPlayerInput(false);
+        InputManager.SetUIInput(true);
         ppVol.enabled = true;
 
         gameObject.SetActive(true);
@@ -58,8 +58,8 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        InputManager.Instance.playerInput.Player.Enable();
-        InputManager.Instance.playerInput.UI.Disable();
+        InputManager.SetPlayerInput(true);
+        InputManager.SetUIInput(false);
         ppVol.enabled = false;
 
         gameObject.SetActive(false);
