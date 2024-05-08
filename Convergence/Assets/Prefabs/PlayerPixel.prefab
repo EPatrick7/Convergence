@@ -5190,7 +5190,7 @@ MonoBehaviour:
   SplitElements: 0.05
   EjectionForceScale: 150
   EjectionRate: 0.1
-  PropulsionForceScale: 3
+  PropulsionForceScale: 8
   PropulsionRate: 0.1
   PropulsionCost: 0.25
   Shield: {fileID: 2769585074338307199}

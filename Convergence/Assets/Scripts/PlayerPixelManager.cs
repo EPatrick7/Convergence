@@ -164,9 +164,9 @@ public class PlayerPixelManager : PixelManager
     }
     private IEnumerator Propel(float interval)
     {
+        int streak=0;
         while (isPropelling && Gas > 0f)
         {
-            StartParticles();
             float expendedGas = Mathf.Max(1f, mass() + Gas) * PropulsionCost * interval;
 
             Gas -= expendedGas;
@@ -179,6 +179,12 @@ public class PlayerPixelManager : PixelManager
 
 
             yield return new WaitForSeconds(interval);
+
+            if(Gas>0&& streak>1)
+            {
+                StartParticles();
+            }
+            streak++;
         }
 
         StopParticles();
