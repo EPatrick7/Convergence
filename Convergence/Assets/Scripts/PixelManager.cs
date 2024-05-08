@@ -185,13 +185,7 @@ public class PixelManager : MonoBehaviour
     }
     private float calc_radius(float mass,AnimationCurve Radius,float MassScale,float RadiusScalar,float RadiusOffset)
     {
-        float modifier = 0;
-        if (mass / MassScale > 1)
-        {
-            modifier = Mathf.Round(mass / MassScale);
-            mass %= MassScale;
-        }
-        return (modifier * Radius.Evaluate(1) * RadiusScalar + Radius.Evaluate((mass) / MassScale) * RadiusScalar + RadiusOffset);
+        return ( Radius.Evaluate((mass) / MassScale) * RadiusScalar + RadiusOffset);
     }
     public float radius()
     {

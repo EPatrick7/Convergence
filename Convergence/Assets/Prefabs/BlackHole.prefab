@@ -225,27 +225,27 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 2
-        outSlope: 2
-        tangentMode: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 2.662864
-        outSlope: 2.662864
-        tangentMode: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
         weightedMode: 0
-        inWeight: 0.036608815
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    RadiusScalar: 500
+    RadiusScalar: 1000
     RadiusOffset: 1
-    MassScale: 500
+    MassScale: 1000
   AbsorptionSpeed: 0.2
   StickyFactor: 5000
   ConstantMass: 1
@@ -254,6 +254,9 @@ MonoBehaviour:
   gas: 255
   planetType: 2
   isShielding: 0
+  SunTransition_MassReq: 750
+  SunTransition_GasReq: 1000
+  BlackHoleTransition_MassReq: 7500
 --- !u!58 &8600781756982540009
 CircleCollider2D:
   m_ObjectHideFlags: 0
