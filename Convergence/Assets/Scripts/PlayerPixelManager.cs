@@ -175,7 +175,7 @@ public class PlayerPixelManager : PixelManager
             float propulsionForce = expendedGas * PropulsionForceScale;
 
 
-            GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Min(3.5f, Mathf.Max(1,(mass() / 200f)));
+            GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Min(4.5f, Mathf.Max(1,(mass() / 100f)));
 
 
             yield return new WaitForSeconds(interval);
