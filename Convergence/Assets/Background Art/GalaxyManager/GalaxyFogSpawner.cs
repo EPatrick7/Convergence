@@ -24,6 +24,9 @@ public class GalaxyFogSpawner : MonoBehaviour
     private float Scale;
 
     [SerializeField]
+    private Vector2 StartSpeed;
+
+    [SerializeField]
     private List<Color> objColor = new List<Color>();
 
     // Start is called before the first frame update
@@ -48,8 +51,10 @@ public class GalaxyFogSpawner : MonoBehaviour
             var shape = objPS.shape;
             shape.scale = new Vector3(Spread, Spread, Spread);
 
-            var size = objPS.main;
-            size.startSize = Scale;
+            var psMain = objPS.main;
+            psMain.startSize = Scale;
+
+            psMain.startSpeed = new ParticleSystem.MinMaxCurve(StartSpeed.x, StartSpeed.y);
 
         }
     }
