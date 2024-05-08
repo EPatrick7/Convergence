@@ -165,29 +165,37 @@ public class PlayerPixelManager : PixelManager
     private IEnumerator Propel(float interval)
     {
         int streak=0;
-        while (isPropelling && Gas > 0f)
+        while (isPropelling)
         {
-            float expendedGas = Mathf.Max(1f, mass() + Gas) * PropulsionCost * interval;
-
-            Gas -= expendedGas;
-
-            Vector2 propelDirection = MouseDirection();
-            float propulsionForce = expendedGas * PropulsionForceScale;
-
-
-            GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Min(5.5f, Mathf.Max(1,(mass() / 50f)));
-
-
-            yield return new WaitForSeconds(interval);
-
-            if(Gas>0&& streak>1)
+            if (Gas > 0f)
             {
-                StartParticles();
-            }
-            streak++;
-        }
+                float expendedGas = Mathf.Max(1f, mass() + Gas) * PropulsionCost * interval;
 
+                Gas -= expendedGas;
+
+                Vector2 propelDirection = MouseDirection();
+                float propulsionForce = expendedGas * PropulsionForceScale;
+
+
+                GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Min(5.5f, Mathf.Max(1, (mass() / 50f)));
+
+
+                yield return new WaitForSeconds(interval);
+
+                if (streak > 1)
+                {
+                    StartParticles();
+                }
+                streak++;
+            }
+            else
+            {
+                yield return new WaitForSeconds(interval);
+                StopParticles();
+            }
+        }
         StopParticles();
+
     }
     #endregion
 
