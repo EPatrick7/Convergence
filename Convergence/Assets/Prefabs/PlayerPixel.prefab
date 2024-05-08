@@ -5196,6 +5196,6 @@ MonoBehaviour:
   EjectionRate: 0.1
   PropulsionForceScale: 8
   PropulsionRate: 0.1
-  PropulsionCost: 0.25
+  PropulsionCost: 0.5
   Shield: {fileID: 2769585074338307199}
   GasJet: {fileID: 6114046427485457751}

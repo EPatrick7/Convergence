@@ -19,7 +19,7 @@ public class CinematicBars : MonoBehaviour
         bottomBar.sizeDelta = new Vector2(bottomBar.sizeDelta.x, 0f);
     }
 
-    public void EnterCinematic(float duration = 3.0f, float height = 100f)
+    public void EnterCinematic(float duration = 1f, float height = 150f)
     {
         topTween?.Kill();
         bottomTween?.Kill();
@@ -34,7 +34,7 @@ public class CinematicBars : MonoBehaviour
         InputManager.SetUIInput(true);
     }
 
-    public void ExitCinematic(float duration = 3.0f)
+    public void ExitCinematic(float duration = 1f)
     {
         topTween?.Kill();
         bottomTween?.Kill();

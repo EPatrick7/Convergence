@@ -95,7 +95,7 @@ public class Shield : MonoBehaviour
 
     private void Enabled(bool enabled)
     {
-        transform.parent.gameObject.layer = enabled ? LayerMask.NameToLayer("Ignore Pixel") : LayerMask.NameToLayer("Default");
+        transform.parent.gameObject.layer = enabled ? LayerMask.NameToLayer("Ignore Pixel") : LayerMask.NameToLayer("Player");
 
         if (col != null) col.enabled = enabled;
     }
