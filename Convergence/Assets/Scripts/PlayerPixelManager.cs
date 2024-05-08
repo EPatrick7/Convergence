@@ -58,7 +58,7 @@ public class PlayerPixelManager : PixelManager
         InputManager.Instance.playerInput.Player.Propel.canceled += CancelPropel;
         InputManager.Instance.playerInput.Player.Shield.started += StartShield;
         InputManager.Instance.playerInput.Player.Shield.canceled += CancelShield;
-
+        gameObject.layer = 8;
         cam = Camera.main;
         cam.GetComponent<CameraLook>().playerPixelManager = this;
     }
@@ -122,7 +122,7 @@ public class PlayerPixelManager : PixelManager
     public void StartParticles()
     {
 
-        GasJet.transform.localScale = new Vector3(Mathf.Max(1, transform.localScale.x / 20f), Mathf.Max(1, transform.localScale.y / 20f), Mathf.Max(1, transform.localScale.z / 20f));
+        GasJet.transform.localScale = new Vector3(Mathf.Max(1, transform.localScale.x / 15f), Mathf.Max(1, transform.localScale.y / 15f), Mathf.Max(1, transform.localScale.z /15f));
         var em = GasJet.emission;
         em.enabled = true;
         if (!GasJet.isPlaying)
@@ -175,7 +175,7 @@ public class PlayerPixelManager : PixelManager
             float propulsionForce = expendedGas * PropulsionForceScale;
 
 
-            GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Max(1,(mass() / 200f));
+            GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Min(3.5f, Mathf.Max(1,(mass() / 200f)));
 
 
             yield return new WaitForSeconds(interval);
