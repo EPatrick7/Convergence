@@ -82,22 +82,15 @@ public class Shield : MonoBehaviour
 
     private IEnumerator ShieldTick(float interval)
     {
-        if (col.enabled)
+        while (col.enabled && pixel.Ice > 0f)
         {
-            if (pixel.Ice > 0f)
-            {
-                float expendedIce = Mathf.Max(1f, (pixel.mass() + pixel.Ice) * ShieldCost) * interval;
-                pixel.Ice -= expendedIce;
+            float expendedIce = Mathf.Max(1f, Mathf.Clamp(pixel.mass() + pixel.Ice, pixel.Ice, pixel.Ice * 10f) * ShieldCost) * interval;
+            pixel.Ice -= expendedIce;
 
-                yield return interval;
-
-                StartCoroutine(ShieldTick(interval));
-            }
-            else
-            {
-                ShieldDown();
-            }
+            yield return interval;
         }
+
+        ShieldDown();
     }
 
     private void Enabled(bool enabled)
