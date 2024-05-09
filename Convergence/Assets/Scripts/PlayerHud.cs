@@ -50,7 +50,6 @@ public class PlayerHud : MonoBehaviour
             player.ElementChanged += UpdateElement;
             player.Destroyed += Destroyed;
 
-            // TODO: Pass actual max
             UpdateMass(player.mass(), 10000f);
             UpdateElement(PlayerPixelManager.ElementType.Ice, player.Ice, 1000f);
             UpdateElement(PlayerPixelManager.ElementType.Gas, player.Gas, 1000f);

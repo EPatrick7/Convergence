@@ -72,6 +72,7 @@ public class PixelManager : MonoBehaviour
 
     public event Action<float, float> MassChanged;
     public event Action<ElementType, float, float> ElementChanged;
+    public event Action<PlanetType, PlanetType> PlanetTypeChanged;
 
     public event Action Destroyed;
     public enum ElementType {Ice,Gas };
@@ -95,6 +96,7 @@ public class PixelManager : MonoBehaviour
     //Check if a body should transition between Planet Types.
     public void CheckTransitions()
     {
+        PlanetType last = planetType;
         if (planetType == PlanetType.Planet)
         {
             if (mass() > SunTransition_MassReq && Gas >= SunTransition_GasReq)
@@ -112,6 +114,11 @@ public class PixelManager : MonoBehaviour
             {
                 planetType = PlanetType.Planet;
             }
+        }
+
+        if (planetType != last)
+        {
+            PlanetTypeChanged?.Invoke(planetType,last);
         }
     }
 
@@ -150,12 +157,29 @@ public class PixelManager : MonoBehaviour
         if(!ConstantMass)
             GetComponent<Rigidbody2D>().mass += damage;
         other.GetComponent<Rigidbody2D>().mass -=damage;
+
+        if (other.ConstantMass && other.planetType == PlanetType.BlackHole && GetComponent<PlayerPixelManager>() != null)
+        {
+            //If we just consumed the central black hole...
+            other.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+            GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
+            FindObjectOfType<GravityManager>().drift_power = 100;
+            FindObjectOfType<GravityManager>().DoParticleRespawn = false;
+            BlackHoleState.RadiusScalar *= 1.25f;
+            CutsceneManager.Instance.BlackHoleConsumed();
+        }
         if (other.mass()-other.MassOverride <= 1)
         {
             //Floating point artithmetic means we loose some net mass overall here :(
             if(!ConstantMass)
                 GetComponent<Rigidbody2D>().mass += other.mass();
             other.isKilled = true;
+
+            if(other.GetComponent<PlayerPixelManager>()!=null)
+            {
+
+                CutsceneManager.Instance.PlayerConsumed();
+            }
             Destroy(other.gameObject);
         }
 
@@ -210,7 +234,7 @@ public class PixelManager : MonoBehaviour
 
 
 
-                if ((other.mass() <= mass() && !(other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole))|| (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole))
+                if ((other.mass() <= mass() && !((other.ConstantMass&&GetComponent<PlayerPixelManager>()==null)|| (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole)))|| (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole)||(ConstantMass&&other.GetComponent<PlayerPixelManager>()==null))
                 {
                     Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * StickyFactor);
                     collision.gameObject.GetComponent<Rigidbody2D>().velocity -= sticky_force;

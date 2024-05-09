@@ -425,8 +425,14 @@ public class GravityManager : MonoBehaviour
         {
             targ = Sun;
 
-            if(mass>5000)
+            if (mass > 5000)
+            {
                 targ = LateSun;
+                if(pixel.GetComponent<SpriteRenderer>().sprite!=targ)
+                {
+                    CutsceneManager.Instance.IsBlueStar();
+                }
+            }
         }
         else if (pixel.planetType == PixelManager.PlanetType.BlackHole)
         {
