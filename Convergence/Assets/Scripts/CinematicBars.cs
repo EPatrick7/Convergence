@@ -43,7 +43,7 @@ public class CinematicBars : MonoBehaviour
         topTween = topBar.DOSizeDelta(new Vector2(topBar.sizeDelta.x, height), duration);
         bottomTween = bottomBar.DOSizeDelta(new Vector2(bottomBar.sizeDelta.y, height), duration);
 
-        hudTween = playerHud.DOMoveY(750,duration);
+        hudTween = playerHud.DOLocalMoveY(800, duration);
 
         topTween.Play();
         bottomTween.Play();
@@ -61,7 +61,7 @@ public class CinematicBars : MonoBehaviour
 
         topTween = topBar.DOSizeDelta(new Vector2(topBar.sizeDelta.x, 0f), duration);
         bottomTween = bottomBar.DOSizeDelta(new Vector2(bottomBar.sizeDelta.y, 0f), duration);
-        hudTween = playerHud.DOMoveY(625, duration);
+        hudTween = playerHud.DOLocalMoveY(530, duration);
 
         topTween.Play();
         bottomTween.Play();
