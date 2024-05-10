@@ -163,6 +163,7 @@ public class PixelManager : MonoBehaviour
             //If we just consumed the central black hole...
             other.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
             GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
+            GetComponent<Rigidbody2D>().mass += 10000;
             FindObjectOfType<GravityManager>().drift_power = 100;
             FindObjectOfType<GravityManager>().DoParticleRespawn = false;
             BlackHoleState.RadiusScalar *= 1.25f;
