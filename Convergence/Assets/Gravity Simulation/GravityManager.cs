@@ -217,6 +217,8 @@ public class GravityManager : MonoBehaviour
     public float SunTransition_GasReq = 1000;
     [Tooltip("The amount of mass required before upgrading to a black hole.")]
     public float BlackHoleTransition_MassReq = 7500;
+    [Tooltip("IndicatorManager object that creates indicators per target")]
+    public IndicatorManager indicatorManager;
     public void Respawn()
     {
         if (gravUniverse.numBodies < SpawnCount)
@@ -284,7 +286,9 @@ public class GravityManager : MonoBehaviour
         UnityEngine.Random.InitState(RandomSeed);
         gravUniverse = new GravUniverse();
 
-        RegisterBody(Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform), Vector2.zero);
+        GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform);
+        RegisterBody(bHole, Vector2.zero);
+        indicatorManager.AddTargetIndicator(bHole);
 
         //Spawn and fill arrays with new generated particles
         for (int i = 0; i < SpawnCount; i++)
