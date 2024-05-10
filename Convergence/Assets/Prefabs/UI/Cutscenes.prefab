@@ -1047,7 +1047,7 @@ MonoBehaviour:
   PostPrintDelay: 1.5
   PerCharDelay: 0.05
   PerWordDelay: 0.1
-  CinematicBarOutroDelay: 2
+  CinematicBarOutroDelay: 3
   voiceOver: {fileID: 0}
 --- !u!1 &9083029673052826033
 GameObject:
