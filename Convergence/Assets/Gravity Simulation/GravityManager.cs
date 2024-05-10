@@ -217,6 +217,8 @@ public class GravityManager : MonoBehaviour
     public float SunTransition_GasReq = 1000;
     [Tooltip("The amount of mass required before upgrading to a black hole.")]
     public float BlackHoleTransition_MassReq = 7500;
+
+    [Header("UI Utils")]
     [Tooltip("IndicatorManager object that creates indicators per target")]
     public IndicatorManager indicatorManager;
     public void Respawn()
