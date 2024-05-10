@@ -7,14 +7,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField]
     private ColorBlock buttonColors = new ColorBlock();
 
-    private PostProcessVolume ppVol;
+    private Volume ppVol;
     public bool isPauseMenu = true;
     private void Start()
     {
@@ -36,7 +36,7 @@ public class PauseMenu : MonoBehaviour
 
             gameObject.SetActive(false);
 
-            ppVol = Camera.main.gameObject.GetComponent<PostProcessVolume>();
+            ppVol = Camera.main.gameObject.GetComponent<Volume>();
             ppVol.enabled = false;
         }
 
