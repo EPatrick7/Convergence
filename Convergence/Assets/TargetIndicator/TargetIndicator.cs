@@ -14,11 +14,16 @@ public class TargetIndicator : MonoBehaviour
     [SerializeField]
     private float OutOfSightOffset = 20f;
 
+    [SerializeField]
+    private float maxIndicatorAlpha;
+
     private float outOfSightOffset { get { return OutOfSightOffset /* canvasRect.LocalScale.x */; } }
 
     private GameObject target;
 
     private new Camera camera;
+
+    private float triggerDist;
 
     private RectTransform canvasRect;
 
@@ -30,12 +35,13 @@ public class TargetIndicator : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
     }
 
-    public void InitializeTargetIndicator(GameObject target, Camera camera, Canvas canvas)
+    public void InitializeTargetIndicator(GameObject target, Camera camera, Canvas canvas, float triggerDist)
     {
         this.target = target;
         this.camera = camera;
         canvasRect = canvas.GetComponent<RectTransform>();
         rectTransform.SetAsFirstSibling(); //set indicator as first child so UI lays over it
+        this.triggerDist = triggerDist;
     }
 
     public void UpdateTargetIndicator()
@@ -46,6 +52,7 @@ public class TargetIndicator : MonoBehaviour
             return;
         }
         SetIndicatorPosition();
+        SetIndicatorAlpha();
         //Adjust distance display
         //turn on or off when in range/out of range
     }
@@ -75,6 +82,29 @@ public class TargetIndicator : MonoBehaviour
         rectTransform.position = indicatorPos;
 
     }
+
+    protected void SetIndicatorAlpha()
+	{
+        //Vector3 heading = target.transform.position - camera.transform.position;
+        float currentDist = Vector3.Distance(target.transform.position, camera.transform.position);
+        Debug.Log(currentDist);
+
+        float frac = (currentDist - triggerDist) / (3000 - triggerDist);
+        var tempCol = offscreenTargetIndicatorImage.color;
+        tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, frac);
+        offscreenTargetIndicatorImage.color = tempCol;
+
+        Debug.Log(offscreenTargetIndicatorImage.color);
+        /*
+        if (currentDist >= triggerDist)
+		{
+            offscreenTargetIndicatorImage.enabled = true;
+		} else
+		{
+            offscreenTargetIndicatorImage.enabled = false;
+		}
+        */
+	}
 
     private Vector3 OutOfRangeIndicatorPosB(Vector3 indicatorPos)
 	{

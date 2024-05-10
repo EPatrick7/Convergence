@@ -17,6 +17,9 @@ public class IndicatorManager : MonoBehaviour
     [SerializeField]
     private GameObject TargetIndicatorPrefab;
 
+    [SerializeField]
+    private float triggerDist;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +44,8 @@ public class IndicatorManager : MonoBehaviour
     public void AddTargetIndicator(GameObject target)
 	{
         TargetIndicator indicator = GameObject.Instantiate(TargetIndicatorPrefab, canvas.transform).GetComponent<TargetIndicator>();
-        indicator.InitializeTargetIndicator(target, camera, canvas);
+        //GameObject glow = GameObject.Instantiate(TargetIndicatorGlowPrefab, this.transform);
+        indicator.InitializeTargetIndicator(target, camera, canvas, triggerDist); //, glow);
         targetIndicators.Add(indicator);
 	}
     
