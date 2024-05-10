@@ -87,14 +87,14 @@ public class TargetIndicator : MonoBehaviour
 	{
         //Vector3 heading = target.transform.position - camera.transform.position;
         float currentDist = Vector3.Distance(target.transform.position, camera.transform.position);
-        Debug.Log(currentDist);
+       // Debug.Log(currentDist);
 
         float frac = (currentDist - triggerDist) / (3000 - triggerDist);
         var tempCol = offscreenTargetIndicatorImage.color;
         tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, frac);
         offscreenTargetIndicatorImage.color = tempCol;
 
-        Debug.Log(offscreenTargetIndicatorImage.color);
+       // Debug.Log(offscreenTargetIndicatorImage.color);
         /*
         if (currentDist >= triggerDist)
 		{

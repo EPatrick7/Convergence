@@ -1124,10 +1124,6 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 1020614205}
-    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
-      propertyPath: triggerDist
-      value: 2300
-      objectReference: {fileID: 0}
     - target: {fileID: 5948541786327904545, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: m_Name
       value: IndicatorManager

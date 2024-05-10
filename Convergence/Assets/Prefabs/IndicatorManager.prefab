@@ -48,3 +48,4 @@ MonoBehaviour:
   targetIndicators: []
   camera: {fileID: 0}
   TargetIndicatorPrefab: {fileID: 3273725713259189405, guid: 1cc0b4a5807625947b76c29aa5e6cb89, type: 3}
+  triggerDist: 2300
