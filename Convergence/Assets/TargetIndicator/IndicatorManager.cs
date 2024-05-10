@@ -31,7 +31,8 @@ public class IndicatorManager : MonoBehaviour
 		{
             for (int i = 0; i < targetIndicators.Count; i++)
 			{
-                targetIndicators[i].UpdateTargetIndicator();
+                if (targetIndicators[i].gameObject.activeSelf)
+                    targetIndicators[i].UpdateTargetIndicator();
 			}
 		}
 

@@ -40,6 +40,11 @@ public class TargetIndicator : MonoBehaviour
 
     public void UpdateTargetIndicator()
     {
+        if(target==null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         SetIndicatorPosition();
         //Adjust distance display
         //turn on or off when in range/out of range
