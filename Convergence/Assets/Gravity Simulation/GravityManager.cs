@@ -138,6 +138,8 @@ public class GravityManager : MonoBehaviour
 
 
     [Header("Init")]
+    [Tooltip("If true then we will not spawn player.")]
+    public bool MenuSim;
     [Tooltip("The player pixel prefab")]
     public GameObject Player;
     [Tooltip("The pixel prefab for spawning")]
@@ -287,11 +289,13 @@ public class GravityManager : MonoBehaviour
 
         UnityEngine.Random.InitState(RandomSeed);
         gravUniverse = new GravUniverse();
-
-        GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform); //INDIC
-        bHole.GetComponent<PixelManager>().spawnBhole = true;
-        RegisterBody(bHole, Vector2.zero);
-        indicatorManager.AddTargetIndicator(bHole, indicatorManager.bholeTriggerDist, indicatorManager.bholeColor);
+        if (BlackHole!=null)
+        {
+            GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform); //INDIC
+            bHole.GetComponent<PixelManager>().spawnBhole = true;
+            RegisterBody(bHole, Vector2.zero);
+            indicatorManager.AddTargetIndicator(bHole, indicatorManager.bholeTriggerDist, indicatorManager.bholeColor);
+        }
 
         //Spawn and fill arrays with new generated particles
         for (int i = 0; i < SpawnCount; i++)
@@ -336,18 +340,19 @@ public class GravityManager : MonoBehaviour
 
 
         }
-
-        Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
-
-        if (playerLoc.sqrMagnitude <= InnerSpawnRadius * InnerSpawnRadius)
+        if (!MenuSim)
         {
-            playerLoc = playerLoc.normalized * (SpawnRadius);
+            Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
+
+            if (playerLoc.sqrMagnitude <= InnerSpawnRadius * InnerSpawnRadius)
+            {
+                playerLoc = playerLoc.normalized * (SpawnRadius);
+            }
+            Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
+
+            playerVelocity += OrbitalVector(playerLoc);
+            RegisterBody(Instantiate(Player, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0), Player.transform.rotation, transform), playerVelocity);
         }
-        Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
-
-        playerVelocity += OrbitalVector(playerLoc);
-        RegisterBody(Instantiate(Player, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0), Player.transform.rotation, transform), playerVelocity);
-
         Initialized?.Invoke();
     }
     public Vector2 OrbitalVector(Vector2 loc)

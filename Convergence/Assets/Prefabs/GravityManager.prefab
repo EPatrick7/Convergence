@@ -108,3 +108,4 @@ MonoBehaviour:
   SunTransition_MassReq: 750
   SunTransition_GasReq: 1000
   BlackHoleTransition_MassReq: 7500
+  indicatorManager: {fileID: 0}
