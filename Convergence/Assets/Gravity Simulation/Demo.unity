@@ -722,6 +722,10 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1254420691966444036, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
+      propertyPath: indicatorManager
+      value: 
+      objectReference: {fileID: 1381689785}
     - target: {fileID: 1803162911845470972, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 3
@@ -1124,33 +1128,21 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 1020614205}
-    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
-      propertyPath: bsunColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
-      propertyPath: bsunColor.g
-      value: 0.6759999
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
-      propertyPath: bsunColor.r
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5948541786327904545, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: m_Name
       value: IndicatorManager
       objectReference: {fileID: 0}
     - target: {fileID: 7867901936837988434, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1012.0547
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7867901936837988434, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -739.7291
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7867901936837988434, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -19.757536
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7867901936837988434, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: m_LocalRotation.w

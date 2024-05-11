@@ -16,6 +16,10 @@ public class PauseMenu : MonoBehaviour
 
     private Volume ppVol;
     public bool isPauseMenu = true;
+
+    [SerializeField]
+    private IndicatorManager indicatorManager;
+
     private void Start()
     {
         if (isPauseMenu)
@@ -47,6 +51,7 @@ public class PauseMenu : MonoBehaviour
         InputManager.SetPlayerInput(false);
         InputManager.SetUIInput(true);
         ppVol.enabled = true;
+        indicatorManager.DisableIndicators();
 
         gameObject.SetActive(true);
     }
@@ -61,6 +66,7 @@ public class PauseMenu : MonoBehaviour
         InputManager.SetPlayerInput(true);
         InputManager.SetUIInput(false);
         ppVol.enabled = false;
+        indicatorManager.EnableIndicators();
 
         gameObject.SetActive(false);
     }   

@@ -9,7 +9,7 @@ public class TargetIndicator : MonoBehaviour
     private Image targetIndicatorImage;
 
     [SerializeField]
-    private Image offscreenTargetIndicatorImage;
+    public Image offscreenTargetIndicatorImage;
 
     [SerializeField]
     private float OutOfSightOffset = 20f;
@@ -31,6 +31,10 @@ public class TargetIndicator : MonoBehaviour
     private RectTransform rectTransform;
 
     public IndicatorManager indicatorManager;
+
+    private float timeElapsed;
+    private float lerpDuration = 3;
+    private float valueToLerp;
 
     // Start is called before the first frame update
     void Awake()
@@ -66,15 +70,18 @@ public class TargetIndicator : MonoBehaviour
 
     public void UpdateTargetIndicator()
     {
-        if(target==null)
+        if (target == null)
         {
-            indicatorManager.RemoveTargetIndicator(target);
+            //indicatorManager.RemoveTargetIndicator(target);
             gameObject.SetActive(false);
             //Destroy(gameObject);
-            return;
+            //return;
         }
-        SetIndicatorPosition();
-        SetIndicatorAlpha();
+        else
+        {
+            SetIndicatorPosition();
+            SetIndicatorAlpha();
+        }
         //Adjust distance display
         //turn on or off when in range/out of range
     }
@@ -107,36 +114,44 @@ public class TargetIndicator : MonoBehaviour
 
     protected void SetIndicatorAlpha()
 	{
-        //Vector3 heading = target.transform.position - camera.transform.position;
-        float currentDist = Vector3.Distance(target.transform.position, camera.transform.position);
-        
-        if (triggerDist >= 2000) //if indicator is for spawn black hole
+        var tempCol = offscreenTargetIndicatorImage.color;
+        if (timeElapsed < lerpDuration && target.transform.position != Vector3.zero) //if indicator not faded in and its not for the blackhole
 		{
-            //Increase brightness as you get farther away
-            float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
-            var tempCol = offscreenTargetIndicatorImage.color;
-            tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, frac);
+            tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, timeElapsed / lerpDuration); //lerp to maxIndicatorAlpha before setting accurately for smooth fade in
             offscreenTargetIndicatorImage.color = tempCol;
-        } else //if for larger planet
-		{
-            //Decrease brightness as you get farther away
-            float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
-            var tempCol = offscreenTargetIndicatorImage.color;
-            tempCol.a = Mathf.Lerp(maxIndicatorAlpha, 0f, frac);
-            offscreenTargetIndicatorImage.color = tempCol;
-        }
-
-        // Debug.Log(offscreenTargetIndicatorImage.color);
-        /*
-        if (currentDist >= triggerDist)
-		{
-            offscreenTargetIndicatorImage.enabled = true;
+            timeElapsed += Time.deltaTime;
 		} else
 		{
-            offscreenTargetIndicatorImage.enabled = false;
-		}
-        */
-	}
+            float currentDist = Vector3.Distance(target.transform.position, camera.transform.position);
+
+            if (triggerDist >= 2000) //if indicator is for spawn black hole
+            {
+                //Increase brightness as you get farther away
+                float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
+                tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, frac);
+                offscreenTargetIndicatorImage.color = tempCol;
+            }
+            else //if for larger planet
+            {
+                //Decrease brightness as you get farther away
+                float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
+                tempCol.a = Mathf.Lerp(maxIndicatorAlpha, 0f, frac);
+                offscreenTargetIndicatorImage.color = tempCol;
+            }
+
+            // Debug.Log(offscreenTargetIndicatorImage.color);
+            /*
+            if (currentDist >= triggerDist)
+            {
+                offscreenTargetIndicatorImage.enabled = true;
+            } else
+            {
+                offscreenTargetIndicatorImage.enabled = false;
+            }
+            */
+        }
+
+    }
 
     private Vector3 OutOfRangeIndicatorPosB(Vector3 indicatorPos)
 	{

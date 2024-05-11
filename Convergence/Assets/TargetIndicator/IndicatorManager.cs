@@ -55,7 +55,6 @@ public class IndicatorManager : MonoBehaviour
 			{
                 if (targetIndicators[i].gameObject == target)
 				{
-                    //Destroy(targetIndicators[i]);
                     targetIndicators.Remove(targetIndicators[i]);
 				}
 			}
@@ -76,6 +75,28 @@ public class IndicatorManager : MonoBehaviour
 		}
 	}
 
+    public void DisableIndicators()
+	{
+        if(targetIndicators.Count > 0)
+        {
+            for (int i = 0; i < targetIndicators.Count; i++)
+            {
+                targetIndicators[i].offscreenTargetIndicatorImage.enabled = false;
+            }
+        }
+    }
+
+    public void EnableIndicators()
+	{
+        if (targetIndicators.Count > 0)
+        {
+            for (int i = 0; i < targetIndicators.Count; i++)
+            {
+                targetIndicators[i].offscreenTargetIndicatorImage.enabled = true;
+            }
+        }
+    }
+
     /*
     public void AddTargetIndicator(GameObject target)
 	{
@@ -94,7 +115,7 @@ public class IndicatorManager : MonoBehaviour
         if (target != null)
         {
             TargetIndicator indicator = GameObject.Instantiate(TargetIndicatorPrefab, canvas.transform).GetComponent<TargetIndicator>();
-            //GameObject glow = GameObject.Instantiate(TargetIndicatorGlowPrefab, this.transform);
+            indicator.transform.SetAsLastSibling();
             indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, maxIndicatorAlpha);
             targetIndicators.Add(indicator);
             indicator.indicatorManager = this;
