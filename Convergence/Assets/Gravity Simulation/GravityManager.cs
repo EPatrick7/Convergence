@@ -129,7 +129,7 @@ public class GravityManager : MonoBehaviour
 
     GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
-    bool asyncDone; // Whether or not the compute shader is done working
+    bool asyncDone=true; // Whether or not the compute shader is done working
     int NUM_FLOATS=14;
     int NUM_UINTS = 1;
 
@@ -363,9 +363,11 @@ public class GravityManager : MonoBehaviour
 
         pixel.Ice = elements.x;
         pixel.Gas = elements.y;
-        gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
 
-        if(DoBasicReplacement)
+        CarefulAddBody(g, velocity);
+        //gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
+
+        if (DoBasicReplacement)
         {
             UpdateTexture(g.GetComponent<PixelManager>());
         }
@@ -376,12 +378,25 @@ public class GravityManager : MonoBehaviour
         pixel.SunTransition_MassReq = SunTransition_MassReq;
         pixel.SunTransition_GasReq = SunTransition_GasReq;
         pixel.BlackHoleTransition_MassReq = BlackHoleTransition_MassReq;
-
-        gravUniverse.AddBody(g,velocity,g.GetComponent<Rigidbody2D>().mass);
+        CarefulAddBody(g, velocity);
+        //gravUniverse.AddBody(g,velocity,g.GetComponent<Rigidbody2D>().mass);
         if (DoBasicReplacement)
         {
             UpdateTexture(g.GetComponent<PixelManager>());
         }
+    }
+    public void CarefulAddBody(GameObject g, Vector2 velocity)
+    {
+        if(!isAsyncDone())
+            StartCoroutine(Wait_AddBody(g, velocity));
+        else
+            gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
+    }
+    public IEnumerator Wait_AddBody(GameObject g, Vector2 velocity)
+    {
+        yield return new WaitUntil(isAsyncDone);
+        if(g!=null)
+            gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
     }
     
     void Start()
@@ -468,6 +483,21 @@ public class GravityManager : MonoBehaviour
             //O(n) run through each body and update it according to the last compute shader run
             for (int i = 0; i < gravUniverse.numBodies; i++)
             {
+                if(gravUniverse.pixels.Count>gravUniverse.bodies.Count)
+                {
+                    int nullCount = 0;
+
+                    foreach (GameObject g in gravUniverse.pixels)
+                    {
+                        if (g == null)
+                        {
+                            nullCount++;
+                        }
+                    }
+                    Debug.LogError("GravUniverse pixel-body mismatch! (" +gravUniverse.pixels.Count + ","+gravUniverse.bodies.Count+"); "+nullCount);
+
+
+                }
                 if (gravUniverse.pixels[i] == null)
                 {
                     if(gravUniverse.RemoveBody(gravUniverse.bodies[i].id))
