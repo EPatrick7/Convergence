@@ -4999,7 +4999,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6458838302973239873, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 6458838302973239873, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
       propertyPath: m_CollisionDetection
@@ -5188,6 +5188,8 @@ MonoBehaviour:
   isShielding: 0
   SunTransition_MassReq: 750
   SunTransition_GasReq: 1000
+  indicatorManager: {fileID: 0}
+  spawnBhole: 0
   BlackHoleTransition_MassReq: 7500
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   SplitScale: 0.05
