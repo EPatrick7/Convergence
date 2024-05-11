@@ -57,6 +57,11 @@ public class TargetIndicator : MonoBehaviour
         maxIndicatorAlpha = maxAlpha;
     }
 
+    public void UpdateColor(Color color)
+	{
+        offscreenTargetIndicatorImage.color = color;
+	}
+
     public void UpdateTargetIndicator()
     {
         if(target==null)
@@ -100,14 +105,24 @@ public class TargetIndicator : MonoBehaviour
 	{
         //Vector3 heading = target.transform.position - camera.transform.position;
         float currentDist = Vector3.Distance(target.transform.position, camera.transform.position);
-       // Debug.Log(currentDist);
+        
+        if (triggerDist >= 2000) //if indicator is for spawn black hole
+		{
+            //Increase brightness as you get farther away
+            float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
+            var tempCol = offscreenTargetIndicatorImage.color;
+            tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, frac);
+            offscreenTargetIndicatorImage.color = tempCol;
+        } else //if for larger planet
+		{
+            //Decrease brightness as you get farther away
+            float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
+            var tempCol = offscreenTargetIndicatorImage.color;
+            tempCol.a = Mathf.Lerp(maxIndicatorAlpha, 0f, frac);
+            offscreenTargetIndicatorImage.color = tempCol;
+        }
 
-        float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
-        var tempCol = offscreenTargetIndicatorImage.color;
-        tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, frac);
-        offscreenTargetIndicatorImage.color = tempCol;
-
-       // Debug.Log(offscreenTargetIndicatorImage.color);
+        // Debug.Log(offscreenTargetIndicatorImage.color);
         /*
         if (currentDist >= triggerDist)
 		{

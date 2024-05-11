@@ -92,7 +92,6 @@ public class PixelManager : MonoBehaviour
     public float SunTransition_GasReq=1000;
 
     public IndicatorManager indicatorManager;
-    private float massIndicatorReq = 3000;
     private bool indicating = false;
     public bool spawnBhole = false;
 
@@ -138,16 +137,17 @@ public class PixelManager : MonoBehaviour
 
         if (!spawnBhole)
         {
-            if (mass() > massIndicatorReq && !indicating)
+            if (mass() > SunTransition_MassReq && !indicating)
             {
                 if (gameObject != null && indicatorManager != null)
                 {
                     indicatorManager.AddTargetIndicator(gameObject, indicatorManager.sunTriggerDist, indicatorManager.sunColor);
                     indicating = true;
+                    Debug.Log(indicating);
                 }
                 //Debug.Log(indicating);
             }
-            else if (mass() < massIndicatorReq && indicating)
+            else if (mass() < SunTransition_MassReq && indicating)
             {
                 if (gameObject != null && indicatorManager != null)
                 {
@@ -155,6 +155,17 @@ public class PixelManager : MonoBehaviour
                     indicating = false;
                 }
             }
+            /*
+            else if (mass() > 5000 && indicating)
+            {
+                if (gameObject != null && indicatorManager != null)
+                {
+                    indicatorManager.RemoveTargetIndicator(gameObject);
+                    indicatorManager.AddTargetIndicator(gameObject, indicatorManager.sunTriggerDist, indicatorManager.bsunColor);
+                }
+            } 
+            */
+
         }
     }
 

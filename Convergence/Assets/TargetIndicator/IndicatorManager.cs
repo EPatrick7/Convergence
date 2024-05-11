@@ -17,8 +17,8 @@ public class IndicatorManager : MonoBehaviour
     [SerializeField]
     private GameObject TargetIndicatorPrefab;
 
-    [SerializeField]
-    private float triggerDist;
+    //[SerializeField]
+    //private float triggerDist;
 
     public float maxIndicatorAlpha;
 
@@ -26,8 +26,6 @@ public class IndicatorManager : MonoBehaviour
     public float bholeTriggerDist;
     public Color sunColor;
     public float sunTriggerDist;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +61,21 @@ public class IndicatorManager : MonoBehaviour
 		}
 	}
 
+    public void UpdateTargetIndicatorColor(GameObject target, Color color)
+	{
+        if (targetIndicators.Count > 0)
+		{
+            for (int i = 0; i < targetIndicators.Count; i++)
+			{
+                if (targetIndicators[i].gameObject == target)
+				{
+                    targetIndicators[i].GetComponent<TargetIndicator>().UpdateColor(color);
+				}
+			}
+		}
+	}
+
+    /*
     public void AddTargetIndicator(GameObject target)
 	{
         if (target != null)
@@ -73,6 +86,7 @@ public class IndicatorManager : MonoBehaviour
             targetIndicators.Add(indicator);
         }
 	}
+    */
 
     public void AddTargetIndicator(GameObject target, float tDist, Color color) //overloaded w/ tDist parameter
     {
@@ -82,6 +96,7 @@ public class IndicatorManager : MonoBehaviour
             //GameObject glow = GameObject.Instantiate(TargetIndicatorGlowPrefab, this.transform);
             indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, maxIndicatorAlpha);
             targetIndicators.Add(indicator);
+            Debug.Log(targetIndicators.Count);
         }
     }
 

@@ -166,5 +166,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetIndicatorImage: {fileID: 4645319242522636288}
   offscreenTargetIndicatorImage: {fileID: 3966682018258710078}
-  OutOfSightOffset: -700
-  maxIndicatorAlpha: 0.2
+  OutOfSightOffset: -850

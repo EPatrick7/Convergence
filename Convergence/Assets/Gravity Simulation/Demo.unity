@@ -1126,31 +1126,47 @@ PrefabInstance:
       objectReference: {fileID: 1020614205}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: sunColor.b
-      value: 0.5411765
+      value: 0.1745283
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: sunColor.g
-      value: 0.7568636
+      value: 0.3139749
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: sunColor.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: bsunColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: bsunColor.g
+      value: 0.6759999
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: bsunColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: bholeColor.b
-      value: 0.56078434
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: bholeColor.g
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: bholeColor.r
-      value: 0.5647059
+      value: 0.6915245
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: sunTriggerDist
-      value: 250
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: bholeTriggerDist
-      value: 2300
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: maxIndicatorAlpha
