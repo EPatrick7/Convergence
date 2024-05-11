@@ -192,6 +192,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -328.00003
       objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_FirstGas
+      value: 
+      objectReference: {fileID: 679728242}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_FirstIce
+      value: 
+      objectReference: {fileID: 867345029}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_GameStart
+      value: 
+      objectReference: {fileID: 669253286}
     - target: {fileID: 2207568011719817587, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Name
       value: Cutscenes
@@ -306,6 +318,16 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3687255902358054716, guid: dbe420cb95192754e8952d62c414654f, type: 3}
   m_PrefabInstance: {fileID: 642198869}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &669253286 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2553146322274950829, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+  m_PrefabInstance: {fileID: 642198869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &679728242 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7340553890501151221, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+  m_PrefabInstance: {fileID: 642198869}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &690165367
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,6 +372,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &867345029 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6175288637805974017, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+  m_PrefabInstance: {fileID: 642198869}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &878192728 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}

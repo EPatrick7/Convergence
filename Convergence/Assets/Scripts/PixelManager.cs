@@ -122,6 +122,9 @@ public class PixelManager : MonoBehaviour
         {
             if (mass() > BlackHoleTransition_MassReq)
             {
+                if(GetComponent<PlayerPixelManager>() == null)  
+                    transform.gameObject.layer = LayerMask.NameToLayer("Black Hole");
+
                 planetType = PlanetType.BlackHole;
             }
             else if(mass() < SunTransition_MassReq*0.9f)
@@ -204,17 +207,27 @@ public class PixelManager : MonoBehaviour
         if(!ConstantMass)
             GetComponent<Rigidbody2D>().mass += damage;
         other.GetComponent<Rigidbody2D>().mass -=damage;
-
-        if (other.ConstantMass && other.planetType == PlanetType.BlackHole && GetComponent<PlayerPixelManager>() != null)
+        if (GetComponent<PlayerPixelManager>() != null)
         {
-            //If we just consumed the central black hole...
-            other.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-            GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
-            GetComponent<Rigidbody2D>().mass += 10000;
-            FindObjectOfType<GravityManager>().drift_power = 100;
-            FindObjectOfType<GravityManager>().DoParticleRespawn = false;
-            BlackHoleState.RadiusScalar *= 1.25f;
-            CutsceneManager.Instance.BlackHoleConsumed();
+            if (other.Ice > 0 && other.Ice > other.Gas)
+            {
+                CutsceneManager.Instance.ElementConsumed(ElementType.Ice);
+            }
+            else if (other.Gas > 0 && other.Gas > other.Ice)
+            {
+                    CutsceneManager.Instance.ElementConsumed(ElementType.Gas);
+            }
+            if (other.ConstantMass && other.planetType == PlanetType.BlackHole)
+            {
+                //If we just consumed the central black hole...
+                other.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
+                GetComponent<Rigidbody2D>().mass += 10000;
+                FindObjectOfType<GravityManager>().drift_power = 100;
+                FindObjectOfType<GravityManager>().DoParticleRespawn = false;
+                BlackHoleState.RadiusScalar *= 1.25f;
+                CutsceneManager.Instance.BlackHoleConsumed();
+            }
         }
         if (other.mass()-other.MassOverride <= 1)
         {

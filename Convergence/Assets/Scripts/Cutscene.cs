@@ -67,7 +67,6 @@ public class Cutscene : MonoBehaviour
         }
         yield return new WaitForSeconds(PostPrintDelay);
 
-        CinematicBars.Instance.ExitCinematic(CinematicBarOutroDelay);
 
         float hopeTime = Time.timeSinceLevelLoad + CinematicBarOutroDelay;
         foreach(char c in text)
@@ -75,6 +74,7 @@ public class Cutscene : MonoBehaviour
             caption.text = caption.text.Remove(caption.text.Length - 1);
             yield return new WaitForSeconds(PerCharDelay/10f);
         }
+        CinematicBars.Instance.ExitCinematic(CinematicBarOutroDelay);
         yield return new WaitForSeconds(Mathf.Max(0,hopeTime-Time.timeSinceLevelLoad));
 
 

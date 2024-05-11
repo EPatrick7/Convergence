@@ -32,7 +32,7 @@ public class CinematicBars : MonoBehaviour
         Instance = this;
         isCinematic = false;
     }
-
+    
     public void EnterCinematic(float duration = 1f, float height = 150f)
     {
         isCinematic = true;
