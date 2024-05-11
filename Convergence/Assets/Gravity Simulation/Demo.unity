@@ -1124,6 +1124,38 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 1020614205}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: sunColor.b
+      value: 0.5411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: sunColor.g
+      value: 0.7568636
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: sunColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: bholeColor.b
+      value: 0.56078434
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: bholeColor.r
+      value: 0.5647059
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: sunTriggerDist
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: bholeTriggerDist
+      value: 2500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: maxIndicatorAlpha
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5948541786327904545, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: m_Name
       value: IndicatorManager

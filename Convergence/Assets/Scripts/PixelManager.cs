@@ -91,6 +91,8 @@ public class PixelManager : MonoBehaviour
     [HideInInspector]
     public float SunTransition_GasReq=1000;
 
+    public IndicatorManager indicatorManager;
+
     [HideInInspector]
     public float BlackHoleTransition_MassReq=7500;
     //Check if a body should transition between Planet Types.

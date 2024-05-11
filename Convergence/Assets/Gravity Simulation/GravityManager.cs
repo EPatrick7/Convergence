@@ -288,9 +288,9 @@ public class GravityManager : MonoBehaviour
         UnityEngine.Random.InitState(RandomSeed);
         gravUniverse = new GravUniverse();
 
-        GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform);
+        GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform); //INDIC
         RegisterBody(bHole, Vector2.zero);
-        indicatorManager.AddTargetIndicator(bHole);
+        indicatorManager.AddTargetIndicator(bHole, indicatorManager.bholeTriggerDist, indicatorManager.bholeColor);
 
         //Spawn and fill arrays with new generated particles
         for (int i = 0; i < SpawnCount; i++)
@@ -322,11 +322,15 @@ public class GravityManager : MonoBehaviour
 
             if (InitRandomElementComposition)
             {
-                RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform), sharedVelocity, elements);
+                GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
+                RegisterBody(pixel, sharedVelocity, elements);
+                pixel.GetComponent<PixelManager>().indicatorManager = indicatorManager; //INDIC
             }
             else
             {
-                RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform), sharedVelocity);
+                GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
+                RegisterBody(pixel, sharedVelocity);
+                pixel.GetComponent<PixelManager>().indicatorManager = indicatorManager; //INDIC
             }
 
 
@@ -430,11 +434,10 @@ public class GravityManager : MonoBehaviour
         if(pixel.planetType==PixelManager.PlanetType.Sun)
         {
             targ = Sun;
-
             if (mass > 5000)
             {
                 targ = LateSun;
-                if(pixel.GetComponent<SpriteRenderer>().sprite!=targ)
+                if (pixel.GetComponent<SpriteRenderer>().sprite != targ)
                 {
                     CutsceneManager.Instance.IsBlueStar();
                 }
