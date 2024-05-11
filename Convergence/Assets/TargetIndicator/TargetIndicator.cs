@@ -122,14 +122,14 @@ public class TargetIndicator : MonoBehaviour
 
     protected void FadeOutAlpha()
 	{
-        Debug.Log(timeElapsed);
+      ///  Debug.Log(timeElapsed);
  
         var tempCol = offscreenTargetIndicatorImage.color;
         if (timeElapsed < fadeOutDuration)
 		{
             tempCol.a = Mathf.Lerp(tempCol.a, 0f, timeElapsed / fadeOutDuration);
             offscreenTargetIndicatorImage.color = tempCol;
-            Debug.Log(tempCol.a);
+         //   Debug.Log(tempCol.a);
             timeElapsed += Time.deltaTime;
 		} else
 		{
