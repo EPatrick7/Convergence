@@ -55,6 +55,7 @@ public class IndicatorManager : MonoBehaviour
 			{
                 if (targetIndicators[i].gameObject == target)
 				{
+                    //Destroy(targetIndicators[i]);
                     targetIndicators.Remove(targetIndicators[i]);
 				}
 			}
@@ -96,7 +97,8 @@ public class IndicatorManager : MonoBehaviour
             //GameObject glow = GameObject.Instantiate(TargetIndicatorGlowPrefab, this.transform);
             indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, maxIndicatorAlpha);
             targetIndicators.Add(indicator);
-            Debug.Log(targetIndicators.Count);
+            indicator.indicatorManager = this;
+            //Debug.Log(targetIndicators.Count);
         }
     }
 

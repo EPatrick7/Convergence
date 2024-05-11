@@ -30,6 +30,8 @@ public class TargetIndicator : MonoBehaviour
 
     private RectTransform rectTransform;
 
+    public IndicatorManager indicatorManager;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -66,7 +68,9 @@ public class TargetIndicator : MonoBehaviour
     {
         if(target==null)
         {
+            indicatorManager.RemoveTargetIndicator(target);
             gameObject.SetActive(false);
+            //Destroy(gameObject);
             return;
         }
         SetIndicatorPosition();

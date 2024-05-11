@@ -1126,11 +1126,11 @@ PrefabInstance:
       objectReference: {fileID: 1020614205}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: sunColor.b
-      value: 0.1745283
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: sunColor.g
-      value: 0.3139749
+      value: 0.16666667
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: sunColor.r
@@ -1158,7 +1158,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: bholeColor.r
-      value: 0.6915245
+      value: 0.69019604
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: sunTriggerDist

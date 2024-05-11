@@ -143,7 +143,7 @@ public class PixelManager : MonoBehaviour
                 {
                     indicatorManager.AddTargetIndicator(gameObject, indicatorManager.sunTriggerDist, indicatorManager.sunColor);
                     indicating = true;
-                    Debug.Log(indicating);
+                    //Debug.Log(indicating);
                 }
                 //Debug.Log(indicating);
             }
