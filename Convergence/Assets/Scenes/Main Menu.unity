@@ -535,7 +535,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 999
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -5949,7 +5949,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 9999
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -10714,8 +10714,8 @@ Transform:
   m_GameObject: {fileID: 1130587328}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 125, y: 0, z: 455.8}
-  m_LocalScale: {x: 9, y: 9, z: 9}
+  m_LocalPosition: {x: 3, y: 0, z: 455.8}
+  m_LocalScale: {x: 20.283863, y: 20.283863, z: 20.283863}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 639011708}
@@ -15702,7 +15702,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 9999
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -20517,7 +20517,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 5000
   field of view: 60
   orthographic: 1
   orthographic size: 250
@@ -20545,7 +20545,7 @@ Transform:
   m_GameObject: {fileID: 1296178519}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -300, y: 0, z: -25}
+  m_LocalPosition: {x: -300, y: 0, z: -851}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
