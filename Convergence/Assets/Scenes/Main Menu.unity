@@ -5321,12 +5321,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 4663679174155961175, guid: 9311617b76dd8d049b198314d66ddeb5, type: 3}
-  objMin: 1
-  objMax: 3
-  spawnRadius: 200
+  objMin: 15
+  objMax: 16
+  spawnRadius: 1000
   alphaVal: 0.05
-  Spread: 10
-  Scale: 3
+  Spread: 100
+  Scale: 25
   StartSpeed: {x: 0, y: 0}
   objColor:
   - {r: 0, g: 0.43849897, b: 1, a: 0}
