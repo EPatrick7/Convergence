@@ -289,6 +289,7 @@ public class GravityManager : MonoBehaviour
         gravUniverse = new GravUniverse();
 
         GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform); //INDIC
+        bHole.GetComponent<PixelManager>().spawnBhole = true;
         RegisterBody(bHole, Vector2.zero);
         indicatorManager.AddTargetIndicator(bHole, indicatorManager.bholeTriggerDist, indicatorManager.bholeColor);
 
@@ -323,14 +324,14 @@ public class GravityManager : MonoBehaviour
             if (InitRandomElementComposition)
             {
                 GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
-                RegisterBody(pixel, sharedVelocity, elements);
                 pixel.GetComponent<PixelManager>().indicatorManager = indicatorManager; //INDIC
+                RegisterBody(pixel, sharedVelocity, elements);
             }
             else
             {
                 GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
-                RegisterBody(pixel, sharedVelocity);
                 pixel.GetComponent<PixelManager>().indicatorManager = indicatorManager; //INDIC
+                RegisterBody(pixel, sharedVelocity);
             }
 
 

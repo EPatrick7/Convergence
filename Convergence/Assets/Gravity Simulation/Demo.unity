@@ -1146,11 +1146,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: sunTriggerDist
-      value: 500
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: bholeTriggerDist
-      value: 2500
+      value: 2300
       objectReference: {fileID: 0}
     - target: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: maxIndicatorAlpha
@@ -1271,9 +1271,9 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 2562048484078223612}
+  - {fileID: 7768124067930939805}
   - {fileID: 5000439724359602891}
   - {fileID: 690165369}
   - {fileID: 1020614206}
   - {fileID: 1955701823}
   - {fileID: 8674023030252005857}
-  - {fileID: 7768124067930939805}

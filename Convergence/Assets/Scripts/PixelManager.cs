@@ -92,6 +92,19 @@ public class PixelManager : MonoBehaviour
     public float SunTransition_GasReq=1000;
 
     public IndicatorManager indicatorManager;
+    private float massIndicatorReq = 3000;
+    private bool indicating = false;
+    public bool spawnBhole = false;
+
+    /*
+    void Start()
+	{
+        if (mass() >= BlackHoleTransition_MassReq &&)
+		{
+            spawnBhole = true;
+		}
+	}
+    */
 
     [HideInInspector]
     public float BlackHoleTransition_MassReq=7500;
@@ -121,6 +134,27 @@ public class PixelManager : MonoBehaviour
         if (planetType != last)
         {
             PlanetTypeChanged?.Invoke(planetType,last);
+        }
+
+        if (!spawnBhole)
+        {
+            if (mass() > massIndicatorReq && !indicating)
+            {
+                if (gameObject != null && indicatorManager != null)
+                {
+                    indicatorManager.AddTargetIndicator(gameObject, indicatorManager.sunTriggerDist, indicatorManager.sunColor);
+                    indicating = true;
+                }
+                //Debug.Log(indicating);
+            }
+            else if (mass() < massIndicatorReq && indicating)
+            {
+                if (gameObject != null && indicatorManager != null)
+                {
+                    indicatorManager.RemoveTargetIndicator(gameObject);
+                    indicating = false;
+                }
+            }
         }
     }
 
