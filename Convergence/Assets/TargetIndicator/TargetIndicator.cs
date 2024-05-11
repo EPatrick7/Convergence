@@ -34,7 +34,9 @@ public class TargetIndicator : MonoBehaviour
 
     private float timeElapsed;
     private float lerpDuration = 3;
+    private float fadeOutDuration = 5;
     private float valueToLerp;
+    private bool spawned = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -72,10 +74,16 @@ public class TargetIndicator : MonoBehaviour
     {
         if (target == null)
         {
+            if (spawned)
+			{
+                timeElapsed = 0; //reset timer
+                spawned = false; //so it doesn't keep resetting
+			}
             //indicatorManager.RemoveTargetIndicator(target);
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
             //Destroy(gameObject);
             //return;
+            FadeOutAlpha();
         }
         else
         {
@@ -112,6 +120,24 @@ public class TargetIndicator : MonoBehaviour
 
     }
 
+    protected void FadeOutAlpha()
+	{
+        Debug.Log(timeElapsed);
+ 
+        var tempCol = offscreenTargetIndicatorImage.color;
+        if (timeElapsed < fadeOutDuration)
+		{
+            tempCol.a = Mathf.Lerp(tempCol.a, 0f, timeElapsed / fadeOutDuration);
+            offscreenTargetIndicatorImage.color = tempCol;
+            Debug.Log(tempCol.a);
+            timeElapsed += Time.deltaTime;
+		} else
+		{
+            gameObject.SetActive(false);
+		}
+        
+	}
+
     protected void SetIndicatorAlpha()
 	{
         var tempCol = offscreenTargetIndicatorImage.color;
@@ -122,6 +148,7 @@ public class TargetIndicator : MonoBehaviour
             timeElapsed += Time.deltaTime;
 		} else
 		{
+            spawned = true;
             float currentDist = Vector3.Distance(target.transform.position, camera.transform.position);
 
             if (triggerDist >= 2000) //if indicator is for spawn black hole
