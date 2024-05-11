@@ -153,7 +153,7 @@ public class CutsceneManager : MonoBehaviour
         //Load Toast
         lastToast = toast;
         taostTween?.Kill();
-        taostTween = toast.DOLocalMoveX(804, toast_unload_duration);
+        taostTween = toast.DOLocalMoveX(764, toast_unload_duration);
         taostTween.Play();
 
         yield return new WaitForSeconds(toast_duration);
