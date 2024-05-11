@@ -483,21 +483,6 @@ public class GravityManager : MonoBehaviour
             //O(n) run through each body and update it according to the last compute shader run
             for (int i = 0; i < gravUniverse.numBodies; i++)
             {
-                if(gravUniverse.pixels.Count>gravUniverse.bodies.Count)
-                {
-                    int nullCount = 0;
-
-                    foreach (GameObject g in gravUniverse.pixels)
-                    {
-                        if (g == null)
-                        {
-                            nullCount++;
-                        }
-                    }
-                    Debug.LogError("GravUniverse pixel-body mismatch! (" +gravUniverse.pixels.Count + ","+gravUniverse.bodies.Count+"); "+nullCount);
-
-
-                }
                 if (gravUniverse.pixels[i] == null)
                 {
                     if(gravUniverse.RemoveBody(gravUniverse.bodies[i].id))
