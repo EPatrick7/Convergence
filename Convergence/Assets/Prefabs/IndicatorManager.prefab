@@ -48,8 +48,10 @@ MonoBehaviour:
   targetIndicators: []
   camera: {fileID: 0}
   TargetIndicatorPrefab: {fileID: 3273725713259189405, guid: 1cc0b4a5807625947b76c29aa5e6cb89, type: 3}
-  maxIndicatorAlpha: 0.1
+  maxIndicatorAlpha: 0.05
   bholeColor: {r: 0.69019604, g: 0, b: 1, a: 0}
   bholeTriggerDist: 2000
   sunColor: {r: 1, g: 0.16666667, b: 0, a: 0}
+  bluesunColor: {r: 0, g: 0.48101687, b: 1, a: 0}
+  npcbholeColor: {r: 0.7596876, g: 0.6761006, b: 1, a: 0}
   sunTriggerDist: 1500

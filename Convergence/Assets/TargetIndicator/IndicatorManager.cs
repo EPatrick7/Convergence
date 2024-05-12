@@ -25,16 +25,12 @@ public class IndicatorManager : MonoBehaviour
     public Color bholeColor;
     public float bholeTriggerDist;
     public Color sunColor;
+    public Color bluesunColor;
+    public Color npcbholeColor;
     public float sunTriggerDist;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
      
         if (targetIndicators.Count > 0)
@@ -53,9 +49,10 @@ public class IndicatorManager : MonoBehaviour
 		{
             for (int i = 0; i < targetIndicators.Count; i++)
 			{
-                if (targetIndicators[i].gameObject == target)
+                if (targetIndicators[i].target == target)
 				{
-                    targetIndicators.Remove(targetIndicators[i]);
+                    targetIndicators[i].target = null;
+                    //targetIndicators.Remove(targetIndicators[i]);
 				}
 			}
 		}
@@ -67,7 +64,7 @@ public class IndicatorManager : MonoBehaviour
 		{
             for (int i = 0; i < targetIndicators.Count; i++)
 			{
-                if (targetIndicators[i].gameObject == target)
+                if (targetIndicators[i].target == target)
 				{
                     targetIndicators[i].GetComponent<TargetIndicator>().UpdateColor(color);
 				}

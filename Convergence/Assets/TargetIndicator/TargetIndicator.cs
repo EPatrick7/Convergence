@@ -18,13 +18,15 @@ public class TargetIndicator : MonoBehaviour
 
     private float outOfSightOffset { get { return OutOfSightOffset /* canvasRect.LocalScale.x */; } }
 
-    private GameObject target;
+    [HideInInspector]
+    public GameObject target;
 
     private new Camera camera;
 
     private float triggerDist;
 
     private Color indicatorColor;
+    private Color targetColor;
 
     private RectTransform canvasRect;
 
@@ -33,8 +35,8 @@ public class TargetIndicator : MonoBehaviour
     public IndicatorManager indicatorManager;
 
     private float timeElapsed;
-    private float lerpDuration = 3;
-    private float fadeOutDuration = 5;
+    private float lerpDuration = 6;
+    private float fadeOutDuration = 10;
     private float valueToLerp;
     private bool spawned = false;
 
@@ -42,6 +44,10 @@ public class TargetIndicator : MonoBehaviour
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+    }
+    private void FixedUpdate()
+    {
+        offscreenTargetIndicatorImage.color = Color.Lerp(offscreenTargetIndicatorImage.color, new Color(targetColor.r, targetColor.g, targetColor.b, offscreenTargetIndicatorImage.color.a),0.1f);
     }
 
     public void InitializeTargetIndicator(GameObject target, Camera camera, Canvas canvas, float triggerDist, Color color, float maxAlpha)
@@ -52,6 +58,7 @@ public class TargetIndicator : MonoBehaviour
         rectTransform.SetAsFirstSibling(); //set indicator as first child so UI lays over it
         this.triggerDist = triggerDist;
         offscreenTargetIndicatorImage.color = color;
+        targetColor = offscreenTargetIndicatorImage.color;
         maxIndicatorAlpha = maxAlpha;
     }
 
@@ -63,11 +70,14 @@ public class TargetIndicator : MonoBehaviour
         rectTransform.SetAsFirstSibling(); //set indicator as first child so UI lays over it
         this.triggerDist = triggerDist;
         maxIndicatorAlpha = maxAlpha;
+        targetColor = offscreenTargetIndicatorImage.color;
     }
 
     public void UpdateColor(Color color)
 	{
-        offscreenTargetIndicatorImage.color = color;
+
+        targetColor = color;
+       // offscreenTargetIndicatorImage.color = new Color(color.r,color.g,color.b, offscreenTargetIndicatorImage.color.a);
 	}
 
     public void UpdateTargetIndicator()

@@ -158,17 +158,26 @@ public class PixelManager : MonoBehaviour
                     indicating = false;
                 }
             }
-            /*
-            else if (mass() > 5000 && indicating)
+            if (indicating&& gameObject != null && indicatorManager != null)
             {
-                if (gameObject != null && indicatorManager != null)
+                if (mass() > BlackHoleTransition_MassReq)
                 {
-                    indicatorManager.RemoveTargetIndicator(gameObject);
-                    indicatorManager.AddTargetIndicator(gameObject, indicatorManager.sunTriggerDist, indicatorManager.bsunColor);
-                }
-            } 
-            */
 
+                        indicatorManager.UpdateTargetIndicatorColor(gameObject, indicatorManager.npcbholeColor);
+                    
+                }
+                else if (mass() > 5000)
+                {
+                        indicatorManager.UpdateTargetIndicatorColor(gameObject, indicatorManager.bluesunColor);
+                        // indicatorManager.RemoveTargetIndicator(gameObject);
+                        //indicatorManager.AddTargetIndicator(gameObject, indicatorManager.sunTriggerDist, indicatorManager.bsunColor);
+                    
+                }
+                else if (mass() > SunTransition_MassReq)
+                {
+                        indicatorManager.UpdateTargetIndicatorColor(gameObject, indicatorManager.sunColor);
+                }
+            }
         }
     }
 
