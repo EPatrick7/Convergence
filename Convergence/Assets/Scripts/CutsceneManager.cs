@@ -22,6 +22,7 @@ public class CutsceneManager : MonoBehaviour
     public RectTransform Toast_GameStart;
     public RectTransform Toast_FirstIce;
     public RectTransform Toast_FirstGas;
+    public RectTransform Toast_Death;
 
     PlayerPixelManager player;
     void Awake()
@@ -52,6 +53,7 @@ public class CutsceneManager : MonoBehaviour
     public void PlayerConsumed()
     {
         LoadCutscene(OnPlayerDeath);
+        LoadToast(4f, Toast_Death);
     }
     public void IsBlueStar()
     {
