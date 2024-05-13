@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.Rendering;
 
+#region DataStructure
 //If you ever add more floats to GravityBody, be sure to adjust the sizeof(float) * # of floats in buffer setup, and the corresponding struct in compute shader!
 [System.Serializable]
 public struct GravityBody
@@ -63,6 +64,7 @@ public class BodyComparer : IComparer<GravityBody>
     }
 
 }
+#endregion
 public class GravityManager : MonoBehaviour
 {
     [SerializeField, HideInInspector] ComputeShader _compute;
@@ -127,6 +129,23 @@ public class GravityManager : MonoBehaviour
         private uint genBodies;//Number of generated bodies;
     }
 
+    [System.Serializable]
+    public class TextureMap
+    {
+        [Range(0, 100)]
+        public float Mass;
+        [Range(0,100)]
+        public float Gas;
+        [Range(0, 100)]
+        public float Ice;
+        public Sprite Texture;
+
+        public Vector3 toVector()
+        {
+            return new Vector3(Mass, Gas, Ice )/100f;
+        }
+    }
+
     GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     bool asyncDone=true; // Whether or not the compute shader is done working
@@ -159,8 +178,8 @@ public class GravityManager : MonoBehaviour
     [Tooltip("Intensity of the oribtal speed around the black hole.")]
     public float InitOrbitScale;
 
-    [Tooltip("Should random element compositions be generated for non player bodies")]
-    public bool InitRandomElementComposition;
+    [Tooltip("A random element is chosen and multiplied by this amount to set initial element amount")]
+    public float InitRandomElementComposition=255;
 
     [Tooltip("Should particles respawn when lost?")]
     public bool DoParticleRespawn;
@@ -182,34 +201,23 @@ public class GravityManager : MonoBehaviour
     [Header("Time Managers")]
     [Tooltip("How much physics time should occur between each gravity check.")]
     public float TimePerGravitySample = 0.1f;
-    [Header("Debug"),Tooltip("Should the pixles get colors based on acceleration")]
-    public bool DoStressColors = true;
-    [Tooltip("Should the pixels get colors based on elements")]
-    public bool DoElementalColors = false;
-    [Tooltip("What the stress colors are (left is no movement, right is heavy gravity)")]
-    public Gradient AccelerationColoring;
-    [Tooltip("The upper bound on stress gravity (Final Color = Gravity Force / MaxStress)")]
-    public float MaxStress;
-    [Tooltip("The color upper bound on elemental color (Final Color = Element Amount / ElementScale)")]
-    public float ElementScale=1;
+
+    [Header("Debug")]
     [Tooltip("The number of gravity steps that have been applied so far.")]
     public int SimulationStep;
-    [Header("Sprite Replacers")]
 
-    [Tooltip("The sprite applied when terra is the majority element")]
-    public Sprite Terra;
-    [Tooltip("The sprite applied when ice is the majority element")]
-    public Sprite Ice;
-    [Tooltip("The sprite applied when gas is the majority element")]
-    public Sprite Gas;
+
+    [Header("Sprite Replacers")]
+    [Tooltip("The closest texture map is applied.")]
+    public TextureMap[] textureMaps;
+
+
     [Tooltip("The sprite applied when the object is a black hole")]
     public Sprite None;
     [Tooltip("The sprite applied when the object is a sun")]
     public Sprite Sun;
     [Tooltip("The sprite applied when the object is a massive sun")]
     public Sprite LateSun;
-    [Tooltip("Should sprites be updated to reflect element amounts")]
-    public bool DoBasicReplacement;
     public event Action Initialized;
 
     [Header("Planetary Transitions")]
@@ -263,9 +271,9 @@ public class GravityManager : MonoBehaviour
                     elements = new Vector2(0, 1);
                     break;
             }
-            elements *= 255;
+            elements *= InitRandomElementComposition;
 
-            if (InitRandomElementComposition)
+            if (InitRandomElementComposition>0)
             {
                 RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform), sharedVelocity, elements);
             }
@@ -323,9 +331,9 @@ public class GravityManager : MonoBehaviour
                     elements = new Vector3(0, 0, 1);
                     break;
             }
-            elements *= 255;
+            elements *= InitRandomElementComposition;
 
-            if (InitRandomElementComposition)
+            if (InitRandomElementComposition>0)
             {
                 GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
                 pixel.GetComponent<PixelManager>().indicatorManager = indicatorManager; //INDIC
@@ -372,10 +380,9 @@ public class GravityManager : MonoBehaviour
         CarefulAddBody(g, velocity);
         //gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
 
-        if (DoBasicReplacement)
-        {
-            UpdateTexture(g.GetComponent<PixelManager>());
-        }
+        
+        UpdateTexture(g.GetComponent<PixelManager>());
+        
     }
     public void RegisterBody(GameObject g,Vector2 velocity)
     {
@@ -385,10 +392,9 @@ public class GravityManager : MonoBehaviour
         pixel.BlackHoleTransition_MassReq = BlackHoleTransition_MassReq;
         CarefulAddBody(g, velocity);
         //gravUniverse.AddBody(g,velocity,g.GetComponent<Rigidbody2D>().mass);
-        if (DoBasicReplacement)
-        {
-            UpdateTexture(g.GetComponent<PixelManager>());
-        }
+        
+        UpdateTexture(g.GetComponent<PixelManager>());
+        
     }
     public void CarefulAddBody(GameObject g, Vector2 velocity)
     {
@@ -432,25 +438,22 @@ public class GravityManager : MonoBehaviour
     public void UpdateTexture(PixelManager pixel)
     {
 
-        Sprite targ = Terra;
+        Sprite targ=null;
         float mass = pixel.mass();
         float gas = pixel.Gas;
         float ice = pixel.Ice;
-        if (mass >= gas && mass >= ice)
+        TextureMap closest_map = textureMaps[0];
+        Vector3 elementMap = new Vector3(mass/250f,gas/(gas+ice), ice/(gas+ice));
+        foreach (TextureMap map in textureMaps)
         {
-            //Mass largest!
-            targ = Terra;
+            float dist = Vector3.Distance(map.toVector(), elementMap);
+            if(dist < Vector3.Distance(closest_map.toVector(), elementMap))
+            {
+                closest_map = map;
+            }
         }
-        else if (gas >= mass && gas >= ice)
-        {
-            //Gas largest!
-            targ = Gas;
-        }
-        else if (ice >= mass && ice >= gas)
-        {
-            //Ice largest!
-            targ = Ice;
-        }
+        //Find the textureMap who is closest in element value to the target and apply it.
+        targ = closest_map.Texture;
 
         if(pixel.planetType==PixelManager.PlanetType.Sun)
         {
@@ -510,18 +513,8 @@ public class GravityManager : MonoBehaviour
                     {
                         //Update acceleration of gravity
 
-                        if(DoBasicReplacement)
-                        {
-                            UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
-                        }
-                        else if (DoStressColors)
-                        {
-                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, AccelerationColoring.Evaluate(new Vector2(acceleration.x, acceleration.y).sqrMagnitude / MaxStress), 0.1f);
-                        }
-                        else if(DoElementalColors)
-                        {
-                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color = Color.Lerp(gravUniverse.pixels[i].GetComponent<SpriteRenderer>().color, new Color(gravUniverse.bodies[i].mass/ElementScale, gravUniverse.bodies[i].elements.x / ElementScale, gravUniverse.bodies[i].elements.y / ElementScale, 1), 0.1f);
-                        }
+                        UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
+                        
 
                         gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(Mathf.Min(32767, body.mass));
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(),0.1f);
