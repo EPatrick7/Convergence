@@ -958,6 +958,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7450487605299192868, guid: d0f879d3f6cd4a84591c48875f1b5a01, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450487605299192868, guid: d0f879d3f6cd4a84591c48875f1b5a01, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -1478,13 +1482,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
-      propertyPath: None
-      value: 
-      objectReference: {fileID: 21300000, guid: cf80fdac6ce0080438129ef6f2afbacc, type: 3}
-    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: indicatorManager
       value: 
       objectReference: {fileID: 878192728}
+    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+      propertyPath: textureMaps.Array.data[0].Mass
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1649820373411464530, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: m_Name
       value: GravityManager
