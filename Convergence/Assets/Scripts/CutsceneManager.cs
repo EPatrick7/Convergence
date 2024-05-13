@@ -194,7 +194,7 @@ public class CutsceneManager : MonoBehaviour
         }
         //Unload Toast;
         out_taostTween?.Kill();
-        out_taostTween = toast.DOLocalMoveX(1132, toast_unload_duration);
+        out_taostTween = toast.DOLocalMoveX(1300, toast_unload_duration);
         out_taostTween.Play();
     }
 
