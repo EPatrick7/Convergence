@@ -13,6 +13,9 @@ public class Cutscene : MonoBehaviour
     [Tooltip("Where the text will be printed. (Reads text from the TMPRO at runtime)")]
     public TextMeshProUGUI caption;
 
+    [Tooltip("The text that will be printed out in the cutscene. Multiple entries = pick randomly from the list.")]
+    public String[] captionText;
+
     [Tooltip("How long it will take for the cinematic bars to fully load in.")]
     public float CinematicBarDelay= 1;
     [Tooltip("The delay after the entire caption is printed before ending the cutscene.")]
@@ -31,10 +34,8 @@ public class Cutscene : MonoBehaviour
     {
         if (allowRepeats || timesRun == 0)
         {
-            if(timesRun == 0)
-            {
-                text = caption.text + "";
-            }
+            text = captionText[UnityEngine.Random.Range(0,captionText.Length)];
+            
             StartCoroutine(MainLoop());
         }
         else

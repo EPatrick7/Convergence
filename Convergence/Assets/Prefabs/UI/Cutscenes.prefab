@@ -528,6 +528,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowRepeats: 1
   caption: {fileID: 8494148970164902926}
+  captionText:
+  - With great hunger, the time of victory is nigh.
   CinematicBarDelay: 0.25
   PostPrintDelay: 1.5
   PerCharDelay: 0.05
@@ -947,6 +949,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowRepeats: 1
   caption: {fileID: 4766518086567398543}
+  captionText:
+  - From dust to flame and flame to void, all has converged once more...
   CinematicBarDelay: 0.25
   PostPrintDelay: 3
   PerCharDelay: 0.05
@@ -1306,6 +1310,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowRepeats: 1
   caption: {fileID: 5231322751702453010}
+  captionText:
+  - Alas the path to convergence is fraught with danger.
   CinematicBarDelay: 0.25
   PostPrintDelay: 3
   PerCharDelay: 0.05
@@ -2312,6 +2318,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowRepeats: 1
   caption: {fileID: 7415915221063800263}
+  captionText:
+  - The light dims once more...
   CinematicBarDelay: 0.25
   PostPrintDelay: 1.5
   PerCharDelay: 0.05
@@ -2369,6 +2377,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowRepeats: 1
   caption: {fileID: 8783720730403463734}
+  captionText:
+  - A new light is born.
   CinematicBarDelay: 0.25
   PostPrintDelay: 1.5
   PerCharDelay: 0.05
@@ -2828,6 +2838,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowRepeats: 1
   caption: {fileID: 3561736526566892919}
+  captionText:
+  - A new cycle begins...
   CinematicBarDelay: 0.25
   PostPrintDelay: 1.5
   PerCharDelay: 0.05
