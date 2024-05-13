@@ -85,7 +85,7 @@ public class Shield : MonoBehaviour
         while (col.enabled && pixel.Ice > 0f)
         {
             float expendedIce = Mathf.Max(1f, Mathf.Clamp(pixel.mass() + pixel.Ice, pixel.Ice, pixel.Ice * 10f) * ShieldCost) * interval;
-            pixel.Ice -= expendedIce;
+            pixel.Ice -= expendedIce*0.75f;
 
             yield return interval;
         }

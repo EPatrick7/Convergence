@@ -50,7 +50,10 @@ public class PixelManager : MonoBehaviour
         {
             ice = Mathf.Max(0f, value);
 
-            ElementChanged?.Invoke(ElementType.Ice, Ice, 1000f);
+            if (planetType == PlanetType.Planet)
+                ElementChanged?.Invoke(ElementType.Ice, Ice, 1000f);
+            else
+                ElementChanged?.Invoke(ElementType.Ice, Ice, 10000f);
         }
     }
     [Tooltip("How much gas element this pixel has"), Min(0)]
@@ -63,8 +66,10 @@ public class PixelManager : MonoBehaviour
         set
         {
             gas = Mathf.Max(0f, value);
-
-            ElementChanged?.Invoke(ElementType.Gas, Gas, 1000f);
+            if(planetType==PlanetType.Planet)
+                ElementChanged?.Invoke(ElementType.Gas, Gas, 1000f);
+            else
+                ElementChanged?.Invoke(ElementType.Gas, Gas, 10000f);
         }
     }
 

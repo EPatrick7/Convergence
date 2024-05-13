@@ -171,7 +171,7 @@ public class PlayerPixelManager : PixelManager
             {
                 float expendedGas = Mathf.Max(1f, mass() + Gas) * PropulsionCost * interval;
 
-                Gas -= expendedGas;
+                Gas -= expendedGas*0.75f;
 
                 Vector2 propelDirection = MouseDirection();
                 float propulsionForce = expendedGas * PropulsionForceScale;

@@ -1021,7 +1021,12 @@ MonoBehaviour:
   Toast_GameStart: {fileID: 2553146322274950829}
   Toast_FirstIce: {fileID: 6175288637805974017}
   Toast_FirstGas: {fileID: 7340553890501151221}
-  Toast_Death: {fileID: 4598311280982520351}
+  Toast_Death: {fileID: 0}
+  Toast_GameStartDelayed: {fileID: 4598311280982520351}
+  Load_LocalMoveX: 764
+  Unload_LocalMoveX: 1132
+  toast_unload_duration: 1
+  toast_duration: 6
 --- !u!1 &2258908351108700804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,7 +1186,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press Escape to open the restart menu.
+  m_text: Press Escape to open the pause menu if you need to restart the round.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1477,8 +1482,8 @@ RectTransform:
   - {fileID: 7113867465747549250}
   m_Father: {fileID: 3687255902358054716}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 1132, y: 222.99997}
   m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1816,7 +1821,7 @@ GameObject:
   - component: {fileID: 5666749738741983132}
   - component: {fileID: 3833466784725294561}
   m_Layer: 5
-  m_Name: Death_Toast
+  m_Name: Pause_Toast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1839,8 +1844,8 @@ RectTransform:
   - {fileID: 6312386426693047656}
   m_Father: {fileID: 3687255902358054716}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 1132, y: 222.99997}
   m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2435,7 +2440,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Defeat
+  m_text: Restart Menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

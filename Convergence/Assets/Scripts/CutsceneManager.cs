@@ -23,7 +23,17 @@ public class CutsceneManager : MonoBehaviour
     public RectTransform Toast_FirstIce;
     public RectTransform Toast_FirstGas;
     public RectTransform Toast_Death;
+    public RectTransform Toast_GameStartDelayed;
 
+    [Tooltip("The localX where the toast moves when loaded in.")]
+    public float Load_LocalMoveX = 764;
+    [Tooltip("The localX where the toast moves when unloaded out.")]
+    public float Unload_LocalMoveX = 1132;
+
+    [Tooltip("How long a toast takes to move in/out of the screen.")]
+    public float toast_unload_duration = 1;
+    [Tooltip("How long a toast takes before loading out.")]
+    public float toast_duration = 6;
     PlayerPixelManager player;
     void Awake()
     {
@@ -55,6 +65,7 @@ public class CutsceneManager : MonoBehaviour
         LoadCutscene(OnPlayerDeath);
         LoadToast(4f, Toast_Death);
     }
+    
     public void IsBlueStar()
     {
         LoadCutscene(OnBlueStarTransition);
@@ -73,6 +84,19 @@ public class CutsceneManager : MonoBehaviour
         }
         LoadCutscene(GameStart);
         LoadToast(4f,Toast_GameStart);
+        StartCoroutine(ReallyDelayedToast(Toast_GameStartDelayed));
+    }
+    public IEnumerator ReallyDelayedToast(RectTransform toast)
+    {
+        yield return new WaitForSeconds(15);
+        yield return new WaitUntil(noToastRightNow);
+        yield return new WaitForSeconds(2);
+        yield return new WaitUntil(noToastRightNow);
+        LoadToast(1,toast);
+    }
+    bool noToastRightNow()
+    {
+        return lastToast == null&&CinematicBars.notCinematic();
     }
     public IEnumerator DelayLoad(Cutscene c)
     {
@@ -126,10 +150,10 @@ public class CutsceneManager : MonoBehaviour
 
     private Tween taostTween;
     private Tween out_taostTween;
-    private float toast_unload_duration = 1;
-    private float toast_duration=5;
     public void LoadToast(float launch_delay,RectTransform toast)
     {
+        if (toast == null)
+            return;
         if(loadToast!=null)
         {
             StopCoroutine(loadToast);
