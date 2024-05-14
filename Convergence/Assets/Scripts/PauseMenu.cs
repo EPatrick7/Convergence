@@ -18,7 +18,8 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField]
     private IndicatorManager indicatorManager;
-
+    [SerializeField]
+    private GameObject ResumeButton;
     private void Start()
     {
         if (isPauseMenu)
@@ -55,6 +56,8 @@ public class PauseMenu : MonoBehaviour
         InputManager.SetUIInput(true);
         SetPPVol(true);
         indicatorManager.DisableIndicators();
+
+        EventSystem.current.SetSelectedGameObject(ResumeButton);
 
         gameObject.SetActive(true);
     }
