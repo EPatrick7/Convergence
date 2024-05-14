@@ -234,12 +234,13 @@ public class PixelManager : MonoBehaviour
             if (other.ConstantMass && other.planetType == PlanetType.BlackHole)
             {
                 //If we just consumed the central black hole...
+                ConstantMass = true;
                 other.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
                 GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
                 GetComponent<Rigidbody2D>().mass += 10000;
                 FindObjectOfType<GravityManager>().drift_power = 100;
                 FindObjectOfType<GravityManager>().DoParticleRespawn = false;
-                BlackHoleState.RadiusScalar *= 1.25f;
+                BlackHoleState.RadiusScalar *= 1.3f;
                 CutsceneManager.Instance.BlackHoleConsumed();
             }
         }

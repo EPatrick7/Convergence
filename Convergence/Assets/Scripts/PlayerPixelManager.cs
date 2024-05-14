@@ -39,6 +39,8 @@ public class PlayerPixelManager : PixelManager
 
     [Header("Propeller")]
     public ParticleSystem GasJet;
+    [Header("Effects")]
+    public ParticleSystem StarvationFX;
 
     [HideInInspector]
     public int PlayerID;
@@ -108,7 +110,6 @@ public class PlayerPixelManager : PixelManager
 
         if (cam == null) return;
 
-        if (mass() <= 1.0f) return;
 
         Vector2 ejectDirection = MouseDirection();
 
@@ -130,6 +131,10 @@ public class PlayerPixelManager : PixelManager
         float force = (ejectedMass + Mathf.Clamp(ejectedMass / Mathf.Log(ejectedMass), 0f, Mathf.Pow(ejectedMass, 2f))) * EjectionForceScale;
 
 
+        if (mass() <= 5.0f)
+        {
+            force = 0;
+        }
         GetComponent<Rigidbody2D>().velocity += (ejectDirection * force) / mass() * -1 * Mathf.Max(1, (mass() / 600f));
 
         gravityManager.RegisterBody(pixel, (ejectDirection * force) / pixel.GetComponent<PixelManager>().mass());
@@ -137,6 +142,21 @@ public class PlayerPixelManager : PixelManager
         InvokeMassChanged();
 
         StartCoroutine(EjectReset(EjectionRate));
+        if (mass() <= 5.0f)
+        {
+            Starve();
+        }
+    }
+    
+    public void Starve()
+    {
+        if(StarvationFX!=null)
+        {
+            StarvationFX.transform.parent = null;
+            StarvationFX.Play();
+        }
+        CutsceneManager.Instance.PlayerConsumed();
+        Destroy(gameObject);
     }
 
     private IEnumerator EjectReset(float duration)
