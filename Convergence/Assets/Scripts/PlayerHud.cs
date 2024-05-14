@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class PlayerHud : MonoBehaviour
 {
+    public static List<PlayerHud> huds;
     private GravityManager gravityManager;
 
     private PlayerPixelManager player;
@@ -30,19 +31,32 @@ public class PlayerHud : MonoBehaviour
     [SerializeField]
     private TMP_Text gasText;
 
+    [HideInInspector]
+    public bool Initialized;
+
+    [Range(1,4)]
+    public int PlayerID = 1;
+
     void Awake()
     {
         gravityManager = FindObjectOfType<GravityManager>();
-        
-        if (gravityManager != null)
+        if(huds==null)
+        {
+            huds= new List<PlayerHud>();
+        }
+        huds.Add(this); 
+        /*if (gravityManager != null)
         {
             gravityManager.Initialized += Initialize;
-        }
+        }*/
     }
 
-    private void Initialize()
+    public void Initialize(PlayerPixelManager playerPixelManager)
     {
-        player = FindObjectOfType<PlayerPixelManager>();
+        Initialized = true;
+        player = playerPixelManager;
+
+            // FindObjectOfType<PlayerPixelManager>();
 
         if (player != null)
         {
@@ -102,10 +116,17 @@ public class PlayerHud : MonoBehaviour
 
     private void OnDestroy()
     {
+        /*
         if (gravityManager != null)
         {
             gravityManager.Initialized -= Initialize;
         }
+        */
+        if (huds == null)
+        {
+            huds = new List<PlayerHud>();
+        }
+        huds.Remove(this);
 
         if (player != null)
         {

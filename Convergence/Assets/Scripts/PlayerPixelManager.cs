@@ -40,6 +40,8 @@ public class PlayerPixelManager : PixelManager
     [Header("Propeller")]
     public ParticleSystem GasJet;
 
+    [HideInInspector]
+    public int PlayerID;
     private bool canEject = true;
 
     private bool isPropelling = false;
@@ -48,24 +50,54 @@ public class PlayerPixelManager : PixelManager
     private GravityManager gravityManager;
 
     private Camera cam;
-
+    
     private void Start()
     {
+
         gravityManager = GetComponentInParent<GravityManager>();
 
-        InputManager.Instance.playerInput.Player.Eject.performed += Eject;
-        InputManager.Instance.playerInput.Player.Propel.started += StartPropel;
-        InputManager.Instance.playerInput.Player.Propel.canceled += CancelPropel;
-        InputManager.Instance.playerInput.Player.Shield.started += StartShield;
-        InputManager.Instance.playerInput.Player.Shield.canceled += CancelShield;
+        if (PlayerID <= 1)
+        {
+            InputManager.Instance.playerInput.Player.Eject.performed += Eject;
+            InputManager.Instance.playerInput.Player.Propel.started += StartPropel;
+            InputManager.Instance.playerInput.Player.Propel.canceled += CancelPropel;
+            InputManager.Instance.playerInput.Player.Shield.started += StartShield;
+            InputManager.Instance.playerInput.Player.Shield.canceled += CancelShield;
+        }
+        else
+        {//TODO: Implement 4 Player input system.
+
+            InputManager.Instance.playerInput.Player2.Eject.performed += Eject;
+            InputManager.Instance.playerInput.Player2.Propel.started += StartPropel;
+            InputManager.Instance.playerInput.Player2.Propel.canceled += CancelPropel;
+            InputManager.Instance.playerInput.Player2.Shield.started += StartShield;
+            InputManager.Instance.playerInput.Player2.Shield.canceled += CancelShield;
+
+        }
         gameObject.layer = 8;
-        cam = Camera.main;
-        cam.GetComponent<CameraLook>().playerPixelManager = this;
+        foreach(CameraLook l in CameraLook.camLooks)
+        {
+            if(l.PlayerID==PlayerID)
+            {
+                cam = l.GetComponent<Camera>();
+                l.playerPixelManager = this;
+            }
+        }
+        //cam = Camera.main;
+        //cam.GetComponent<CameraLook>().playerPixelManager = this;
     }
 
     private Vector2 MouseDirection()
     {
-        Vector2 mousePos = InputManager.Instance.playerInput.Player.MousePosition.ReadValue<Vector2>();
+        Vector2 mousePos;
+        if (PlayerID <= 1)
+        {
+             mousePos = InputManager.Instance.playerInput.Player.MousePosition.ReadValue<Vector2>();
+        }
+        else
+        {
+             mousePos = InputManager.Instance.playerInput.Player2.MousePosition.ReadValue<Vector2>();
+        }
         return (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
     }
 
@@ -157,7 +189,7 @@ public class PlayerPixelManager : PixelManager
     }
     private void FixedUpdate()
     {
-        Vector2 diff = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+        Vector2 diff = (cam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
 
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         GasJet.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
@@ -228,10 +260,21 @@ public class PlayerPixelManager : PixelManager
     {
         base.OnDestroy();
 
-        InputManager.Instance.playerInput.Player.Eject.performed -= Eject;
-        InputManager.Instance.playerInput.Player.Propel.started -= StartPropel;
-        InputManager.Instance.playerInput.Player.Propel.canceled -= CancelPropel;
-        InputManager.Instance.playerInput.Player.Shield.started -= StartShield;
-        InputManager.Instance.playerInput.Player.Shield.canceled -= CancelShield;
+        if (PlayerID <= 1)
+        {
+            InputManager.Instance.playerInput.Player.Eject.performed -= Eject;
+            InputManager.Instance.playerInput.Player.Propel.started -= StartPropel;
+            InputManager.Instance.playerInput.Player.Propel.canceled -= CancelPropel;
+            InputManager.Instance.playerInput.Player.Shield.started -= StartShield;
+            InputManager.Instance.playerInput.Player.Shield.canceled -= CancelShield;
+        }
+        else
+        {
+            InputManager.Instance.playerInput.Player2.Eject.performed -= Eject;
+            InputManager.Instance.playerInput.Player2.Propel.started -= StartPropel;
+            InputManager.Instance.playerInput.Player2.Propel.canceled -= CancelPropel;
+            InputManager.Instance.playerInput.Player2.Shield.started -= StartShield;
+            InputManager.Instance.playerInput.Player2.Shield.canceled -= CancelShield;
+        }
     }
 }

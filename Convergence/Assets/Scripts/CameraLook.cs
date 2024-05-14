@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CameraLook : MonoBehaviour
 {
+    public static List<CameraLook> camLooks;
+    [Range(1,4)]
+    public int PlayerID;
     [HideInInspector]
     public PlayerPixelManager playerPixelManager;
     Camera cam;
@@ -11,6 +14,11 @@ public class CameraLook : MonoBehaviour
     private void Start()
     {
         cam = GetComponent<Camera>();
+        if (camLooks == null)
+        {
+            camLooks = new List<CameraLook>();
+        }
+        camLooks.Add(this);
     }
 
     private void FixedUpdate()
@@ -21,5 +29,9 @@ public class CameraLook : MonoBehaviour
 
             cam.orthographicSize = Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + playerPixelManager.transform.localScale.x * 1.5f,0),0.1f).x;
         }
+    }
+    private void OnDestroy()
+    {
+        camLooks.Remove(this);
     }
 }

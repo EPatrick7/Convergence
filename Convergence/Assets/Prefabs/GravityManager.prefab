@@ -49,6 +49,7 @@ MonoBehaviour:
   Player: {fileID: 8270587239028709838, guid: fefa662793ae9bc448083d76f3dbfb88, type: 3}
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   BlackHole: {fileID: 5954944233520970111, guid: b38adb23eeca1714a83dfa9361f3b5cc, type: 3}
+  PlayerCount: 1
   RandomSeed: -1
   SpawnCount: 1600
   SpawnRadius: 2700
@@ -70,11 +71,11 @@ MonoBehaviour:
     Gas: 0
     Ice: 0
     Texture: {fileID: 21300000, guid: 6a5e813801628504189bffab765964a9, type: 3}
-  - Mass: 100
+  - Mass: 66
     Gas: 0
     Ice: 0
     Texture: {fileID: 21300000, guid: 6a5e813801628504189bffab765964a9, type: 3}
-  - Mass: 50
+  - Mass: 33
     Gas: 0
     Ice: 0
     Texture: {fileID: 21300000, guid: 6a5e813801628504189bffab765964a9, type: 3}

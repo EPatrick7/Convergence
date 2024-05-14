@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CutsceneManager : MonoBehaviour
 {
+    public enum LimitStates{Normal,OnlyToasts,None};
+    public LimitStates mode;
     public static CutsceneManager Instance;
     private GravityManager gravityManager;
 
@@ -110,6 +112,8 @@ public class CutsceneManager : MonoBehaviour
     }
     public void LoadCutscene(Cutscene c)
     {
+        if (mode==LimitStates.OnlyToasts||mode==LimitStates.None)
+            return;
         if (c != null)
         {
             if(lastCutscene!=null)
@@ -152,6 +156,8 @@ public class CutsceneManager : MonoBehaviour
     private Tween out_taostTween;
     public void LoadToast(float launch_delay,RectTransform toast)
     {
+        if (mode == LimitStates.None)
+            return;
         if (toast == null)
             return;
         if(loadToast!=null)

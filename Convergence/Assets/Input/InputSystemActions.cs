@@ -132,6 +132,114 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""Player 2"",
+            ""id"": ""be27d1fe-72f0-430f-9d77-d184e7b5ac74"",
+            ""actions"": [
+                {
+                    ""name"": ""Eject"",
+                    ""type"": ""Button"",
+                    ""id"": ""191f7d18-5616-42d9-a30e-6d7d76c96658"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap(duration=0.5)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Propel"",
+                    ""type"": ""Button"",
+                    ""id"": ""899ced0b-4157-4382-a7d0-5e3b8046b5c5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Shield"",
+                    ""type"": ""Button"",
+                    ""id"": ""017ee83e-27aa-4272-a86b-58f0def9bef3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""50e617ea-179c-4357-92ce-57352295b8a1"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""OpenMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""e905b5cc-11b4-4031-824f-58787b870f19"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""239fb8b5-0117-4d0e-b9b8-1d0ec1a4f8d4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Eject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97166ff1-8d2d-4ae4-adf4-b1598ad6ef78"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4cafa0a0-6274-402f-a058-6fc91af05169"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b944fcc-af9b-482d-9fb6-b833c002cabd"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Propel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d865b4f-de48-43c5-9f23-bb731aa349e7"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shield"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""UI"",
             ""id"": ""baf5ac8d-1734-4e6e-90ca-0b73bb4e44cb"",
             ""actions"": [
@@ -677,6 +785,13 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         m_Player_Shield = m_Player.FindAction("Shield", throwIfNotFound: true);
         m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         m_Player_OpenMenu = m_Player.FindAction("OpenMenu", throwIfNotFound: true);
+        // Player 2
+        m_Player2 = asset.FindActionMap("Player 2", throwIfNotFound: true);
+        m_Player2_Eject = m_Player2.FindAction("Eject", throwIfNotFound: true);
+        m_Player2_Propel = m_Player2.FindAction("Propel", throwIfNotFound: true);
+        m_Player2_Shield = m_Player2.FindAction("Shield", throwIfNotFound: true);
+        m_Player2_MousePosition = m_Player2.FindAction("MousePosition", throwIfNotFound: true);
+        m_Player2_OpenMenu = m_Player2.FindAction("OpenMenu", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_CloseMenu = m_UI.FindAction("CloseMenu", throwIfNotFound: true);
@@ -826,6 +941,84 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
     }
     public PlayerActions @Player => new PlayerActions(this);
 
+    // Player 2
+    private readonly InputActionMap m_Player2;
+    private List<IPlayer2Actions> m_Player2ActionsCallbackInterfaces = new List<IPlayer2Actions>();
+    private readonly InputAction m_Player2_Eject;
+    private readonly InputAction m_Player2_Propel;
+    private readonly InputAction m_Player2_Shield;
+    private readonly InputAction m_Player2_MousePosition;
+    private readonly InputAction m_Player2_OpenMenu;
+    public struct Player2Actions
+    {
+        private @InputSystemActions m_Wrapper;
+        public Player2Actions(@InputSystemActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Eject => m_Wrapper.m_Player2_Eject;
+        public InputAction @Propel => m_Wrapper.m_Player2_Propel;
+        public InputAction @Shield => m_Wrapper.m_Player2_Shield;
+        public InputAction @MousePosition => m_Wrapper.m_Player2_MousePosition;
+        public InputAction @OpenMenu => m_Wrapper.m_Player2_OpenMenu;
+        public InputActionMap Get() { return m_Wrapper.m_Player2; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Player2Actions set) { return set.Get(); }
+        public void AddCallbacks(IPlayer2Actions instance)
+        {
+            if (instance == null || m_Wrapper.m_Player2ActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Player2ActionsCallbackInterfaces.Add(instance);
+            @Eject.started += instance.OnEject;
+            @Eject.performed += instance.OnEject;
+            @Eject.canceled += instance.OnEject;
+            @Propel.started += instance.OnPropel;
+            @Propel.performed += instance.OnPropel;
+            @Propel.canceled += instance.OnPropel;
+            @Shield.started += instance.OnShield;
+            @Shield.performed += instance.OnShield;
+            @Shield.canceled += instance.OnShield;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
+            @OpenMenu.started += instance.OnOpenMenu;
+            @OpenMenu.performed += instance.OnOpenMenu;
+            @OpenMenu.canceled += instance.OnOpenMenu;
+        }
+
+        private void UnregisterCallbacks(IPlayer2Actions instance)
+        {
+            @Eject.started -= instance.OnEject;
+            @Eject.performed -= instance.OnEject;
+            @Eject.canceled -= instance.OnEject;
+            @Propel.started -= instance.OnPropel;
+            @Propel.performed -= instance.OnPropel;
+            @Propel.canceled -= instance.OnPropel;
+            @Shield.started -= instance.OnShield;
+            @Shield.performed -= instance.OnShield;
+            @Shield.canceled -= instance.OnShield;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
+            @OpenMenu.started -= instance.OnOpenMenu;
+            @OpenMenu.performed -= instance.OnOpenMenu;
+            @OpenMenu.canceled -= instance.OnOpenMenu;
+        }
+
+        public void RemoveCallbacks(IPlayer2Actions instance)
+        {
+            if (m_Wrapper.m_Player2ActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayer2Actions instance)
+        {
+            foreach (var item in m_Wrapper.m_Player2ActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Player2ActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public Player2Actions @Player2 => new Player2Actions(this);
+
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
@@ -952,6 +1145,14 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
     }
     public UIActions @UI => new UIActions(this);
     public interface IPlayerActions
+    {
+        void OnEject(InputAction.CallbackContext context);
+        void OnPropel(InputAction.CallbackContext context);
+        void OnShield(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
+        void OnOpenMenu(InputAction.CallbackContext context);
+    }
+    public interface IPlayer2Actions
     {
         void OnEject(InputAction.CallbackContext context);
         void OnPropel(InputAction.CallbackContext context);

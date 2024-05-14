@@ -11,8 +11,7 @@ public class TargetIndicator : MonoBehaviour
     [SerializeField]
     public Image offscreenTargetIndicatorImage;
 
-    [SerializeField]
-    private float OutOfSightOffset = 20f;
+    public float OutOfSightOffset = 20f;
 
     private float maxIndicatorAlpha;
 

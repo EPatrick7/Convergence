@@ -14,7 +14,6 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     private ColorBlock buttonColors = new ColorBlock();
 
-    private Volume ppVol;
     public bool isPauseMenu = true;
 
     [SerializeField]
@@ -39,18 +38,22 @@ public class PauseMenu : MonoBehaviour
             }
 
             gameObject.SetActive(false);
-
-            ppVol = Camera.main.gameObject.GetComponent<Volume>();
-            ppVol.enabled = false;
+            SetPPVol(false);
         }
 
     }
-
+    public void SetPPVol(bool state)
+    {
+        foreach(CameraLook l in CameraLook.camLooks)
+        {
+            l.GetComponent<Volume>().enabled = state;
+        }
+    }
     private void OpenMenu(InputAction.CallbackContext context)
     {
         InputManager.SetPlayerInput(false);
         InputManager.SetUIInput(true);
-        ppVol.enabled = true;
+        SetPPVol(true);
         indicatorManager.DisableIndicators();
 
         gameObject.SetActive(true);
@@ -65,7 +68,7 @@ public class PauseMenu : MonoBehaviour
     {
         InputManager.SetPlayerInput(true);
         InputManager.SetUIInput(false);
-        ppVol.enabled = false;
+        SetPPVol(false);
         indicatorManager.EnableIndicators();
 
         gameObject.SetActive(false);
@@ -78,7 +81,13 @@ public class PauseMenu : MonoBehaviour
 
     public void LoadScene(int id)
     {
-        SceneManager.LoadSceneAsync(id);
+        //REMOVE DEBUG::
+        if(id==1&&Input.GetKey(KeyCode.LeftControl)&& Input.GetKey(KeyCode.LeftShift))
+        {
+            SceneManager.LoadSceneAsync(2);
+        }
+        else//
+            SceneManager.LoadSceneAsync(id);
     }
 
     public void Quit()

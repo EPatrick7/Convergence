@@ -1285,15 +1285,15 @@ MonoBehaviour:
   OnBlackHoleTransition: {fileID: 1978685211707797294}
   OnGalacticBlackHoleConsumed: {fileID: 5957558990417374742}
   OnPlayerDeath: {fileID: 7018096706063321245}
-  Toast_GameStart: {fileID: 0}
+  Toast_GameStart: {fileID: 6389905630129493924}
   Toast_FirstIce: {fileID: 6175288637805974017}
-  Toast_FirstGas: {fileID: 0}
-  Toast_Death: {fileID: 0}
+  Toast_FirstGas: {fileID: 1021377224636474528}
+  Toast_Death: {fileID: 4632962096225419021}
   Toast_GameStartDelayed: {fileID: 0}
   Load_LocalMoveX: 764
   Unload_LocalMoveX: 1132
   toast_unload_duration: 1
-  toast_duration: 6
+  toast_duration: 10
 --- !u!1 &3166760927251534751
 GameObject:
   m_ObjectHideFlags: 0

@@ -165,6 +165,8 @@ public class GravityManager : MonoBehaviour
     public GameObject Pixel;
     [Tooltip("The Black Hole prefab for spawning")]
     public GameObject BlackHole;
+    [Range(1, 4),Tooltip("Number of player gameobjects to spawn.")]
+    public int PlayerCount;
     [Min(-1), Tooltip("Randomized seed for world gen")]
     public int RandomSeed = -1;
     [Min(0), Tooltip("How many clusters will be spawned")]
@@ -237,9 +239,18 @@ public class GravityManager : MonoBehaviour
         {
             Vector2 loc = UnityEngine.Random.insideUnitCircle * (SpawnRadius);
 
-            if(Camera.main!=null)
+            if (CameraLook.camLooks!=null)
             {
-                if(Vector2.Distance(loc,Camera.main.transform.position)< respawn_dist)
+                float bestDist = float.MaxValue;
+                foreach (CameraLook look in CameraLook.camLooks)
+                {
+                    float LDist = Vector2.Distance(loc, look.transform.position);
+                    if (LDist < bestDist)
+                    {
+                        bestDist = LDist;
+                    }
+                }
+                if (bestDist< respawn_dist)
                 {
                     return;
                 }
@@ -350,16 +361,29 @@ public class GravityManager : MonoBehaviour
         }
         if (!MenuSim)
         {
-            Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
-
-            if (playerLoc.sqrMagnitude <= InnerSpawnRadius * InnerSpawnRadius)
+            for (int i = 0; i < PlayerCount; i++)
             {
-                playerLoc = playerLoc.normalized * (SpawnRadius);
-            }
-            Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
+                Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
+                if (playerLoc.sqrMagnitude <= InnerSpawnRadius * InnerSpawnRadius)
+                {
+                    playerLoc = playerLoc.normalized * (SpawnRadius);
+                }
+                Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
 
-            playerVelocity += OrbitalVector(playerLoc);
-            RegisterBody(Instantiate(Player, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0), Player.transform.rotation, transform), playerVelocity);
+                playerVelocity += OrbitalVector(playerLoc);
+                GameObject playerObj = Instantiate(Player, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0), Player.transform.rotation, transform);
+                RegisterBody(playerObj, playerVelocity);
+                playerObj.GetComponent<PlayerPixelManager>().PlayerID = i + 1;
+                foreach (PlayerHud hud in PlayerHud.huds)
+                {
+                    if (hud.PlayerID== playerObj.GetComponent<PlayerPixelManager>().PlayerID)
+                    {
+
+                        hud.Initialize(playerObj.GetComponent<PlayerPixelManager>());
+                        break;
+                    }
+                }
+            }
         }
         Initialized?.Invoke();
     }
@@ -502,10 +526,33 @@ public class GravityManager : MonoBehaviour
                     body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
                     body.radius = gravUniverse.pixels[i].GetComponent<PixelManager>().radius();
 
-                    if(body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius *8)&&Vector2.Distance(body.pos(),Camera.main.transform.position)>(200+Camera.main.orthographicSize))
+                    //float bestDist= Vector2.Distance(body.pos(), Camera.main.transform.position);
+                    //float largSize= (200 + Camera.main.orthographicSize);
+                    float bestDist = float.MaxValue;
+                    float largSize = float.MinValue;
+                    if (CameraLook.camLooks != null)
                     {
-                        Destroy(gravUniverse.pixels[i].gameObject);
+                        foreach (CameraLook look in CameraLook.camLooks)
+                        {
+                            float LDist = Vector2.Distance(body.pos(), look.transform.position);
+                            float LSize = (200 + look.GetComponent<Camera>().orthographicSize);
+
+
+                            if (LSize > largSize)
+                            {
+                                LSize = largSize;
+                            }
+                            if (LDist < bestDist)
+                            {
+                                bestDist = LDist;
+                            }
+                        }
+                        if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && bestDist > largSize && gravUniverse.pixels[i].GetComponent<PlayerPixelManager>() == null)
+                        {
+                            Destroy(gravUniverse.pixels[i].gameObject);
+                        }
                     }
+
 
                     Vector2 acceleration = gravUniverse.bodies[i].acceleration();
                     gravUniverse.pixels[i].GetComponent<PixelManager>().CheckTransitions();

@@ -31,9 +31,15 @@ public class InputManager : MonoBehaviour
         if (Instance == null) return;
 
         if (enabled)
+        {
             Instance.playerInput.Player.Enable();
+            Instance.playerInput.Player2.Enable();
+        }
         else
+        {
             Instance.playerInput.Player.Disable();
+            Instance.playerInput.Player2.Disable();
+        }
 
         Instance.PlayerSet?.Invoke(enabled);
     }

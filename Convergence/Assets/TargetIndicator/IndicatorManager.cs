@@ -28,6 +28,7 @@ public class IndicatorManager : MonoBehaviour
     public Color bluesunColor;
     public Color npcbholeColor;
     public float sunTriggerDist;
+    public float offsetMultiplier=1;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -115,6 +116,7 @@ public class IndicatorManager : MonoBehaviour
             indicator.transform.SetAsLastSibling();
             indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, maxIndicatorAlpha);
             targetIndicators.Add(indicator);
+            indicator.GetComponent<TargetIndicator>().OutOfSightOffset *= offsetMultiplier;
             indicator.indicatorManager = this;
             //Debug.Log(targetIndicators.Count);
         }
