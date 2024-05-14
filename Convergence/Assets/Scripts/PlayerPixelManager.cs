@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 using static UnityEngine.GraphicsBuffer;
 
 public class PlayerPixelManager : PixelManager
@@ -53,54 +54,77 @@ public class PlayerPixelManager : PixelManager
 
     private Camera cam;
     
+    public void RegisterInputs()
+    {
+        pInput.actions.FindActionMap("Player",true).FindAction("Eject",true).performed+=Eject;
+        pInput.actions.FindActionMap("Player").FindAction("Propel").started += StartPropel;
+        pInput.actions.FindActionMap("Player").FindAction("Propel").canceled += CancelPropel;
+        pInput.actions.FindActionMap("Player").FindAction("Shield").started += StartShield;
+        pInput.actions.FindActionMap("Player").FindAction("Shield").canceled += CancelShield;
+     /*   camLook.inputManager.playerInput.Player.Propel.started += StartPropel;
+        camLook.inputManager.playerInput.Player.Propel.canceled += CancelPropel;
+        camLook.inputManager.playerInput.Player.Shield.started += StartShield;
+        camLook.inputManager.playerInput.Player.Shield.canceled += CancelShield;
+     */
+    }
+    [HideInInspector]
+    public bool hasDeregistered;
+    public void DeregisterInputs()
+    {
+        hasDeregistered = true;
+        pInput.actions.FindActionMap("Player").FindAction("Eject").performed -= Eject;
+        pInput.actions.FindActionMap("Player").FindAction("Propel").started -= StartPropel;
+        pInput.actions.FindActionMap("Player").FindAction("Propel").canceled -= CancelPropel;
+        pInput.actions.FindActionMap("Player").FindAction("Shield").started -= StartShield;
+        pInput.actions.FindActionMap("Player").FindAction("Shield").canceled -= CancelShield;
+        /*
+        camLook.inputManager.playerInput.Player.Eject.performed -= Eject;
+        camLook.inputManager.playerInput.Player.Propel.started -= StartPropel;
+        camLook.inputManager.playerInput.Player.Propel.canceled -= CancelPropel;
+        camLook.inputManager.playerInput.Player.Shield.started -= StartShield;
+        camLook.inputManager.playerInput.Player.Shield.canceled -= CancelShield;
+        */
+    }
+    public Vector2 MousePos()
+    {
+        return pInput.actions.FindActionMap("Player").FindAction("MousePosition").ReadValue<Vector2>(); 
+    }
+    CameraLook camLook;
+    PlayerInput pInput;
     private void Start()
     {
 
         gravityManager = GetComponentInParent<GravityManager>();
 
-        if (PlayerID <= 1)
-        {
-            InputManager.Instance.playerInput.Player.Eject.performed += Eject;
-            InputManager.Instance.playerInput.Player.Propel.started += StartPropel;
-            InputManager.Instance.playerInput.Player.Propel.canceled += CancelPropel;
-            InputManager.Instance.playerInput.Player.Shield.started += StartShield;
-            InputManager.Instance.playerInput.Player.Shield.canceled += CancelShield;
-        }
-        else
-        {//TODO: Implement 4 Player input system.
-
-            InputManager.Instance.playerInput.Player2.Eject.performed += Eject;
-            InputManager.Instance.playerInput.Player2.Propel.started += StartPropel;
-            InputManager.Instance.playerInput.Player2.Propel.canceled += CancelPropel;
-            InputManager.Instance.playerInput.Player2.Shield.started += StartShield;
-            InputManager.Instance.playerInput.Player2.Shield.canceled += CancelShield;
-
-        }
         gameObject.layer = 8;
         foreach(CameraLook l in CameraLook.camLooks)
         {
             if(l.PlayerID==PlayerID)
             {
                 cam = l.GetComponent<Camera>();
+
+                camLook = cam.GetComponent<CameraLook>();
+                pInput = camLook.inputManager.GetComponent<PlayerInput>();
                 l.playerPixelManager = this;
             }
         }
+        RegisterInputs();
         //cam = Camera.main;
         //cam.GetComponent<CameraLook>().playerPixelManager = this;
     }
 
     private Vector2 MouseDirection()
     {
-        Vector2 mousePos;
-        if (PlayerID <= 1)
+        Vector2 mousePos = MousePos();
+        if (pInput.currentControlScheme == "Gamepad")
         {
-             mousePos = InputManager.Instance.playerInput.Player.MousePosition.ReadValue<Vector2>();
+           // Debug.Log(mousePos);
+            return mousePos;
         }
         else
         {
-             mousePos = InputManager.Instance.playerInput.Player2.MousePosition.ReadValue<Vector2>();
+            return (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
         }
-        return (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
     }
 
     #region Eject
@@ -209,10 +233,11 @@ public class PlayerPixelManager : PixelManager
     }
     private void FixedUpdate()
     {
-        Vector2 diff = (cam.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+        Vector2 diff = MouseDirection();
 
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         GasJet.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+
     }
     private IEnumerator Propel(float interval)
     {
@@ -279,22 +304,7 @@ public class PlayerPixelManager : PixelManager
     protected override void OnDestroy()
     {
         base.OnDestroy();
-
-        if (PlayerID <= 1)
-        {
-            InputManager.Instance.playerInput.Player.Eject.performed -= Eject;
-            InputManager.Instance.playerInput.Player.Propel.started -= StartPropel;
-            InputManager.Instance.playerInput.Player.Propel.canceled -= CancelPropel;
-            InputManager.Instance.playerInput.Player.Shield.started -= StartShield;
-            InputManager.Instance.playerInput.Player.Shield.canceled -= CancelShield;
-        }
-        else
-        {
-            InputManager.Instance.playerInput.Player2.Eject.performed -= Eject;
-            InputManager.Instance.playerInput.Player2.Propel.started -= StartPropel;
-            InputManager.Instance.playerInput.Player2.Propel.canceled -= CancelPropel;
-            InputManager.Instance.playerInput.Player2.Shield.started -= StartShield;
-            InputManager.Instance.playerInput.Player2.Shield.canceled -= CancelShield;
-        }
+        if(!hasDeregistered)
+            DeregisterInputs();
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraLook : MonoBehaviour
 {
+    public InputManager inputManager;
     public static List<CameraLook> camLooks;
     [Range(1,4)]
     public int PlayerID;
@@ -13,6 +14,7 @@ public class CameraLook : MonoBehaviour
 
     private void Start()
     {
+        inputManager=GetComponentInChildren<InputManager>();
         cam = GetComponent<Camera>();
         if (camLooks == null)
         {

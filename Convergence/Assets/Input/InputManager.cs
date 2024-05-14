@@ -3,56 +3,68 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+[RequireComponent(typeof(PlayerInput))]
 public class InputManager : MonoBehaviour
 {
-    public static InputManager Instance;
-
-    public InputSystemActions playerInput;
+    public static List<InputManager> inputManagers;
 
     public Action<bool> PlayerSet;
 
     public Action<bool> UISet;
+    [HideInInspector]
+    public PlayerInput playerInput;
 
     private void Awake()
     {
-        if (Instance == null)
+        if (inputManagers == null)
         {
-            Instance = this;
+            inputManagers = new List<InputManager>();
         }
-
-        playerInput = new InputSystemActions();
-
-        InputManager.SetPlayerInput(true);
+        playerInput = GetComponent<PlayerInput>();
+        inputManagers.Add(this);
+        SetPlayerInput(true);
     }
 
-    public static void SetPlayerInput(bool enabled)
+    public void SetPlayerInput(bool enabled)
     {
-        if (Instance == null) return;
 
         if (enabled)
         {
-            Instance.playerInput.Player.Enable();
-            Instance.playerInput.Player2.Enable();
+            playerInput.actions.FindActionMap("Player").Enable();
         }
         else
         {
-            Instance.playerInput.Player.Disable();
-            Instance.playerInput.Player2.Disable();
+            playerInput.actions.FindActionMap("Player").Disable();
         }
 
-        Instance.PlayerSet?.Invoke(enabled);
+        PlayerSet?.Invoke(enabled);
     }
 
-    public static void SetUIInput(bool enabled)
+    public void SetUIInput(bool enabled)
     {
-        if (Instance == null) return;
-
+        
         if (enabled)
-            Instance.playerInput.UI.Enable();
+            playerInput.actions.FindActionMap("UI").Enable();
         else
-            Instance.playerInput.UI.Disable();
+            playerInput.actions.FindActionMap("UI").Disable();
 
-        Instance.UISet?.Invoke(enabled);
+        UISet?.Invoke(enabled);
+    }
+    private void OnDestroy()
+    {
+        if(PauseMenu.Instance!=null&&!PauseMenu.Instance.hasDeregistered)
+        {
+            PauseMenu.Instance.DeRegisterInputs();
+        }
+        foreach(PlayerPixelManager p in GameObject.FindObjectsOfType<PlayerPixelManager>())
+        {
+            if(p!=null&&!p.hasDeregistered)
+            {
+                p.DeregisterInputs();
+            }
+        }
+        inputManagers.Remove(this);
+
+
     }
 }

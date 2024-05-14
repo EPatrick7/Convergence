@@ -79,7 +79,8 @@ public class IndicatorManager : MonoBehaviour
         {
             for (int i = 0; i < targetIndicators.Count; i++)
             {
-                targetIndicators[i].offscreenTargetIndicatorImage.enabled = false;
+                if (targetIndicators[i] != null)
+                    targetIndicators[i].offscreenTargetIndicatorImage.enabled = false;
             }
         }
     }

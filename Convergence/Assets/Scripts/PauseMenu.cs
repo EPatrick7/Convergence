@@ -8,9 +8,12 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
+using UnityEngine.Windows;
 
 public class PauseMenu : MonoBehaviour
 {
+    public static PauseMenu Instance;
+
     [SerializeField]
     private ColorBlock buttonColors = new ColorBlock();
 
@@ -20,13 +23,41 @@ public class PauseMenu : MonoBehaviour
     private IndicatorManager indicatorManager;
     [SerializeField]
     private GameObject ResumeButton;
+
+    public void RegisterInputs()
+    {
+        foreach(InputManager inputManager in InputManager.inputManagers)
+        {
+            inputManager.playerInput.actions.FindActionMap("Player").FindAction("OpenMenu").performed += OpenMenu;
+            inputManager.playerInput.actions.FindActionMap("UI").FindAction("CloseMenu").performed += CloseMenu;
+
+        }
+      /* InputManager.Instance.playerInput.Player.OpenMenu.performed += OpenMenu;
+        InputManager.Instance.playerInput.UI.CloseMenu.performed += CloseMenu;
+      */
+    }
+    public void DeRegisterInputs()
+    {
+        hasDeregistered = true;
+
+        foreach (InputManager inputManager in InputManager.inputManagers)
+        {
+
+            inputManager.playerInput.actions.FindActionMap("Player").FindAction("OpenMenu").performed -= OpenMenu;
+            inputManager.playerInput.actions.FindActionMap("UI").FindAction("CloseMenu").performed -= CloseMenu;
+
+        }
+        //
+        //InputManager.Instance.playerInput.Player.OpenMenu.performed -= OpenMenu;
+        //InputManager.Instance.playerInput.UI.CloseMenu.performed -= CloseMenu;
+
+    }
     private void Start()
     {
+        Instance = this;
         if (isPauseMenu)
         {
-            InputManager.Instance.playerInput.Player.OpenMenu.performed += OpenMenu;
-            InputManager.Instance.playerInput.UI.CloseMenu.performed += CloseMenu;
-
+            
             foreach (Button button in GetComponentsInChildren<Button>())
             {
                 ColorBlock colors = button.colors;
@@ -40,6 +71,8 @@ public class PauseMenu : MonoBehaviour
 
             gameObject.SetActive(false);
             SetPPVol(false);
+
+            RegisterInputs();
         }
 
     }
@@ -52,25 +85,39 @@ public class PauseMenu : MonoBehaviour
     }
     private void OpenMenu(InputAction.CallbackContext context)
     {
-        InputManager.SetPlayerInput(false);
-        InputManager.SetUIInput(true);
-        SetPPVol(true);
-        indicatorManager.DisableIndicators();
+        if (isPauseMenu)
+        {
 
-        EventSystem.current.SetSelectedGameObject(ResumeButton);
 
-        gameObject.SetActive(true);
+            foreach (InputManager inputManager in InputManager.inputManagers)
+            {
+                inputManager.SetPlayerInput(false);
+                inputManager.SetUIInput(true);
+            }
+            SetPPVol(true);
+            indicatorManager.DisableIndicators();
+
+            EventSystem.current.SetSelectedGameObject(ResumeButton);
+
+            gameObject.SetActive(true);
+        }
     }
 
     private void CloseMenu(InputAction.CallbackContext context)
     {
-        Resume();
+        if (isPauseMenu)
+        {
+            Resume();
+        }
     }
 
     public void Resume()
     {
-        InputManager.SetPlayerInput(true);
-        InputManager.SetUIInput(false);
+        foreach (InputManager inputManager in InputManager.inputManagers)
+        {
+            inputManager.SetPlayerInput(true);
+            inputManager.SetUIInput(false);
+        }
         SetPPVol(false);
         indicatorManager.EnableIndicators();
 
@@ -85,7 +132,7 @@ public class PauseMenu : MonoBehaviour
     public void LoadScene(int id)
     {
         //REMOVE DEBUG::
-        if(id==1&&Input.GetKey(KeyCode.LeftControl)&& Input.GetKey(KeyCode.LeftShift))
+        if(id==1&&UnityEngine.Input.GetKey(KeyCode.LeftControl)&& UnityEngine.Input.GetKey(KeyCode.LeftShift))
         {
             SceneManager.LoadSceneAsync(2);
         }
@@ -97,13 +144,13 @@ public class PauseMenu : MonoBehaviour
     {
         Application.Quit();
     }
-
+    [HideInInspector]
+    public bool hasDeregistered;
     public void OnDestroy()
     {
-        if (isPauseMenu)
+        if (isPauseMenu&&!hasDeregistered)
         {
-            InputManager.Instance.playerInput.Player.OpenMenu.performed -= OpenMenu;
-            InputManager.Instance.playerInput.UI.CloseMenu.performed -= CloseMenu;
+            DeRegisterInputs();
         }
     }
 }

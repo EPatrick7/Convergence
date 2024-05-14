@@ -175,6 +175,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 6884456806515635834, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: m_UIInputModule
+      value: 
+      objectReference: {fileID: 1955701821}
+    - target: {fileID: 6884456806515635834, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: Mouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884456806515635834, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: m_NeverAutoSwitchControlSchemes
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -540,50 +552,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3687255902358054716, guid: dbe420cb95192754e8952d62c414654f, type: 3}
   m_PrefabInstance: {fileID: 642198869}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &690165367
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 690165369}
-  - component: {fileID: 690165368}
-  m_Layer: 0
-  m_Name: InputManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &690165368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 690165367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 850b4297ad3b9ab4aadb7a2b83ff3d06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &690165369
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 690165367}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &878192728 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
@@ -1350,6 +1318,5 @@ SceneRoots:
   - {fileID: 5000439724359602891}
   - {fileID: 1020614206}
   - {fileID: 1955701823}
-  - {fileID: 690165369}
   - {fileID: 8674023030252005857}
   - {fileID: 1755211569}
