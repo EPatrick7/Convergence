@@ -33,7 +33,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""id"": ""feb79c3a-47af-46cb-95df-dcf52c2e36d1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Tap(duration=0.5)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -42,7 +42,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""id"": ""e0ddd610-d8b3-4415-9775-5f58762571f9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=1)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
@@ -78,7 +78,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""fa7e4298-db70-4ea2-84cd-f85fb26362e1"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap(duration=0.5,pressPoint=0.5)"",
                     ""processors"": """",
                     ""groups"": ""Mouse"",
                     ""action"": ""Eject"",
@@ -144,7 +144,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""183d7b0b-54ad-4aeb-baae-4a04009834fa"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=1)"",
                     ""processors"": """",
                     ""groups"": ""Mouse"",
                     ""action"": ""Propel"",
@@ -583,7 +583,18 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""path"": ""*/{Submit}"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Mouse"",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""794b9717-7086-4027-baa1-d9616b0ec872"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -594,7 +605,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""path"": ""*/{Cancel}"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Mouse"",
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

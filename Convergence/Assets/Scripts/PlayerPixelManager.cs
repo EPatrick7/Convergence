@@ -112,13 +112,19 @@ public class PlayerPixelManager : PixelManager
         //cam = Camera.main;
         //cam.GetComponent<CameraLook>().playerPixelManager = this;
     }
-
+    Vector2 lastMousePos=new Vector2(0,-1);
     private Vector2 MouseDirection()
     {
         Vector2 mousePos = MousePos();
         if (pInput.currentControlScheme == "Gamepad")
         {
            // Debug.Log(mousePos);
+           if(mousePos==Vector2.zero)
+            {
+                return lastMousePos;
+            }
+            mousePos = mousePos.normalized;
+            lastMousePos = mousePos;
             return mousePos;
         }
         else

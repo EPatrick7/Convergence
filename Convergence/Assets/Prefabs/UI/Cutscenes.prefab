@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1536658261953161334}
   - component: {fileID: 5353867476129358867}
   - component: {fileID: 1017036812349084858}
+  - component: {fileID: 702890934256100767}
   m_Layer: 5
   m_Name: Caption
   m_TagString: Untagged
@@ -134,6 +135,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &702890934256100767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324072037655688477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a625e6edd88cf4409e358f05be2d815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToSwapIfGamePad: Press X to launch part of your mass and move yourself.
 --- !u!1 &361264213697139307
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,6 +1292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f20151d3ced115746820aca41dcab9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
   GameStart: {fileID: 5249754560724792642}
   OnStarDevolution: {fileID: 8419365917093113091}
   OnStarTransition: {fileID: 2582836338868808753}
@@ -1726,6 +1741,7 @@ GameObject:
   - component: {fileID: 6381415917048269380}
   - component: {fileID: 2540906584292697489}
   - component: {fileID: 6819985921250113845}
+  - component: {fileID: 1031441598340004074}
   m_Layer: 5
   m_Name: Caption
   m_TagString: Untagged
@@ -1849,6 +1865,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1031441598340004074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4670267540488089581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a625e6edd88cf4409e358f05be2d815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToSwapIfGamePad: Press Options to open the pause menu if you need to restart the
+    round.
 --- !u!1 &4965276798186709314
 GameObject:
   m_ObjectHideFlags: 0
@@ -1860,6 +1890,7 @@ GameObject:
   - component: {fileID: 4557384951718628728}
   - component: {fileID: 3075012691662382502}
   - component: {fileID: 8757702164515230835}
+  - component: {fileID: 4353724761181963446}
   m_Layer: 5
   m_Name: Caption
   m_TagString: Untagged
@@ -1983,6 +2014,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4353724761181963446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4965276798186709314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a625e6edd88cf4409e358f05be2d815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToSwapIfGamePad: Hold the left trigger to spend ice and shield yourself from being
+    consumed.
 --- !u!1 &5493097433510524302
 GameObject:
   m_ObjectHideFlags: 0
@@ -2396,6 +2441,7 @@ GameObject:
   - component: {fileID: 6163547081370398914}
   - component: {fileID: 3462488927449536336}
   - component: {fileID: 56092483184876394}
+  - component: {fileID: 4032356055953845543}
   m_Layer: 5
   m_Name: Caption
   m_TagString: Untagged
@@ -2519,6 +2565,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4032356055953845543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7335806982402093574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a625e6edd88cf4409e358f05be2d815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToSwapIfGamePad: Hold right trigger to burn gas and propel yourself forward.
 --- !u!1 &7990067605185252855
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
+
 [RequireComponent(typeof(PlayerInput))]
 public class InputManager : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class InputManager : MonoBehaviour
     public Action<bool> UISet;
     [HideInInspector]
     public PlayerInput playerInput;
-
+    public static bool GamePadDetected;
     private void Awake()
     {
         if (inputManagers == null)
@@ -24,7 +26,14 @@ public class InputManager : MonoBehaviour
         inputManagers.Add(this);
         SetPlayerInput(true);
     }
+    private void FixedUpdate()
+    {
 
+        if (playerInput.currentControlScheme == "Gamepad")
+        {
+            GamePadDetected = true;
+        }
+    }
     public void SetPlayerInput(bool enabled)
     {
 
@@ -64,6 +73,7 @@ public class InputManager : MonoBehaviour
             }
         }
         inputManagers.Remove(this);
+        GamePadDetected = false;
 
 
     }
