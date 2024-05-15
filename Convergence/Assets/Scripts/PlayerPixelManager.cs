@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 using static UnityEngine.GraphicsBuffer;
+using DG.Tweening;
 
 public class PlayerPixelManager : PixelManager
 {
@@ -140,6 +141,7 @@ public class PlayerPixelManager : PixelManager
         if(RespawnFX!=null&&GravityManager.Instance.respawn_players)
         {
           GameObject g=  Instantiate(RespawnFX, transform.position, RespawnFX.transform.rotation, transform.parent);
+            g.transform.DOScale(.1f, 9);
             g.GetComponent<PlayerRespawner>().PlayerID = PlayerID;
         }
     }
