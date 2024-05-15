@@ -246,7 +246,7 @@ MonoBehaviour:
     m_ActionId: a7fe44cb-6174-4196-b433-b6126da5d54c
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Mouse
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 1296178521}
@@ -402,6 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9231662102e90e540a8fe21c94cfccd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectIfGamepad: {fileID: 0}
   buttonColors:
     m_NormalColor: {r: 0, g: 0, b: 0, a: 0}
     m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0}

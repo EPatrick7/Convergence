@@ -14,6 +14,8 @@ using UnityEngine.InputSystem.UI;
 
 public class PauseMenu : MonoBehaviour
 {
+    public Selectable SelectIfGamepad;
+
     public static PauseMenu Instance;
 
     public static bool isPaused;
@@ -44,6 +46,15 @@ public class PauseMenu : MonoBehaviour
       /* InputManager.Instance.playerInput.Player.OpenMenu.performed += OpenMenu;
         InputManager.Instance.playerInput.UI.CloseMenu.performed += CloseMenu;
       */
+    }
+    private void FixedUpdate()
+    {
+        if(EventSystem.current != null&& SelectIfGamepad!=null) {
+            if(InputManager.GamePadDetected && EventSystem.current.currentSelectedGameObject==null)
+            {
+                EventSystem.current.SetSelectedGameObject(SelectIfGamepad.gameObject);
+            }
+        }
     }
     public void DeRegisterInputs()
     {
@@ -124,7 +135,7 @@ public class PauseMenu : MonoBehaviour
             UpdateHuds(false);
             //cutsceneManager.gameObject.SetActive(false);
 
-            EventSystem.current.SetSelectedGameObject(ResumeButton);
+            //EventSystem.current.SetSelectedGameObject(ResumeButton);
 
             gameObject.SetActive(true);
         }
