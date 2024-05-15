@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Windows;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -60,6 +61,7 @@ public class PauseMenu : MonoBehaviour
         //InputManager.Instance.playerInput.UI.CloseMenu.performed -= CloseMenu;
 
     }
+    InputActionAsset asset;
     private void Start()
     {
         isPaused = false;
@@ -82,6 +84,13 @@ public class PauseMenu : MonoBehaviour
             SetPPVol(false);
 
             RegisterInputs();
+        }
+        else //if (!isPauseMenu)
+        {
+            asset = EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset;
+            asset.FindActionMap("Player").Enable();
+            EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("Home").started += YesPresHome;
+            EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("Home").canceled += NoPresHome;
         }
 
     }
@@ -150,10 +159,19 @@ public class PauseMenu : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+    public void YesPresHome(InputAction.CallbackContext context)
+    {
+        isPressingHome = true;
+    }
+    public void NoPresHome(InputAction.CallbackContext context)
+    {
+        isPressingHome = false;
+    }
+    public bool isPressingHome;
     public void LoadScene(int id)
     {
         //REMOVE DEBUG::
-        bool isPressingHome = UnityEngine.Input.GetButton("Home")||UnityEngine.Input.GetKey(KeyCode.JoystickButton12);
+        
         if (id==1&&((UnityEngine.Input.GetKey(KeyCode.LeftControl)&& UnityEngine.Input.GetKey(KeyCode.LeftShift))|| isPressingHome))
         {
             SceneManager.LoadSceneAsync(2);
@@ -161,7 +179,6 @@ public class PauseMenu : MonoBehaviour
         else//
             SceneManager.LoadSceneAsync(id);
     }
-
     public void Quit()
     {
         Application.Quit();
@@ -174,6 +191,11 @@ public class PauseMenu : MonoBehaviour
         if (isPauseMenu&&!hasDeregistered)
         {
             DeRegisterInputs();
+        }
+        if (!isPauseMenu)
+        {
+            asset.FindActionMap("Player").FindAction("Home").started -= YesPresHome;
+            asset.FindActionMap("Player").FindAction("Home").canceled -= NoPresHome;
         }
     }
 }
