@@ -64,6 +64,7 @@ MonoBehaviour:
   offset_drift: {x: 0, y: 0}
   drift_power: 0.1
   respawn_dist: 600
+  respawn_players: 0
   TimePerGravitySample: 0.0075
   SimulationStep: 0
   textureMaps:
@@ -91,7 +92,7 @@ MonoBehaviour:
     Gas: 0
     Ice: 100
     Texture: {fileID: 21300000, guid: 9c0e5dbe1455cf143b9d08b2ee199443, type: 3}
-  - Mass: 0
+  - Mass: 100
     Gas: 0
     Ice: 100
     Texture: {fileID: 21300000, guid: 9c0e5dbe1455cf143b9d08b2ee199443, type: 3}
