@@ -43,6 +43,9 @@ public class PlayerPixelManager : PixelManager
     [Header("Effects")]
     public ParticleSystem StarvationFX;
 
+
+    public GameObject RespawnFX;
+
     [HideInInspector]
     public int PlayerID;
     private bool canEject = true;
@@ -94,7 +97,7 @@ public class PlayerPixelManager : PixelManager
     private void Start()
     {
 
-        gravityManager = GetComponentInParent<GravityManager>();
+        gravityManager =GravityManager.Instance;
 
         gameObject.layer = 8;
         foreach(CameraLook l in CameraLook.camLooks)
@@ -132,7 +135,14 @@ public class PlayerPixelManager : PixelManager
             return (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
         }
     }
-
+    public void RunDeath()
+    {
+        if(RespawnFX!=null&&GravityManager.Instance.respawn_players)
+        {
+          GameObject g=  Instantiate(RespawnFX, transform.position, RespawnFX.transform.rotation, transform.parent);
+            g.GetComponent<PlayerRespawner>().PlayerID = PlayerID;
+        }
+    }
     #region Eject
     private void Eject(InputAction.CallbackContext context)
     {
@@ -185,10 +195,11 @@ public class PlayerPixelManager : PixelManager
             StarvationFX.transform.parent = null;
             StarvationFX.Play();
         }
+        RunDeath();
         CutsceneManager.Instance.PlayerConsumed();
         Destroy(gameObject);
     }
-
+    
     private IEnumerator EjectReset(float duration)
     {
         canEject = false;
