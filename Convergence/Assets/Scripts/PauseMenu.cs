@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Windows;
+using UnityEngine.InputSystem.Controls;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -128,11 +129,15 @@ public class PauseMenu : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
+    private void FixedUpdate()
+    {
+        ;
+    }
     public void LoadScene(int id)
     {
         //REMOVE DEBUG::
-        if(id==1&&UnityEngine.Input.GetKey(KeyCode.LeftControl)&& UnityEngine.Input.GetKey(KeyCode.LeftShift))
+        bool isPressingHome = UnityEngine.Input.GetButton("Home")||UnityEngine.Input.GetKey(KeyCode.JoystickButton12);
+        if (id==1&&((UnityEngine.Input.GetKey(KeyCode.LeftControl)&& UnityEngine.Input.GetKey(KeyCode.LeftShift))|| isPressingHome))
         {
             SceneManager.LoadSceneAsync(2);
         }
