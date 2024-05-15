@@ -204,6 +204,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerHud
       objectReference: {fileID: 0}
+    - target: {fileID: 1480557274498888358, guid: fc455009cb69d0c42b27073e51b2bfb0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1592551207180958582, guid: fc455009cb69d0c42b27073e51b2bfb0, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -884,6 +888,28 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 6024165576097979102, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
   m_PrefabInstance: {fileID: 441338807}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1767557858 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+  m_PrefabInstance: {fileID: 642198869}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f20151d3ced115746820aca41dcab9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1818571628 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1129022335016033778, guid: fc455009cb69d0c42b27073e51b2bfb0, type: 3}
+  m_PrefabInstance: {fileID: 483948134}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c06ffd200947cd4696bef18d931bd97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1955701820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,6 +1048,14 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1254420691966444036, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
+      propertyPath: playerHUD
+      value: 
+      objectReference: {fileID: 1818571628}
+    - target: {fileID: 1254420691966444036, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
+      propertyPath: cutsceneManager
+      value: 
+      objectReference: {fileID: 1767557858}
     - target: {fileID: 1254420691966444036, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
       propertyPath: indicatorManager
       value: 

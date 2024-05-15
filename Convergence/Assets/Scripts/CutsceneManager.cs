@@ -148,7 +148,6 @@ public class CutsceneManager : MonoBehaviour
         }
     }
 
-
     RectTransform lastToast;
     Coroutine loadToast;
 

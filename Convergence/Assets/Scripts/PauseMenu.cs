@@ -25,6 +25,12 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     private GameObject ResumeButton;
 
+    [SerializeField]
+    private PlayerHud playerHUD;
+
+    [SerializeField]
+    private CutsceneManager cutsceneManager;
+
     public void RegisterInputs()
     {
         foreach(InputManager inputManager in InputManager.inputManagers)
@@ -97,6 +103,8 @@ public class PauseMenu : MonoBehaviour
             }
             SetPPVol(true);
             indicatorManager.DisableIndicators();
+            playerHUD.gameObject.SetActive(false);
+            //cutsceneManager.gameObject.SetActive(false);
 
             EventSystem.current.SetSelectedGameObject(ResumeButton);
 
@@ -121,6 +129,8 @@ public class PauseMenu : MonoBehaviour
         }
         SetPPVol(false);
         indicatorManager.EnableIndicators();
+        playerHUD.gameObject.SetActive(true);
+        //cutsceneManager.gameObject.SetActive(true);
 
         gameObject.SetActive(false);
     }   
