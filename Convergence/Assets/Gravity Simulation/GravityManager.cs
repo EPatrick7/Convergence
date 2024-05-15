@@ -151,7 +151,7 @@ public class GravityManager : MonoBehaviour
     bool asyncDone=true; // Whether or not the compute shader is done working
     int NUM_FLOATS=14;
     int NUM_UINTS = 1;
-
+    public static GravityManager Instance;
 
 
 
@@ -199,6 +199,8 @@ public class GravityManager : MonoBehaviour
     public float drift_power;
     [Tooltip("How far from the camera are respawning particles allowed?")]
     public float respawn_dist;
+    [Tooltip("Should players respawn when killed?")]
+    public bool respawn_players;
 
     [Header("Time Managers")]
     [Tooltip("How much physics time should occur between each gravity check.")]
@@ -436,7 +438,7 @@ public class GravityManager : MonoBehaviour
     
     void Start()
     {
-
+        Instance = this;
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
 
         Initialize();

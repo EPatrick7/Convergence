@@ -10036,4 +10036,6 @@ MonoBehaviour:
   Shield: {fileID: 2769585074338307199}
   GasJet: {fileID: 6114046427485457751}
   StarvationFX: {fileID: 8416834171931631731}
+  RespawnFX: {fileID: 8895910584016508920, guid: 982a69039d631c84b8bad23e579822a0, type: 3}
   PlayerID: 0
+  hasDeregistered: 0

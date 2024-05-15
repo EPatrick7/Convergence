@@ -253,7 +253,7 @@ public class PixelManager : MonoBehaviour
 
             if(other.GetComponent<PlayerPixelManager>()!=null)
             {
-
+                other.GetComponent<PlayerPixelManager>().RunDeath();
                 CutsceneManager.Instance.PlayerConsumed();
             }
             Destroy(other.gameObject);
