@@ -548,9 +548,9 @@ public class GravityManager : MonoBehaviour
             if (mass > 5000)
             {
                 targ = LateSun;
-                if (pixel.GetComponent<SpriteRenderer>().sprite != targ)
+                if (pixel.GetComponent<PlayerPixelManager>()!=null && pixel.GetComponent<SpriteRenderer>().sprite != targ)
                 {
-                    CutsceneManager.Instance.IsBlueStar();
+                    CutsceneManager.Instance?.IsBlueStar();
                 }
             }
         }

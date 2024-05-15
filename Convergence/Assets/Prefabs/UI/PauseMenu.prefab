@@ -298,6 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9231662102e90e540a8fe21c94cfccd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectIfGamepad: {fileID: 0}
   buttonColors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -511,7 +512,7 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 1803162911845470972}
+    m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 4747012495308962388}
   m_Transition: 1
   m_Colors:
@@ -720,7 +721,7 @@ MonoBehaviour:
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 4747012495308962388}
-    m_SelectOnRight: {fileID: 6224366942498949833}
+    m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}

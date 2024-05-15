@@ -73,7 +73,7 @@ public class InputManager : MonoBehaviour
             }
         }
         inputManagers.Remove(this);
-        GamePadDetected = false;
+      //  GamePadDetected = false;
 
 
     }

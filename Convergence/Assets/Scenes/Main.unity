@@ -181,11 +181,23 @@ PrefabInstance:
       objectReference: {fileID: 1955701821}
     - target: {fileID: 6884456806515635834, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
       propertyPath: m_DefaultControlScheme
-      value: Mouse
+      value: Gamepad
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884456806515635834, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 6884456806515635834, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
       propertyPath: m_NeverAutoSwitchControlSchemes
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884456806515635834, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionId
+      value: c888e89b-1a78-49f3-8c32-214f0ace421f
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884456806515635834, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionName
+      value: Player/Home[/DualShock4GamepadHID/systemButton]
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -942,7 +954,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
+  m_MoveRepeatRate: 0.25
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: ddfc26cf88f8b8c4e89bac2a46d3294e, type: 3}
   m_PointAction: {fileID: -7873042979995001053, guid: ddfc26cf88f8b8c4e89bac2a46d3294e, type: 3}
