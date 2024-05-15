@@ -182,13 +182,15 @@ public class PauseMenu : MonoBehaviour
     public void LoadScene(int id)
     {
         //REMOVE DEBUG::
-        
-        if (id==1&&((UnityEngine.Input.GetKey(KeyCode.LeftControl)&& UnityEngine.Input.GetKey(KeyCode.LeftShift))|| isPressingHome))
+
+        if (id == 1 && ((UnityEngine.Input.GetKey(KeyCode.LeftControl) && UnityEngine.Input.GetKey(KeyCode.LeftShift)) || isPressingHome))
         {
             SceneManager.LoadSceneAsync(2);
         }
         else//
+        {
             SceneManager.LoadSceneAsync(id);
+        }
     }
     public void Quit()
     {

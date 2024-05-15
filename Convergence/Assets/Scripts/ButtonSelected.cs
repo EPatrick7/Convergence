@@ -14,32 +14,28 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField]
     private float normalScale;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void FixedUpdate()
     {
-        
+        if(pointerOver||(EventSystem.current!=null&&EventSystem.current.currentSelectedGameObject==gameObject))
+        {
+            gameObject.transform.localScale = new Vector3(hoverScale, hoverScale, hoverScale);
+        }
+        else
+        {
+            gameObject.transform.localScale = new Vector3(normalScale, normalScale, normalScale);
+        }
     }
-
-    void Update()
-    {
-
-    }
-
+    bool pointerOver;
     public void OnPointerEnter(PointerEventData eventData)
 	{
-        gameObject.transform.localScale = new Vector3(hoverScale, hoverScale, hoverScale);
+        pointerOver = true;
 	}
 
     public void OnPointerExit(PointerEventData eventData)
 	{
-        gameObject.transform.localScale = new Vector3(normalScale, normalScale, normalScale);
+        pointerOver = false;
 	}
 
-    /*
-    public void OnSelect(BaseEventData eventData)
-	{
-
-	}
-    */
 
 }
