@@ -15,6 +15,7 @@ public class PauseMenu : MonoBehaviour
 {
     public static PauseMenu Instance;
 
+    public static bool isPaused;
     [SerializeField]
     private ColorBlock buttonColors = new ColorBlock();
 
@@ -26,7 +27,7 @@ public class PauseMenu : MonoBehaviour
     private GameObject ResumeButton;
 
     [SerializeField]
-    private PlayerHud playerHUD;
+    private List<PlayerHud> playerHUD;
 
     [SerializeField]
     private CutsceneManager cutsceneManager;
@@ -61,6 +62,7 @@ public class PauseMenu : MonoBehaviour
     }
     private void Start()
     {
+        isPaused = false;
         Instance = this;
         if (isPauseMenu)
         {
@@ -90,12 +92,19 @@ public class PauseMenu : MonoBehaviour
             l.GetComponent<Volume>().enabled = state;
         }
     }
+    private void UpdateHuds(bool state)
+    {
+        foreach(PlayerHud hud in playerHUD)
+        {
+            hud.gameObject.SetActive(state);
+        }
+    }
     private void OpenMenu(InputAction.CallbackContext context)
     {
         if (isPauseMenu)
         {
-
-
+            //CutsceneManager.Instance.ClearToast();
+            isPaused = true;
             foreach (InputManager inputManager in InputManager.inputManagers)
             {
                 inputManager.SetPlayerInput(false);
@@ -103,7 +112,7 @@ public class PauseMenu : MonoBehaviour
             }
             SetPPVol(true);
             indicatorManager.DisableIndicators();
-            playerHUD.gameObject.SetActive(false);
+            UpdateHuds(false);
             //cutsceneManager.gameObject.SetActive(false);
 
             EventSystem.current.SetSelectedGameObject(ResumeButton);
@@ -122,6 +131,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
+        isPaused = false;
         foreach (InputManager inputManager in InputManager.inputManagers)
         {
             inputManager.SetPlayerInput(true);
@@ -129,19 +139,16 @@ public class PauseMenu : MonoBehaviour
         }
         SetPPVol(false);
         indicatorManager.EnableIndicators();
-        playerHUD.gameObject.SetActive(true);
+        UpdateHuds(true);
         //cutsceneManager.gameObject.SetActive(true);
 
         gameObject.SetActive(false);
     }   
     
+
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-    private void FixedUpdate()
-    {
-        ;
     }
     public void LoadScene(int id)
     {
@@ -163,6 +170,7 @@ public class PauseMenu : MonoBehaviour
     public bool hasDeregistered;
     public void OnDestroy()
     {
+        isPaused = false;
         if (isPauseMenu&&!hasDeregistered)
         {
             DeRegisterInputs();

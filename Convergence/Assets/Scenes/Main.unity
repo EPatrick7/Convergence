@@ -1060,6 +1060,14 @@ PrefabInstance:
       propertyPath: indicatorManager
       value: 
       objectReference: {fileID: 878192728}
+    - target: {fileID: 1254420691966444036, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
+      propertyPath: playerHUD.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254420691966444036, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
+      propertyPath: playerHUD.Array.data[0]
+      value: 
+      objectReference: {fileID: 1818571628}
     - target: {fileID: 1803162911845470972, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 3

@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class CutsceneManager : MonoBehaviour
 {
@@ -98,7 +99,21 @@ public class CutsceneManager : MonoBehaviour
     }
     bool noToastRightNow()
     {
-        return lastToast == null&&CinematicBars.notCinematic();
+        return lastToast == null&&CinematicBars.notCinematic() && !PauseMenu.isPaused;
+    }
+    public void ClearToast()
+    {
+        if (lastToast != null)
+        {
+            RectTransform toast=lastToast;
+            lastToast = null;
+
+            taostTween?.Kill();
+            out_taostTween?.Kill();
+            out_taostTween = toast.DOLocalMoveX(1300, 0f);
+            out_taostTween.Play();
+           // UnloadToast(lastToast);
+        }
     }
     public IEnumerator DelayLoad(Cutscene c)
     {
@@ -122,6 +137,7 @@ public class CutsceneManager : MonoBehaviour
         }
     }
     Coroutine lastCutscene;
+    
     public IEnumerator DevolutionCheck()
     {//Ensure the player is devolving not just dead.
 

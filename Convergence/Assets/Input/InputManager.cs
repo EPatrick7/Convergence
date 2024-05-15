@@ -28,11 +28,11 @@ public class InputManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
-
         if (playerInput.currentControlScheme == "Gamepad")
         {
             GamePadDetected = true;
         }
+     //   DeviceCount = playerInput.devices.Count;
     }
     public void SetPlayerInput(bool enabled)
     {
