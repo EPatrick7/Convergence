@@ -153,6 +153,8 @@ public class PlayerPixelManager : PixelManager
         if (cam == null) return;
 
 
+        CutsceneManager.Instance.PlayerEjected();
+        
         Vector2 ejectDirection = MouseDirection();
 
         // Create ejected pixel
@@ -281,6 +283,10 @@ public class PlayerPixelManager : PixelManager
 
                     GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Min(5.5f, Mathf.Max(1, (mass() / 50f)));
 
+                    if (Gas > 0f)
+                    {
+                        CutsceneManager.Instance.PlayerPropelled();
+                    }
                     StartParticles();
                 }
                 streak++;
@@ -303,6 +309,11 @@ public class PlayerPixelManager : PixelManager
 
         if (isShielding) return;
 
+
+        if (Ice > 0f)
+        {
+            CutsceneManager.Instance.PlayerShielded();
+        }
         isShielding = true;
 
         Shield.ShieldUp();

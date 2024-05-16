@@ -49,6 +49,35 @@ public class CutsceneManager : MonoBehaviour
     }
     private bool hasSeenIce;
     private bool hasSeenGas;
+    #region Triggers
+    public void PlayerPaused()
+    {
+        if (lastToast != null && lastToast.gameObject.name == Toast_Death.gameObject.name && (out_taostTween == null || !out_taostTween.IsActive()))
+        {
+            UnloadToast(lastToast);
+        }
+    }
+    public void PlayerEjected()
+    {
+        if(lastToast!=null&&lastToast.gameObject.name== Toast_GameStart.gameObject.name&&!CinematicBars.isCinematic && (out_taostTween==null||!out_taostTween.IsActive()))
+        {
+            UnloadToast(lastToast);
+        }
+    }
+    public void PlayerPropelled()
+    {
+        if (lastToast != null && lastToast.gameObject.name == Toast_FirstGas.gameObject.name && (out_taostTween == null || !out_taostTween.IsActive()))
+        {
+            UnloadToast(lastToast);
+        }
+    }
+    public void PlayerShielded()
+    {
+        if (lastToast != null && lastToast.gameObject.name == Toast_FirstIce.gameObject.name&& (out_taostTween == null || !out_taostTween.IsActive()))
+        {
+            UnloadToast(lastToast);
+        }
+    }
     public void ElementConsumed(PixelManager.ElementType type)
     {
         if(!hasSeenIce&&type==PixelManager.ElementType.Ice)
@@ -65,7 +94,13 @@ public class CutsceneManager : MonoBehaviour
     public void PlayerConsumed()
     {
         LoadCutscene(OnPlayerDeath);
-        LoadToast(4f, Toast_Death);
+        StartCoroutine(DelayToastDeath());
+    }
+    public IEnumerator DelayToastDeath()
+    {
+        ToastQueueFrozen = true;
+        yield return new WaitForSeconds(2);
+        LoadToast(2f, Toast_Death);
     }
     
     public void IsBlueStar()
@@ -88,6 +123,7 @@ public class CutsceneManager : MonoBehaviour
         LoadToast(4f,Toast_GameStart);
         StartCoroutine(ReallyDelayedToast(Toast_GameStartDelayed));
     }
+    #endregion
     public IEnumerator ReallyDelayedToast(RectTransform toast)
     {
         yield return new WaitForSeconds(15);
@@ -100,26 +136,14 @@ public class CutsceneManager : MonoBehaviour
     {
         return lastToast == null&&CinematicBars.notCinematic() && !PauseMenu.isPaused;
     }
-    public void ClearToast()
-    {
-        if (lastToast != null)
-        {
-            RectTransform toast=lastToast;
-            lastToast = null;
-
-            taostTween?.Kill();
-            out_taostTween?.Kill();
-            out_taostTween = toast.DOLocalMoveX(1300, 0f);
-            out_taostTween.Play();
-           // UnloadToast(lastToast);
-        }
-    }
+    //For Cutscenes:
     public IEnumerator DelayLoad(Cutscene c)
     {
         yield return new WaitUntil(CinematicBars.notCinematic);
 
-        if (lastToast != null)
+        if (c!=GameStart&&lastToast != null)
         {
+            //If cutscene isnt the opening cutscene then unload on start.
             UnloadToast(lastToast);
         }
         c.gameObject.SetActive(true);
@@ -168,27 +192,37 @@ public class CutsceneManager : MonoBehaviour
 
     private Tween taostTween;
     private Tween out_taostTween;
+
+    public bool noToastLive()
+    {//Returns true if there is no toast that is not unloading right now.
+        return lastToast == null;
+    }
     public void LoadToast(float launch_delay,RectTransform toast)
     {
         if (mode == LimitStates.None)
             return;
         if (toast == null)
             return;
-        if(loadToast!=null)
-        {
-            StopCoroutine(loadToast);
-        }
+
         if(lastToast!=null)
-        {
-            UnloadToast(lastToast);
-            loadToast=StartCoroutine(DelayLoadToast(Mathf.Max(launch_delay,toast_unload_duration), toast));
+        {//If there is a toast live already then just add this new one to the queue for later.
+            StartCoroutine(ToastQueue(Mathf.Max(launch_delay,toast_unload_duration), toast));
         }
         else
             loadToast = StartCoroutine(DelayLoadToast(launch_delay, toast));
     }
-
+    [HideInInspector]
+    public bool ToastQueueFrozen;
+    public IEnumerator ToastQueue(float delay, RectTransform toast)
+    {
+        yield return new WaitUntil(noToastLive);
+        //Wait until the toast is clear and then run as normal.
+        if(!ToastQueueFrozen||toast==Toast_Death)
+            loadToast = StartCoroutine(DelayLoadToast(delay,toast));
+    }
     public IEnumerator DelayLoadToast(float wait, RectTransform toast)
     {
+        lastToast = toast;
         if(wait > 0)
             yield return new WaitForSeconds(wait);
 
@@ -197,25 +231,42 @@ public class CutsceneManager : MonoBehaviour
             yield return new WaitUntil(CinematicBars.notCinematic);
         }
         //Load Toast
-        lastToast = toast;
         taostTween?.Kill();
         taostTween = toast.DOLocalMoveX(764, toast_unload_duration);
         taostTween.Play();
 
         yield return new WaitForSeconds(toast_duration);
-        UnloadToast(toast);
+        StartCoroutine(DelayUnload(toast));
 
     }
+
     public void UnloadToast(RectTransform toast)
-    {
-        if(lastToast==toast)
+    {//Force unloads the toast right now.
+
+        if (loadToast != null)
         {
-            lastToast = null;
+            taostTween?.Kill();
+            StopCoroutine(loadToast);
         }
+        StartCoroutine(DelayUnload(toast));
+    }
+    public bool NoOutTween()
+    {
+        return out_taostTween == null || !out_taostTween.IsActive();
+    }
+    public IEnumerator DelayUnload(RectTransform toast)
+    {
+        yield return new WaitUntil(NoOutTween);
         //Unload Toast;
         out_taostTween?.Kill();
         out_taostTween = toast.DOLocalMoveX(1300, toast_unload_duration);
         out_taostTween.Play();
+        yield return new WaitForSeconds(toast_unload_duration);
+
+        if (lastToast == toast)
+        {
+            lastToast = null;
+        }
     }
 
 

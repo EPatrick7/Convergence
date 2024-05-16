@@ -49,6 +49,10 @@ public class PauseMenu : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if(isPauseMenu&&isPaused)
+        {
+            CutsceneManager.Instance?.PlayerPaused();
+        }
         if(EventSystem.current != null&& SelectIfGamepad!=null) {
             if(InputManager.GamePadDetected && EventSystem.current.currentSelectedGameObject==null)
             {
@@ -123,7 +127,6 @@ public class PauseMenu : MonoBehaviour
     {
         if (isPauseMenu)
         {
-            //CutsceneManager.Instance.ClearToast();
             isPaused = true;
             foreach (InputManager inputManager in InputManager.inputManagers)
             {
