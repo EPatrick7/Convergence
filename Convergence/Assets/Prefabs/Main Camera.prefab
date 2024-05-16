@@ -218,6 +218,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
+  PlayerId: 0
+  ShouldColorPlayer: 0
+  PlayerColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  RumbleAmount: 0
+  MaxCollisionRumble: 0.24
+  SmallCollisionRumble: 0.1
+  LargeCollisionRumble: 1
+  MicroCollisionRumble: 0.001875
+  MaxAmbientRumble: 0.2
+  SunRumble: 0.015
+  BlackHoleRumble: 0.01
+  ejectRumble: 0.1
+  propelRumble: 0.033
+  respawnRumble: 0.8
+  MaxRumble: 0.5
+  RumbleScalar: 0.15
+  PitchScalar: {x: 0.9, y: 1.1}
 --- !u!114 &6884456806515635834
 MonoBehaviour:
   m_ObjectHideFlags: 0

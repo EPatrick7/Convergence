@@ -263,6 +263,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
+  PlayerId: 0
+  ShouldColorPlayer: 0
+  PlayerColors: []
+  RumbleAmount: 0
 --- !u!1001 &245240962
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
 using UnityEngine.Windows;
 
 [RequireComponent(typeof(PlayerInput))]
@@ -16,6 +17,10 @@ public class InputManager : MonoBehaviour
     [HideInInspector]
     public PlayerInput playerInput;
     public static bool GamePadDetected;
+    [HideInInspector]
+    public int PlayerId;
+    public bool ShouldColorPlayer;
+    public Color[] PlayerColors;
     private void Awake()
     {
         if (inputManagers == null)
@@ -25,9 +30,119 @@ public class InputManager : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         inputManagers.Add(this);
         SetPlayerInput(true);
+
+        Gamepad.current.ResetHaptics();
     }
+    public void SetRumble(float min,float max, Color col)
+    {
+        var dev = playerInput.devices[0];
+        if (dev.GetType().ToString().Contains("Gamepad"))
+        {
+            Gamepad devpad= (Gamepad)dev;
+
+            if (dev.GetType().ToString().Contains("DualShock4"))
+            {
+                DualShock4GamepadHID devshock = (DualShock4GamepadHID)dev;
+                
+                devshock.SetMotorSpeedsAndLightBarColor(min, max, col);
+            }
+            else
+                devpad.SetMotorSpeeds(min, max);
+        }
+    }
+    private void OnApplicationQuit()
+    {
+        SetRumble(0, 0, Color.clear);
+    }
+
+    public void SetRumble(float min,float max)
+    {
+
+        if (ShouldColorPlayer)
+        {
+            SetRumble(min, max, PlayerColors[PlayerId-1]);
+        }
+        else
+            SetRumble(min, max, Color.clear);
+    }
+    public void BonkRumble(bool isLarger,bool isMicroscopic)
+    {
+        //isLarger = true if player just hit something bigger than them.
+        //isMicroscopic=true if player just hit something waay smaller than them.
+        if (isLarger)
+        {
+            RumbleAmount += LargeCollisionRumble;
+        }
+        else if(!isMicroscopic)
+        {
+            LilRumbleContribution += SmallCollisionRumble;
+        }
+        else
+            LilRumbleContribution += MicroCollisionRumble;
+
+    }
+    public void EjectRumble()
+    {
+        RumbleAmount += ejectRumble;
+    }
+    public void AmbientRumble(PixelManager.PlanetType planetType)
+    {
+        if(planetType==PixelManager.PlanetType.Sun)
+        {
+            LilRumbleContribution2 += SunRumble;
+        }
+        else if (planetType == PixelManager.PlanetType.BlackHole)
+        {
+            LilRumbleContribution2 += BlackHoleRumble;
+        }
+    }
+    float LilRumbleContribution;
+    float LilRumbleContribution2;
+
+    public void RespawnRumble()
+    {
+        RumbleAmount += respawnRumble;
+    }
+    public void PropelRumble()
+    {
+
+        RumbleAmount += propelRumble;
+    }
+    public void AddRumble(float amount)
+    {
+        RumbleAmount += amount;
+    }
+    [Header("Rumble (Controller)")]
+    public float RumbleAmount = 0;
+    public float MaxCollisionRumble = 0.2f;
+    public float SmallCollisionRumble = 0.05f;
+    public float LargeCollisionRumble = 1f;
+    public float MicroCollisionRumble = 0;
+
+    public float MaxAmbientRumble = 0.2f;
+    public float SunRumble = 0.02f;
+    public float BlackHoleRumble = 0.01f;
+
+    public float ejectRumble = 0.2f;
+    public float propelRumble = 0.02f;
+
+    public float respawnRumble = 0.05f;
+
+    public float MaxRumble = 10;
+    public float RumbleScalar=1;
+    public Vector2 PitchScalar=Vector2.one;
+
+
     private void FixedUpdate()
     {
+        RumbleAmount += Mathf.Min(LilRumbleContribution, MaxCollisionRumble);
+        RumbleAmount += Mathf.Min(LilRumbleContribution2, MaxAmbientRumble);
+        LilRumbleContribution2 = 0;
+        LilRumbleContribution = 0;
+        RumbleAmount = Mathf.Min(RumbleAmount, MaxRumble);
+        SetRumble(RumbleAmount* PitchScalar.x*RumbleScalar, RumbleAmount*RumbleScalar*PitchScalar.y);
+        RumbleAmount /= 3f;
+
         if (playerInput.currentControlScheme == "Gamepad")
         {
             GamePadDetected = true;
@@ -61,7 +176,8 @@ public class InputManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        if(PauseMenu.Instance!=null&&!PauseMenu.Instance.hasDeregistered)
+        //SetRumble(0, 0, Color.clear);
+        if (PauseMenu.Instance!=null&&!PauseMenu.Instance.hasDeregistered)
         {
             PauseMenu.Instance.DeRegisterInputs();
         }

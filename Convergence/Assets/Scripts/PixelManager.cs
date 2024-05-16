@@ -184,6 +184,11 @@ public class PixelManager : MonoBehaviour
                 }
             }
         }
+
+        if(GetComponent<PlayerPixelManager>()!=null)
+        {
+            GetComponent<PlayerPixelManager>().Ambient();
+        }
     }
 
     //Steals elements from other
@@ -308,7 +313,10 @@ public class PixelManager : MonoBehaviour
             if (other != null && !other.isKilled && !isKilled && GetComponent<Rigidbody2D>() != null)
             {
 
-
+                if(GetComponent<PlayerPixelManager>()!=null)
+                {
+                    GetComponent<PlayerPixelManager>().Bonk(other.mass() > mass(),other.mass()< mass()/20f);
+                }
 
                 if ((other.mass() <= mass() && !((other.ConstantMass&&GetComponent<PlayerPixelManager>()==null)|| (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole)))|| (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole)||(ConstantMass&&other.GetComponent<PlayerPixelManager>()==null))
                 {

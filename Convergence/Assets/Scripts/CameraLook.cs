@@ -15,6 +15,7 @@ public class CameraLook : MonoBehaviour
     private void Start()
     {
         inputManager=GetComponentInChildren<InputManager>();
+        inputManager.PlayerId = PlayerID;
         cam = GetComponent<Camera>();
         if (camLooks == null)
         {

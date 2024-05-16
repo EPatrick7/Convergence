@@ -154,7 +154,8 @@ public class PlayerPixelManager : PixelManager
 
 
         CutsceneManager.Instance.PlayerEjected();
-        
+
+        camLook.inputManager.EjectRumble();
         Vector2 ejectDirection = MouseDirection();
 
         // Create ejected pixel
@@ -287,6 +288,7 @@ public class PlayerPixelManager : PixelManager
                     {
                         CutsceneManager.Instance.PlayerPropelled();
                     }
+                    camLook.inputManager.PropelRumble();
                     StartParticles();
                 }
                 streak++;
@@ -302,6 +304,14 @@ public class PlayerPixelManager : PixelManager
     }
     #endregion
 
+    public void Ambient()
+    {
+        camLook?.inputManager?.AmbientRumble(planetType);
+    }
+    public void Bonk(bool isLarger,bool isMicroscopic)
+    {
+        camLook.inputManager.BonkRumble(isLarger, isMicroscopic);
+    }
     #region Shield
     private void StartShield(InputAction.CallbackContext context)
     {
