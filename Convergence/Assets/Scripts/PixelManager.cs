@@ -315,7 +315,7 @@ public class PixelManager : MonoBehaviour
 
                 if(GetComponent<PlayerPixelManager>()!=null)
                 {
-                    GetComponent<PlayerPixelManager>().Bonk(other.mass() > mass(),other.mass()< mass()/20f);
+                    GetComponent<PlayerPixelManager>().Bonk(other.mass() > mass(),other.mass()< mass()/20f,other.mass()>mass()/2f);
                 }
 
                 if ((other.mass() <= mass() && !((other.ConstantMass&&GetComponent<PlayerPixelManager>()==null)|| (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole)))|| (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole)||(ConstantMass&&other.GetComponent<PlayerPixelManager>()==null))

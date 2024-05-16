@@ -308,9 +308,9 @@ public class PlayerPixelManager : PixelManager
     {
         camLook?.inputManager?.AmbientRumble(planetType);
     }
-    public void Bonk(bool isLarger,bool isMicroscopic)
+    public void Bonk(bool isLarger,bool isMicroscopic,bool isSlightlySmaller)
     {
-        camLook.inputManager.BonkRumble(isLarger, isMicroscopic);
+        camLook.inputManager.BonkRumble(isLarger, isMicroscopic, isSlightlySmaller);
     }
     #region Shield
     private void StartShield(InputAction.CallbackContext context)

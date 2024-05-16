@@ -65,13 +65,17 @@ public class InputManager : MonoBehaviour
         else
             SetRumble(min, max, Color.clear);
     }
-    public void BonkRumble(bool isLarger,bool isMicroscopic)
+    public void BonkRumble(bool isLarger,bool isMicroscopic,bool isSlightlySmaller)
     {
         //isLarger = true if player just hit something bigger than them.
         //isMicroscopic=true if player just hit something waay smaller than them.
         if (isLarger)
         {
             RumbleAmount += LargeCollisionRumble;
+        }
+        else if (isSlightlySmaller)
+        {
+            LilRumbleContribution += MedCollisionRumble;
         }
         else if(!isMicroscopic)
         {
@@ -115,6 +119,7 @@ public class InputManager : MonoBehaviour
     [Header("Rumble (Controller)")]
     public float RumbleAmount = 0;
     public float MaxCollisionRumble = 0.2f;
+    public float MedCollisionRumble = 0.1f;
     public float SmallCollisionRumble = 0.05f;
     public float LargeCollisionRumble = 1f;
     public float MicroCollisionRumble = 0;
