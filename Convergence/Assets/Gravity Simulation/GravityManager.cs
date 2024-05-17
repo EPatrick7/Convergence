@@ -329,6 +329,7 @@ public class GravityManager : MonoBehaviour
         {
             GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform); //INDIC
             bHole.GetComponent<PixelManager>().spawnBhole = true;
+            //bHole.GetComponent<SpriteRenderer>().sortingOrder = 501;
             RegisterBody(bHole, Vector2.zero);
             indicatorManager.AddTargetIndicator(bHole, indicatorManager.bholeTriggerDist, indicatorManager.bholeColor);
         }
@@ -672,9 +673,14 @@ public class GravityManager : MonoBehaviour
                         //Update acceleration of gravity
 
                         UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
-                        
 
-                        gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(Mathf.Min(32767, body.mass));
+                        if (gravUniverse.pixels[i].GetComponent<PixelManager>().spawnBhole == true) //put above cover galaxy particles
+                        {
+                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = 7500;
+                        } else
+						{
+                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(Mathf.Min(32767, body.mass));
+                        }
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(),0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
                     }
