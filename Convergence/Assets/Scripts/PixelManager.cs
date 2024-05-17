@@ -225,6 +225,12 @@ public class PixelManager : MonoBehaviour
         
         if(!ConstantMass)
             GetComponent<Rigidbody2D>().mass += damage;
+
+        if(GetComponent<PlayerPixelManager>()==null&&GetComponent<Rigidbody2D>().mass>GravityManager.Instance.max_npc_mass)
+        {//Cap mass at NPC max.
+            GetComponent<Rigidbody2D>().mass = GravityManager.Instance.max_npc_mass;
+        }
+
         other.GetComponent<Rigidbody2D>().mass -=damage;
         if (GetComponent<PlayerPixelManager>() != null)
         {

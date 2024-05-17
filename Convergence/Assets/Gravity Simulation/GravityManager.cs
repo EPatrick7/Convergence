@@ -202,6 +202,8 @@ public class GravityManager : MonoBehaviour
     public float respawn_dist;
     [Tooltip("Should players respawn when killed?")]
     public bool respawn_players;
+    [Tooltip("The maximum amount of mass npc bodies are allowed to obtain.")]
+    public float max_npc_mass = 10000;
 
     [Header("Time Managers")]
     [Tooltip("How much physics time should occur between each gravity check.")]
