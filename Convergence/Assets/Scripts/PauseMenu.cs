@@ -106,6 +106,10 @@ public class PauseMenu : MonoBehaviour
             asset.FindActionMap("Player").Enable();
             EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("Home").started += YesPresHome;
             EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("Home").canceled += NoPresHome;
+
+            EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("OpenMenu").started += YesPresPause;
+            EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("OpenMenu").canceled += NoPresPause;
+
         }
 
     }
@@ -182,6 +186,17 @@ public class PauseMenu : MonoBehaviour
         isPressingHome = false;
     }
     public bool isPressingHome;
+
+
+    public void YesPresPause(InputAction.CallbackContext context)
+    {
+        isPressingSelect = true;
+    }
+    public void NoPresPause(InputAction.CallbackContext context)
+    {
+        isPressingSelect = false;
+    }
+    private bool isPressingSelect;
     public void LoadScene(int id)
     {
         //REMOVE DEBUG::
@@ -189,6 +204,10 @@ public class PauseMenu : MonoBehaviour
         if (id == 1 && ((UnityEngine.Input.GetKey(KeyCode.LeftControl) && UnityEngine.Input.GetKey(KeyCode.LeftShift)) || isPressingHome))
         {
             SceneManager.LoadSceneAsync(2);
+        }
+        else if (id == 1 && ((UnityEngine.Input.GetKey(KeyCode.LeftControl) && UnityEngine.Input.GetKey(KeyCode.LeftAlt)) || isPressingSelect))
+        {
+            SceneManager.LoadSceneAsync(3);
         }
         else//
         {

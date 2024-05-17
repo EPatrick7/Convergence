@@ -166,7 +166,7 @@ public class GravityManager : MonoBehaviour
     public GameObject Pixel;
     [Tooltip("The Black Hole prefab for spawning")]
     public GameObject BlackHole;
-    [Range(1, 4),Tooltip("Number of player gameobjects to spawn.")]
+    [Range(0, 4),Tooltip("Number of player gameobjects to spawn.")]
     public int PlayerCount;
     [Min(-1), Tooltip("Randomized seed for world gen")]
     public int RandomSeed = -1;
@@ -333,6 +333,30 @@ public class GravityManager : MonoBehaviour
             indicatorManager.AddTargetIndicator(bHole, indicatorManager.bholeTriggerDist, indicatorManager.bholeColor);
         }
 
+        foreach(Transform c in transform) //Load in existing particles.
+        {
+            PixelManager pixel = c.GetComponent<PixelManager>();
+
+            if (pixel != null)
+            {
+                pixel.indicatorManager = indicatorManager;
+                RegisterBody(pixel.gameObject, pixel.GetComponent<Rigidbody2D>().velocity, pixel.elements());
+
+                if (pixel.GetComponent<PlayerPixelManager>() != null)
+                {
+                    pixel.GetComponent<PlayerPixelManager>().PlayerID =1;
+                    foreach (PlayerHud hud in PlayerHud.huds)
+                    {
+                        if (hud.PlayerID == pixel.GetComponent<PlayerPixelManager>().PlayerID)
+                        {
+
+                            hud.Initialize(pixel.GetComponent<PlayerPixelManager>());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         //Spawn and fill arrays with new generated particles
         for (int i = 0; i < SpawnCount; i++)
         {

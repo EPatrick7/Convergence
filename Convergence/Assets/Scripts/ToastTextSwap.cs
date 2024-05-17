@@ -11,16 +11,22 @@ public class ToastTextSwap : MonoBehaviour
     private void Start()
     {
         DefaultText = GetComponent<TextMeshProUGUI>().text;
+        StartCoroutine(DelayedCheck());
     }
-    private void FixedUpdate()
+    public IEnumerator DelayedCheck()
     {
-        if (InputManager.inputManagers.Count > 0 && InputManager.inputManagers[0].playerInput.devices[0].GetType().ToString().Contains("Gamepad"))
+        while (true)
         {
-            GetComponent<TextMeshProUGUI>().text = ToSwapIfGamePad;
-        }
-        else
-        {
-            GetComponent<TextMeshProUGUI>().text = DefaultText;
+            yield return new WaitForSeconds(0.25f);
+
+            if (InputManager.inputManagers.Count > 0 && InputManager.inputManagers[0].playerInput.devices[0].GetType().ToString().Contains("Gamepad"))
+            {
+                GetComponent<TextMeshProUGUI>().text = ToSwapIfGamePad;
+            }
+            else
+            {
+                GetComponent<TextMeshProUGUI>().text = DefaultText;
+            }
         }
     }
 }

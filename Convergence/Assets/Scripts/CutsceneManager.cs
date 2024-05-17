@@ -100,7 +100,8 @@ public class CutsceneManager : MonoBehaviour
     {
         ToastQueueFrozen = true;
         yield return new WaitForSeconds(2);
-        LoadToast(2f, Toast_Death);
+        if(!GravityManager.Instance.respawn_players)
+            LoadToast(2f, Toast_Death);
     }
     
     public void IsBlueStar()
