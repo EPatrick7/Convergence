@@ -589,14 +589,34 @@ public class GravityManager : MonoBehaviour
                     body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
                     body.radius = gravUniverse.pixels[i].GetComponent<PixelManager>().radius();
 
+
+
+
                     //float bestDist= Vector2.Distance(body.pos(), Camera.main.transform.position);
                     //float largSize= (200 + Camera.main.orthographicSize);
                     float bestDist = float.MaxValue;
                     float largSize = float.MinValue;
+                    PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
                     if (CameraLook.camLooks != null)
                     {
                         foreach (CameraLook look in CameraLook.camLooks)
                         {
+
+                            if (this_pixel != null&&this_pixel.GetComponent<PlayerPixelManager>() == null&& look.playerPixelManager!=null)
+                            {
+                                if (look.playerPixelManager.isShielding)
+                                {
+                                    PlayerPixelManager player = look.playerPixelManager;
+                                    //this_pixel
+                                    if (Vector2.Distance(player.transform.position, this_pixel.transform.position)<player.ShieldRadius())
+                                    {
+                                       this_pixel.transform.position=player.transform.position+ (this_pixel.transform.position-player.transform.position).normalized*(player.ShieldRadius()+(this_pixel.transform.lossyScale.x));
+                                    }
+                                }
+                            }
+
+
+
                             float LDist = Vector2.Distance(body.pos(), look.transform.position);
                             float LSize = (200 + look.GetComponent<Camera>().orthographicSize);
 

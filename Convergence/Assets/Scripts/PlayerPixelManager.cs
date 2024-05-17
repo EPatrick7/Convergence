@@ -328,7 +328,14 @@ public class PlayerPixelManager : PixelManager
 
         Shield.ShieldUp();
     }
-
+    public float ShieldRadius()
+    {
+        return Shield.transform.lossyScale.x * Shield.GetComponent<CircleCollider2D>().radius;
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, ShieldRadius());
+    }
     private void CancelShield(InputAction.CallbackContext context)
     {
         if (Shield == null) return;
