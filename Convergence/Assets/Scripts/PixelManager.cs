@@ -43,6 +43,22 @@ public class PixelManager : MonoBehaviour
     [SerializeField]
     private float ice;
 
+    [HideInInspector]
+    public Rigidbody2D rigidBody;
+    [HideInInspector]
+    public PlayerPixelManager playerPixel;
+    [HideInInspector]
+    public bool isPlayer;
+    public void Initialize()
+    {
+        rigidBody = GetComponent<Rigidbody2D>();
+        playerPixel = GetComponent<PlayerPixelManager>();
+        isPlayer = playerPixel != null;
+    }
+    private void Start()
+    {
+        Initialize();
+    }
     public float Ice
     {
         get { return ice; }
@@ -100,15 +116,7 @@ public class PixelManager : MonoBehaviour
     private bool indicating = false;
     public bool spawnBhole = false;
 
-    /*
-    void Start()
-	{
-        if (mass() >= BlackHoleTransition_MassReq &&)
-		{
-            spawnBhole = true;
-		}
-	}
-    */
+
 
     [HideInInspector]
     public float BlackHoleTransition_MassReq=7500;
@@ -127,7 +135,7 @@ public class PixelManager : MonoBehaviour
         {
             if (mass() > BlackHoleTransition_MassReq)
             {
-                if(GetComponent<PlayerPixelManager>() == null)  
+                if(isPlayer)  
                     transform.gameObject.layer = LayerMask.NameToLayer("Black Hole");
 
                 planetType = PlanetType.BlackHole;
@@ -151,9 +159,7 @@ public class PixelManager : MonoBehaviour
                 {
                     indicatorManager.AddTargetIndicator(gameObject, indicatorManager.sunTriggerDist, indicatorManager.sunColor);
                     indicating = true;
-                    //Debug.Log(indicating);
                 }
-                //Debug.Log(indicating);
             }
             else if (mass() < SunTransition_MassReq && indicating)
             {
@@ -173,10 +179,7 @@ public class PixelManager : MonoBehaviour
                 }
                 else if (mass() > 5000)
                 {
-                        indicatorManager.UpdateTargetIndicatorColor(gameObject, indicatorManager.bluesunColor);
-                        // indicatorManager.RemoveTargetIndicator(gameObject);
-                        //indicatorManager.AddTargetIndicator(gameObject, indicatorManager.sunTriggerDist, indicatorManager.bsunColor);
-                    
+                        indicatorManager.UpdateTargetIndicatorColor(gameObject, indicatorManager.bluesunColor);                    
                 }
                 else if (mass() > SunTransition_MassReq)
                 {
@@ -185,10 +188,8 @@ public class PixelManager : MonoBehaviour
             }
         }
 
-        if(GetComponent<PlayerPixelManager>()!=null)
-        {
-            GetComponent<PlayerPixelManager>().Ambient();
-        }
+        playerPixel?.Ambient();
+        
     }
 
     //Steals elements from other
@@ -224,15 +225,15 @@ public class PixelManager : MonoBehaviour
         damage = Mathf.Round(damage * 64) / 64f;
         
         if(!ConstantMass)
-            GetComponent<Rigidbody2D>().mass += damage;
+            rigidBody.mass += damage;
 
-        if(GetComponent<PlayerPixelManager>()==null&&GetComponent<Rigidbody2D>().mass>GravityManager.Instance.max_npc_mass)
+        if(!isPlayer&&rigidBody.mass>GravityManager.Instance.max_npc_mass)
         {//Cap mass at NPC max.
-            GetComponent<Rigidbody2D>().mass = GravityManager.Instance.max_npc_mass;
+            rigidBody.mass = GravityManager.Instance.max_npc_mass;
         }
 
-        other.GetComponent<Rigidbody2D>().mass -=damage;
-        if (GetComponent<PlayerPixelManager>() != null)
+        other.rigidBody.mass -=damage;
+        if (playerPixel != null)
         {
             if (other.Ice > 0 && other.Ice > other.Gas)
             {
@@ -246,11 +247,11 @@ public class PixelManager : MonoBehaviour
             {
                 //If we just consumed the central black hole...
                 ConstantMass = true;
-                other.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
-                GetComponent<Rigidbody2D>().mass += 10000;
-                FindObjectOfType<GravityManager>().drift_power = 100;
-                FindObjectOfType<GravityManager>().DoParticleRespawn = false;
+                other.rigidBody.constraints = RigidbodyConstraints2D.None;
+                rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
+                rigidBody.mass += 10000;
+                GravityManager.Instance.drift_power = 100;
+                GravityManager.Instance.DoParticleRespawn = false;
                 BlackHoleState.RadiusScalar *= 1.3f;
                 CutsceneManager.Instance.BlackHoleConsumed();
             }
@@ -259,12 +260,12 @@ public class PixelManager : MonoBehaviour
         {
             //Floating point artithmetic means we loose some net mass overall here :(
             if(!ConstantMass)
-                GetComponent<Rigidbody2D>().mass += other.mass();
+                rigidBody.mass += other.mass();
             other.isKilled = true;
 
-            if(other.GetComponent<PlayerPixelManager>()!=null)
+            if(other.isPlayer)
             {
-                other.GetComponent<PlayerPixelManager>().RunDeath();
+                other.playerPixel.RunDeath();
                 CutsceneManager.Instance.PlayerConsumed();
             }
             Destroy(other.gameObject);
@@ -308,7 +309,7 @@ public class PixelManager : MonoBehaviour
     }
     public float mass()
     {
-        return GetComponent<Rigidbody2D>().mass+ MassOverride;
+        return rigidBody.mass+ MassOverride;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -316,21 +317,21 @@ public class PixelManager : MonoBehaviour
         if (!isShielding)
         {
             PixelManager other = collision.gameObject.GetComponent<PixelManager>();
-            if (other != null && !other.isKilled && !isKilled && GetComponent<Rigidbody2D>() != null)
+            if (other != null && !other.isKilled && !isKilled && rigidBody != null)
             {
 
-                if(GetComponent<PlayerPixelManager>()!=null)
+                if(isPlayer)
                 {
-                    GetComponent<PlayerPixelManager>().Bonk(other.mass() > mass(),other.mass()< mass()/20f,other.mass()>mass()/2f);
+                    playerPixel.Bonk(other.mass() > mass(),other.mass()< mass()/20f,other.mass()>mass()/2f);
                 }
 
-                if ((other.mass() <= mass() && !((other.ConstantMass&&GetComponent<PlayerPixelManager>()==null)|| (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole)))|| (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole)||(ConstantMass&&other.GetComponent<PlayerPixelManager>()==null))
+                if ((other.mass() <= mass() && !((other.ConstantMass&&playerPixel==null)|| (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole)))|| (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole)||(ConstantMass&&other.playerPixel==null))
                 {
                     Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * StickyFactor);
-                    collision.gameObject.GetComponent<Rigidbody2D>().velocity -= sticky_force;
+                    other.rigidBody.velocity -= sticky_force;
 
                     //   Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * other.StickyFactor);
-                    // GetComponent<Rigidbody2D>().velocity += sticky_force;
+                    // rigidBody.velocity += sticky_force;
 
                     StealMass(other, AbsorptionSpeed);
                     StealElement(other, AbsorptionSpeed, ElementType.Ice);
@@ -343,7 +344,7 @@ public class PixelManager : MonoBehaviour
     /*private void OnCollisionStay2D(Collision2D collision)
     {
         PixelManager other = collision.gameObject.GetComponent<PixelManager>();
-        if (other != null && !other.isKilled && !isKilled && GetComponent<Rigidbody2D>() != null)
+        if (other != null && !other.isKilled && !isKilled && rigidBody != null)
         {
 
 
@@ -354,7 +355,7 @@ public class PixelManager : MonoBehaviour
                 collision.rigidbody.velocity -= sticky_force;
 
              //   Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * other.StickyFactor);
-               // GetComponent<Rigidbody2D>().velocity += sticky_force;
+               // rigidBody.velocity += sticky_force;
 
                 StealMass(other, AbsorptionSpeed);
                 StealElement(other, AbsorptionSpeed, ElementType.Ice);

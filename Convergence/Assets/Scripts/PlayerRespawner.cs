@@ -42,7 +42,7 @@ public class PlayerRespawner : MonoBehaviour
         GravityManager.Instance.RegisterBody(player, Vector2.zero);
         PlayerPixelManager playerPixelManager = player.GetComponent<PlayerPixelManager>();
         playerPixelManager.PlayerID = PlayerID;
-        
+        playerPixelManager.Initialize();
         foreach(PlayerHud hud in PlayerHud.huds)
         {
             if(hud.PlayerID == PlayerID)

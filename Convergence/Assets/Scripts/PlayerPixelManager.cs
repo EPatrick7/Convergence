@@ -60,16 +60,11 @@ public class PlayerPixelManager : PixelManager
     
     public void RegisterInputs()
     {
-        pInput.actions.FindActionMap("Player",true).FindAction("Eject",true).performed+=Eject;
+        pInput.actions.FindActionMap("Player").FindAction("Eject").performed+=Eject;
         pInput.actions.FindActionMap("Player").FindAction("Propel").started += StartPropel;
         pInput.actions.FindActionMap("Player").FindAction("Propel").canceled += CancelPropel;
         pInput.actions.FindActionMap("Player").FindAction("Shield").started += StartShield;
         pInput.actions.FindActionMap("Player").FindAction("Shield").canceled += CancelShield;
-     /*   camLook.inputManager.playerInput.Player.Propel.started += StartPropel;
-        camLook.inputManager.playerInput.Player.Propel.canceled += CancelPropel;
-        camLook.inputManager.playerInput.Player.Shield.started += StartShield;
-        camLook.inputManager.playerInput.Player.Shield.canceled += CancelShield;
-     */
     }
     [HideInInspector]
     public bool hasDeregistered;
@@ -81,13 +76,6 @@ public class PlayerPixelManager : PixelManager
         pInput.actions.FindActionMap("Player").FindAction("Propel").canceled -= CancelPropel;
         pInput.actions.FindActionMap("Player").FindAction("Shield").started -= StartShield;
         pInput.actions.FindActionMap("Player").FindAction("Shield").canceled -= CancelShield;
-        /*
-        camLook.inputManager.playerInput.Player.Eject.performed -= Eject;
-        camLook.inputManager.playerInput.Player.Propel.started -= StartPropel;
-        camLook.inputManager.playerInput.Player.Propel.canceled -= CancelPropel;
-        camLook.inputManager.playerInput.Player.Shield.started -= StartShield;
-        camLook.inputManager.playerInput.Player.Shield.canceled -= CancelShield;
-        */
     }
     public Vector2 MousePos()
     {
@@ -113,8 +101,6 @@ public class PlayerPixelManager : PixelManager
             }
         }
         RegisterInputs();
-        //cam = Camera.main;
-        //cam.GetComponent<CameraLook>().playerPixelManager = this;
     }
     Vector2 lastMousePos=new Vector2(0,-1);
     private Vector2 MouseDirection()
@@ -122,7 +108,6 @@ public class PlayerPixelManager : PixelManager
         Vector2 mousePos = MousePos();
         if (pInput.currentControlScheme == "Gamepad")
         {
-           // Debug.Log(mousePos);
            if(mousePos==Vector2.zero)
             {
                 return lastMousePos;
@@ -167,8 +152,9 @@ public class PlayerPixelManager : PixelManager
         ejectedMass /= Mathf.Min(6, Mathf.Max(1, (mass() / 500f)));
         
 
-        GetComponent<Rigidbody2D>().mass -= ejectedMass;
+        rigidBody.mass -= ejectedMass;
 
+        pixel.GetComponent<PixelManager>().Initialize();
         pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;
         pixel.transform.localScale = Vector3.one * pixel.GetComponent<PixelManager>().radius(ejectedMass);
 
@@ -180,7 +166,7 @@ public class PlayerPixelManager : PixelManager
         {
             force = 0;
         }
-        GetComponent<Rigidbody2D>().velocity += (ejectDirection * force) / mass() * -1 * Mathf.Max(1, (mass() / 600f));
+        rigidBody.velocity += (ejectDirection * force) / mass() * -1 * Mathf.Max(1, (mass() / 600f));
 
         gravityManager.RegisterBody(pixel, (ejectDirection * force) / pixel.GetComponent<PixelManager>().mass());
 
@@ -282,7 +268,7 @@ public class PlayerPixelManager : PixelManager
                     float propulsionForce = expendedGas * PropulsionForceScale;
 
 
-                    GetComponent<Rigidbody2D>().velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Min(5.5f, Mathf.Max(1, (mass() / 50f)));
+                    rigidBody.velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Min(5.5f, Mathf.Max(1, (mass() / 50f)));
 
                     if (Gas > 0f)
                     {
@@ -332,10 +318,12 @@ public class PlayerPixelManager : PixelManager
     {
         return Shield.transform.lossyScale.x * Shield.GetComponent<CircleCollider2D>().radius;
     }
+    /*
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, ShieldRadius());
     }
+    */
     private void CancelShield(InputAction.CallbackContext context)
     {
         if (Shield == null) return;

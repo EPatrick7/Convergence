@@ -139,7 +139,7 @@ public class TargetIndicator : MonoBehaviour
             tempCol.a = Mathf.Lerp(tempCol.a, 0f, timeElapsed / fadeOutDuration);
             offscreenTargetIndicatorImage.color = tempCol;
          //   Debug.Log(tempCol.a);
-            timeElapsed += Time.deltaTime;
+            timeElapsed += Time.fixedDeltaTime;
 		} else
 		{
             gameObject.SetActive(false);
@@ -154,7 +154,7 @@ public class TargetIndicator : MonoBehaviour
 		{
             tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, timeElapsed / lerpDuration); //lerp to maxIndicatorAlpha before setting accurately for smooth fade in
             offscreenTargetIndicatorImage.color = tempCol;
-            timeElapsed += Time.deltaTime;
+            timeElapsed += Time.fixedDeltaTime;
 		} else
 		{
             spawned = true;

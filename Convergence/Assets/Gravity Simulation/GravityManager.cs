@@ -465,6 +465,7 @@ public class GravityManager : MonoBehaviour
 
         pixel.Ice = elements.x;
         pixel.Gas = elements.y;
+        pixel.Initialize();
 
         CarefulAddBody(g, velocity);
         //gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
@@ -479,6 +480,7 @@ public class GravityManager : MonoBehaviour
         pixel.SunTransition_MassReq = SunTransition_MassReq;
         pixel.SunTransition_GasReq = SunTransition_GasReq;
         pixel.BlackHoleTransition_MassReq = BlackHoleTransition_MassReq;
+        pixel.Initialize();
         CarefulAddBody(g, velocity);
         //gravUniverse.AddBody(g,velocity,g.GetComponent<Rigidbody2D>().mass);
         
