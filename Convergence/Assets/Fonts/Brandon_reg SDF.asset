@@ -148,6 +148,21 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
+  - m_Index: 48
+    m_Metrics:
+      m_Width: 68.765625
+      m_Height: 64.8125
+      m_HorizontalBearingX: 4.40625
+      m_HorizontalBearingY: 63.90625
+      m_HorizontalAdvance: 77.578125
+    m_GlyphRect:
+      m_X: 222
+      m_Y: 177
+      m_Width: 70
+      m_Height: 65
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 49
     m_Metrics:
       m_Width: 51.296875
@@ -343,6 +358,21 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
+  - m_Index: 81
+    m_Metrics:
+      m_Width: 32.21875
+      m_Height: 36.90625
+      m_HorizontalBearingX: 6.390625
+      m_HorizontalBearingY: 36.90625
+      m_HorizontalAdvance: 44.546875
+    m_GlyphRect:
+      m_X: 131
+      m_Y: 260
+      m_Width: 33
+      m_Height: 37
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 85
     m_Metrics:
       m_Width: 23.671875
@@ -418,36 +448,6 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-  - m_Index: 48
-    m_Metrics:
-      m_Width: 68.765625
-      m_Height: 64.8125
-      m_HorizontalBearingX: 4.40625
-      m_HorizontalBearingY: 63.90625
-      m_HorizontalAdvance: 77.578125
-    m_GlyphRect:
-      m_X: 222
-      m_Y: 177
-      m_Width: 70
-      m_Height: 65
-    m_Scale: 1
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-  - m_Index: 81
-    m_Metrics:
-      m_Width: 32.21875
-      m_Height: 36.90625
-      m_HorizontalBearingX: 6.390625
-      m_HorizontalBearingY: 36.90625
-      m_HorizontalAdvance: 44.546875
-    m_GlyphRect:
-      m_X: 131
-      m_Y: 260
-      m_Width: 33
-      m_Height: 37
-    m_Scale: 1
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
   m_CharacterTable:
   - m_ElementType: 1
     m_Unicode: 32
@@ -476,6 +476,10 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 71
     m_GlyphIndex: 42
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 77
+    m_GlyphIndex: 48
     m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 78
@@ -530,6 +534,10 @@ MonoBehaviour:
     m_GlyphIndex: 80
     m_Scale: 1
   - m_ElementType: 1
+    m_Unicode: 110
+    m_GlyphIndex: 81
+    m_Scale: 1
+  - m_ElementType: 1
     m_Unicode: 114
     m_GlyphIndex: 85
     m_Scale: 1
@@ -548,14 +556,6 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 8230
     m_GlyphIndex: 340
-    m_Scale: 1
-  - m_ElementType: 1
-    m_Unicode: 77
-    m_GlyphIndex: 48
-    m_Scale: 1
-  - m_ElementType: 1
-    m_Unicode: 110
-    m_GlyphIndex: 81
     m_Scale: 1
   m_AtlasTextures:
   - {fileID: 4113494473309482984}
@@ -903,7 +903,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Brandon_reg Atlas Material
-  m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9b18bb4b8cc215a4592f0a03d501e878, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

@@ -11,6 +11,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Windows;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.UI;
+using DG.Tweening;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -120,6 +121,27 @@ public class PauseMenu : MonoBehaviour
             l.GetComponent<Volume>().enabled = state;
         }
     }
+
+    public void FadeInPPVol()
+	{
+        foreach (CameraLook l in CameraLook.camLooks)
+        {
+            l.GetComponent<Volume>().enabled = true;
+            l.GetComponent<Volume>().weight = 0;
+            DOTween.To(()=> l.GetComponent<Volume>().weight, x=> l.GetComponent<Volume>().weight = x, 1, .25f);
+        }
+    }
+
+    public void FadeOutPPVol()
+	{
+        foreach (CameraLook l in CameraLook.camLooks)
+        {
+            l.GetComponent<Volume>().weight = 1;
+            var fadeout = DOTween.To(() => l.GetComponent<Volume>().weight, x => l.GetComponent<Volume>().weight = x, 0, .25f);
+            fadeout.OnComplete(()=>SetPPVol(false));
+        }
+    }
+
     private void UpdateHuds(bool state)
     {
         foreach(PlayerHud hud in playerHUD)
@@ -137,7 +159,8 @@ public class PauseMenu : MonoBehaviour
                 inputManager.SetPlayerInput(false);
                 inputManager.SetUIInput(true);
             }
-            SetPPVol(true);
+            //SetPPVol(true);
+            FadeInPPVol();
             indicatorManager.DisableIndicators();
             UpdateHuds(false);
             //cutsceneManager.gameObject.SetActive(false);
@@ -164,7 +187,8 @@ public class PauseMenu : MonoBehaviour
             inputManager.SetPlayerInput(true);
             inputManager.SetUIInput(false);
         }
-        SetPPVol(false);
+        //SetPPVol(false);
+        FadeOutPPVol();
         indicatorManager.EnableIndicators();
         UpdateHuds(true);
         //cutsceneManager.gameObject.SetActive(true);
