@@ -31,7 +31,10 @@ public class InputManager : MonoBehaviour
         inputManagers.Add(this);
         SetPlayerInput(true);
 
-        Gamepad.current.ResetHaptics();
+        if (GamePadDetected)
+        {
+            Gamepad.current.ResetHaptics();
+        }
     }
     public void SetRumble(float min,float max, Color col)
     {

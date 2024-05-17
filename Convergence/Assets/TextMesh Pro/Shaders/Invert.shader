@@ -1,6 +1,7 @@
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
 Shader "TextMeshPro/Distance Field Invert" {
+
 Properties
     {
         _Color ("Tint Color", Color) = (1,1,1,1)
