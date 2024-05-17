@@ -127,8 +127,11 @@ public class CutsceneManager : MonoBehaviour
     #endregion
     public IEnumerator ReallyDelayedToast(RectTransform toast)
     {
-        yield return new WaitForSeconds(15);
-        yield return new WaitUntil(noToastRightNow);
+        if (mode != LimitStates.OnlyToasts)
+        {
+            yield return new WaitForSeconds(15);
+            yield return new WaitUntil(noToastRightNow);
+        }
         yield return new WaitForSeconds(2);
         yield return new WaitUntil(noToastRightNow);
         LoadToast(1,toast);
