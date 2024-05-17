@@ -6,17 +6,21 @@ using UnityEngine;
 public class ToastTextSwap : MonoBehaviour
 {
     public string ToSwapIfGamePad;
+    [HideInInspector]
+    public string DefaultText;
     private void Start()
     {
-        StartCoroutine(DelayedCheck());
+        DefaultText = GetComponent<TextMeshProUGUI>().text;
     }
-    public IEnumerator DelayedCheck()
+    private void FixedUpdate()
     {
-        yield return new WaitForSeconds(1);
-        
-        if (InputManager.GamePadDetected)
+        if (InputManager.inputManagers.Count > 0 && InputManager.inputManagers[0].playerInput.devices[0].GetType().ToString().Contains("Gamepad"))
         {
             GetComponent<TextMeshProUGUI>().text = ToSwapIfGamePad;
+        }
+        else
+        {
+            GetComponent<TextMeshProUGUI>().text = DefaultText;
         }
     }
 }
