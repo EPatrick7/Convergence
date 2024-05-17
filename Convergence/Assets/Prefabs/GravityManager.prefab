@@ -65,6 +65,7 @@ MonoBehaviour:
   drift_power: 0.1
   respawn_dist: 600
   respawn_players: 0
+  max_npc_mass: 10000
   TimePerGravitySample: 0.0075
   SimulationStep: 0
   textureMaps:
@@ -99,27 +100,27 @@ MonoBehaviour:
   - Mass: 33
     Gas: 0
     Ice: 33
-    Texture: {fileID: 21300000, guid: bfee9d7e205f98f40a9eb86ecdfa0c58, type: 3}
+    Texture: {fileID: 21300000, guid: 34781ca1254476846be2d03e8c2d1ac7, type: 3}
   - Mass: 66
     Gas: 0
     Ice: 66
-    Texture: {fileID: 21300000, guid: 9fc76a8d71943bc46af61ac7993ae8d5, type: 3}
+    Texture: {fileID: 21300000, guid: 4cf693a0ec9725d488930703c343cc85, type: 3}
   - Mass: 33
     Gas: 33
     Ice: 0
-    Texture: {fileID: 21300000, guid: 5280b33f3e843d545bdaf36ed0095524, type: 3}
+    Texture: {fileID: 21300000, guid: 3ced3ce39125640478a611f4dca57f33, type: 3}
   - Mass: 66
     Gas: 66
     Ice: 0
-    Texture: {fileID: 21300000, guid: 3d8e3f705fda40f4caca4591010508a0, type: 3}
+    Texture: {fileID: 21300000, guid: b52d27cf60ca3cd47ad5cd952b331436, type: 3}
   - Mass: 0
     Gas: 33
     Ice: 33
-    Texture: {fileID: 21300000, guid: 291b802ae5d147f46aec48e7fb3b0f94, type: 3}
+    Texture: {fileID: 21300000, guid: 2277e4c124149294aa6f5b8b5acd739e, type: 3}
   - Mass: 0
     Gas: 66
     Ice: 66
-    Texture: {fileID: 21300000, guid: e61f1a6bb1b302a42bf77f3d68216e5f, type: 3}
+    Texture: {fileID: 21300000, guid: 10e1616a8afbfd643a60db3f2f32b03a, type: 3}
   None: {fileID: 21300000, guid: cf80fdac6ce0080438129ef6f2afbacc, type: 3}
   Sun: {fileID: 21300000, guid: 01963a1f89ee9b3408624a878fc3a7b9, type: 3}
   LateSun: {fileID: 21300000, guid: 94a70502692e8f444bc5621af488a0db, type: 3}
@@ -127,3 +128,7 @@ MonoBehaviour:
   SunTransition_GasReq: 1000
   BlackHoleTransition_MassReq: 7500
   indicatorManager: {fileID: 0}
+  PlayerGoodiesCount: 15
+  Close_PlayerGoodiesCount: 3
+  CloseGoodiesRange: {x: 40, y: 60}
+  GoodiesRange: {x: 40, y: 175}
