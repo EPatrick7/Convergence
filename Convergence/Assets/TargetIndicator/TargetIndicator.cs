@@ -215,23 +215,53 @@ public class TargetIndicator : MonoBehaviour
     private Vector3 OutOfRangeIndicatorPosB(Vector3 indicatorPos)
 	{
         indicatorPos.z = 0f;
+        float offset = outOfSightOffset;
 
         Vector3 canvasCenter = new Vector3(canvasRect.rect.width / 2f, canvasRect.rect.height / 2f, 0f) * canvasRect.localScale.x; //calc center of canvas, scaled
         indicatorPos -= canvasCenter; //subtract from indicatorPos to get pos from origin
 
-        float divX = (canvasRect.rect.width / 2f - outOfSightOffset) / Mathf.Abs(indicatorPos.x); //calc if vector to target intersects w/ border of canvas rect (off screen)
-        float divY = (canvasRect.rect.height / 2f - outOfSightOffset) / Mathf.Abs(indicatorPos.y);
+
+        //Debug.Log(Vector3.Distance(indicatorPos, canvasCenter));
+
+        /*
+        if (Vector3.Distance(indicatorPos, canvasCenter) > (canvasRect.rect.width * .975) * canvasRect.localScale.x)
+		{
+            offset = -500;
+		}
+        */
+
+        //Debug.Log(offset);
+
+        /*
+        if (indicatorPos.y > (canvasRect.rect.height * .95) * canvasRect.localScale.y) //if on top of screen
+		{
+            if (indicatorPos.x < (canvasRect.rect.width * .05) * canvasRect.localScale.x || indicatorPos.x > (canvasRect.rect.width * .95) * canvasRect.localScale.x) //top left or right corner
+            {
+                offset = -500;
+            }
+        } else if (indicatorPos.y < (canvasRect.rect.height * .05) * canvasRect.localScale.y) //if on bottom of screen
+		{
+            if (indicatorPos.x < (canvasRect.rect.width * .05) * canvasRect.localScale.x || indicatorPos.x > (canvasRect.rect.width * .95) * canvasRect.localScale.x) //bottom left or right corner
+            {
+                offset = -500;
+            }
+        }
+        */
+
+
+        float divX = (canvasRect.rect.width / 2f - offset) / Mathf.Abs(indicatorPos.x); //calc if vector to target intersects w/ border of canvas rect (off screen)
+        float divY = (canvasRect.rect.height / 2f - offset) / Mathf.Abs(indicatorPos.y);
 
         if (divX < divY) //if intersects w/ x border first, put x to border and THEN adjust y
 		{
             float angle = Vector3.SignedAngle(Vector3.right, indicatorPos, Vector3.forward);
-            indicatorPos.x = Mathf.Sign(indicatorPos.x) * (canvasRect.rect.width / 2f - outOfSightOffset) * canvasRect.localScale.x; //max to border
+            indicatorPos.x = Mathf.Sign(indicatorPos.x) * (canvasRect.rect.width / 2f - offset) * canvasRect.localScale.x; //max to border
             indicatorPos.y = Mathf.Tan(Mathf.Deg2Rad * angle) * indicatorPos.x; //find hypotenuse of angle to target and angle to border, providing y pos translated to x on border
 		}
         else
 		{
             float angle = Vector3.SignedAngle(Vector3.up, indicatorPos, Vector3.forward);
-            indicatorPos.y = Mathf.Sign(indicatorPos.y) * (canvasRect.rect.height / 2f - outOfSightOffset) * canvasRect.localScale.y;
+            indicatorPos.y = Mathf.Sign(indicatorPos.y) * (canvasRect.rect.height / 2f - offset) * canvasRect.localScale.y;
             indicatorPos.x = -Mathf.Tan(Mathf.Deg2Rad * angle) * indicatorPos.y;
 		}
 

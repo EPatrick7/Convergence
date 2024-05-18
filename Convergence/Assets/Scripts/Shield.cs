@@ -24,6 +24,8 @@ public class Shield : MonoBehaviour
 
     private SpriteRenderer sprite;
 
+    private ParticleSystem objPS;
+
     private Tween tween;
 
     private void Awake()
@@ -33,6 +35,9 @@ public class Shield : MonoBehaviour
         col = GetComponentInParent<Collider2D>();
 
         Enabled(false);
+
+        objPS = GetComponentInChildren<ParticleSystem>();
+        objPS.gameObject.SetActive(false);
 
         sprite = GetComponent<SpriteRenderer>();
 
@@ -47,11 +52,19 @@ public class Shield : MonoBehaviour
 
         if (pixel.Ice < 1.0f) return;
 
+        if (objPS != null)
+		{
+            sprite.sortingOrder = pixel.GetComponent<SpriteRenderer>().sortingOrder + 1;
+            objPS.gameObject.SetActive(true);
+		}
+
+        
         tween?.Kill();
 
         tween = DOTween.To(() => sprite.color, x => sprite.color = x, activeColor, ShieldDelay);
         tween.OnComplete(ShieldUpOnComplete);
         tween.Play();
+        
     }
 
     private void ShieldUpOnComplete()
@@ -67,12 +80,18 @@ public class Shield : MonoBehaviour
 
         if (sprite == null) return;
 
+        if (objPS != null)
+		{
+            objPS.gameObject.SetActive(false);
+		}
+        
         tween?.Kill();
 
         tween = DOTween.To(() => sprite.color, x => sprite.color = x, inactiveColor, ShieldDelay);
         tween.OnComplete(ShieldDownOnComplete);
 
         tween.Play();
+        
     }
 
     private void ShieldDownOnComplete()
