@@ -39,10 +39,12 @@ public class TargetIndicator : MonoBehaviour
     private float valueToLerp;
     private bool spawned = false;
 
+
     // Start is called before the first frame update
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        
     }
     private void FixedUpdate()
     {
@@ -96,7 +98,8 @@ public class TargetIndicator : MonoBehaviour
         }
         else
         {
-            SetIndicatorPosition();
+            //SetIndicatorPosition();
+            //rectTransform.position = camera.WorldToViewportPoint(target.transform.position);
             SetIndicatorAlpha();
         }
         //Adjust distance display
@@ -105,14 +108,21 @@ public class TargetIndicator : MonoBehaviour
 
     protected void SetIndicatorPosition()
     {
-        Vector3 indicatorPos = camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
+        Vector3 indicatorPos = camera.WorldToViewportPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
 
         //if target in front of camera and within bounds of frustum
         if (indicatorPos.z >= 0f && indicatorPos.x <= canvasRect.rect.width * canvasRect.localScale.x && indicatorPos.y <= canvasRect.rect.height * canvasRect.localScale.x && indicatorPos.x >= 0f && indicatorPos.y >= 0f)
 		{
             indicatorPos.z = 0f; //set z to 0, since 2D
             targetOutOfSight(false, indicatorPos); //target is in sight
-		} 
+		}
+        else
+        {
+            indicatorPos *= -1f;
+            indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
+            targetOutOfSight(true, indicatorPos);
+        }
+        /*
         else if (indicatorPos.z >= 0f)
 		{
             indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
@@ -124,6 +134,7 @@ public class TargetIndicator : MonoBehaviour
             indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
             targetOutOfSight(true, indicatorPos);
 		}
+        */
 
         rectTransform.position = indicatorPos;
 
