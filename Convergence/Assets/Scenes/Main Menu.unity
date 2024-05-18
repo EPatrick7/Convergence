@@ -21068,6 +21068,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
+      propertyPath: Scale
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: coverNum
       value: 2
       objectReference: {fileID: 0}

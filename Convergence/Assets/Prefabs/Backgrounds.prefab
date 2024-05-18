@@ -56,14 +56,14 @@ MonoBehaviour:
   coverSpread: 100
   Scale: 25
   coverScale: 10
-  StartSpeed: {x: 0, y: 0}
+  StartSpeed: {x: 0, y: 2}
   objColor:
   - {r: 0, g: 0.43849897, b: 1, a: 0}
   - {r: 1, g: 0.19209038, b: 0, a: 0}
   - {r: 0.15619439, g: 0.735849, b: 0.3066391, a: 0}
   coverColor:
   - {r: 0.26666668, g: 0.10980392, b: 0.62352943, a: 0}
-  - {r: 1, g: 0.7529412, b: 0, a: 0}
+  - {r: 0.9601511, g: 1, b: 0, a: 0}
   - {r: 0.11488495, g: 0.8, b: 0, a: 0}
 --- !u!1 &6421987038770633400
 GameObject:
