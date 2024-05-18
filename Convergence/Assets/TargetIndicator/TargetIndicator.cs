@@ -137,7 +137,7 @@ public class TargetIndicator : MonoBehaviour
 	{
         ///  Debug.Log(timeElapsed);
 
-        /*
+        
         var tempCol = offscreenTargetIndicatorImage.color;
         if (timeElapsed < fadeOutDuration)
 		{
@@ -147,11 +147,10 @@ public class TargetIndicator : MonoBehaviour
             timeElapsed += Time.fixedDeltaTime;
 		} else
 		{
-            gameObject.SetActive(false);
+            Deactivate();
 		}
-        */
-        var fade = offscreenTargetIndicatorImage.material.DOFade(0f, 1);
-        fade.OnComplete(Deactivate);
+        //var fade = offscreenTargetIndicatorImage.material.DOFade(0f, 1);
+       // fade.OnComplete(Deactivate);
         
 	}
 
