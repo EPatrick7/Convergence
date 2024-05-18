@@ -239,6 +239,10 @@ public class GravityManager : MonoBehaviour
     [Tooltip("IndicatorManager object that creates indicators per target")]
     public IndicatorManager indicatorManager;
 
+    public const int playerCount = 2;
+    //private List<IndicatorManager> indManagers = new List<IndicatorManager>();
+    private IndicatorManager[] indManagers = new IndicatorManager[playerCount];
+
     [Header("Player Buffs")]
     [Tooltip("How many planets will be spawned in the radius around a player.")]
     public int PlayerGoodiesCount=15;
@@ -325,13 +329,19 @@ public class GravityManager : MonoBehaviour
 
         UnityEngine.Random.InitState(RandomSeed);
         gravUniverse = new GravUniverse();
+
+        indManagers = FindObjectsOfType<IndicatorManager>();
+
         if (BlackHole!=null)
         {
             GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform); //INDIC
             bHole.GetComponent<PixelManager>().spawnBhole = true;
             //bHole.GetComponent<SpriteRenderer>().sortingOrder = 501;
             RegisterBody(bHole, Vector2.zero);
-            indicatorManager.AddTargetIndicator(bHole, indicatorManager.bholeTriggerDist, indicatorManager.bholeColor);
+            for (var i = 0; i < indManagers.Length; i++)
+			{
+                indManagers[i].AddTargetIndicator(bHole, indManagers[i].bholeTriggerDist, indManagers[i].bholeColor);
+            }
         }
 
         foreach(Transform c in transform) //Load in existing particles.
@@ -340,7 +350,7 @@ public class GravityManager : MonoBehaviour
 
             if (pixel != null)
             {
-                pixel.indicatorManager = indicatorManager;
+                //pixel.indManagers = indManagers;
                 RegisterBody(pixel.gameObject, pixel.GetComponent<Rigidbody2D>().velocity, pixel.elements());
 
                 if (pixel.GetComponent<PlayerPixelManager>() != null)
@@ -389,13 +399,13 @@ public class GravityManager : MonoBehaviour
             if (InitRandomElementComposition>0)
             {
                 GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
-                pixel.GetComponent<PixelManager>().indicatorManager = indicatorManager; //INDIC
+                //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
                 RegisterBody(pixel, sharedVelocity, elements);
             }
             else
             {
                 GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
-                pixel.GetComponent<PixelManager>().indicatorManager = indicatorManager; //INDIC
+                //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
                 RegisterBody(pixel, sharedVelocity);
             }
 
@@ -463,7 +473,7 @@ public class GravityManager : MonoBehaviour
 
                     GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0) + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
                     pixel.GetComponent<Rigidbody2D>().mass /= mass_mult;
-                    pixel.GetComponent<PixelManager>().indicatorManager = indicatorManager; //INDIC
+                    //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
                     RegisterBody(pixel, sharedVelocity, elements);
 
                 }
