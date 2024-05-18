@@ -155,7 +155,7 @@ public class GravityManager : MonoBehaviour
     public static GravityManager Instance;
 
 
-
+    public static PlayerPixelManager GameWinner;
 
     [Header("Init")]
     [Tooltip("If true then we will not spawn player.")]
@@ -202,6 +202,8 @@ public class GravityManager : MonoBehaviour
     public float respawn_dist;
     [Tooltip("Should players respawn when killed?")]
     public bool respawn_players;
+    [Tooltip("Should players respawn at random locations?")]
+    public bool random_respawn_players=true;
     [Tooltip("The maximum amount of mass npc bodies are allowed to obtain.")]
     public float max_npc_mass = 10000;
 
@@ -487,6 +489,15 @@ public class GravityManager : MonoBehaviour
         }
         Initialized?.Invoke();
     }
+    public Vector2 RespawnPos()
+    {
+        Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
+        if (playerLoc.sqrMagnitude <= InnerSpawnRadius * InnerSpawnRadius)
+        {
+            playerLoc = playerLoc.normalized * (SpawnRadius);
+        }
+        return playerLoc;
+    }
     public Vector2 OrbitalVector(Vector2 loc)
     {
         return (Vector2)Vector3.Cross(new Vector3(loc.x, loc.y, 0), new Vector3(loc.x, loc.y, 1)) * -InitOrbitScale*Mathf.Log10(Vector2.Distance(Vector2.zero,loc)/100f);
@@ -538,6 +549,7 @@ public class GravityManager : MonoBehaviour
     
     void Start()
     {
+        GameWinner = null;
         Instance = this;
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
 
@@ -630,12 +642,24 @@ public class GravityManager : MonoBehaviour
 
 
 
+                    PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
 
                     //float bestDist= Vector2.Distance(body.pos(), Camera.main.transform.position);
                     //float largSize= (200 + Camera.main.orthographicSize);
+
+                    if(PlayerRespawner.playerRespawners!=null&&this_pixel!=null)
+                    {
+                        foreach(PlayerRespawner respawner in PlayerRespawner.playerRespawners)
+                        {
+                            if(respawner!=null && !respawner.LerpNow && Vector2.Distance(this_pixel.transform.position,respawner.transform.position) < this_pixel.transform.localScale.x*1.2f)
+                            {
+                                respawner.transform.position = RespawnPos();
+                            }
+                        }
+                    }
+
                     float bestDist = float.MaxValue;
                     float largSize = float.MinValue;
-                    PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
                     if (CameraLook.camLooks != null)
                     {
                         foreach (CameraLook look in CameraLook.camLooks)

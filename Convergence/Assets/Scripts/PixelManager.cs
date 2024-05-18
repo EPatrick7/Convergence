@@ -267,6 +267,8 @@ public class PixelManager : MonoBehaviour
                 rigidBody.mass += 10000;
                 GravityManager.Instance.drift_power = 100;
                 GravityManager.Instance.DoParticleRespawn = false;
+                GravityManager.Instance.respawn_players = false;
+                GravityManager.GameWinner = playerPixel;
                 BlackHoleState.RadiusScalar *= 1.3f;
                 CutsceneManager.Instance.BlackHoleConsumed();
             }

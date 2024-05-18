@@ -2148,6 +2148,10 @@ PrefabInstance:
       propertyPath: indicatorManager
       value: 
       objectReference: {fileID: 878192728}
+    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+      propertyPath: random_respawn_players
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1649820373411464530, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: m_Name
       value: GravityManager
