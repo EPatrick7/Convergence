@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 4663679174155961175, guid: 9311617b76dd8d049b198314d66ddeb5, type: 3}
   coverPrefab: {fileID: 4663679174155961175, guid: 780f83ff75ac92246b5f3a3917f2b288, type: 3}
-  objMin: 15
-  objMax: 30
+  objMin: 10
+  objMax: 20
   coverNum: 3
   spawnRadius: 1000
   alphaVal: 0.05
@@ -58,12 +58,12 @@ MonoBehaviour:
   coverScale: 10
   StartSpeed: {x: 0, y: 2}
   objColor:
-  - {r: 0, g: 0.43849897, b: 1, a: 0}
+  - {r: 0, g: 0.43921566, b: 1, a: 0}
   - {r: 1, g: 0.19209038, b: 0, a: 0}
-  - {r: 0.15619439, g: 0.735849, b: 0.3066391, a: 0}
+  - {r: 0.13830544, g: 0.7924528, b: 0.30626222, a: 0}
   coverColor:
   - {r: 0.26666668, g: 0.10980392, b: 0.62352943, a: 0}
-  - {r: 0.9601511, g: 1, b: 0, a: 0}
+  - {r: 1, g: 0.58431375, b: 0, a: 0}
   - {r: 0.11488495, g: 0.8, b: 0, a: 0}
 --- !u!1 &6421987038770633400
 GameObject:
