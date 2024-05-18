@@ -36,6 +36,16 @@ public class InputManager : MonoBehaviour
             Gamepad.current.ResetHaptics();
         }
     }
+
+    public static InputManager GetManager(int id)
+    {
+        if (inputManagers == null || inputManagers.Count <= 0) return null;
+
+        foreach (InputManager manager in inputManagers)
+            if (manager.PlayerId == id) return manager;
+
+        return null;
+    }
     public void SetRumble(float min,float max, Color col)
     {
         var dev = playerInput.devices[0];

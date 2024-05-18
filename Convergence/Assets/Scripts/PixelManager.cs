@@ -265,8 +265,8 @@ public class PixelManager : MonoBehaviour
 
             if(other.isPlayer)
             {
-                other.playerPixel.RunDeath();
-                CutsceneManager.Instance.PlayerConsumed();
+                other.playerPixel.RunDeath(playerPixel);
+                CutsceneManager.Instance.PlayerConsumed(playerPixel);
             }
             Destroy(other.gameObject);
         }

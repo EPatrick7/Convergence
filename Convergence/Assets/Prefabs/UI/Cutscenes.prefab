@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: Press X to launch part of your mass and move yourself.
+  DefaultText: 
 --- !u!1 &361264213697139307
 GameObject:
   m_ObjectHideFlags: 0
@@ -1309,6 +1310,7 @@ MonoBehaviour:
   Unload_LocalMoveX: 1132
   toast_unload_duration: 1
   toast_duration: 10
+  ToastQueueFrozen: 0
 --- !u!1 &3166760927251534751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1879,6 +1881,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: Press Options to open the pause menu if you need to restart the
     round.
+  DefaultText: 
 --- !u!1 &4965276798186709314
 GameObject:
   m_ObjectHideFlags: 0
@@ -2028,6 +2031,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: Hold the left trigger to spend ice and shield yourself from being
     consumed.
+  DefaultText: 
 --- !u!1 &5493097433510524302
 GameObject:
   m_ObjectHideFlags: 0
@@ -2578,6 +2582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: Hold right trigger to burn gas and propel yourself forward.
+  DefaultText: 
 --- !u!1 &7990067605185252855
 GameObject:
   m_ObjectHideFlags: 0

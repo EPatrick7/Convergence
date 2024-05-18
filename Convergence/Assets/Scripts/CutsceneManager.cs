@@ -1,6 +1,8 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CutsceneManager : MonoBehaviour
@@ -91,8 +93,21 @@ public class CutsceneManager : MonoBehaviour
             hasSeenGas = true;
         }
     }
-    public void PlayerConsumed()
+    public void PlayerConsumed(PlayerPixelManager eater = null)
     {
+        if (eater == null)
+        {
+            // Default Text
+            OnPlayerDeath.SetText(OnPlayerDeath.captionText[UnityEngine.Random.Range(0, OnPlayerDeath.captionText.Length)]);
+        }
+        else
+        {
+            // Color of the player that consumed this player
+            UnityEngine.Color color = InputManager.GetManager(eater.PlayerID).PlayerColors[eater.PlayerID];
+
+            OnPlayerDeath.SetText(string.Format("<color=#{0}>Player</color> Killed You", UnityEngine.ColorUtility.ToHtmlStringRGBA(color)));
+        }
+
         LoadCutscene(OnPlayerDeath);
         StartCoroutine(DelayToastDeath());
     }
@@ -150,6 +165,7 @@ public class CutsceneManager : MonoBehaviour
             //If cutscene isnt the opening cutscene then unload on start.
             UnloadToast(lastToast);
         }
+
         c.gameObject.SetActive(true);
     }
     public void LoadCutscene(Cutscene c)

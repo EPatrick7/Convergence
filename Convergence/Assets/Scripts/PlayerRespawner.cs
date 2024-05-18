@@ -9,19 +9,11 @@ public class PlayerRespawner : MonoBehaviour
     public GameObject PlayerObj;
     public float WaitDelay;
     InputManager inputManager;
+
     private void Start()
-    {
-        if(InputManager.inputManagers!=null&& inputManager==null)
-        {
-            foreach(InputManager i in InputManager.inputManagers)
-            {
-                if(i.PlayerId==PlayerID)
-                {
-                    inputManager = i;
-                    break;
-                }
-            }
-        }    
+    {    
+        inputManager = InputManager.GetManager(PlayerID);
+
         StartCoroutine(DelaySpawn());   
     }
     public void FixedUpdate()

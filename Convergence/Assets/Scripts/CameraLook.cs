@@ -9,7 +9,7 @@ public class CameraLook : MonoBehaviour
     [Range(1,4)]
     public int PlayerID;
     [HideInInspector]
-    public PlayerPixelManager playerPixelManager;
+    public PlayerPixelManager focusedPixel;
     Camera cam;
 
     private void Start()
@@ -26,11 +26,11 @@ public class CameraLook : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (playerPixelManager != null)
+        if (focusedPixel != null)
         {
-            transform.position = new Vector3(playerPixelManager.transform.position.x, playerPixelManager.transform.position.y, transform.position.z);
+            transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
 
-            cam.orthographicSize = Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + playerPixelManager.transform.localScale.x * 1.5f,0),0.1f).x;
+            cam.orthographicSize = Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f,0),0.1f).x;
         }
     }
     private void OnDestroy()

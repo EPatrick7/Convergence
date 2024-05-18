@@ -631,11 +631,11 @@ public class GravityManager : MonoBehaviour
                         foreach (CameraLook look in CameraLook.camLooks)
                         {
 
-                            if (this_pixel != null&&this_pixel.GetComponent<PlayerPixelManager>() == null&& look.playerPixelManager!=null)
+                            if (this_pixel != null&&this_pixel.GetComponent<PlayerPixelManager>() == null&& look.focusedPixel!=null)
                             {
-                                if (look.playerPixelManager.isShielding)
+                                if (look.focusedPixel.isShielding)
                                 {
-                                    PlayerPixelManager player = look.playerPixelManager;
+                                    PlayerPixelManager player = look.focusedPixel;
                                     //this_pixel
                                     if (Vector2.Distance(player.transform.position, this_pixel.transform.position)<player.ShieldRadius())
                                     {

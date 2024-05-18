@@ -81,4 +81,9 @@ public class Cutscene : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+
+    public void SetText(string t)
+    {
+        text = t.Trim();
+    }
 }

@@ -97,7 +97,7 @@ public class PlayerPixelManager : PixelManager
 
                 camLook = cam.GetComponent<CameraLook>();
                 pInput = camLook.inputManager.GetComponent<PlayerInput>();
-                l.playerPixelManager = this;
+                l.focusedPixel = this;
             }
         }
         RegisterInputs();
@@ -121,13 +121,18 @@ public class PlayerPixelManager : PixelManager
             return (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
         }
     }
-    public void RunDeath()
+    public void RunDeath(PlayerPixelManager eater = null)
     {
         if(RespawnFX!=null&&GravityManager.Instance.respawn_players)
         {
-          GameObject g=  Instantiate(RespawnFX, transform.position, RespawnFX.transform.rotation, transform.parent);
+            PlayerRespawner r = Instantiate(RespawnFX, transform.position, RespawnFX.transform.rotation, transform.parent).GetComponent<PlayerRespawner>();
             //g.transform.DOScale(.1f, 9);
-            g.GetComponent<PlayerRespawner>().PlayerID = PlayerID;
+            r.PlayerID = PlayerID;
+
+            if (eater != null)
+            {
+                camLook.focusedPixel = eater;
+            }
         }
     }
     #region Eject

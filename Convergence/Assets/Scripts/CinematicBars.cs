@@ -48,9 +48,6 @@ public class CinematicBars : MonoBehaviour
         topTween.Play();
         bottomTween.Play();
         hudTween.Play();
-
-  //      InputManager.SetPlayerInput(false);
-    //    InputManager.SetUIInput(true);
     }
 
     public void ExitCinematic(float duration = 1f)
@@ -67,8 +64,6 @@ public class CinematicBars : MonoBehaviour
         bottomTween.Play();
         hudTween.Play();
 
-        //   InputManager.SetPlayerInput(true);
-        //  InputManager.SetUIInput(false);
         StartCoroutine(DelayUncheck(duration));
     }
     public IEnumerator DelayUncheck(float duration)
