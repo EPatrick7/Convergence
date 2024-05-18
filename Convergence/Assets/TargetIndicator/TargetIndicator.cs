@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class TargetIndicator : MonoBehaviour
 {
@@ -98,7 +99,7 @@ public class TargetIndicator : MonoBehaviour
         }
         else
         {
-            //SetIndicatorPosition();
+            SetIndicatorPosition();
             //rectTransform.position = camera.WorldToViewportPoint(target.transform.position);
             SetIndicatorAlpha();
         }
@@ -108,7 +109,7 @@ public class TargetIndicator : MonoBehaviour
 
     protected void SetIndicatorPosition()
     {
-        Vector3 indicatorPos = camera.WorldToViewportPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
+        Vector3 indicatorPos = camera.WorldToScreenPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
 
         //if target in front of camera and within bounds of frustum
         if (indicatorPos.z >= 0f && indicatorPos.x <= canvasRect.rect.width * canvasRect.localScale.x && indicatorPos.y <= canvasRect.rect.height * canvasRect.localScale.x && indicatorPos.x >= 0f && indicatorPos.y >= 0f)
@@ -116,13 +117,6 @@ public class TargetIndicator : MonoBehaviour
             indicatorPos.z = 0f; //set z to 0, since 2D
             targetOutOfSight(false, indicatorPos); //target is in sight
 		}
-        else
-        {
-            indicatorPos *= -1f;
-            indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
-            targetOutOfSight(true, indicatorPos);
-        }
-        /*
         else if (indicatorPos.z >= 0f)
 		{
             indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
@@ -134,7 +128,6 @@ public class TargetIndicator : MonoBehaviour
             indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
             targetOutOfSight(true, indicatorPos);
 		}
-        */
 
         rectTransform.position = indicatorPos;
 
@@ -142,8 +135,9 @@ public class TargetIndicator : MonoBehaviour
 
     protected void FadeOutAlpha()
 	{
-      ///  Debug.Log(timeElapsed);
- 
+        ///  Debug.Log(timeElapsed);
+
+        /*
         var tempCol = offscreenTargetIndicatorImage.color;
         if (timeElapsed < fadeOutDuration)
 		{
@@ -155,7 +149,15 @@ public class TargetIndicator : MonoBehaviour
 		{
             gameObject.SetActive(false);
 		}
+        */
+        var fade = offscreenTargetIndicatorImage.material.DOFade(0f, 1);
+        fade.OnComplete(Deactivate);
         
+	}
+
+    private void Deactivate()
+	{
+        gameObject.SetActive(false);
 	}
 
     protected void SetIndicatorAlpha()
