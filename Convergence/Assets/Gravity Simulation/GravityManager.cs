@@ -241,9 +241,8 @@ public class GravityManager : MonoBehaviour
     [Tooltip("IndicatorManager object that creates indicators per target")]
     public IndicatorManager indicatorManager;
 
-    public const int playerCount = 2;
     //private List<IndicatorManager> indManagers = new List<IndicatorManager>();
-    private IndicatorManager[] indManagers = new IndicatorManager[playerCount];
+    private IndicatorManager[] indManagers;
 
     [Header("Player Buffs")]
     [Tooltip("How many planets will be spawned in the radius around a player.")]

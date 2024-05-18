@@ -128,7 +128,7 @@ public class PauseMenu : MonoBehaviour
         {
             l.GetComponent<Volume>().enabled = true;
             l.GetComponent<Volume>().weight = 0;
-            DOTween.To(()=> l.GetComponent<Volume>().weight, x=> l.GetComponent<Volume>().weight = x, 1, .25f);
+            DOTween.To(()=> l.GetComponent<Volume>().weight, x=> l.GetComponent<Volume>().weight = x, 1, .15f);
         }
     }
 
@@ -137,7 +137,7 @@ public class PauseMenu : MonoBehaviour
         foreach (CameraLook l in CameraLook.camLooks)
         {
             l.GetComponent<Volume>().weight = 1;
-            var fadeout = DOTween.To(() => l.GetComponent<Volume>().weight, x => l.GetComponent<Volume>().weight = x, 0, .25f);
+            var fadeout = DOTween.To(() => l.GetComponent<Volume>().weight, x => l.GetComponent<Volume>().weight = x, 0, .15f);
             fadeout.OnComplete(()=>SetPPVol(false));
         }
     }
@@ -149,6 +149,7 @@ public class PauseMenu : MonoBehaviour
             hud.gameObject.SetActive(state);
         }
     }
+
     private void OpenMenu(InputAction.CallbackContext context)
     {
         if (isPauseMenu)

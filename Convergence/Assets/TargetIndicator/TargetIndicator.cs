@@ -149,9 +149,20 @@ public class TargetIndicator : MonoBehaviour
 		{
             Deactivate();
 		}
-        //var fade = offscreenTargetIndicatorImage.material.DOFade(0f, 1);
-       // fade.OnComplete(Deactivate);
         
+        //var fade = offscreenTargetIndicatorImage.DOFade(0f, 1);
+       // fade.OnComplete(Deactivate);
+	}
+
+    protected void FadeInAlpha()
+	{
+        var tempCol = offscreenTargetIndicatorImage.color;
+        if (timeElapsed < fadeOutDuration)
+		{
+            tempCol.a = Mathf.Lerp(tempCol.a, maxIndicatorAlpha, timeElapsed / fadeOutDuration);
+            offscreenTargetIndicatorImage.color = tempCol;
+            timeElapsed += Time.fixedDeltaTime;
+		}
 	}
 
     private void Deactivate()
