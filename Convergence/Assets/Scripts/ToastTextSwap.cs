@@ -19,7 +19,7 @@ public class ToastTextSwap : MonoBehaviour
         {
             yield return new WaitForSeconds(0.25f);
 
-            if (InputManager.inputManagers.Count > 0 && InputManager.inputManagers[0].playerInput.devices[0].GetType().ToString().Contains("Gamepad"))
+            if (InputManager.inputManagers.Count > 0 && InputManager.inputManagers[0].playerInput.devices.Count>0&& InputManager.inputManagers[0].playerInput.devices[0].GetType().ToString().Contains("Gamepad"))
             {
                 GetComponent<TextMeshProUGUI>().text = ToSwapIfGamePad;
             }

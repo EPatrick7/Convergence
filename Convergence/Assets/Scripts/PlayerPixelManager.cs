@@ -82,7 +82,8 @@ public class PlayerPixelManager : PixelManager
         return pInput.actions.FindActionMap("Player").FindAction("MousePosition").ReadValue<Vector2>(); 
     }
     CameraLook camLook;
-    PlayerInput pInput;
+    [HideInInspector]
+    public PlayerInput pInput;
     private void Start()
     {
 
@@ -103,7 +104,7 @@ public class PlayerPixelManager : PixelManager
         RegisterInputs();
     }
     Vector2 lastMousePos=new Vector2(0,-1);
-    private Vector2 MouseDirection()
+    public Vector2 MouseDirection()
     {
         Vector2 mousePos = MousePos();
         if (pInput.currentControlScheme == "Gamepad")

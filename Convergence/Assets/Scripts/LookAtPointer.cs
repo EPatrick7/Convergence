@@ -4,25 +4,19 @@ using UnityEngine;
 
 public class LookAtPointer : MonoBehaviour
 {
-
-    // Start is called before the first frame update
-    void Start()
+    PlayerPixelManager playerPixelManager;
+    private void Start()
     {
-        
+        playerPixelManager=transform.parent.GetComponent<PlayerPixelManager>();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        Vector3 mPos = Input.mousePosition;
-        //mPos.z = 5.23f;
+        if (playerPixelManager != null&& playerPixelManager.pInput!=null && playerPixelManager.pInput.devices.Count > 0)
+        {
+            Vector2 diff = playerPixelManager.MouseDirection();
 
-        Vector3 objPos = Camera.main.WorldToScreenPoint(transform.position);
-        mPos.x -= objPos.x;
-        mPos.y -= objPos.y;
-
-        float angle = Mathf.Atan2(mPos.y, mPos.x) * Mathf.Rad2Deg;
-        angle -= 90;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+        }
     }
 }

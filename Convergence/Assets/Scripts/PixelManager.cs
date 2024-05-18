@@ -54,6 +54,7 @@ public class PixelManager : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         playerPixel = GetComponent<PlayerPixelManager>();
         isPlayer = playerPixel != null;
+        indManagers = FindObjectsOfType<IndicatorManager>();
     }
     private void Start()
     {
@@ -112,7 +113,7 @@ public class PixelManager : MonoBehaviour
     [HideInInspector]
     public float SunTransition_GasReq=1000;
 
-    public IndicatorManager indicatorManager;
+    public IndicatorManager[] indManagers = new IndicatorManager[2];
     private bool indicating = false;
     public bool spawnBhole = false;
 
@@ -155,35 +156,49 @@ public class PixelManager : MonoBehaviour
         {
             if (mass() > SunTransition_MassReq && !indicating)
             {
-                if (gameObject != null && indicatorManager != null)
+                if (gameObject != null && indManagers.Length > 0)
                 {
-                    indicatorManager.AddTargetIndicator(gameObject, indicatorManager.sunTriggerDist, indicatorManager.sunColor);
+                    for (var i = 0; i < indManagers.Length; i++)
+					{
+                        indManagers[i].AddTargetIndicator(gameObject, indManagers[i].sunTriggerDist, indManagers[i].sunColor);
+                    }
                     indicating = true;
                 }
             }
             else if (mass() < SunTransition_MassReq && indicating)
             {
-                if (gameObject != null && indicatorManager != null)
+                if (gameObject != null && indManagers.Length > 0)
                 {
-                    indicatorManager.RemoveTargetIndicator(gameObject);
+                    for (var i = 0; i < indManagers.Length; i++)
+                    {
+                        indManagers[i].RemoveTargetIndicator(gameObject);
+                    }
                     indicating = false;
                 }
             }
-            if (indicating&& gameObject != null && indicatorManager != null)
+            if (indicating&& gameObject != null && indManagers.Length > 0)
             {
                 if (mass() > BlackHoleTransition_MassReq)
                 {
-
-                        indicatorManager.UpdateTargetIndicatorColor(gameObject, indicatorManager.npcbholeColor);
+                    for (var i = 0; i < indManagers.Length; i++)
+					{
+                        indManagers[i].UpdateTargetIndicatorColor(gameObject, indManagers[i].npcbholeColor);
+                    }    
                     
                 }
                 else if (mass() > 5000)
                 {
-                        indicatorManager.UpdateTargetIndicatorColor(gameObject, indicatorManager.bluesunColor);                    
+                    for (var i = 0; i < indManagers.Length; i++)
+                    {
+                        indManagers[i].UpdateTargetIndicatorColor(gameObject, indManagers[i].bluesunColor);
+                    }
                 }
                 else if (mass() > SunTransition_MassReq)
                 {
-                        indicatorManager.UpdateTargetIndicatorColor(gameObject, indicatorManager.sunColor);
+                    for (var i = 0; i < indManagers.Length; i++)
+                    {
+                        indManagers[i].UpdateTargetIndicatorColor(gameObject, indManagers[i].sunColor);
+                    }
                 }
             }
         }

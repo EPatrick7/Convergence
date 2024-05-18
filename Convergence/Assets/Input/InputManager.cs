@@ -48,6 +48,10 @@ public class InputManager : MonoBehaviour
     }
     public void SetRumble(float min,float max, Color col)
     {
+        if(playerInput.devices.Count<=0)
+        {
+            return;
+        }
         var dev = playerInput.devices[0];
         if (dev.GetType().ToString().Contains("Gamepad"))
         {
