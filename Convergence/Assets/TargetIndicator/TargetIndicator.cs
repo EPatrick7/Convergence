@@ -190,7 +190,7 @@ public class TargetIndicator : MonoBehaviour
                 tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, frac);
                 offscreenTargetIndicatorImage.color = tempCol;
             }
-            else //if for larger planet
+            else//if for larger planet
             {
                 //Decrease brightness as you get farther away
                 float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
