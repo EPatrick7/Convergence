@@ -9736,7 +9736,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 92ec2010eae819642b7e67b9655fcc6d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
+  m_Color: {r: 1, g: 0.8236497, b: 0.4669811, a: 0.2509804}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -14956,7 +14956,7 @@ MonoBehaviour:
   isShielding: 0
   SunTransition_MassReq: 750
   SunTransition_GasReq: 1000
-  indicatorManager: {fileID: 0}
+  indManagers: []
   spawnBhole: 0
   BlackHoleTransition_MassReq: 7500
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
@@ -14973,3 +14973,4 @@ MonoBehaviour:
   RespawnFX: {fileID: 4854698766069789408, guid: 89b016c27105f784e813cdf99e254077, type: 3}
   PlayerID: 0
   hasDeregistered: 0
+  pInput: {fileID: 0}
