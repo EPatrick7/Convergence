@@ -643,6 +643,10 @@ public class GravityManager : MonoBehaviour
 
                     PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
 
+                    if(this_pixel.playerPixel != null&&PlayerCount<=1)
+                    {
+                        CutsceneManager.Instance.DistToBlackHole(Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position));
+                    }
                     //float bestDist= Vector2.Distance(body.pos(), Camera.main.transform.position);
                     //float largSize= (200 + Camera.main.orthographicSize);
 

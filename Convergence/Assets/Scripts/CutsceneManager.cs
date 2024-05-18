@@ -28,6 +28,7 @@ public class CutsceneManager : MonoBehaviour
     public RectTransform Toast_FirstGas;
     public RectTransform Toast_Death;
     public RectTransform Toast_GameStartDelayed;
+    public RectTransform Toast_GalaxyLost;
 
     [Tooltip("The localX where the toast moves when loaded in.")]
     public float Load_LocalMoveX = 764;
@@ -52,6 +53,24 @@ public class CutsceneManager : MonoBehaviour
     private bool hasSeenIce;
     private bool hasSeenGas;
     #region Triggers
+    float lastDist=0;
+    bool hasSeenLostSpace;
+    public void DistToBlackHole(float dist)
+    {
+        if(dist< lastDist)
+        {//Returning to central black hole
+            if (lastToast != null && lastToast.gameObject.name == Toast_GalaxyLost.gameObject.name && (out_taostTween == null || !out_taostTween.IsActive()))
+            {
+                UnloadToast(lastToast);
+            }
+        }
+        else if(dist>GravityManager.Instance.SpawnRadius&&!hasSeenLostSpace)
+        {
+            LoadToast(0, Toast_GalaxyLost);
+            hasSeenLostSpace = true;
+        }
+        lastDist = dist;
+    }
     public void PlayerPaused()
     {
         if (lastToast != null && lastToast.gameObject.name == Toast_Death.gameObject.name && (out_taostTween == null || !out_taostTween.IsActive()))
