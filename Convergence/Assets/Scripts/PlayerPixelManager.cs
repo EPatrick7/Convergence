@@ -170,6 +170,9 @@ public class PlayerPixelManager : PixelManager
 
         if (cam == null) return;
 
+        if (ConstantMass)
+            return;
+
 
         CutsceneManager.Instance.PlayerEjected();
 
@@ -258,6 +261,8 @@ public class PlayerPixelManager : PixelManager
     {
         if (isPropelling) return;
 
+        if (ConstantMass)
+            return;
 
         isPropelling = true;
 
@@ -337,6 +342,9 @@ public class PlayerPixelManager : PixelManager
         if (Shield == null) return;
 
         if (isShielding) return;
+
+        if (ConstantMass)
+            return;
 
 
         if (Ice > 0f)
