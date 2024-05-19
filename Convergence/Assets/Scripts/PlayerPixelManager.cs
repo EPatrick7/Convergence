@@ -129,6 +129,7 @@ public class PlayerPixelManager : PixelManager
             PlayerRespawner r = Instantiate(RespawnFX, transform.position, RespawnFX.transform.rotation, transform.parent).GetComponent<PlayerRespawner>();
             //g.transform.DOScale(.1f, 9);
             r.PlayerID = PlayerID;
+            camLook.respawner = r;
         }
     }
     #region Eject
