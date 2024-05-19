@@ -14995,6 +14995,10 @@ PrefabInstance:
       propertyPath: m_ApplyActiveColorSpace
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2288150628332756788, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 4854698766069789408, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: m_Name
       value: PlayerShield
@@ -15029,7 +15033,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: ShapeModule.donutRadius
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: VelocityModule.z.scalar
@@ -15053,7 +15057,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: ShapeModule.radius.value
-      value: 1
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: ClampVelocityModule.dampen
@@ -15069,11 +15073,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: ShapeModule.alignToDirection
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: VelocityModule.radial.scalar
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: InitialModule.maxNumParticles
@@ -15098,6 +15102,18 @@ PrefabInstance:
     - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5017976088398177040, guid: db816b7ac0da6f348a63db6a17759b66, type: 3}
       propertyPath: ClampVelocityModule.magnitude.scalar
