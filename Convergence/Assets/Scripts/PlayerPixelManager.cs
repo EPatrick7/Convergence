@@ -122,13 +122,45 @@ public class PlayerPixelManager : PixelManager
             return (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
         }
     }
-    public void RunDeath()
+    public void RunDeath(PlayerPixelManager eater = null)
     {
-        if(RespawnFX!=null&&GravityManager.Instance.respawn_players)
+        if (GravityManager.Instance.respawn_players)
         {
-            PlayerRespawner r = Instantiate(RespawnFX, transform.position, RespawnFX.transform.rotation, transform.parent).GetComponent<PlayerRespawner>();
-            //g.transform.DOScale(.1f, 9);
-            r.PlayerID = PlayerID;
+            if (RespawnFX != null)
+            {
+                PlayerRespawner r = Instantiate(RespawnFX, transform.position, RespawnFX.transform.rotation, transform.parent).GetComponent<PlayerRespawner>();
+                if (GravityManager.Instance.random_respawn_players)
+                {
+                    r.transform.position = GravityManager.Instance.RespawnPos();
+                }
+
+                float avgMass = 0;
+                float numLooks = 0;
+                foreach (CameraLook clook in CameraLook.camLooks)
+                {
+                    if (clook != null && clook.focusedPixel != null)
+                    {
+                        avgMass += clook.focusedPixel.GetComponent<Rigidbody2D>().mass;
+                        numLooks++;
+                    }
+                }
+                if (numLooks > 0)
+                    r.SetMass = Mathf.Min(500, 0.1f * avgMass / numLooks);
+
+                //g.transform.DOScale(.1f, 9);
+                r.PlayerID = PlayerID;
+
+                if (eater != null)
+                {
+                    PlayerKillNotifier.GetNotifier(playerPixel.PlayerID).Notify(eater.playerPixel);
+                }
+                camLook.respawner = r;
+
+            }
+        }
+        else if (GravityManager.GameWinner != null)
+        {
+            camLook.focusedPixel = GravityManager.GameWinner;
         }
     }
     #region Eject

@@ -41,11 +41,6 @@ public class PlayerKillNotifier : MonoBehaviour
         }
 
         PlayerKillNotifiers.Add(this);
-        
-        foreach (PlayerKillNotifier notifier in PlayerKillNotifiers)
-        {
-            Debug.LogFormat("{0} | {1}", notifier.PlayerID, notifier);
-        }
 
         text.text = string.Empty;
 
