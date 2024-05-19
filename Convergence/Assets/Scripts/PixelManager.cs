@@ -280,8 +280,11 @@ public class PixelManager : MonoBehaviour
 
             if(other.isPlayer)
             {
-                other.playerPixel.RunDeath(playerPixel);
+                other.playerPixel.RunDeath();
                 CutsceneManager.Instance.PlayerConsumed(playerPixel);
+
+                Debug.LogFormat("{0} | {1} | {2} | {3}", other.playerPixel, other.playerPixel.PlayerID, PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID), playerPixel);
+                PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID).Notify(playerPixel);
             }
             Destroy(other.gameObject);
         }

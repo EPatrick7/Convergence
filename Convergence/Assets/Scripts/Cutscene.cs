@@ -34,7 +34,7 @@ public class Cutscene : MonoBehaviour
     {
         if (allowRepeats || timesRun == 0)
         {
-            text = captionText[UnityEngine.Random.Range(0,captionText.Length)];
+            SetText(captionText[UnityEngine.Random.Range(0,captionText.Length)]);
             
             StartCoroutine(MainLoop());
         }

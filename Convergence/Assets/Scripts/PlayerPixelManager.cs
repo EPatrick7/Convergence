@@ -122,18 +122,13 @@ public class PlayerPixelManager : PixelManager
             return (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
         }
     }
-    public void RunDeath(PlayerPixelManager eater = null)
+    public void RunDeath()
     {
         if(RespawnFX!=null&&GravityManager.Instance.respawn_players)
         {
             PlayerRespawner r = Instantiate(RespawnFX, transform.position, RespawnFX.transform.rotation, transform.parent).GetComponent<PlayerRespawner>();
             //g.transform.DOScale(.1f, 9);
             r.PlayerID = PlayerID;
-
-            if (eater != null)
-            {
-                camLook.focusedPixel = eater;
-            }
         }
     }
     #region Eject
