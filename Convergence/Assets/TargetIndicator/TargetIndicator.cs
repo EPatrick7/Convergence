@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class TargetIndicator : MonoBehaviour
 {
@@ -39,10 +40,12 @@ public class TargetIndicator : MonoBehaviour
     private float valueToLerp;
     private bool spawned = false;
 
+
     // Start is called before the first frame update
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        
     }
     private void FixedUpdate()
     {
@@ -97,6 +100,7 @@ public class TargetIndicator : MonoBehaviour
         else
         {
             SetIndicatorPosition();
+            //rectTransform.position = camera.WorldToViewportPoint(target.transform.position);
             SetIndicatorAlpha();
         }
         //Adjust distance display
@@ -105,14 +109,14 @@ public class TargetIndicator : MonoBehaviour
 
     protected void SetIndicatorPosition()
     {
-        Vector3 indicatorPos = camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
+        Vector3 indicatorPos = camera.WorldToScreenPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
 
         //if target in front of camera and within bounds of frustum
         if (indicatorPos.z >= 0f && indicatorPos.x <= canvasRect.rect.width * canvasRect.localScale.x && indicatorPos.y <= canvasRect.rect.height * canvasRect.localScale.x && indicatorPos.x >= 0f && indicatorPos.y >= 0f)
 		{
             indicatorPos.z = 0f; //set z to 0, since 2D
             targetOutOfSight(false, indicatorPos); //target is in sight
-		} 
+		}
         else if (indicatorPos.z >= 0f)
 		{
             indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
@@ -131,8 +135,9 @@ public class TargetIndicator : MonoBehaviour
 
     protected void FadeOutAlpha()
 	{
-      ///  Debug.Log(timeElapsed);
- 
+        ///  Debug.Log(timeElapsed);
+
+        
         var tempCol = offscreenTargetIndicatorImage.color;
         if (timeElapsed < fadeOutDuration)
 		{
@@ -142,9 +147,27 @@ public class TargetIndicator : MonoBehaviour
             timeElapsed += Time.fixedDeltaTime;
 		} else
 		{
-            gameObject.SetActive(false);
+            Deactivate();
 		}
         
+        //var fade = offscreenTargetIndicatorImage.DOFade(0f, 1);
+       // fade.OnComplete(Deactivate);
+	}
+
+    protected void FadeInAlpha()
+	{
+        var tempCol = offscreenTargetIndicatorImage.color;
+        if (timeElapsed < fadeOutDuration)
+		{
+            tempCol.a = Mathf.Lerp(tempCol.a, maxIndicatorAlpha, timeElapsed / fadeOutDuration);
+            offscreenTargetIndicatorImage.color = tempCol;
+            timeElapsed += Time.fixedDeltaTime;
+		}
+	}
+
+    private void Deactivate()
+	{
+        gameObject.SetActive(false);
 	}
 
     protected void SetIndicatorAlpha()
@@ -167,7 +190,7 @@ public class TargetIndicator : MonoBehaviour
                 tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, frac);
                 offscreenTargetIndicatorImage.color = tempCol;
             }
-            else //if for larger planet
+            else//if for larger planet
             {
                 //Decrease brightness as you get farther away
                 float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
@@ -192,23 +215,53 @@ public class TargetIndicator : MonoBehaviour
     private Vector3 OutOfRangeIndicatorPosB(Vector3 indicatorPos)
 	{
         indicatorPos.z = 0f;
+        float offset = outOfSightOffset;
 
         Vector3 canvasCenter = new Vector3(canvasRect.rect.width / 2f, canvasRect.rect.height / 2f, 0f) * canvasRect.localScale.x; //calc center of canvas, scaled
         indicatorPos -= canvasCenter; //subtract from indicatorPos to get pos from origin
 
-        float divX = (canvasRect.rect.width / 2f - outOfSightOffset) / Mathf.Abs(indicatorPos.x); //calc if vector to target intersects w/ border of canvas rect (off screen)
-        float divY = (canvasRect.rect.height / 2f - outOfSightOffset) / Mathf.Abs(indicatorPos.y);
+
+        //Debug.Log(Vector3.Distance(indicatorPos, canvasCenter));
+
+        /*
+        if (Vector3.Distance(indicatorPos, canvasCenter) > (canvasRect.rect.width * .975) * canvasRect.localScale.x)
+		{
+            offset = -500;
+		}
+        */
+
+        //Debug.Log(offset);
+
+        /*
+        if (indicatorPos.y > (canvasRect.rect.height * .95) * canvasRect.localScale.y) //if on top of screen
+		{
+            if (indicatorPos.x < (canvasRect.rect.width * .05) * canvasRect.localScale.x || indicatorPos.x > (canvasRect.rect.width * .95) * canvasRect.localScale.x) //top left or right corner
+            {
+                offset = -500;
+            }
+        } else if (indicatorPos.y < (canvasRect.rect.height * .05) * canvasRect.localScale.y) //if on bottom of screen
+		{
+            if (indicatorPos.x < (canvasRect.rect.width * .05) * canvasRect.localScale.x || indicatorPos.x > (canvasRect.rect.width * .95) * canvasRect.localScale.x) //bottom left or right corner
+            {
+                offset = -500;
+            }
+        }
+        */
+
+
+        float divX = (canvasRect.rect.width / 2f - offset) / Mathf.Abs(indicatorPos.x); //calc if vector to target intersects w/ border of canvas rect (off screen)
+        float divY = (canvasRect.rect.height / 2f - offset) / Mathf.Abs(indicatorPos.y);
 
         if (divX < divY) //if intersects w/ x border first, put x to border and THEN adjust y
 		{
             float angle = Vector3.SignedAngle(Vector3.right, indicatorPos, Vector3.forward);
-            indicatorPos.x = Mathf.Sign(indicatorPos.x) * (canvasRect.rect.width / 2f - outOfSightOffset) * canvasRect.localScale.x; //max to border
+            indicatorPos.x = Mathf.Sign(indicatorPos.x) * (canvasRect.rect.width / 2f - offset) * canvasRect.localScale.x; //max to border
             indicatorPos.y = Mathf.Tan(Mathf.Deg2Rad * angle) * indicatorPos.x; //find hypotenuse of angle to target and angle to border, providing y pos translated to x on border
 		}
         else
 		{
             float angle = Vector3.SignedAngle(Vector3.up, indicatorPos, Vector3.forward);
-            indicatorPos.y = Mathf.Sign(indicatorPos.y) * (canvasRect.rect.height / 2f - outOfSightOffset) * canvasRect.localScale.y;
+            indicatorPos.y = Mathf.Sign(indicatorPos.y) * (canvasRect.rect.height / 2f - offset) * canvasRect.localScale.y;
             indicatorPos.x = -Mathf.Tan(Mathf.Deg2Rad * angle) * indicatorPos.y;
 		}
 

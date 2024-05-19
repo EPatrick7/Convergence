@@ -54,7 +54,7 @@ public class PixelManager : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         playerPixel = GetComponent<PlayerPixelManager>();
         isPlayer = playerPixel != null;
-        indManagers = FindObjectsOfType<IndicatorManager>();
+        if (!isPlayer) indManagers = FindObjectsOfType<IndicatorManager>();
     }
     private void Start()
     {
@@ -113,7 +113,7 @@ public class PixelManager : MonoBehaviour
     [HideInInspector]
     public float SunTransition_GasReq=1000;
 
-    public IndicatorManager[] indManagers = new IndicatorManager[2];
+    public IndicatorManager[] indManagers;
     private bool indicating = false;
     public bool spawnBhole = false;
 
@@ -152,7 +152,7 @@ public class PixelManager : MonoBehaviour
             PlanetTypeChanged?.Invoke(planetType,last);
         }
 
-        if (!spawnBhole)
+        if (!spawnBhole && !isPlayer)
         {
             if (mass() > SunTransition_MassReq && !indicating)
             {
@@ -267,6 +267,8 @@ public class PixelManager : MonoBehaviour
                 rigidBody.mass += 10000;
                 GravityManager.Instance.drift_power = 100;
                 GravityManager.Instance.DoParticleRespawn = false;
+                GravityManager.Instance.respawn_players = false;
+                GravityManager.GameWinner = playerPixel;
                 BlackHoleState.RadiusScalar *= 1.3f;
                 CutsceneManager.Instance.BlackHoleConsumed();
             }

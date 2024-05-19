@@ -44,9 +44,6 @@ public class GalaxyFogSpawner : MonoBehaviour
     [SerializeField]
     private List<Color> objColor = new List<Color>();
 
-    [SerializeField]
-    private List<Color> coverColor = new List<Color>();
-
     // Start is called before the first frame update
     void Start()
     {
@@ -85,7 +82,7 @@ public class GalaxyFogSpawner : MonoBehaviour
             var col = objPS.colorOverLifetime;
             col.enabled = true;
             Gradient grad = new Gradient();
-            grad.SetKeys(new GradientColorKey[] { new GradientColorKey(objColor[Random.Range(0, coverColor.Count)], 0.0f), new GradientColorKey(objColor[Random.Range(0, coverColor.Count)], 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(coverAlphaVal, 0.0f), new GradientAlphaKey(coverAlphaVal, 1.0f) });
+            grad.SetKeys(new GradientColorKey[] { new GradientColorKey(objColor[Random.Range(0, objColor.Count)], 0.0f), new GradientColorKey(objColor[Random.Range(0, objColor.Count)], 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(coverAlphaVal, 0.0f), new GradientAlphaKey(coverAlphaVal, 1.0f) });
             col.color = grad;
 
             var shape = objPS.shape;

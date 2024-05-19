@@ -10,6 +10,8 @@ public class CameraLook : MonoBehaviour
     public int PlayerID;
     [HideInInspector]
     public PlayerPixelManager focusedPixel;
+    [HideInInspector]
+    public PlayerRespawner respawner;
     Camera cam;
 
     private void Start()
@@ -31,6 +33,14 @@ public class CameraLook : MonoBehaviour
             transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
 
             cam.orthographicSize = Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f,0),0.1f).x;
+        }
+        else if (respawner != null)
+        {
+            if(respawner.LerpNow)
+            {
+
+                transform.position = Vector3.Lerp(transform.position, new Vector3(respawner.transform.position.x, respawner.transform.position.y, transform.position.z),0.15f);
+            }
         }
     }
     private void OnDestroy()

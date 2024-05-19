@@ -5533,7 +5533,6 @@ MonoBehaviour:
   - {r: 1, g: 0.19209038, b: 0, a: 0}
   - {r: 0.15619439, g: 0.735849, b: 0.3066391, a: 0}
   - {r: 0.26835674, g: 0.109803915, b: 0.62352943, a: 0}
-  coverColor: []
 --- !u!4 &641926758
 Transform:
   m_ObjectHideFlags: 0
@@ -20899,7 +20898,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 0}
   PlayerID: 0
-  playerPixelManager: {fileID: 0}
+  focusedPixel: {fileID: 0}
+  respawner: {fileID: 0}
 --- !u!1001 &1331732995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21069,43 +21069,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: Scale
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverNum
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverSpread
       value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverColor.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverColor.Array.data[1].b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverColor.Array.data[1].g
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverColor.Array.data[1].r
-      value: 0.11488495
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverColor.Array.data[2].b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverColor.Array.data[2].g
-      value: 0.75347257
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverColor.Array.data[2].r
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6946215090596114782, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: m_LocalPosition.x
