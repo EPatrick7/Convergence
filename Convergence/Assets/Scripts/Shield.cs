@@ -22,7 +22,8 @@ public class Shield : MonoBehaviour
 
     private Collider2D col;
 
-    private SpriteRenderer sprite;
+    private SpriteRenderer maskSpr;
+    public SpriteRenderer overlaySpr;
 
     private ParticleSystem objPS;
 
@@ -36,34 +37,45 @@ public class Shield : MonoBehaviour
 
         Enabled(false);
 
-        objPS = GetComponentInChildren<ParticleSystem>();
-        objPS.gameObject.SetActive(false);
+        //objPS = GetComponentInChildren<ParticleSystem>();
+        //objPS.gameObject.SetActive(false);
 
-        sprite = GetComponent<SpriteRenderer>();
+        maskSpr = GetComponent<SpriteRenderer>();
+        maskSpr.color = inactiveColor;
 
-        sprite.color = inactiveColor;
+        //overlaySpr = GetComponentInChildren<SpriteRenderer>();
+        overlaySpr.color = inactiveColor;
+
     }
 
     public void ShieldUp()
     {
         if (col == null || col.enabled) return;
 
-        if (sprite == null) return;
+        if (maskSpr == null) return;
 
         if (pixel.Ice < 1.0f) return;
 
+        maskSpr.sortingOrder = pixel.GetComponent<SpriteRenderer>().sortingOrder + 1;
+        overlaySpr.sortingOrder = maskSpr.sortingOrder + 1;
+
+        /*
         if (objPS != null)
 		{
             sprite.sortingOrder = pixel.GetComponent<SpriteRenderer>().sortingOrder + 1;
             objPS.gameObject.SetActive(true);
 		}
+        */
 
-        
+
         tween?.Kill();
 
-        tween = DOTween.To(() => sprite.color, x => sprite.color = x, activeColor, ShieldDelay);
-        tween.OnComplete(ShieldUpOnComplete);
-        tween.Play();
+        var seq = DOTween.Sequence();
+
+        seq.Append(DOTween.To(() => maskSpr.color, x => maskSpr.color = x, activeColor, ShieldDelay));
+        seq.Insert(0, DOTween.To(() => overlaySpr.color, x => overlaySpr.color = x, activeColor, ShieldDelay));
+        seq.OnComplete(ShieldUpOnComplete);
+        seq.Play();
         
     }
 
@@ -78,20 +90,24 @@ public class Shield : MonoBehaviour
     {
         if (col == null) return;
 
-        if (sprite == null) return;
+        if (maskSpr == null) return;
 
+        /*
         if (objPS != null)
 		{
             objPS.gameObject.SetActive(false);
 		}
+        */
         
         tween?.Kill();
 
-        tween = DOTween.To(() => sprite.color, x => sprite.color = x, inactiveColor, ShieldDelay);
-        tween.OnComplete(ShieldDownOnComplete);
+        var seq = DOTween.Sequence();
 
-        tween.Play();
-        
+        seq.Append(DOTween.To(() => maskSpr.color, x => maskSpr.color = x, inactiveColor, ShieldDelay));
+        seq.Insert(0, DOTween.To(() => overlaySpr.color, x => overlaySpr.color = x, inactiveColor, ShieldDelay));
+        seq.OnComplete(ShieldDownOnComplete);
+        seq.Play();
+
     }
 
     private void ShieldDownOnComplete()
