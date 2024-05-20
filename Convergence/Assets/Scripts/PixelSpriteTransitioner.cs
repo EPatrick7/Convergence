@@ -42,7 +42,7 @@ public class PixelSpriteTransitioner : MonoBehaviour
         {
             pixelRenderer.sprite = target;
             transitionRenderer.sprite = target;
-            transitionRenderer.color = new Color(pixelRenderer.color.r, pixelRenderer.color.g, pixelRenderer.color.b, 0f);
+            transitionRenderer.color = new Color(pixelRenderer.color.r, pixelRenderer.color.g, pixelRenderer.color.b, 1f);
         }
         else
         {
