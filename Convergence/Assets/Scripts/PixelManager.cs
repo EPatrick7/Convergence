@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PixelManager : MonoBehaviour
 {
@@ -49,12 +50,17 @@ public class PixelManager : MonoBehaviour
     public PlayerPixelManager playerPixel;
     [HideInInspector]
     public bool isPlayer;
+
+    private PixelSpriteTransitioner spriteTransitioner;
+
     public void Initialize()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         playerPixel = GetComponent<PlayerPixelManager>();
         isPlayer = playerPixel != null;
         if (!isPlayer) indManagers = FindObjectsOfType<IndicatorManager>();
+
+        spriteTransitioner = GetComponentInChildren<PixelSpriteTransitioner>();
     }
     private void Start()
     {
@@ -384,6 +390,11 @@ public class PixelManager : MonoBehaviour
             }
         }
     }*/
+
+    public void UpdateTexture(Sprite target)
+    {
+        spriteTransitioner?.UpdateTexture(target);
+    }
 
     protected virtual void OnDestroy()
     {

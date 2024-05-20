@@ -612,7 +612,7 @@ public class GravityManager : MonoBehaviour
         if (pixel.ConstantMass)
             targ = None;
 
-        pixel.GetComponent<SpriteRenderer>().sprite = targ;
+        pixel.UpdateTexture(targ);
     }
     public IEnumerator GravRun()
     {
@@ -709,8 +709,6 @@ public class GravityManager : MonoBehaviour
                     {
                         //Update acceleration of gravity
 
-                        UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
-
                         if (gravUniverse.pixels[i].GetComponent<PixelManager>().spawnBhole == true) //put above cover galaxy particles
                         {
                             gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = 7500;
@@ -720,6 +718,8 @@ public class GravityManager : MonoBehaviour
                         }
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(),0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
+
+                        UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
                     }
                     else
                     {
