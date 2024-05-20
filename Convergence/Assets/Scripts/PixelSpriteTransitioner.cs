@@ -20,11 +20,15 @@ public class PixelSpriteTransitioner : MonoBehaviour
 
     private TransitionQueue queue = new TransitionQueue();
 
+    private Sprite latestTarget;
+
     public void UpdateTexture(Sprite target)
     {
         transitionRenderer.sortingOrder = pixelRenderer.sortingOrder + 1;
 
-        if (pixelRenderer.sprite == target) return;
+        if (latestTarget == target) return;
+
+        latestTarget = target;
 
         // When the pixel is just spawned, instantly set its sprite instead of tweening
         if (baseSprites.Contains(pixelRenderer.sprite) || pixelRenderer.sprite == null)
@@ -33,7 +37,7 @@ public class PixelSpriteTransitioner : MonoBehaviour
         }
         else
         {
-            queue?.AddTransition(pixelRenderer.sprite, target, pixelRenderer, transitionRenderer, duration);
+            queue?.AddTransition(target, pixelRenderer, transitionRenderer, duration);
         }
     }
 
@@ -45,50 +49,61 @@ public class PixelSpriteTransitioner : MonoBehaviour
 
 public class TransitionQueue
 {
-    public Queue<Sequence> transitions = new Queue<Sequence>();
+    private Queue<Tween> transitions = new Queue<Tween>();
 
-    private Sequence current;
-    public void AddTransition(Sprite from, Sprite to, SpriteRenderer pixel, SpriteRenderer transition, float duration)
+    private Tween current;
+    public void AddTransition(Sprite to, SpriteRenderer pixel, SpriteRenderer transition, float duration)
     {
-        if (from == null || to == null || pixel == null || transition == null) return;
+        if (to == null || pixel == null || transition == null) return;
+        
+        Tween tween = DOTween.To(() => transition.color, x => transition.color = x, new Color(pixel.color.r, pixel.color.g, pixel.color.b, 0f), duration);
+        tween.Pause();
+        tween.OnPlay(() => OnPlay(to, pixel, transition));
+        tween.OnComplete(() => OnCompleted(transition));
 
-        pixel.sprite = to;
+        transitions.Enqueue(tween);
 
-        transition.sprite = from;
-        transition.color = new Color(pixel.color.r, pixel.color.g, pixel.color.b, 1f);
-
-        Sequence sequence = DOTween.Sequence();
-        sequence.Pause();
-        sequence.Append(DOTween.To(() => transition.color, x => transition.color = x, new Color(pixel.color.r, pixel.color.g, pixel.color.b, 0f), duration));
-        sequence.OnComplete(() => OnCompleted());
-
-        transitions.Enqueue(sequence);
-
-        Play();
+        if (transitions.Count == 1)
+            Play();
     }
 
     public void Play()
     {
-        if (current == null)
+        if (!current.IsActive() && transitions.Count > 0)
         {
-            current = transitions.Dequeue();
+            current = transitions.Peek();
 
             current?.Play();
         }
     }
 
-    public void OnCompleted()
+    public void OnPlay(Sprite to, SpriteRenderer pixel, SpriteRenderer transition)
     {
+        transition.color = new Color(pixel.color.r, pixel.color.g, pixel.color.b, 1f);
+
+        transition.sprite = pixel.sprite;
+
+        pixel.sprite = to;
+    }
+
+    public void OnCompleted(SpriteRenderer transition)
+    {
+        transition.sprite = null;
+
+        current = null;
+
+        transitions.Dequeue();
+
         Play();
     }
 
     public void Destroy()
     {
-        if (current != null) current.Pause();
+        if (current.IsActive()) current.Pause();
 
         while (transitions.Count > 0)
         {
-            Sequence s = transitions.Dequeue();
+            Tween s = transitions.Dequeue();
 
             s.Kill();
         }
