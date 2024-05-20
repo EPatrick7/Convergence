@@ -286,7 +286,7 @@ public class PixelManager : MonoBehaviour
                 CutsceneManager.Instance.PlayerConsumed(playerPixel);
 
                // Debug.LogFormat("{0} | {1} | {2} | {3}", other.playerPixel, other.playerPixel.PlayerID, PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID), playerPixel);
-                PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID).Notify(playerPixel,"Player "+other.playerPixel.PlayerID);
+                PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID)?.Notify(playerPixel,"Player "+other.playerPixel.PlayerID);
             }
             Destroy(other.gameObject);
         }
