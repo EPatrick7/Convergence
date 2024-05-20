@@ -51,7 +51,6 @@ public class TransitionQueue
 {
     private Queue<Tween> transitions = new Queue<Tween>();
 
-    private Tween current;
     public void AddTransition(Sprite to, SpriteRenderer pixel, SpriteRenderer transition, float duration)
     {
         if (to == null || pixel == null || transition == null) return;
@@ -59,7 +58,7 @@ public class TransitionQueue
         Tween tween = DOTween.To(() => transition.color, x => transition.color = x, new Color(pixel.color.r, pixel.color.g, pixel.color.b, 0f), duration);
         tween.Pause();
         tween.OnPlay(() => OnPlay(to, pixel, transition));
-        tween.OnComplete(() => OnCompleted(transition));
+        tween.OnComplete(() => OnCompleted(pixel, transition));
 
         transitions.Enqueue(tween);
 
@@ -69,11 +68,9 @@ public class TransitionQueue
 
     public void Play()
     {
-        if (!current.IsActive() && transitions.Count > 0)
+        if (transitions.Count > 0)
         {
-            current = transitions.Peek();
-
-            current?.Play();
+            transitions.Peek().Play();
         }
     }
 
@@ -86,11 +83,11 @@ public class TransitionQueue
         pixel.sprite = to;
     }
 
-    public void OnCompleted(SpriteRenderer transition)
+    public void OnCompleted(SpriteRenderer pixel, SpriteRenderer transition)
     {
-        transition.sprite = null;
+        transition.sprite = pixel.sprite;
 
-        current = null;
+        transition.color = new Color(pixel.color.r, pixel.color.g, pixel.color.b, 1f);
 
         transitions.Dequeue();
 
@@ -99,7 +96,7 @@ public class TransitionQueue
 
     public void Destroy()
     {
-        if (current.IsActive()) current.Pause();
+        if (transitions.Count > 0 && transitions.Peek().IsActive()) transitions.Peek().Pause();
 
         while (transitions.Count > 0)
         {
