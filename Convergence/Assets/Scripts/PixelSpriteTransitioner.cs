@@ -22,6 +22,13 @@ public class PixelSpriteTransitioner : MonoBehaviour
 
     private Sprite latestTarget;
 
+    public bool isVisible { get; private set; } = false;
+
+    private void Awake()
+    {
+        queue.transitioner = this;
+    }
+
     public void UpdateTexture(Sprite target)
     {
         transitionRenderer.sortingOrder = pixelRenderer.sortingOrder + 1;
@@ -34,6 +41,8 @@ public class PixelSpriteTransitioner : MonoBehaviour
         if (baseSprites.Contains(pixelRenderer.sprite) || pixelRenderer.sprite == null)
         {
             pixelRenderer.sprite = target;
+            transitionRenderer.sprite = target;
+            transitionRenderer.color = new Color(pixelRenderer.color.r, pixelRenderer.color.g, pixelRenderer.color.b, 0f);
         }
         else
         {
@@ -45,10 +54,22 @@ public class PixelSpriteTransitioner : MonoBehaviour
     {
         queue?.Destroy();
     }
+
+    private void OnBecameVisible()
+    {
+        isVisible = true;
+    }
+
+    private void OnBecameInvisible()
+    {
+        isVisible = false;
+    }
 }
 
 public class TransitionQueue
 {
+    public PixelSpriteTransitioner transitioner;
+
     private Queue<Tween> transitions = new Queue<Tween>();
 
     public void AddTransition(Sprite to, SpriteRenderer pixel, SpriteRenderer transition, float duration)
@@ -70,7 +91,16 @@ public class TransitionQueue
     {
         if (transitions.Count > 0)
         {
-            transitions.Peek().Play();
+            Tween current = transitions.Peek();
+
+            current.Play();
+
+            if (!transitioner.isVisible)
+            {
+                current.fullPosition = current.Duration();
+
+                current.Kill();
+            }
         }
     }
 
