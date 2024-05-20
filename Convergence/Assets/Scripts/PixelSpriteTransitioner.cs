@@ -97,9 +97,7 @@ public class TransitionQueue
 
             if (!transitioner.isVisible)
             {
-                current.fullPosition = current.Duration();
-
-                current.Kill();
+                current.Complete();
             }
         }
     }
