@@ -77,7 +77,7 @@ public class PlayerKillNotifier : MonoBehaviour
 
     private IEnumerator DisplayText(PlayerPixelManager e, string eaterName, string endingText, float duration)
     {
-        SetColor(InputManager.GetManager(e.PlayerID).PlayerColors[e.PlayerID]);
+        SetColor(InputManager.GetManager(e.PlayerID).PlayerColors[e.PlayerID-1]);
         SetEater(string.Empty);
         SetEnding(string.Empty);
 
