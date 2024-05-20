@@ -146,7 +146,7 @@ public class PlayerPixelManager : PixelManager
                 }
             }
             if (numLooks > 0)
-                r.SetMass = Mathf.Min(500, 0.1f * avgMass / numLooks);
+                r.SetMass = Mathf.Min(725, 0.33f * avgMass / numLooks);
 
             //g.transform.DOScale(.1f, 9);
             r.PlayerID = PlayerID;
