@@ -97,7 +97,7 @@ public class TransitionQueue
 
             if (!transitioner.isVisible)
             {
-                current.Complete();
+                current.Complete(true);
             }
         }
     }
