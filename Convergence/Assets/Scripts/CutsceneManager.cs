@@ -311,6 +311,8 @@ public class CutsceneManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (Instance == this)
+            Instance = null;
         taostTween?.Kill();
         out_taostTween?.Kill();
     }
