@@ -13,6 +13,10 @@ public class CameraLook : MonoBehaviour
     [HideInInspector]
     public PlayerRespawner respawner;
     Camera cam;
+    [HideInInspector]
+    public int LastNumPixelsInView;
+    [HideInInspector]
+    public int NumPixelsInView;
 
     private void Start()
     {

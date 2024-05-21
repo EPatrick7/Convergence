@@ -86,7 +86,8 @@ public class PlayerPixelManager : PixelManager
     {
         return pInput.actions.FindActionMap("Player").FindAction("MousePosition").ReadValue<Vector2>(); 
     }
-    CameraLook camLook;
+    [HideInInspector]
+    public CameraLook camLook;
     [HideInInspector]
     public PlayerInput pInput;
     private void Start()
@@ -95,7 +96,8 @@ public class PlayerPixelManager : PixelManager
         gravityManager =GravityManager.Instance;
 
         gameObject.layer = 8;
-        foreach(CameraLook l in CameraLook.camLooks)
+        gameObject.name = "Player (" + PlayerID + ")";
+        foreach (CameraLook l in CameraLook.camLooks)
         {
             if(l.PlayerID==PlayerID)
             {

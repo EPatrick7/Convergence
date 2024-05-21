@@ -65,7 +65,9 @@ MonoBehaviour:
   drift_power: 0.1
   respawn_dist: 600
   respawn_players: 0
+  random_respawn_players: 1
   max_npc_mass: 10000
+  world_wrap: 1
   TimePerGravitySample: 0.0075
   SimulationStep: 0
   textureMaps:

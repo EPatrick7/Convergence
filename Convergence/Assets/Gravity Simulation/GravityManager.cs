@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Android;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
 #region DataStructure
@@ -83,7 +84,7 @@ public class GravityManager : MonoBehaviour
             GravityBody b=new GravityBody(genBodies);
 
             g.GetComponent<Rigidbody2D>().velocity = initialVel;
-
+            
             b.x = g.transform.position.x;
             b.y = g.transform.position.y;
             g.GetComponent<Rigidbody2D>().mass = InitialSize;
@@ -91,7 +92,8 @@ public class GravityManager : MonoBehaviour
             b.radius = g.GetComponent<PixelManager>().radius();
             b.elements = g.GetComponent<PixelManager>().elements();
             g.transform.localScale =Vector3.one * b.radius;
-
+            if (g.GetComponent<PlayerPixelManager>() == null)
+                g.name = "Body (" + numBodies + ")";
 
             pixels.Add(g);
             bodies.Add(b);
@@ -206,7 +208,8 @@ public class GravityManager : MonoBehaviour
     public bool random_respawn_players=true;
     [Tooltip("The maximum amount of mass npc bodies are allowed to obtain.")]
     public float max_npc_mass = 10000;
-
+    [Tooltip("Whether or not to teleport objects nearing the world border to the other side of the world.")]
+    public bool world_wrap=false;
     [Header("Time Managers")]
     [Tooltip("How much physics time should occur between each gravity check.")]
     public float TimePerGravitySample = 0.1f;
@@ -555,9 +558,11 @@ public class GravityManager : MonoBehaviour
         if(g!=null)
             gravUniverse.AddBody(g, velocity, g.GetComponent<Rigidbody2D>().mass);
     }
-    
+    [HideInInspector]
+    public float wrap_dist;
     void Start()
     {
+        wrap_dist = SpawnRadius * 2f;
         GameWinner = null;
         Instance = this;
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
@@ -635,6 +640,13 @@ public class GravityManager : MonoBehaviour
                     Respawn();
             }
             SimulationStep++;
+
+            foreach(CameraLook look in CameraLook.camLooks)
+            {
+                look.LastNumPixelsInView = look.NumPixelsInView;
+                look.NumPixelsInView = 0;
+            }
+
             //O(n) run through each body and update it according to the last compute shader run
             for (int i = 0; i < gravUniverse.numBodies; i++)
             {
@@ -653,12 +665,19 @@ public class GravityManager : MonoBehaviour
 
                     PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
 
-                    if(this_pixel.playerPixel != null&&PlayerCount<=1)
+                    if(this_pixel.playerPixel != null)
                     {
-                        CutsceneManager.Instance.DistToBlackHole(Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position));
+                        float bh_dist = Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position);
+                        if (bh_dist>wrap_dist&&world_wrap&&this_pixel.playerPixel.camLook.LastNumPixelsInView<=1)
+                        {
+                            Vector3 localP = this_pixel.transform.InverseTransformPoint(this_pixel.playerPixel.camLook.transform.position);
+                            this_pixel.transform.position = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
+                            this_pixel.playerPixel.camLook.transform.position=this_pixel.transform.TransformPoint(localP);
+                        }
+
+                        if(PlayerCount <= 1)
+                            CutsceneManager.Instance.DistToBlackHole(bh_dist);
                     }
-                    //float bestDist= Vector2.Distance(body.pos(), Camera.main.transform.position);
-                    //float largSize= (200 + Camera.main.orthographicSize);
 
                     if(PlayerRespawner.playerRespawners!=null&&this_pixel!=null)
                     {
@@ -670,7 +689,6 @@ public class GravityManager : MonoBehaviour
                             }
                         }
                     }
-
                     if (CameraLook.camLooks != null)
                     {
                         bool inView=false;
@@ -693,6 +711,7 @@ public class GravityManager : MonoBehaviour
 
                             if(isWithinCamera(look,this_pixel.transform.position))
                             {
+                                look.NumPixelsInView++;
                                 inView = true;
                             }
                         }
