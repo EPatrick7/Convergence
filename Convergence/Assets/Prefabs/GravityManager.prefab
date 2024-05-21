@@ -130,7 +130,8 @@ MonoBehaviour:
   SunTransition_GasReq: 1000
   BlackHoleTransition_MassReq: 7500
   indicatorManager: {fileID: 0}
-  PlayerGoodiesCount: 15
-  Close_PlayerGoodiesCount: 3
+  PlayerGoodiesCount: 18
+  Close_PlayerGoodiesCount: 4
   CloseGoodiesRange: {x: 40, y: 60}
   GoodiesRange: {x: 40, y: 175}
+  wrap_dist: 0

@@ -330,7 +330,7 @@ public class GravityManager : MonoBehaviour
         }
 
     }
-    public void Initialize()
+    public IEnumerator Initialize()
     {
         if (RandomSeed <= 0)
             RandomSeed = UnityEngine.Random.Range(10,100000000);
@@ -390,49 +390,6 @@ public class GravityManager : MonoBehaviour
                 }
             }
         }
-        //Spawn and fill arrays with new generated particles
-        for (int i = 0; i < SpawnCount; i++)
-        {
-
-            Vector2 loc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
-            if(loc.sqrMagnitude <= InnerSpawnRadius* InnerSpawnRadius)
-            {
-                loc = loc.normalized * (SpawnRadius + loc.sqrMagnitude);
-            }
-            Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
-
-            sharedVelocity += OrbitalVector(loc);
-            Vector3 elements = Vector3.zero;
-            int randomEl = UnityEngine.Random.Range(0, 3);
-            switch(randomEl)
-            {
-                case 0: 
-                    elements = new Vector3(1, 0, 0);
-                    break;
-                case 1:
-                    elements = new Vector3(0, 1, 0);
-                    break;
-                case 2:
-                    elements = new Vector3(0, 0, 1);
-                    break;
-            }
-            elements *= InitRandomElementComposition;
-
-            if (InitRandomElementComposition>0)
-            {
-                GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
-                //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
-                RegisterBody(pixel, sharedVelocity, elements);
-            }
-            else
-            {
-                GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
-                //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
-                RegisterBody(pixel, sharedVelocity);
-            }
-
-
-        }
         if (!MenuSim)
         {
             for (int i = 0; i < PlayerCount; i++)
@@ -442,7 +399,7 @@ public class GravityManager : MonoBehaviour
                 {
                     playerLoc = playerLoc.normalized * (SpawnRadius);
                 }
-                Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale/7f;
+                Vector2 playerVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale / 7f;
 
                 playerVelocity += OrbitalVector(playerLoc);
                 GameObject playerObj = Instantiate(Player, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0), Player.transform.rotation, transform);
@@ -450,7 +407,7 @@ public class GravityManager : MonoBehaviour
                 playerObj.GetComponent<PlayerPixelManager>().PlayerID = i + 1;
                 foreach (PlayerHud hud in PlayerHud.huds)
                 {
-                    if (hud.PlayerID== playerObj.GetComponent<PlayerPixelManager>().PlayerID)
+                    if (hud.PlayerID == playerObj.GetComponent<PlayerPixelManager>().PlayerID)
                     {
 
                         hud.Initialize(playerObj.GetComponent<PlayerPixelManager>());
@@ -460,14 +417,14 @@ public class GravityManager : MonoBehaviour
 
                 //Generate Goodies Area:
 
-                for(int k=0; k<PlayerGoodiesCount;k++)
+                for (int k = 0; k < PlayerGoodiesCount; k++)
                 {
 
                     Vector2 loc = UnityEngine.Random.insideUnitCircle.normalized;
-                    Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale/5f-loc*3f;
+                    Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale / 5f - loc * 3f;
                     float mass_mult = 1.5f;
 
-                    if(k< Close_PlayerGoodiesCount)
+                    if (k < Close_PlayerGoodiesCount)
                     {
                         loc *= UnityEngine.Random.Range(CloseGoodiesRange.x, CloseGoodiesRange.y);
 
@@ -475,7 +432,7 @@ public class GravityManager : MonoBehaviour
                     else
                         loc *= UnityEngine.Random.Range(GoodiesRange.x, GoodiesRange.y);
 
-                    
+
                     sharedVelocity += OrbitalVector(loc);
                     Vector3 elements = Vector3.zero;
                     int randomEl = UnityEngine.Random.Range(0, 3);
@@ -507,7 +464,69 @@ public class GravityManager : MonoBehaviour
 
             }
         }
+        //Spawn and fill arrays with new generated particles
+        for (int i = 0; i < SpawnCount; i++)
+        {
+            if((i+1)%50==0)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            Vector2 loc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
+
+
+
+            if(loc.sqrMagnitude <= InnerSpawnRadius* InnerSpawnRadius)
+            {
+                loc = loc.normalized * (SpawnRadius + loc.sqrMagnitude);
+            }
+
+
+
+            if (isWithinACamera(loc))
+            {
+                i--;
+            }
+            else
+            {
+
+                Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale;
+
+                sharedVelocity += OrbitalVector(loc);
+                Vector3 elements = Vector3.zero;
+                int randomEl = UnityEngine.Random.Range(0, 3);
+                switch (randomEl)
+                {
+                    case 0:
+                        elements = new Vector3(1, 0, 0);
+                        break;
+                    case 1:
+                        elements = new Vector3(0, 1, 0);
+                        break;
+                    case 2:
+                        elements = new Vector3(0, 0, 1);
+                        break;
+                }
+                elements *= InitRandomElementComposition;
+
+                if (InitRandomElementComposition > 0)
+                {
+                    GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
+                    //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
+                    RegisterBody(pixel, sharedVelocity, elements);
+                }
+                else
+                {
+                    GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
+                    //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
+                    RegisterBody(pixel, sharedVelocity);
+                }
+
+            }
+        }
         Initialized?.Invoke();
+
+
+        StartCoroutine(GravRun());
     }
     public Vector2 RespawnPos()
     {
@@ -575,10 +594,9 @@ public class GravityManager : MonoBehaviour
         Instance = this;
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
 
-        Initialize();
+        StartCoroutine(Initialize());
 
 
-        StartCoroutine(GravRun());
     }
 
     void OnDestroy()
