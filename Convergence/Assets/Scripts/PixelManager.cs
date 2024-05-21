@@ -137,8 +137,8 @@ public class PixelManager : MonoBehaviour
         {
             if (mass() > BlackHoleTransition_MassReq)
             {
-                if(isPlayer)  
-                    transform.gameObject.layer = LayerMask.NameToLayer("Black Hole");
+                //if(isPlayer)  
+                transform.gameObject.layer = LayerMask.NameToLayer("Black Hole");
 
                 planetType = PlanetType.BlackHole;
             }
