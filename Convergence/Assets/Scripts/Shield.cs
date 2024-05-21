@@ -23,7 +23,7 @@ public class Shield : MonoBehaviour
     private Collider2D col;
 
     private SpriteRenderer maskSpr;
-    //public SpriteRenderer overlaySpr;
+    public SpriteRenderer overlaySpr;
 
     private ParticleSystem objPS;
 
@@ -60,8 +60,8 @@ public class Shield : MonoBehaviour
 
         if (pixel.Ice < 1.0f) return;
 
-        maskSpr.sortingOrder = pixel.GetComponent<SpriteRenderer>().sortingOrder + 1;
-        //overlaySpr.sortingOrder = maskSpr.sortingOrder + 1;
+        maskSpr.sortingOrder = pixel.GetComponent<SpriteRenderer>().sortingOrder + 2;
+        overlaySpr.sortingOrder = maskSpr.sortingOrder +1;
 
         /*
         if (objPS != null)
@@ -127,7 +127,7 @@ public class Shield : MonoBehaviour
 
             yield return interval;
         }
-        pixel.playerPixel.isShielding = false;
+        pixel.playerPixel.shieldActivated = false;
 
         ShieldDown();
     }

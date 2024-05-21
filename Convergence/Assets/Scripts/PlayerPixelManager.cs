@@ -39,8 +39,10 @@ public class PlayerPixelManager : PixelManager
     [Header("Shield")]
     public Shield Shield;
 
-    [Tooltip("isShielding is true when the player input for it is active"),HideInInspector]
-    public bool isShielding = false;
+    [Tooltip("isShielding is true when the player input for it is active")]
+    protected bool isShielding = false;
+    [HideInInspector]
+    public bool shieldActivated;
 
     [Header("Propeller")]
     public ParticleSystem GasJet;
@@ -344,9 +346,10 @@ public class PlayerPixelManager : PixelManager
         if (Ice > 0f)
         {
             CutsceneManager.Instance.PlayerShielded();
-            isShielding = true;
+            shieldActivated = true;
         }
 
+        isShielding = true;
         Shield.ShieldUp();
     }
     public float ShieldRadius()
@@ -366,6 +369,8 @@ public class PlayerPixelManager : PixelManager
         if (!isShielding) return;
 
         isShielding = false;
+
+        shieldActivated = false;
 
         Shield.ShieldDown();
     }
