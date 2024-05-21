@@ -51,7 +51,7 @@ public class PlayerPixelManager : PixelManager
 
 
     public GameObject RespawnFX;
-
+    public GameObject PlayerIcon;
     [HideInInspector]
     public int PlayerID;
     private bool canEject = true;
@@ -104,8 +104,16 @@ public class PlayerPixelManager : PixelManager
                 camLook = cam.GetComponent<CameraLook>();
                 pInput = camLook.inputManager.GetComponent<PlayerInput>();
                 l.focusedPixel = this;
+
+
+                PlayerIcon.GetComponent<SpriteRenderer>().color = camLook.inputManager.PlayerColors[PlayerID - 1];
+                PlayerIcon.gameObject.layer = LayerMask.NameToLayer("P" + PlayerID);
             }
+
         }
+
+        
+
         RegisterInputs();
     }
     Vector2 lastMousePos=new Vector2(0,-1);
