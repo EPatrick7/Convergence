@@ -202,12 +202,16 @@ public class PauseMenu : MonoBehaviour
         //cutsceneManager.gameObject.SetActive(true);
 
         gameObject.SetActive(false);
-    }   
-    
+    }
+
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (!alreadyLoadedScene)
+        {
+            alreadyLoadedScene = true;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
     public void YesPresHome(InputAction.CallbackContext context)
     {
@@ -233,6 +237,7 @@ public class PauseMenu : MonoBehaviour
     public float loadDelay;
     float targDelayTime;
     int delayedLoadedID;
+    bool alreadyLoadedScene;
     public void LoadSceneDelayed(int id)
     {
         if (menuFrozen==null)
@@ -254,14 +259,18 @@ public class PauseMenu : MonoBehaviour
     {
         targDelayTime = Time.timeSinceLevelLoad + loadDelay;
         yield return new WaitForSeconds(loadDelay);
-        SceneManager.LoadSceneAsync(id);
+        if (!alreadyLoadedScene)
+        {
+            alreadyLoadedScene = true;
+            SceneManager.LoadSceneAsync(id);
+        }
     }
     public void LoadScene(int id)
     {
         //REMOVE DEBUG::
-        if (menuFrozen==null)
+        if (menuFrozen==null&&!alreadyLoadedScene)
         {
-
+            alreadyLoadedScene = true;
             if (id == 1 && ((UnityEngine.Input.GetKey(KeyCode.LeftControl) && UnityEngine.Input.GetKey(KeyCode.LeftShift)) || isPressingHome))
             {
                 SceneManager.LoadSceneAsync(2);
