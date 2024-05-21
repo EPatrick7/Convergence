@@ -670,7 +670,7 @@ public class GravityManager : MonoBehaviour
 
                             if (this_pixel != null&&this_pixel.GetComponent<PlayerPixelManager>() == null&& look.focusedPixel!=null)
                             {
-                                if (look.focusedPixel.ShieldIsActive())
+                                if (look.focusedPixel.isShielding)
                                 {
                                     PlayerPixelManager player = look.focusedPixel;
                                     //this_pixel

@@ -15039,7 +15039,6 @@ MonoBehaviour:
   isPlayer: 0
   gas: 0
   planetType: 0
-  isShielding: 0
   SunTransition_MassReq: 750
   SunTransition_GasReq: 1000
   indManagers: []

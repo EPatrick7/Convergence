@@ -39,8 +39,8 @@ public class PlayerPixelManager : PixelManager
     [Header("Shield")]
     public Shield Shield;
 
-    [Tooltip("isShielding is true when the player input for it is active")]
-    protected bool isShielding = false;
+    [Tooltip("isShielding is true when the player input for it is active"),HideInInspector]
+    public bool isShielding = false;
 
     [Header("Propeller")]
     public ParticleSystem GasJet;
@@ -351,7 +351,7 @@ public class PlayerPixelManager : PixelManager
     }
     public float ShieldRadius()
     {
-        return Shield.transform.lossyScale.x * Shield.GetComponent<CircleCollider2D>().radius;
+        return Shield.transform.lossyScale.x * Shield.GetComponent<CircleCollider2D>().radius*1.025f;
     }
     /*
     private void OnDrawGizmos()
