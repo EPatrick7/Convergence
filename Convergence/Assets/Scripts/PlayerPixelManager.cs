@@ -39,6 +39,9 @@ public class PlayerPixelManager : PixelManager
     [Header("Shield")]
     public Shield Shield;
 
+    [Tooltip("isShielding is true when the player input for it is active")]
+    protected bool isShielding = false;
+
     [Header("Propeller")]
     public ParticleSystem GasJet;
     [Header("Effects")]
@@ -365,6 +368,11 @@ public class PlayerPixelManager : PixelManager
         isShielding = false;
 
         Shield.ShieldDown();
+    }
+
+    public override bool ShieldIsActive()
+    {
+        return Shield.IsActive();
     }
     #endregion
 

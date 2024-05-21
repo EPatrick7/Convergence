@@ -110,11 +110,6 @@ public class PixelManager : MonoBehaviour
 
 
     [HideInInspector]
-    public bool isShielding = false;
-
-
-
-    [HideInInspector]
     public float SunTransition_MassReq=750;
     [HideInInspector]
     public float SunTransition_GasReq=1000;
@@ -341,7 +336,7 @@ public class PixelManager : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!isShielding)
+        if (!ShieldIsActive())
         {
             PixelManager other = collision.gameObject.GetComponent<PixelManager>();
             if (other != null && !other.isKilled && !isKilled && rigidBody != null)
@@ -394,6 +389,11 @@ public class PixelManager : MonoBehaviour
     public void UpdateTexture(Sprite target)
     {
         spriteTransitioner?.UpdateTexture(target);
+    }
+
+    public virtual bool ShieldIsActive()
+    {
+        return false;
     }
 
     protected virtual void OnDestroy()

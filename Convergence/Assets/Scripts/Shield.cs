@@ -44,6 +44,11 @@ public class Shield : MonoBehaviour
         sprite.color = inactiveColor;
     }
 
+    public bool IsActive()
+    {
+        return col.enabled;
+    }
+
     public void ShieldUp()
     {
         if (col == null || col.enabled) return;
