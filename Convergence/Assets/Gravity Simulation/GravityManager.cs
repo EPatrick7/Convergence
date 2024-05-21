@@ -254,6 +254,28 @@ public class GravityManager : MonoBehaviour
     [Tooltip("Range of spawning from which goodies will spawn around the player.")]
     public Vector2 GoodiesRange = new Vector2(40, 175);
      
+    bool isWithinCamera(CameraLook look, Vector2 loc)
+    {
+        Vector3 vp = look.GetComponent<Camera>().WorldToViewportPoint(loc);
+        float wiggleRoom = 0.1f;
+        if ((vp.x > -wiggleRoom && vp.x < 1 + wiggleRoom && vp.y > -wiggleRoom && vp.y < 1 + wiggleRoom))
+        {//Object is within viewport, abort.
+            return true;
+        }
+        return false;
+    }
+    public bool isWithinACamera(Vector2 loc)
+    {
+        if (CameraLook.camLooks != null)
+        {
+            foreach (CameraLook look in CameraLook.camLooks)
+            {
+                if (isWithinCamera(look, loc))
+                    return true;
+            }
+        }
+        return false;
+    }
 
     public void Respawn()
     {
@@ -261,21 +283,9 @@ public class GravityManager : MonoBehaviour
         {
             Vector2 loc = UnityEngine.Random.insideUnitCircle * (SpawnRadius);
 
-            if (CameraLook.camLooks!=null)
+            if(isWithinACamera(loc))
             {
-                float bestDist = float.MaxValue;
-                foreach (CameraLook look in CameraLook.camLooks)
-                {
-                    float LDist = Vector2.Distance(loc, look.transform.position);
-                    if (LDist < bestDist)
-                    {
-                        bestDist = LDist;
-                    }
-                }
-                if (bestDist< respawn_dist)
-                {
-                    return;
-                }
+                return;
             }
 
             if(Physics2D.Raycast(loc, Vector2.right, 0.1f))
@@ -661,10 +671,9 @@ public class GravityManager : MonoBehaviour
                         }
                     }
 
-                    float bestDist = float.MaxValue;
-                    float largSize = float.MinValue;
                     if (CameraLook.camLooks != null)
                     {
+                        bool inView=false;
                         foreach (CameraLook look in CameraLook.camLooks)
                         {
 
@@ -682,21 +691,12 @@ public class GravityManager : MonoBehaviour
                             }
 
 
-
-                            float LDist = Vector2.Distance(body.pos(), look.transform.position);
-                            float LSize = (200 + look.GetComponent<Camera>().orthographicSize);
-
-
-                            if (LSize > largSize)
+                            if(isWithinCamera(look,this_pixel.transform.position))
                             {
-                                LSize = largSize;
-                            }
-                            if (LDist < bestDist)
-                            {
-                                bestDist = LDist;
+                                inView = true;
                             }
                         }
-                        if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && bestDist > largSize && gravUniverse.pixels[i].GetComponent<PlayerPixelManager>() == null)
+                        if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView && gravUniverse.pixels[i].GetComponent<PlayerPixelManager>() == null)
                         {
                             Destroy(gravUniverse.pixels[i].gameObject);
                         }
