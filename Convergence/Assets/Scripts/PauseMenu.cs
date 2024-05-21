@@ -229,21 +229,39 @@ public class PauseMenu : MonoBehaviour
         isPressingSelect = false;
     }
     private bool isPressingSelect;
+    bool menuFrozen;
+    public float loadDelay;
+    public void LoadSceneDelayed(int id)
+    {
+        if (!menuFrozen)
+        {
+            menuFrozen = true;
+            StartCoroutine(DelayedLoadScene(id));
+        }
+    }
+    public IEnumerator DelayedLoadScene(int id)
+    {
+        yield return new WaitForSeconds(loadDelay);
+        SceneManager.LoadSceneAsync(id);
+    }
     public void LoadScene(int id)
     {
         //REMOVE DEBUG::
+        if (!menuFrozen)
+        {
 
-        if (id == 1 && ((UnityEngine.Input.GetKey(KeyCode.LeftControl) && UnityEngine.Input.GetKey(KeyCode.LeftShift)) || isPressingHome))
-        {
-            SceneManager.LoadSceneAsync(2);
-        }
-        else if (id == 1 && ((UnityEngine.Input.GetKey(KeyCode.LeftControl) && UnityEngine.Input.GetKey(KeyCode.LeftAlt)) || isPressingSelect))
-        {
-            SceneManager.LoadSceneAsync(3);
-        }
-        else//
-        {
-            SceneManager.LoadSceneAsync(id);
+            if (id == 1 && ((UnityEngine.Input.GetKey(KeyCode.LeftControl) && UnityEngine.Input.GetKey(KeyCode.LeftShift)) || isPressingHome))
+            {
+                SceneManager.LoadSceneAsync(2);
+            }
+            else if (id == 1 && ((UnityEngine.Input.GetKey(KeyCode.LeftControl) && UnityEngine.Input.GetKey(KeyCode.LeftAlt)) || isPressingSelect))
+            {
+                SceneManager.LoadSceneAsync(3);
+            }
+            else//
+            {
+                SceneManager.LoadSceneAsync(id);
+            }
         }
     }
     public void Quit()
