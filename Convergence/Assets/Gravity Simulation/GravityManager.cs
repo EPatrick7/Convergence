@@ -350,7 +350,15 @@ public class GravityManager : MonoBehaviour
         {
             GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform); //INDIC
             bHole.GetComponent<PixelManager>().spawnBhole = true;
-            //bHole.GetComponent<SpriteRenderer>().sortingOrder = 501;
+            if (MenuSim)
+			{
+                bHole.GetComponent<SpriteRenderer>().enabled = false;
+                SpriteRenderer transitioner = bHole.transform.GetChild(0).GetComponent<SpriteRenderer>();
+                if (transitioner != null)
+                {
+                    transitioner.enabled = false;
+                }
+            }
             RegisterBody(bHole, Vector2.zero);
             for (var i = 0; i < indManagers.Length; i++)
 			{
