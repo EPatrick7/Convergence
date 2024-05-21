@@ -562,7 +562,7 @@ public class GravityManager : MonoBehaviour
     public float wrap_dist;
     void Start()
     {
-        wrap_dist = SpawnRadius * 2f;
+        wrap_dist = SpawnRadius * 3f;
         GameWinner = null;
         Instance = this;
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
