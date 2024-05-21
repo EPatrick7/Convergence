@@ -103,7 +103,7 @@ public class PlayerHud : MonoBehaviour
 
     private float CalcMax()
 	{
-        if (player.planetType != PixelManager.PlanetType.Sun && player.mass() < 750)
+        if (player.planetType != PixelManager.PlanetType.Sun)
         {
             return 750;
         }
