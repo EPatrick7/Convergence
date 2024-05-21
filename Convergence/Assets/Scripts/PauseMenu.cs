@@ -229,25 +229,37 @@ public class PauseMenu : MonoBehaviour
         isPressingSelect = false;
     }
     private bool isPressingSelect;
-    bool menuFrozen;
+    Coroutine menuFrozen;
     public float loadDelay;
+    float targDelayTime;
+    int delayedLoadedID;
     public void LoadSceneDelayed(int id)
     {
-        if (!menuFrozen)
+        if (menuFrozen==null)
         {
-            menuFrozen = true;
-            StartCoroutine(DelayedLoadScene(id));
+            delayedLoadedID = id;
+            menuFrozen=StartCoroutine(DelayedLoadScene(id));
+        }
+        else
+        {
+            if ((targDelayTime - loadDelay) + 0.1f < Time.timeSinceLevelLoad)
+            {
+                StopCoroutine(menuFrozen);
+                menuFrozen = null;
+                LoadScene(delayedLoadedID);
+            }
         }
     }
     public IEnumerator DelayedLoadScene(int id)
     {
+        targDelayTime = Time.timeSinceLevelLoad + loadDelay;
         yield return new WaitForSeconds(loadDelay);
         SceneManager.LoadSceneAsync(id);
     }
     public void LoadScene(int id)
     {
         //REMOVE DEBUG::
-        if (!menuFrozen)
+        if (menuFrozen==null)
         {
 
             if (id == 1 && ((UnityEngine.Input.GetKey(KeyCode.LeftControl) && UnityEngine.Input.GetKey(KeyCode.LeftShift)) || isPressingHome))

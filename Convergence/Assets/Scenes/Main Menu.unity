@@ -22059,6 +22059,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1779525165}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
+      propertyPath: inputManager
+      value: 
+      objectReference: {fileID: 237117387}
+    - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: buttons.Array.size
       value: 4
       objectReference: {fileID: 0}

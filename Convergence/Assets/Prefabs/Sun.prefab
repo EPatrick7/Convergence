@@ -9878,6 +9878,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   angleIncrement: 0.02
+  buttons: []
+  title: {fileID: 0}
+  inputManager: {fileID: 0}
+  ShakeStartDelay: 3
+  ShakeStopDelay: 4.75
 --- !u!212 &2332083204448613540
 SpriteRenderer:
   m_ObjectHideFlags: 0

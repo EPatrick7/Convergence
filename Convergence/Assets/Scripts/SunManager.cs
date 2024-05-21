@@ -23,6 +23,8 @@ public class SunManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI title;
     private Image icon;
+    [SerializeField]
+    private InputManager inputManager;
 
     //private Camera camera;
 
@@ -44,12 +46,26 @@ public class SunManager : MonoBehaviour
         Transform pos = gameObject.transform;
         pos.eulerAngles = new Vector3(pos.eulerAngles.x, pos.eulerAngles.y, pos.eulerAngles.z + angleIncrement);
         angle += angleIncrement;
-    }
 
+        if (isShaking)
+        {
+            inputManager.AddRumble(0.5f);
+        }
+    }
+    bool isShaking = false;
+    public float ShakeStartDelay;
+    public float ShakeStopDelay;
+    public IEnumerator ShakeDelay()
+    {
+        yield return new WaitForSeconds(ShakeStartDelay);
+        isShaking = true;
+        yield return new WaitForSeconds(ShakeStopDelay);
+        isShaking = false;
+    }
     public void sceneStart()
 	{
         TcamSize?.Kill();
-
+        StartCoroutine(ShakeDelay());
         for (var i = 0; i < buttons.Count; i++) //fade out buttons
 		{
             var tempColor = buttons[i].color;
