@@ -562,10 +562,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -240
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2207568011719817587, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1570540821}
   m_SourcePrefab: {fileID: 100100000, guid: dbe420cb95192754e8952d62c414654f, type: 3}
 --- !u!224 &642198870 stripped
 RectTransform:
@@ -870,6 +874,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7509056545611062217, guid: fefa662793ae9bc448083d76f3dbfb88, type: 3}
+      propertyPath: RespawnFX
+      value: 
+      objectReference: {fileID: 4854698766069789408, guid: 6f9a119da1ea5ab438e83d86c4feb06c, type: 3}
     - target: {fileID: 8270587239028709838, guid: fefa662793ae9bc448083d76f3dbfb88, type: 3}
       propertyPath: m_Name
       value: PlayerPixel
@@ -888,6 +896,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6350535042429879270, guid: fefa662793ae9bc448083d76f3dbfb88, type: 3}
   m_PrefabInstance: {fileID: 1389200310}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1570540820 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2207568011719817587, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+  m_PrefabInstance: {fileID: 642198869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1570540821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570540820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d392293f18f147947923f67b7c1485ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1576063079 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1794329209082054581, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
@@ -975,17 +1000,6 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 6024165576097979102, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
   m_PrefabInstance: {fileID: 441338807}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1767557858 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
-  m_PrefabInstance: {fileID: 642198869}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f20151d3ced115746820aca41dcab9d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1818571628 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1129022335016033778, guid: fc455009cb69d0c42b27073e51b2bfb0, type: 3}
@@ -1146,7 +1160,7 @@ PrefabInstance:
     - target: {fileID: 1254420691966444036, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
       propertyPath: cutsceneManager
       value: 
-      objectReference: {fileID: 1767557858}
+      objectReference: {fileID: 0}
     - target: {fileID: 1254420691966444036, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
       propertyPath: indicatorManager
       value: 
@@ -1364,6 +1378,10 @@ PrefabInstance:
       propertyPath: indicatorManager
       value: 
       objectReference: {fileID: 878192728}
+    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+      propertyPath: random_respawn_players
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: textureMaps.Array.data[0].Texture
       value: 

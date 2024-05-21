@@ -253,11 +253,11 @@ public class PixelManager : MonoBehaviour
         {
             if (other.Ice > 0 && other.Ice > other.Gas)
             {
-                CutsceneManager.Instance.ElementConsumed(ElementType.Ice);
+                CutsceneManager.Instance?.ElementConsumed(ElementType.Ice);
             }
             else if (other.Gas > 0 && other.Gas > other.Ice)
             {
-                    CutsceneManager.Instance.ElementConsumed(ElementType.Gas);
+                    CutsceneManager.Instance?.ElementConsumed(ElementType.Gas);
             }
             if (other.ConstantMass && other.planetType == PlanetType.BlackHole)
             {
@@ -271,7 +271,7 @@ public class PixelManager : MonoBehaviour
                 GravityManager.Instance.respawn_players = false;
                 GravityManager.GameWinner = playerPixel;
                 BlackHoleState.RadiusScalar *= 1.3f;
-                CutsceneManager.Instance.BlackHoleConsumed();
+                CutsceneManager.Instance?.BlackHoleConsumed();
             }
         }
         if (other.mass()-other.MassOverride <= 1)
@@ -284,7 +284,7 @@ public class PixelManager : MonoBehaviour
             if(other.isPlayer)
             {
                 other.playerPixel.RunDeath();
-                CutsceneManager.Instance.PlayerConsumed(playerPixel);
+                CutsceneManager.Instance?.PlayerConsumed(playerPixel);
 
                // Debug.LogFormat("{0} | {1} | {2} | {3}", other.playerPixel, other.playerPixel.PlayerID, PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID), playerPixel);
                 if(other.playerPixel!=null&& playerPixel!=null)

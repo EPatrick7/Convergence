@@ -707,7 +707,7 @@ public class GravityManager : MonoBehaviour
                         }
 
                         if(PlayerCount <= 1)
-                            CutsceneManager.Instance.DistToBlackHole(bh_dist);
+                            CutsceneManager.Instance?.DistToBlackHole(bh_dist);
                     }
 
                     if(PlayerRespawner.playerRespawners!=null&&this_pixel!=null)

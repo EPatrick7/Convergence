@@ -13,6 +13,7 @@ public class PlayerRespawner : MonoBehaviour
     InputManager inputManager;
     [HideInInspector]
     public bool LerpNow;
+    public bool RestartsScene;
 
     private void Start()
     {    
@@ -41,27 +42,33 @@ public class PlayerRespawner : MonoBehaviour
         playRumble = true;
         LerpNow = true;
         yield return new WaitForSeconds(WaitDelay / 4f);
-        GameObject player = Instantiate(PlayerObj, transform.position, transform.rotation,transform.parent);
-        GravityManager.Instance.RegisterBody(player, Vector2.zero);
-        PlayerPixelManager playerPixelManager = player.GetComponent<PlayerPixelManager>();
-        playerPixelManager.PlayerID = PlayerID;
-
-        playerPixelManager.GetComponent<Rigidbody2D>().mass = Mathf.Max(SetMass, playerPixelManager.GetComponent<Rigidbody2D>().mass);
-
-
-        playerPixelManager.Initialize();
-
-        
-
-        foreach(PlayerHud hud in PlayerHud.huds)
+        if (RestartsScene)
         {
-            if(hud.PlayerID == PlayerID)
+            PauseMenu.Instance.Restart();
+        }
+        else
+        {
+            GameObject player = Instantiate(PlayerObj, transform.position, transform.rotation, transform.parent);
+            GravityManager.Instance.RegisterBody(player, Vector2.zero);
+            PlayerPixelManager playerPixelManager = player.GetComponent<PlayerPixelManager>();
+            playerPixelManager.PlayerID = PlayerID;
+
+            playerPixelManager.GetComponent<Rigidbody2D>().mass = Mathf.Max(SetMass, playerPixelManager.GetComponent<Rigidbody2D>().mass);
+
+
+            playerPixelManager.Initialize();
+
+
+
+            foreach (PlayerHud hud in PlayerHud.huds)
             {
-                hud.Initialize(playerPixelManager);
-                break;
+                if (hud.PlayerID == PlayerID)
+                {
+                    hud.Initialize(playerPixelManager);
+                    break;
+                }
             }
         }
-
         Destroy(gameObject);
     }
 }

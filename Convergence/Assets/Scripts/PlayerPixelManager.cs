@@ -185,7 +185,7 @@ public class PlayerPixelManager : PixelManager
         if (cam == null) return;
 
 
-        CutsceneManager.Instance.PlayerEjected();
+        CutsceneManager.Instance?.PlayerEjected();
 
         camLook.inputManager.EjectRumble();
         Vector2 ejectDirection = MouseDirection();
@@ -234,7 +234,7 @@ public class PlayerPixelManager : PixelManager
             StarvationFX.Play();
         }
         RunDeath();
-        CutsceneManager.Instance.PlayerConsumed();
+        CutsceneManager.Instance?.PlayerConsumed();
         Destroy(gameObject);
     }
     
@@ -319,7 +319,7 @@ public class PlayerPixelManager : PixelManager
 
                     if (Gas > 0f)
                     {
-                        CutsceneManager.Instance.PlayerPropelled();
+                        CutsceneManager.Instance?.PlayerPropelled();
                     }
                     camLook.inputManager.PropelRumble();
                     StartParticles();
@@ -355,7 +355,7 @@ public class PlayerPixelManager : PixelManager
 
         if (Ice > 0f)
         {
-            CutsceneManager.Instance.PlayerShielded();
+            CutsceneManager.Instance?.PlayerShielded();
             shieldActivated = true;
         }
 
