@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler//ISelectHandler
 {
@@ -19,6 +20,10 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if(pointerOver||(EventSystem.current!=null&&EventSystem.current.currentSelectedGameObject==gameObject))
         {
+            if (Input.GetKey(KeyCode.Return) && GravityManager.Instance.PlayerCount > 1&& (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
+            {
+                GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
+            }
             gameObject.transform.localScale = new Vector3(hoverScale, hoverScale, hoverScale);
         }
         else
