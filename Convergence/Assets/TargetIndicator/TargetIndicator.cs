@@ -198,6 +198,11 @@ public class TargetIndicator : MonoBehaviour
             {
                 //Decrease brightness as you get farther away
                 float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
+
+                if (GravityManager.Instance.world_wrap && Mathf.Sqrt(transform.position.sqrMagnitude) > GravityManager.Instance.wrap_dist - 700)
+                {
+                    frac *= Mathf.Max(0, 1 - ((Mathf.Sqrt(transform.position.sqrMagnitude) - (GravityManager.Instance.wrap_dist - 700)) / 700f));
+                }
                 tempCol.a = Mathf.Lerp(maxIndicatorAlpha, 0f, frac);
                 offscreenTargetIndicatorImage.color = tempCol;
             }

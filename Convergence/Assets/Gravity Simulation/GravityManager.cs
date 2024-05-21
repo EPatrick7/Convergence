@@ -641,10 +641,15 @@ public class GravityManager : MonoBehaviour
             }
             SimulationStep++;
 
-            foreach(CameraLook look in CameraLook.camLooks)
+            wrap_dist = SpawnRadius * 2f;
+            foreach (CameraLook look in CameraLook.camLooks)
             {
                 look.LastNumPixelsInView = look.NumPixelsInView;
                 look.NumPixelsInView = 0;
+                if(look.focusedPixel!=null&&look.focusedPixel.mass()>500)
+                {//If at least one player is large, then switch the wrap distance to the larger one.
+                    wrap_dist = SpawnRadius * 3f;
+                }
             }
 
             //O(n) run through each body and update it according to the last compute shader run
