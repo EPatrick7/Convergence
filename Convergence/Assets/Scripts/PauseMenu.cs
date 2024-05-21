@@ -57,9 +57,14 @@ public class PauseMenu : MonoBehaviour
             CutsceneManager.Instance?.PlayerPaused();
         }
         if(EventSystem.current != null&& SelectIfGamepad!=null) {
-            if(InputManager.GamePadDetected && EventSystem.current.currentSelectedGameObject==null)
+            if(EventSystem.current.currentSelectedGameObject==null)
             {
-                EventSystem.current.SetSelectedGameObject(SelectIfGamepad.gameObject);
+                if(InputManager.GamePadDetected)
+                    EventSystem.current.SetSelectedGameObject(SelectIfGamepad.gameObject);
+                else if (UnityEngine.Input.GetKey(KeyCode.UpArrow)|| UnityEngine.Input.GetKey(KeyCode.Return) || UnityEngine.Input.GetKey(KeyCode.DownArrow) || UnityEngine.Input.GetKey(KeyCode.LeftArrow) || UnityEngine.Input.GetKey(KeyCode.RightArrow))
+                {
+                    EventSystem.current.SetSelectedGameObject(SelectIfGamepad.gameObject);
+                }
             }
         }
     }
