@@ -26,6 +26,12 @@ public class PlayerHud : MonoBehaviour
     private TMP_Text massText;
 
     [SerializeField]
+    private List<Sprite> stageIcons = new List<Sprite>();
+
+    [SerializeField]
+    private Image massIcon;
+
+    [SerializeField]
     private TMP_Text iceText;
 
     [SerializeField]
@@ -44,7 +50,8 @@ public class PlayerHud : MonoBehaviour
         {
             huds= new List<PlayerHud>();
         }
-        huds.Add(this); 
+        huds.Add(this);
+        massIcon.sprite = stageIcons[0]; //sun sprite
         /*if (gravityManager != null)
         {
             gravityManager.Initialized += Initialize;
@@ -74,6 +81,47 @@ public class PlayerHud : MonoBehaviour
     {
         UpdateSlider(massSlider, value, cap);
         UpdateText(massText, value, cap);
+        UpdateIcon(value);
+    }
+
+    private void UpdateIcon(float value)
+	{
+        if (player.planetType != PixelManager.PlanetType.Sun && value < 750)
+		{
+            massIcon.sprite = stageIcons[0];
+		} else if (player.planetType == PixelManager.PlanetType.Sun && value < 5000)
+		{
+            massIcon.sprite = stageIcons[1];
+		} else if (player.planetType == PixelManager.PlanetType.Sun && value > 5000 && value < 7500)
+		{
+            massIcon.sprite = stageIcons[2];
+		} else if (player.planetType == PixelManager.PlanetType.BlackHole && value > 9999)
+		{
+            massIcon.sprite = stageIcons[3];
+		}
+	}
+
+    private float CalcMax()
+	{
+        if (player.planetType != PixelManager.PlanetType.Sun && player.mass() < 750)
+        {
+            return 750;
+        }
+        else if (player.planetType == PixelManager.PlanetType.Sun && player.mass() < 5000)
+        {
+            return 5000;
+        }
+        else if (player.planetType == PixelManager.PlanetType.Sun && player.mass() > 5000 && player.mass() < 7500)
+        {
+            return 7500;
+        }
+        else if (player.planetType == PixelManager.PlanetType.BlackHole && player.mass() > 9999)
+        {
+            return 10000;
+        } else
+		{
+            return 10000;
+		}
     }
 
     private void UpdateElement(PixelManager.ElementType type, float value, float cap = -1f)
@@ -94,17 +142,23 @@ public class PlayerHud : MonoBehaviour
     private void UpdateSlider(Slider slider, float value, float cap)
     {
         // TODO: Use a tween to make the change smoother
-        cap = Mathf.Max(value, cap, 1f);
-        slider.value = value / cap;
+        cap = Mathf.Max(value, CalcMax(), 1f);
+        slider.value = value / CalcMax();
     }
 
     private void UpdateText(TMP_Text text, float value, float cap)
     {
         // If cap is not valid, use the previous cap string instead
-        string cap_string = cap >= 0f ? cap.ToString("0") : text.text.Split("/")[1];
-        value = Mathf.Min(value, Int32.Parse(cap_string));
+        if (player.mass() < 10000)
+        {
+            string cap_string = CalcMax() >= 0f ? CalcMax().ToString("0") : text.text.Split("/")[1];
+            value = Mathf.Min(value, Int32.Parse(cap_string));
 
-        text.text = string.Format("{0}/{1}", value.ToString("0"), cap_string);
+            text.text = string.Format("{0}/{1}", value.ToString("0"), cap_string);
+        } else
+		{
+            text.text = "CONVERGE";
+		}
     }
 
     private void Destroyed()

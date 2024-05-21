@@ -423,6 +423,12 @@ MonoBehaviour:
   iceSlider: {fileID: 3405529279252228869}
   gasSlider: {fileID: 2667327297071520291}
   massText: {fileID: 4301781301241332650}
+  stageIcons:
+  - {fileID: 21300000, guid: c6b66ff678544a1429efc0c858a1ce91, type: 3}
+  - {fileID: 21300000, guid: 366537ca4bee687429ce0c6638b1f33c, type: 3}
+  - {fileID: 21300000, guid: cebb87379155b3b439753178a1b8a2d1, type: 3}
+  - {fileID: 21300000, guid: 4bcd1ac893eae3b40b1dcf6fa02c3609, type: 3}
+  massIcon: {fileID: 1422988632593639407}
   iceText: {fileID: 4627963713392338704}
   gasText: {fileID: 6867358075363684028}
   Initialized: 0
