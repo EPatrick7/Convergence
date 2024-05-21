@@ -56,7 +56,7 @@ MonoBehaviour:
   coverSpread: 100
   Scale: 15
   coverScale: 10
-  StartSpeed: {x: 0, y: 2}
+  StartSpeed: {x: -2, y: 2}
   objColor:
   - {r: 0, g: 0.43921566, b: 1, a: 0}
   - {r: 1, g: 0.19209038, b: 0, a: 0}
@@ -667,7 +667,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 1
-    maxNumParticles: 50000
+    maxNumParticles: 30000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0

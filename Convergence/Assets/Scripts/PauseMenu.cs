@@ -36,6 +36,8 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     private CutsceneManager cutsceneManager;
 
+    private Tween tween;
+
     public void RegisterInputs()
     {
         foreach(InputManager inputManager in InputManager.inputManagers)
@@ -128,7 +130,11 @@ public class PauseMenu : MonoBehaviour
         {
             l.GetComponent<Volume>().enabled = true;
             l.GetComponent<Volume>().weight = 0;
-            DOTween.To(()=> l.GetComponent<Volume>().weight, x=> l.GetComponent<Volume>().weight = x, 1, .15f);
+
+            tween?.Kill();
+
+            tween = DOTween.To(()=> l.GetComponent<Volume>().weight, x=> l.GetComponent<Volume>().weight = x, 1, .15f);
+            tween.Play();
         }
     }
 
@@ -137,8 +143,9 @@ public class PauseMenu : MonoBehaviour
         foreach (CameraLook l in CameraLook.camLooks)
         {
             l.GetComponent<Volume>().weight = 1;
-            var fadeout = DOTween.To(() => l.GetComponent<Volume>().weight, x => l.GetComponent<Volume>().weight = x, 0, .15f);
-            fadeout.OnComplete(()=>SetPPVol(false));
+            tween?.Kill();
+            tween = DOTween.To(() => l.GetComponent<Volume>().weight, x => l.GetComponent<Volume>().weight = x, 0, .15f);
+            tween.OnComplete(()=>SetPPVol(false));
         }
     }
 
