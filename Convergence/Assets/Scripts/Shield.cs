@@ -127,6 +127,7 @@ public class Shield : MonoBehaviour
 
             yield return interval;
         }
+        pixel.playerPixel.isShielding = false;
 
         ShieldDown();
     }

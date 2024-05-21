@@ -344,8 +344,8 @@ public class PlayerPixelManager : PixelManager
         if (Ice > 0f)
         {
             CutsceneManager.Instance.PlayerShielded();
+            isShielding = true;
         }
-        isShielding = true;
 
         Shield.ShieldUp();
     }
