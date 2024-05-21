@@ -112,7 +112,7 @@ public class PixelManager : MonoBehaviour
     [HideInInspector]
     public float SunTransition_MassReq=750;
     [HideInInspector]
-    public float SunTransition_GasReq=1000;
+    public float SunTransition_GasReq=750;
 
     public IndicatorManager[] indManagers;
     private bool indicating = false;

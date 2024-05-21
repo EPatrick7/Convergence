@@ -80,7 +80,7 @@ public class PlayerHud : MonoBehaviour
     private void UpdateMass(float value, float cap = -1f)
     {
         UpdateSlider(massSlider, value, cap);
-        UpdateText(massText, value, cap);
+        UpdateText(massText, value, cap,true);
         UpdateIcon(value);
     }
 
@@ -146,10 +146,10 @@ public class PlayerHud : MonoBehaviour
         slider.value = value / CalcMax();
     }
 
-    private void UpdateText(TMP_Text text, float value, float cap)
+    private void UpdateText(TMP_Text text, float value, float cap,bool isMass=false)
     {
         // If cap is not valid, use the previous cap string instead
-        if (player.mass() < 10000)
+        if (player.mass() < 10000||!isMass)
         {
             string cap_string = CalcMax() >= 0f ? CalcMax().ToString("0") : text.text.Split("/")[1];
             value = Mathf.Min(value, Int32.Parse(cap_string));
