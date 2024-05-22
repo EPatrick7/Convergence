@@ -52,19 +52,23 @@ public class InputManager : MonoBehaviour
         {
             return;
         }
-        var dev = playerInput.devices[0];
-        if (dev.GetType().ToString().Contains("Gamepad"))
-        {
-            Gamepad devpad= (Gamepad)dev;
 
-            if (dev.GetType().ToString().Contains("DualShock4"))
+        //var dev = playerInput.devices[0];
+        foreach (InputDevice dev in playerInput.devices)
+        { 
+            if (dev.GetType().ToString().Contains("Gamepad"))
             {
-                DualShock4GamepadHID devshock = (DualShock4GamepadHID)dev;
-                
-                devshock.SetMotorSpeedsAndLightBarColor(min, max, col);
+                Gamepad devpad = (Gamepad)dev;
+
+                if (dev.GetType().ToString().Contains("DualShock4"))
+                {
+                    DualShock4GamepadHID devshock = (DualShock4GamepadHID)dev;
+
+                    devshock.SetMotorSpeedsAndLightBarColor(min, max, col);
+                }
+                else
+                    devpad.SetMotorSpeeds(min, max);
             }
-            else
-                devpad.SetMotorSpeeds(min, max);
         }
     }
     private void OnApplicationQuit()
