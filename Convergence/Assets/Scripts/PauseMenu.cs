@@ -161,11 +161,12 @@ public class PauseMenu : MonoBehaviour
             hud.gameObject.SetActive(state);
         }
     }
-
+    float openedMenu;
     private void OpenMenu(InputAction.CallbackContext context)
     {
         if (isPauseMenu)
         {
+            openedMenu = Time.timeSinceLevelLoad;
             isPaused = true;
             foreach (InputManager inputManager in InputManager.inputManagers)
             {
@@ -186,7 +187,7 @@ public class PauseMenu : MonoBehaviour
 
     private void CloseMenu(InputAction.CallbackContext context)
     {
-        if (isPauseMenu)
+        if (isPauseMenu&&Time.timeSinceLevelLoad-0.1f > openedMenu)
         {
             Resume();
         }
