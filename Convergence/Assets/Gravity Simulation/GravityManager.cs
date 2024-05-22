@@ -382,7 +382,7 @@ public class GravityManager : MonoBehaviour
 
         if(PlayerCount>1)
         {
-            PlayerCount = Mathf.Clamp(Gamepad.all.Count,2,4);
+            PlayerCount = Mathf.Clamp(Gamepad.all.Count,1,4);
         }
 
         if (BlackHole!=null)
