@@ -359,6 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 850b4297ad3b9ab4aadb7a2b83ff3d06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  killNotifier: {fileID: 0}
   playerInput: {fileID: 0}
   PlayerId: 0
   ShouldColorPlayer: 0
@@ -22050,6 +22051,14 @@ PrefabInstance:
       propertyPath: inputManager
       value: 
       objectReference: {fileID: 237117387}
+    - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
+      propertyPath: ShakeStopDelay
+      value: 3.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
+      propertyPath: ShakeStartDelay
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: buttons.Array.size
       value: 4
