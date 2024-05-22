@@ -125,7 +125,7 @@ public class SunManager : MonoBehaviour
         newICol.a = 0;
 
         Sequence cam = DOTween.Sequence();
-        cam.Append(Camera.main.DOOrthoSize(2000, 3)); //zoom out
+        cam.Append(Camera.main.DOOrthoSize(1000, 3)); //zoom out
         cam.Insert(0, Camera.main.transform.DOMove(newPos, 2, true)); //center on sun
         cam.Insert(0, title.transform.DOMoveY(title.transform.position.y + 100, 2, true)); //move title up
         cam.Insert(1, title.DOColor(newTCol, 1)); //fade out title
