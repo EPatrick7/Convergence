@@ -52,7 +52,7 @@ public class PlayerPixelManager : PixelManager
 
     public GameObject RespawnFX;
     public GameObject PlayerIcon;
-    [HideInInspector]
+    [Range(1,4)]
     public int PlayerID;
     private bool canEject = true;
 
@@ -62,9 +62,11 @@ public class PlayerPixelManager : PixelManager
     private GravityManager gravityManager;
 
     private Camera cam;
+    bool hasRegistered;
     
     public void RegisterInputs()
     {
+        hasRegistered = true;
         pInput.actions.FindActionMap("Player").FindAction("Eject").performed+=Eject;
         pInput.actions.FindActionMap("Player").FindAction("Propel").started += StartPropel;
         pInput.actions.FindActionMap("Player").FindAction("Propel").canceled += CancelPropel;
@@ -75,6 +77,7 @@ public class PlayerPixelManager : PixelManager
     public bool hasDeregistered;
     public void DeregisterInputs()
     {
+        hasRegistered = false;
         hasDeregistered = true;
         pInput.actions.FindActionMap("Player").FindAction("Eject").performed -= Eject;
         pInput.actions.FindActionMap("Player").FindAction("Propel").started -= StartPropel;
@@ -84,11 +87,15 @@ public class PlayerPixelManager : PixelManager
     }
     public Vector2 MousePos()
     {
+        if(!hasRegistered)
+        {
+            Debug.LogWarning("Tried to get MouseDirection, Input not Ready!");
+            return Vector2.zero;
+        }
         return pInput.actions.FindActionMap("Player").FindAction("MousePosition").ReadValue<Vector2>(); 
     }
     [HideInInspector]
     public CameraLook camLook;
-    [HideInInspector]
     public PlayerInput pInput;
     private void Start()
     {
@@ -114,13 +121,50 @@ public class PlayerPixelManager : PixelManager
 
         }
 
-        
+        StartCoroutine(DelayedRegister());
 
+    }
+    public IEnumerator DelayedRegister()
+    {
+        while (pInput == null)
+        {
+
+            if (camLook == null)
+            {
+                foreach (CameraLook l in CameraLook.camLooks)
+                {
+                    if (l.PlayerID == PlayerID)
+                    {
+                        cam = l.GetComponent<Camera>();
+
+                        camLook = cam.GetComponent<CameraLook>();
+                        pInput = camLook.inputManager.GetComponent<PlayerInput>();
+                        l.focusedPixel = this;
+
+
+                        PlayerIcon.GetComponent<SpriteRenderer>().color = camLook.inputManager.PlayerColors[PlayerID - 1];
+                        PlayerIcon.gameObject.layer = LayerMask.NameToLayer("P" + PlayerID);
+                    }
+
+                }
+            }
+            else
+            {
+                pInput = camLook.inputManager.GetComponent<PlayerInput>();
+                yield return new WaitForFixedUpdate();
+            }
+            yield return new WaitForEndOfFrame();
+        }
         RegisterInputs();
     }
     Vector2 lastMousePos=new Vector2(0,-1);
     public Vector2 MouseDirection()
     {
+        if (!hasRegistered)
+        {
+            Debug.LogWarning("Tried to get MouseDirection, Input not Ready!");
+            return Vector2.zero;
+        }
         Vector2 mousePos = MousePos();
         if (pInput.currentControlScheme == "Gamepad")
         {
@@ -292,6 +336,13 @@ public class PlayerPixelManager : PixelManager
     }
     private void FixedUpdate()
     {
+        /*if (pInput!=null&&pInput.GetComponent<InputManager>().PlayerId != PlayerID)
+        {
+            DeregisterInputs();
+            pInput = null;
+            hasDeregistered = false;
+            StartCoroutine(DelayedRegister());
+        }*/
         Vector2 diff = MouseDirection();
 
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;

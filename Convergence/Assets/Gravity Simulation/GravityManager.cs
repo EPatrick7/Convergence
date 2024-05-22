@@ -379,6 +379,12 @@ public class GravityManager : MonoBehaviour
 
         indManagers = FindObjectsOfType<IndicatorManager>();
 
+
+        if(PlayerCount>1)
+        {
+            PlayerCount = Mathf.Clamp(Gamepad.all.Count,2,4);
+        }
+
         if (BlackHole!=null)
         {
             GameObject bHole = Instantiate(BlackHole, Vector2.zero, Player.transform.rotation, transform); //INDIC

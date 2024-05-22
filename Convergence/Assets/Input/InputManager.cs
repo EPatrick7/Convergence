@@ -10,6 +10,8 @@ using UnityEngine.Windows;
 public class InputManager : MonoBehaviour
 {
     public static List<InputManager> inputManagers;
+    [HideInInspector]
+    public PlayerKillNotifier killNotifier;
 
     public Action<bool> PlayerSet;
 
@@ -17,7 +19,7 @@ public class InputManager : MonoBehaviour
     [HideInInspector]
     public PlayerInput playerInput;
     public static bool GamePadDetected;
-    [HideInInspector]
+    [Range(1,4)]
     public int PlayerId;
     public bool ShouldColorPlayer;
     public Color[] PlayerColors;
@@ -81,6 +83,10 @@ public class InputManager : MonoBehaviour
 
         if (ShouldColorPlayer)
         {
+            if (PlayerId <= 0)
+            {
+                Debug.LogError("Player ID unset, cannot rumble!");
+            }
             SetRumble(min, max, PlayerColors[PlayerId-1]);
         }
         else
@@ -173,6 +179,17 @@ public class InputManager : MonoBehaviour
         {
             GamePadDetected = true;
         }
+
+
+        if(killNotifier==null&&GravityManager.Instance.PlayerCount>1)
+        {
+            killNotifier = PlayerKillNotifier.GetNotifier(PlayerId);
+        }
+        if(killNotifier!=null)
+        {
+            killNotifier.overlay.gameObject.SetActive(playerInput.devices.Count<=0);
+        }
+
      //   DeviceCount = playerInput.devices.Count;
     }
     public void SetPlayerInput(bool enabled)

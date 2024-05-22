@@ -18,6 +18,8 @@ public class PlayerKillNotifier : MonoBehaviour
     [SerializeField]
     private TMP_Text text;
 
+    public TMP_Text overlay;
+
     [SerializeField]
     private float perCharDelay = 0.1f;
 
