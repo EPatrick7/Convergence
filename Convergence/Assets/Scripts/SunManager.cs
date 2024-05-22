@@ -184,7 +184,7 @@ public class SunManager : MonoBehaviour
             var tempColor = buttons[i].color;
             tempColor.a = 0;
             Ttext = buttons[i].DOColor(tempColor, 1);
-            DisableButton(buttons[i]);
+           // DisableButton(buttons[i]);
             Ttext.Play();
         }
     }
@@ -210,7 +210,7 @@ public class SunManager : MonoBehaviour
             var tempColor = multiButtons[i].color;
             tempColor.a = 0;
             TMtext = multiButtons[i].DOColor(tempColor, 1);
-            DisableButton(multiButtons[i]);
+         //   DisableButton(multiButtons[i]);
             TMtext.Play();
         }
     }
