@@ -149,6 +149,10 @@ public class PlayerPixelManager : PixelManager
             {
                 r.transform.position = GravityManager.Instance.RespawnPos();
             }
+            else
+            {
+                r.transform.position = transform.position;
+            }
 
             float avgMass = 0;
             float numLooks = 0;

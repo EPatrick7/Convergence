@@ -127,7 +127,7 @@ MonoBehaviour:
   Sun: {fileID: 21300000, guid: 01963a1f89ee9b3408624a878fc3a7b9, type: 3}
   LateSun: {fileID: 21300000, guid: 94a70502692e8f444bc5621af488a0db, type: 3}
   SunTransition_MassReq: 750
-  SunTransition_GasReq: 1000
+  SunTransition_GasReq: 750
   BlackHoleTransition_MassReq: 7500
   indicatorManager: {fileID: 0}
   PlayerGoodiesCount: 18

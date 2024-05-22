@@ -330,6 +330,39 @@ public class GravityManager : MonoBehaviour
         }
 
     }
+    public void PreRegister_Block(Transform c)
+    {
+        c.gameObject.SetActive(true);
+        foreach (Transform sub_c in c.transform)
+        {
+            PreRegister(sub_c);
+        }
+    }
+    public void PreRegister(Transform c)
+    {
+        c.gameObject.SetActive(true);
+        PixelManager pixel = c.GetComponent<PixelManager>();
+
+        if (pixel != null)
+        {
+            //pixel.indManagers = indManagers;
+            RegisterBody(pixel.gameObject, pixel.GetComponent<Rigidbody2D>().velocity, pixel.elements());
+
+            if (pixel.GetComponent<PlayerPixelManager>() != null)
+            {
+                pixel.GetComponent<PlayerPixelManager>().PlayerID = 1;
+                foreach (PlayerHud hud in PlayerHud.huds)
+                {
+                    if (hud.PlayerID == pixel.GetComponent<PlayerPixelManager>().PlayerID)
+                    {
+
+                        hud.Initialize(pixel.GetComponent<PlayerPixelManager>());
+                        break;
+                    }
+                }
+            }
+        }
+    }
     public IEnumerator Initialize()
     {
         if (RandomSeed <= 0)
@@ -368,25 +401,15 @@ public class GravityManager : MonoBehaviour
 
         foreach(Transform c in transform) //Load in existing particles.
         {
-            PixelManager pixel = c.GetComponent<PixelManager>();
-
-            if (pixel != null)
+            if (c.gameObject.activeSelf)
             {
-                //pixel.indManagers = indManagers;
-                RegisterBody(pixel.gameObject, pixel.GetComponent<Rigidbody2D>().velocity, pixel.elements());
-
-                if (pixel.GetComponent<PlayerPixelManager>() != null)
+                if (c.GetComponent<PixelManager>() != null)
                 {
-                    pixel.GetComponent<PlayerPixelManager>().PlayerID =1;
-                    foreach (PlayerHud hud in PlayerHud.huds)
-                    {
-                        if (hud.PlayerID == pixel.GetComponent<PlayerPixelManager>().PlayerID)
-                        {
-
-                            hud.Initialize(pixel.GetComponent<PlayerPixelManager>());
-                            break;
-                        }
-                    }
+                    PreRegister(c);
+                }
+                else
+                {
+                    PreRegister_Block(c);
                 }
             }
         }
@@ -710,7 +733,7 @@ public class GravityManager : MonoBehaviour
                             CutsceneManager.Instance?.DistToBlackHole(bh_dist);
                     }
 
-                    if(PlayerRespawner.playerRespawners!=null&&this_pixel!=null)
+                    if(PlayerRespawner.playerRespawners!=null&&this_pixel!=null&&random_respawn_players)
                     {
                         foreach(PlayerRespawner respawner in PlayerRespawner.playerRespawners)
                         {

@@ -1,18 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static TutorialManager instance;
+    private void Start()
     {
-        
+        instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LoadedTutorial(int id)
     {
-        
+
     }
+    
+    private void FixedUpdate()
+    {
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Time.timeScale = 0.25f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+    }
+
 }
