@@ -59,6 +59,17 @@ public class PauseMenu : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if(menuFrozen!=null&&UnityEngine.Input.GetMouseButton(0))
+        {
+            if ((targDelayTime - loadDelay) + 0.1f < Time.timeSinceLevelLoad)
+            {
+                StopCoroutine(menuFrozen);
+                menuFrozen = null;
+                LoadScene(delayedLoadedID);
+            }
+
+        }
+
         if(isPauseMenu&&isPaused)
         {
             CutsceneManager.Instance?.PlayerPaused();
@@ -147,6 +158,7 @@ public class PauseMenu : MonoBehaviour
 
             tween = DOTween.To(()=> l.GetComponent<Volume>().weight, x=> l.GetComponent<Volume>().weight = x, 1, .15f);
             tween.Play();
+            break;
         }
     }
 
@@ -158,6 +170,7 @@ public class PauseMenu : MonoBehaviour
             tween?.Kill();
             tween = DOTween.To(() => l.GetComponent<Volume>().weight, x => l.GetComponent<Volume>().weight = x, 0, .15f);
             tween.OnComplete(()=>SetPPVol(false));
+            break;
         }
     }
 
@@ -171,7 +184,7 @@ public class PauseMenu : MonoBehaviour
     float openedMenu;
     private void OpenMenu(InputAction.CallbackContext context)
     {
-        if (isPauseMenu)
+        if (isPauseMenu&&!isPaused)
         {
             Pause();
         }
@@ -199,7 +212,7 @@ public class PauseMenu : MonoBehaviour
 
     private void CloseMenu(InputAction.CallbackContext context)
     {
-        if (isPauseMenu&&Time.timeSinceLevelLoad-0.1f > openedMenu)
+        if (isPauseMenu&&Time.timeSinceLevelLoad-0.2f > openedMenu&& isPaused)
         {
             Resume();
         }
