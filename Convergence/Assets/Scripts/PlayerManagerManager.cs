@@ -107,7 +107,8 @@ public class PlayerManagerManager : MonoBehaviour
     public IEnumerator DelayPauseSetup()
     {
         yield return new WaitForSeconds(0.5f);
-        PauseMenu.Instance.RegisterInputs();
+        if(GravityManager.Instance.PlayerCount>1)
+            PauseMenu.Instance.RegisterInputs();
     }
     private void Start()
     {
