@@ -158,7 +158,8 @@ public class GravityManager : MonoBehaviour
 
 
     public static PlayerPixelManager GameWinner;
-
+    [HideInInspector]
+    public bool isMultiplayer;
     [Header("Init")]
     [Tooltip("If true then we will not spawn player.")]
     public bool MenuSim;
@@ -382,6 +383,7 @@ public class GravityManager : MonoBehaviour
 
         if(PlayerCount>1)
         {
+            isMultiplayer = true;
             PlayerCount = Mathf.Clamp(Gamepad.all.Count,1,4);
         }
 

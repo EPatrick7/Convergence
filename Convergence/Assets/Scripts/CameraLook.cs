@@ -8,7 +8,6 @@ public class CameraLook : MonoBehaviour
     public static List<CameraLook> camLooks;
     [Range(1,4)]
     public int PlayerID;
-    [HideInInspector]
     public PlayerPixelManager focusedPixel;
     [HideInInspector]
     public PlayerRespawner respawner;
@@ -20,8 +19,6 @@ public class CameraLook : MonoBehaviour
 
     private void Start()
     {
-        if(inputManager!=null)
-            inputManager.PlayerId = PlayerID;
         cam = GetComponent<Camera>();
         if (camLooks == null)
         {

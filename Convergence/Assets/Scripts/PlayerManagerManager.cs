@@ -90,19 +90,19 @@ public class PlayerManagerManager : MonoBehaviour
         cam.rect = new Rect(pos,size);
         IslandBG.color=new Color(targ.r,targ.g,targ.b,IslandBG.color.a);
 
-        PCamera.PlayerID = PlayerId;
+        PCamera.PlayerID = PlayerId;/*
+        if (PCamera.focusedPixel != null)
+        {
+            PCamera.focusedPixel.camLook = PCamera;
+            PCamera.focusedPixel.pInput = InputManager.GetComponent<PlayerInput>();
+            PCamera.focusedPixel.RegisterInputs();
+        }*/
         InputManager.PlayerId=PlayerId;
         PlayerHud.PlayerID=PlayerId;
         PlayerKillNotifier.PlayerID = PlayerId;
 
         InputManager.gameObject.SetActive(true);
-        
 
-    }
-    private void OnDrawGizmosSelected()
-    {
-        if(!Application.isPlaying)
-            UpdateAll();
     }
     public IEnumerator DelayPauseSetup()
     {

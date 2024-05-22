@@ -66,24 +66,34 @@ public class PlayerPixelManager : PixelManager
     
     public void RegisterInputs()
     {
-        hasRegistered = true;
-        pInput.actions.FindActionMap("Player").FindAction("Eject").performed+=Eject;
-        pInput.actions.FindActionMap("Player").FindAction("Propel").started += StartPropel;
-        pInput.actions.FindActionMap("Player").FindAction("Propel").canceled += CancelPropel;
-        pInput.actions.FindActionMap("Player").FindAction("Shield").started += StartShield;
-        pInput.actions.FindActionMap("Player").FindAction("Shield").canceled += CancelShield;
+        if(hasRegistered)
+        {
+            Debug.LogWarning("Cannot double register a player!");
+        }
+        if (!hasRegistered)
+        {
+            hasRegistered = true;
+            pInput.actions.FindActionMap("Player").FindAction("Eject").performed += Eject;
+            pInput.actions.FindActionMap("Player").FindAction("Propel").started += StartPropel;
+            pInput.actions.FindActionMap("Player").FindAction("Propel").canceled += CancelPropel;
+            pInput.actions.FindActionMap("Player").FindAction("Shield").started += StartShield;
+            pInput.actions.FindActionMap("Player").FindAction("Shield").canceled += CancelShield;
+        }
     }
     [HideInInspector]
     public bool hasDeregistered;
     public void DeregisterInputs()
     {
-        hasRegistered = false;
-        hasDeregistered = true;
-        pInput.actions.FindActionMap("Player").FindAction("Eject").performed -= Eject;
-        pInput.actions.FindActionMap("Player").FindAction("Propel").started -= StartPropel;
-        pInput.actions.FindActionMap("Player").FindAction("Propel").canceled -= CancelPropel;
-        pInput.actions.FindActionMap("Player").FindAction("Shield").started -= StartShield;
-        pInput.actions.FindActionMap("Player").FindAction("Shield").canceled -= CancelShield;
+        if (hasRegistered)
+        {
+            hasRegistered = false;
+            hasDeregistered = true;
+            pInput.actions.FindActionMap("Player").FindAction("Eject").performed -= Eject;
+            pInput.actions.FindActionMap("Player").FindAction("Propel").started -= StartPropel;
+            pInput.actions.FindActionMap("Player").FindAction("Propel").canceled -= CancelPropel;
+            pInput.actions.FindActionMap("Player").FindAction("Shield").started -= StartShield;
+            pInput.actions.FindActionMap("Player").FindAction("Shield").canceled -= CancelShield;
+        }
     }
     public Vector2 MousePos()
     {
@@ -120,7 +130,6 @@ public class PlayerPixelManager : PixelManager
             }
 
         }
-
         StartCoroutine(DelayedRegister());
 
     }
