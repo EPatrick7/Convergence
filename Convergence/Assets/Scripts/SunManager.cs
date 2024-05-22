@@ -113,6 +113,26 @@ public class SunManager : MonoBehaviour
         camShake.Play();
     }
 
+    public void tutorialStart()
+	{
+        FadeOutMainButtons();
+        Vector3 newPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
+
+        Color newTCol = title.color;
+        newTCol.a = 0;
+
+        Color newICol = icon.color;
+        newICol.a = 0;
+
+        Sequence cam = DOTween.Sequence();
+        cam.Append(Camera.main.DOOrthoSize(2000, 3)); //zoom out
+        cam.Insert(0, Camera.main.transform.DOMove(newPos, 2, true)); //center on sun
+        cam.Insert(0, title.transform.DOMoveY(title.transform.position.y + 100, 2, true)); //move title up
+        cam.Insert(1, title.DOColor(newTCol, 1)); //fade out title
+        cam.Insert(1, icon.DOColor(newICol, 2)); //fade out icon
+        cam.Play();
+    }
+
     public void multiStart()
 	{
         TcamSize?.Kill();
@@ -184,7 +204,7 @@ public class SunManager : MonoBehaviour
             var tempColor = buttons[i].color;
             tempColor.a = 0;
             Ttext = buttons[i].DOColor(tempColor, 1);
-           // DisableButton(buttons[i]);
+            //DisableButton(buttons[i]);
             Ttext.Play();
         }
     }
@@ -210,7 +230,7 @@ public class SunManager : MonoBehaviour
             var tempColor = multiButtons[i].color;
             tempColor.a = 0;
             TMtext = multiButtons[i].DOColor(tempColor, 1);
-         //   DisableButton(multiButtons[i]);
+            //DisableButton(multiButtons[i]);
             TMtext.Play();
         }
     }
