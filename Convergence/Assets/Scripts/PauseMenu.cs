@@ -257,6 +257,7 @@ public class PauseMenu : MonoBehaviour
     private bool isPressingSelect;
     Coroutine menuFrozen;
     public float loadDelay;
+    public float tutloadDelay;
     float targDelayTime;
     int delayedLoadedID;
     bool alreadyLoadedScene;
@@ -279,8 +280,13 @@ public class PauseMenu : MonoBehaviour
     }
     public IEnumerator DelayedLoadScene(int id)
     {
-        targDelayTime = Time.timeSinceLevelLoad + loadDelay;
-        yield return new WaitForSeconds(loadDelay);
+        float delay = loadDelay;
+        if (id > 2)
+		{
+            delay = tutloadDelay;
+		}
+        targDelayTime = Time.timeSinceLevelLoad + delay;
+        yield return new WaitForSeconds(delay);
         if (!alreadyLoadedScene)
         {
             alreadyLoadedScene = true;
