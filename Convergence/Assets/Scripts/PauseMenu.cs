@@ -123,7 +123,7 @@ public class PauseMenu : MonoBehaviour
 
             gameObject.SetActive(false);
             SetPPVol(false);
-            if(GravityManager.Instance.PlayerCount<=1)
+            if(!GravityManager.Instance.isMultiplayer)
                 RegisterInputs();
         }
         else //if (!isPauseMenu)

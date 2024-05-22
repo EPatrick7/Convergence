@@ -20,7 +20,7 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if ((EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
         {
-            if (GravityManager.Instance.isMultiplayer)
+            if (GravityManager.Instance.isMultiplayer&&InputManager.GamePadDetected)
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow)&& GetComponent<UnityEngine.UI.Button>().navigation.selectOnLeft!=null)
                 {
@@ -39,7 +39,7 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             if ((EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
             {
-                if (Input.GetKey(KeyCode.Return) && GravityManager.Instance.PlayerCount > 1)
+                if (Input.GetKey(KeyCode.Return) && GravityManager.Instance.isMultiplayer)
                 {
                     GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
                 }
