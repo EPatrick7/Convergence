@@ -163,7 +163,24 @@ public class InputManager : MonoBehaviour
     public float RumbleScalar=1;
     public Vector2 PitchScalar=Vector2.one;
 
-
+    private void Update()
+    {
+        
+        if(GravityManager.Instance.isMultiplayer&&PlayerId==1)
+        {
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (PauseMenu.isPaused)
+                {
+                    PauseMenu.Instance.UnPause();
+                }
+                else
+                {
+                    PauseMenu.Instance.Pause();
+                }
+            }
+        }
+    }
     private void FixedUpdate()
     {
         RumbleAmount += Mathf.Min(LilRumbleContribution, MaxCollisionRumble);
@@ -178,7 +195,6 @@ public class InputManager : MonoBehaviour
         {
             GamePadDetected = true;
         }
-
 
         if(killNotifier!=null)
         {

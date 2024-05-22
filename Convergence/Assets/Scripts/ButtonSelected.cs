@@ -15,14 +15,34 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField]
     private float normalScale;
 
+    private void Update()
+    {
 
+        if ((EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
+        {
+            if (GravityManager.Instance.isMultiplayer)
+            {
+                if (Input.GetKeyDown(KeyCode.LeftArrow)&& GetComponent<UnityEngine.UI.Button>().navigation.selectOnLeft!=null)
+                {
+                    EventSystem.current.SetSelectedGameObject(GetComponent<UnityEngine.UI.Button>().navigation.selectOnLeft.gameObject);
+                }
+                if (Input.GetKeyDown(KeyCode.RightArrow)&& GetComponent<UnityEngine.UI.Button>().navigation.selectOnRight!=null)
+                {
+                    EventSystem.current.SetSelectedGameObject(GetComponent<UnityEngine.UI.Button>().navigation.selectOnRight.gameObject);
+                }
+            }
+        }
+    }
     private void FixedUpdate()
     {
         if(pointerOver||(EventSystem.current!=null&&EventSystem.current.currentSelectedGameObject==gameObject))
         {
-            if (Input.GetKey(KeyCode.Return) && GravityManager.Instance.PlayerCount > 1&& (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
+            if ((EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
             {
-                GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
+                if (Input.GetKey(KeyCode.Return) && GravityManager.Instance.PlayerCount > 1)
+                {
+                    GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
+                }
             }
             gameObject.transform.localScale = new Vector3(hoverScale, hoverScale, hoverScale);
         }

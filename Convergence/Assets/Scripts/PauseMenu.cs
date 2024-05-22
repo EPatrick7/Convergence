@@ -173,23 +173,28 @@ public class PauseMenu : MonoBehaviour
     {
         if (isPauseMenu)
         {
-            openedMenu = Time.timeSinceLevelLoad;
-            isPaused = true;
-            foreach (InputManager inputManager in InputManager.inputManagers)
-            {
-                inputManager.SetPlayerInput(false);
-                inputManager.SetUIInput(true);
-            }
-            //SetPPVol(true);
-            FadeInPPVol();
-            indicatorManager.DisableIndicators();
-            UpdateHuds(false);
-            //cutsceneManager.gameObject.SetActive(false);
-
-            //EventSystem.current.SetSelectedGameObject(ResumeButton);
-
-            gameObject.SetActive(true);
+            Pause();
         }
+    }
+    public void Pause()
+    {
+
+        openedMenu = Time.timeSinceLevelLoad;
+        isPaused = true;
+        foreach (InputManager inputManager in InputManager.inputManagers)
+        {
+            inputManager.SetPlayerInput(false);
+            inputManager.SetUIInput(true);
+        }
+        //SetPPVol(true);
+        FadeInPPVol();
+        indicatorManager.DisableIndicators();
+        UpdateHuds(false);
+        //cutsceneManager.gameObject.SetActive(false);
+
+        //EventSystem.current.SetSelectedGameObject(ResumeButton);
+
+        gameObject.SetActive(true);
     }
 
     private void CloseMenu(InputAction.CallbackContext context)
@@ -202,6 +207,12 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
+        UnPause();
+    }
+
+    public void UnPause()
+    {
+
         isPaused = false;
         foreach (InputManager inputManager in InputManager.inputManagers)
         {
@@ -216,8 +227,6 @@ public class PauseMenu : MonoBehaviour
 
         gameObject.SetActive(false);
     }
-
-
     public void Restart()
     {
         if (!alreadyLoadedScene)
