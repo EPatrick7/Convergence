@@ -461,6 +461,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 710178676920801405, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: killNotifier
+      value: 
+      objectReference: {fileID: 2077609128593395851}
+    - target: {fileID: 710178676920801405, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
       propertyPath: ShouldColorPlayer
       value: 1
       objectReference: {fileID: 0}

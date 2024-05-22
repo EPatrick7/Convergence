@@ -38,9 +38,16 @@ public class PauseMenu : MonoBehaviour
 
     private Tween tween;
 
+    bool hasRegistered;
     public void RegisterInputs()
     {
-        foreach(InputManager inputManager in InputManager.inputManagers)
+        if (hasRegistered)
+        {
+            Debug.LogWarning("Cannot double register a pause menu!");
+            return;
+        }
+        hasRegistered = true;
+        foreach (InputManager inputManager in InputManager.inputManagers)
         {
             inputManager.playerInput.actions.FindActionMap("Player").FindAction("OpenMenu").performed += OpenMenu;
             inputManager.playerInput.actions.FindActionMap("UI").FindAction("CloseMenu").performed += CloseMenu;
@@ -105,8 +112,8 @@ public class PauseMenu : MonoBehaviour
 
             gameObject.SetActive(false);
             SetPPVol(false);
-
-            RegisterInputs();
+            if(GravityManager.Instance.PlayerCount<=1)
+                RegisterInputs();
         }
         else //if (!isPauseMenu)
         {

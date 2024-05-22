@@ -14,7 +14,7 @@ public class TutorialScene : MonoBehaviour
     }
     private void OnEnable()
     {
-        if(Time.timeSinceLevelLoad<0.1f)
+        if(Time.timeSinceLevelLoad<0.1f||TutorialManager.instance==null)
         {
             hasLoaded = true;
         }

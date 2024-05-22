@@ -10,7 +10,6 @@ using UnityEngine.Windows;
 public class InputManager : MonoBehaviour
 {
     public static List<InputManager> inputManagers;
-    [HideInInspector]
     public PlayerKillNotifier killNotifier;
 
     public Action<bool> PlayerSet;
@@ -181,10 +180,6 @@ public class InputManager : MonoBehaviour
         }
 
 
-        if(killNotifier==null&&GravityManager.Instance.PlayerCount>1)
-        {
-            killNotifier = PlayerKillNotifier.GetNotifier(PlayerId);
-        }
         if(killNotifier!=null)
         {
             killNotifier.overlay.gameObject.SetActive(playerInput.devices.Count<=0);

@@ -104,6 +104,11 @@ public class PlayerManagerManager : MonoBehaviour
         if(!Application.isPlaying)
             UpdateAll();
     }
+    public IEnumerator DelayPauseSetup()
+    {
+        yield return new WaitForSeconds(0.5f);
+        PauseMenu.Instance.RegisterInputs();
+    }
     private void Start()
     {
         UpdateAll();
@@ -112,7 +117,10 @@ public class PlayerManagerManager : MonoBehaviour
             if (NextEnable != null) 
                 NextEnable.SetActive(true);
         }
-        if(EnableIf3P!=null)
+        if (EnableIf3P != null)
+        {
+            StartCoroutine(DelayPauseSetup());
             EnableIf3P.SetActive(GravityManager.Instance.PlayerCount == 3);
+        }
     }
 }
