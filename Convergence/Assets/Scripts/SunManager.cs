@@ -21,14 +21,22 @@ public class SunManager : MonoBehaviour
     private List<TextMeshProUGUI> buttons = new List<TextMeshProUGUI>();
 
     [SerializeField]
+    private List<TextMeshProUGUI> multiButtons = new List<TextMeshProUGUI>();
+
+    [SerializeField]
     private TextMeshProUGUI title;
     private Image icon;
     [SerializeField]
     private InputManager inputManager;
 
+    private bool multiplayer = false;
+
     //private Camera camera;
 
     private Tween TcamSize;
+    private Tween Ttext;
+    private Tween TMtext;
+    private Tween Tcam;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +45,13 @@ public class SunManager : MonoBehaviour
         ps = GetComponentInChildren<ParticleSystem>();
         ps.Stop();
         icon = title.GetComponentInChildren<Image>();
+        for (var i = 0; i < multiButtons.Count; i++)
+		{
+            var tempColor = multiButtons[i].color;
+            tempColor.a = 0;
+            multiButtons[i].color = tempColor; //set transparent to 0
+            DisableButton(multiButtons[i]); //and disable button
+        }
         //camera = Camera.main;
     }
 
@@ -63,17 +78,17 @@ public class SunManager : MonoBehaviour
         yield return new WaitForSeconds(ShakeStopDelay);
         isShaking = false;
     }
+
     public void sceneStart()
 	{
         TcamSize?.Kill();
         StartCoroutine(ShakeDelay());
-        for (var i = 0; i < buttons.Count; i++) //fade out buttons
+        if (!multiplayer) {
+            FadeOutMainButtons();
+        } else
 		{
-            var tempColor = buttons[i].color;
-            tempColor.a = 0;
-            var text = buttons[i].DOColor(tempColor, 1);
-            text.Play();
-		}
+            FadeOutMultiButtons();
+        }
 
         Vector3 newPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
         
@@ -96,6 +111,91 @@ public class SunManager : MonoBehaviour
         camShake.Insert(4, icon.DOColor(newICol, 2)); //fade out icon
         camShake.Insert(6, Camera.main.DOOrthoSize(1, 1)); //quick zoom in before
         camShake.Play();
+    }
+
+    public void multiSetup()
+	{
+        multiplayer = true;
+
+        FadeOutMainButtons();
+        FadeInMultiButtons();
+
+        Tcam?.Kill();
+        Tcam = Camera.main.transform.DOMoveX(300, 2); //move camera to other side of screen
+        Tcam.Play();
+	}
+
+    public void multiBack()
+	{
+        multiplayer = false;
+        FadeOutMultiButtons();
+        FadeInMainButtons();
+
+        Tcam?.Kill();
+        Tcam = Camera.main.transform.DOMoveX(-300, 2); //move camera back
+        Tcam.Play();
+    }
+
+    private void DisableButton(TextMeshProUGUI button)
+	{
+        button.gameObject.GetComponent<Button>().enabled = false;
+	}
+
+    private void EnableButton(TextMeshProUGUI button)
+    {
+        button.gameObject.GetComponent<Button>().enabled = true;
+    }
+
+    private void FadeOutMainButtons()
+	{
+        Ttext?.Kill();
+        for (var i = 0; i < buttons.Count; i++) //fade out main buttons
+        {
+            var tempColor = buttons[i].color;
+            tempColor.a = 0;
+            Ttext = buttons[i].DOColor(tempColor, 1);
+            DisableButton(buttons[i]);
+            Ttext.Play();
+        }
+    }
+
+    private void FadeInMainButtons()
+	{
+        Ttext?.Kill();
+        for (var i = 0; i < buttons.Count; i++) //fade in main buttons
+        {
+            var tempColor = buttons[i].color;
+            tempColor.a = 1;
+            Ttext = buttons[i].DOColor(tempColor, 1);
+            EnableButton(buttons[i]);
+            Ttext.Play();
+        }
+    }
+
+    private void FadeOutMultiButtons()
+	{
+        TMtext?.Kill();
+        for (var i = 0; i < multiButtons.Count; i++) //fade out multi buttons
+        {
+            var tempColor = multiButtons[i].color;
+            tempColor.a = 0;
+            TMtext = multiButtons[i].DOColor(tempColor, 1);
+            DisableButton(multiButtons[i]);
+            TMtext.Play();
+        }
+    }
+
+    private void FadeInMultiButtons()
+	{
+        TMtext?.Kill();
+        for (var i = 0; i < multiButtons.Count; i++)
+        {
+            var tempColor = multiButtons[i].color;
+            tempColor.a = 1;
+            TMtext = multiButtons[i].DOColor(tempColor, 1); //and tween button alpha to 1
+            EnableButton(multiButtons[i]);
+            TMtext.Play();
+        }
     }
 
     public void StartPS()
