@@ -84,17 +84,17 @@ public class SunManager : MonoBehaviour
         newICol.a = 0;
 
         Sequence cam = DOTween.Sequence();
-        cam.Append(Camera.main.DOOrthoSize(1000, 3)); //zoom out
-        cam.Insert(0, Camera.main.transform.DOMove(newPos, 3, true)); //center on sun
-        cam.Insert(0, title.transform.DOMoveY(title.transform.position.y + 100, 3, true)); //move title up
+        cam.Append(Camera.main.DOOrthoSize(1000, 2)); //zoom out
+        cam.Insert(0, Camera.main.transform.DOMove(newPos, 2, true)); //center on sun
+        cam.Insert(0, title.transform.DOMoveY(title.transform.position.y + 100, 2, true)); //move title up
         cam.OnComplete(StartPS);
         cam.Play();
 
         Sequence camShake = DOTween.Sequence();
         camShake.Insert(3, Camera.main.transform.DOShakePosition(15, 20, 20, 45, true, false)); //shake cam
-        camShake.Insert(6, title.DOColor(newTCol, 2)); //fade out title
-        camShake.Insert(6, icon.DOColor(newICol, 3)); //fade out icon
-        camShake.Insert(9, Camera.main.DOOrthoSize(50, 1)); //quick zoom in before
+        camShake.Insert(4, title.DOColor(newTCol, 1)); //fade out title
+        camShake.Insert(4, icon.DOColor(newICol, 2)); //fade out icon
+        camShake.Insert(6, Camera.main.DOOrthoSize(1, 1)); //quick zoom in before
         camShake.Play();
     }
 
