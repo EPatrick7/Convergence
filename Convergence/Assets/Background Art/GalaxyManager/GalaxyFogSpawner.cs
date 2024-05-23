@@ -44,19 +44,31 @@ public class GalaxyFogSpawner : MonoBehaviour
     [SerializeField]
     private List<Color> objColor = new List<Color>();
 
+
+    public enum FogSeedMode {Ignore,IsMenu,IsMenuListener };
+    public FogSeedMode SeedMode = FogSeedMode.Ignore;
+    public static int MenuFogSeed=-1;
     // Start is called before the first frame update
     void Start()
     {
-
-        //Random.InitState(42); //initiates RNG w/ seed
+        if(SeedMode==FogSeedMode.IsMenu)
+        {
+            MenuFogSeed= Random.Range(10, 100000000);
+            Random.InitState(MenuFogSeed); //initiates RNG w/ seed
+        }
+        else if(SeedMode==FogSeedMode.IsMenuListener&& MenuFogSeed>0)
+        {
+            Random.InitState(MenuFogSeed); //initiates RNG w/ seed
+        }
 
         for (var i = 0; i < Random.Range(objMin, objMax); i++)
 		{
 
-            Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * spawnRadius;
+            Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * spawnRadius + new Vector2(transform.position.x, transform.position.y);
             GameObject obj = Instantiate(prefab, playerLoc, Quaternion.identity,transform);
             ParticleSystem objPS = obj.GetComponentInChildren<ParticleSystem>();
-
+            objPS.randomSeed = (uint)Random.Range(10, 100000000);
+            objPS.Play();
             var col = objPS.colorOverLifetime;
             col.enabled = true;
             Gradient grad = new Gradient();
@@ -75,9 +87,11 @@ public class GalaxyFogSpawner : MonoBehaviour
 
         for (var i = 0; i < coverNum; i++)
 		{
-            Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * spawnRadius;
+            Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * spawnRadius+ new Vector2(transform.position.x,transform.position.y);
             GameObject obj = Instantiate(coverPrefab, playerLoc, Quaternion.identity, transform);
             ParticleSystem objPS = obj.GetComponentInChildren<ParticleSystem>();
+            objPS.randomSeed = (uint)Random.Range(10, 100000000);
+            objPS.Play();
 
             var col = objPS.colorOverLifetime;
             col.enabled = true;
