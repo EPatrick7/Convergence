@@ -166,7 +166,7 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         
-        if(GravityManager.Instance.isMultiplayer&&PlayerId==1)
+        if(GravityManager.Instance.isMultiplayer&&PlayerId==1&&playerInput.currentControlScheme=="Gamepad")
         {
             if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
             {
