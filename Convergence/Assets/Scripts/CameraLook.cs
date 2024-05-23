@@ -49,7 +49,7 @@ public class CameraLook : MonoBehaviour
     private float UpdateCamSize()
     {
         var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0), new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f, 0), 0.1f).x;
-        if (camLooks.Count <= 1) //more than 1 player camera
+        if (camLooks.Count <= 1) //less than or equal to 1 player camera (no multiplayer cams)
 		{
             var ppCam = Camera.main.GetUniversalAdditionalCameraData();
             if (ppCam.cameraStack.Count > 0)
