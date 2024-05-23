@@ -32,7 +32,7 @@ public class InputManager : MonoBehaviour
         inputManagers.Add(this);
         SetPlayerInput(true);
 
-        if (GamePadDetected)
+        if (GamePadDetected&& Gamepad.current!=null)
         {
             Gamepad.current.ResetHaptics();
         }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 public class PlayerManagerManager : MonoBehaviour
@@ -49,6 +50,11 @@ public class PlayerManagerManager : MonoBehaviour
         switch(GravityManager.Instance.PlayerCount)
         {
             case 1:
+                size.x = 0.5f;
+                if(EnableIf3P!=null)
+                {
+                    EnableIf3P.GetComponent<Camera>().rect = new Rect(new Vector2(0.5f,0f),new Vector2(0.5f,1f));
+                }
                 break;
             case 2:
                 if (PlayerId > 1)
@@ -106,8 +112,8 @@ public class PlayerManagerManager : MonoBehaviour
     }
     public IEnumerator DelayPauseSetup()
     {
-        yield return new WaitForSeconds(0.5f);
-        if(GravityManager.Instance.PlayerCount>1)
+        yield return new WaitForSeconds(0.1f);
+        if(GravityManager.Instance.isMultiplayer)
             PauseMenu.Instance.RegisterInputs();
     }
     private void Start()
@@ -121,7 +127,7 @@ public class PlayerManagerManager : MonoBehaviour
         if (EnableIf3P != null)
         {
             StartCoroutine(DelayPauseSetup());
-            EnableIf3P.SetActive(GravityManager.Instance.PlayerCount == 3);
+            EnableIf3P.SetActive(GravityManager.Instance.PlayerCount == 3|| GravityManager.Instance.PlayerCount == 1);
         }
     }
 }
