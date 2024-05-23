@@ -203,6 +203,10 @@ public class PlayerPixelManager : PixelManager
             {
                 r.transform.position = GravityManager.Instance.RespawnPos();
             }
+            else if (r.RestartsScene)
+            {
+                r.transform.position = startPos;
+            }
             else
             {
                 r.transform.position = transform.position;

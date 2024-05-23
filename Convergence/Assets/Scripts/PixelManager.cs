@@ -53,8 +53,11 @@ public class PixelManager : MonoBehaviour
 
     private PixelSpriteTransitioner spriteTransitioner;
 
+    [HideInInspector]
+    public Vector3 startPos;
     public void Initialize()
     {
+        startPos = transform.position;
         rigidBody = GetComponent<Rigidbody2D>();
         playerPixel = GetComponent<PlayerPixelManager>();
         isPlayer = playerPixel != null;
@@ -298,9 +301,9 @@ public class PixelManager : MonoBehaviour
     }
     private void OnDrawGizmosSelected()
     {
-        if(Application.isPlaying&&Application.isEditor)
+        if(!Application.isPlaying&&Application.isEditor)
         {
-            transform.localScale = Vector3.one * radius();
+            transform.localScale = Vector3.one * radius(GetComponent<Rigidbody2D>().mass-MassOverride);
         }
     }
 
