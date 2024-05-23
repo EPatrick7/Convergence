@@ -15,18 +15,5 @@ public class TutorialManager : MonoBehaviour
     {
 
     }
-    
-    private void FixedUpdate()
-    {
-
-        if (Input.GetKey(KeyCode.Space))
-        {
-            Time.timeScale = 0.25f;
-        }
-        else
-        {
-            Time.timeScale = 1f;
-        }
-    }
 
 }
