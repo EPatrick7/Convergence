@@ -725,12 +725,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 586053517}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da4116c7d69f8d84f8b46915241388e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ppCam: {fileID: 130285834}
   pFactor: 10
 --- !u!114 &586053521
 MonoBehaviour:

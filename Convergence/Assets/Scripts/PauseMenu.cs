@@ -39,6 +39,9 @@ public class PauseMenu : MonoBehaviour
 
     private Tween tween;
 
+    [SerializeField]
+    private bool multiplayer;
+
     bool hasRegistered;
     public void RegisterInputs()
     {
@@ -201,11 +204,15 @@ public class PauseMenu : MonoBehaviour
             inputManager.SetUIInput(true);
         }
         //SetPPVol(true);
-        var ppCam = Camera.main.GetUniversalAdditionalCameraData();
-        if (ppCam.cameraStack.Count > 0)
-        {
-            ppCam.cameraStack[0].GetUniversalAdditionalCameraData().renderPostProcessing = true;
+        if (!multiplayer)
+		{
+            var ppCam = Camera.main.GetUniversalAdditionalCameraData();
+            if (ppCam.cameraStack.Count > 0)
+            {
+                ppCam.cameraStack[0].GetUniversalAdditionalCameraData().renderPostProcessing = true;
+            }
         }
+        
         FadeInPPVol();
         indicatorManager.DisableIndicators();
         UpdateHuds(false);
@@ -240,11 +247,15 @@ public class PauseMenu : MonoBehaviour
         }
         //SetPPVol(false);
         FadeOutPPVol();
-        var ppCam = Camera.main.GetUniversalAdditionalCameraData();
-        if (ppCam.cameraStack.Count > 0)
-        {
-            ppCam.cameraStack[0].GetUniversalAdditionalCameraData().renderPostProcessing = false;
+        if (!multiplayer) 
+        { 
+            var ppCam = Camera.main.GetUniversalAdditionalCameraData();
+            if (ppCam.cameraStack.Count > 0)
+            {
+                ppCam.cameraStack[0].GetUniversalAdditionalCameraData().renderPostProcessing = false;
+            }
         }
+        
         indicatorManager.EnableIndicators();
         UpdateHuds(true);
         //cutsceneManager.gameObject.SetActive(true);

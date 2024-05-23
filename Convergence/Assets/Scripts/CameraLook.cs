@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class CameraLook : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class CameraLook : MonoBehaviour
         {
             transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
 
-            cam.orthographicSize = Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f,0),0.1f).x;
+            cam.orthographicSize = UpdateCamSize(); //Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f,0),0.1f).x;
         }
         else if (respawner != null)
         {
@@ -43,6 +44,21 @@ public class CameraLook : MonoBehaviour
                 transform.position = Vector3.Lerp(transform.position, new Vector3(respawner.transform.position.x, respawner.transform.position.y, transform.position.z),0.15f);
             }
         }
+    }
+
+    private float UpdateCamSize()
+    {
+        var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0), new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f, 0), 0.1f).x;
+        if (camLooks.Count <= 1) //more than 1 player camera
+		{
+            var ppCam = Camera.main.GetUniversalAdditionalCameraData();
+            if (ppCam.cameraStack.Count > 0)
+            {
+                ppCam.cameraStack[0].orthographicSize = newSize;
+            }
+        }
+        
+        return newSize;
     }
 
     private void OnDestroy()
