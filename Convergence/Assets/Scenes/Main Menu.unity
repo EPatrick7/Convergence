@@ -550,7 +550,7 @@ MonoBehaviour:
   cutsceneManager: {fileID: 0}
   isPressingHome: 0
   loadDelay: 8
-  tutloadDelay: 4
+  tutloadDelay: 3
   hasDeregistered: 0
 --- !u!1 &427704393
 GameObject:
@@ -6109,7 +6109,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 3dc82c4ee6557af4889aff23ac540584, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 988d04cdecec5cb45b9f6e8bd2ce1eb3, type: 2}
 --- !u!4 &744149519
 Transform:
   m_ObjectHideFlags: 0
@@ -22498,6 +22498,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
+      propertyPath: ppVol
+      value: 
+      objectReference: {fileID: 11400000, guid: 988d04cdecec5cb45b9f6e8bd2ce1eb3, type: 2}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: title
       value: 

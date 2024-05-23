@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Windows;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.UI;
@@ -200,6 +201,11 @@ public class PauseMenu : MonoBehaviour
             inputManager.SetUIInput(true);
         }
         //SetPPVol(true);
+        var ppCam = Camera.main.GetUniversalAdditionalCameraData();
+        if (ppCam.cameraStack.Count > 0)
+        {
+            ppCam.cameraStack[0].GetUniversalAdditionalCameraData().renderPostProcessing = true;
+        }
         FadeInPPVol();
         indicatorManager.DisableIndicators();
         UpdateHuds(false);
@@ -234,6 +240,11 @@ public class PauseMenu : MonoBehaviour
         }
         //SetPPVol(false);
         FadeOutPPVol();
+        var ppCam = Camera.main.GetUniversalAdditionalCameraData();
+        if (ppCam.cameraStack.Count > 0)
+        {
+            ppCam.cameraStack[0].GetUniversalAdditionalCameraData().renderPostProcessing = false;
+        }
         indicatorManager.EnableIndicators();
         UpdateHuds(true);
         //cutsceneManager.gameObject.SetActive(true);

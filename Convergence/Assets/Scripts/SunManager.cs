@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 using TMPro;
 
@@ -30,6 +32,11 @@ public class SunManager : MonoBehaviour
     private InputManager inputManager;
 
     private bool multiplayer = false;
+
+    [SerializeField]
+    private VolumeProfile ppVol;
+
+    private DepthOfField dOF;
 
     //private Camera camera;
 
@@ -116,7 +123,19 @@ public class SunManager : MonoBehaviour
     public void tutorialStart()
 	{
         FadeOutMainButtons();
-        Vector3 newPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
+        Vector3 newPos = new Vector3(gameObject.transform.position.x + Camera.main.pixelWidth/3f, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
+
+        if (ppVol.TryGet<DepthOfField>(out dOF))
+		{
+            dOF.active = true;
+            float targetDist = dOF.focusDistance.value;
+            Debug.Log(targetDist);
+            var tween = DOTween.To(() => targetDist, x => targetDist = x, .1f, 2f).OnUpdate(() =>
+            {
+                dOF.focusDistance.value = targetDist;
+            });
+            tween.Play();
+		}
 
         Color newTCol = title.color;
         newTCol.a = 0;
@@ -125,7 +144,8 @@ public class SunManager : MonoBehaviour
         newICol.a = 0;
 
         Sequence cam = DOTween.Sequence();
-        cam.Append(Camera.main.DOOrthoSize(1000, 3)); //zoom out
+        cam.Append(Camera.main.DOOrthoSize(650, 3)); //zoom out
+        cam.Insert(0, gameObject.transform.DOScale(500, 3));
         cam.Insert(0, Camera.main.transform.DOMove(newPos, 2, true)); //center on sun
         cam.Insert(0, title.transform.DOMoveY(title.transform.position.y + 100, 2, true)); //move title up
         cam.Insert(1, title.DOColor(newTCol, 1)); //fade out title
@@ -257,6 +277,11 @@ public class SunManager : MonoBehaviour
     void OnDestroy()
 	{
         DOTween.KillAll();
-	}
+        if (ppVol.TryGet<DepthOfField>(out dOF))
+        {
+            dOF.active = false;
+            dOF.focusDistance.value = 3f;
+        }
+    }
 
 }
