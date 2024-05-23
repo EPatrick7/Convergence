@@ -129,7 +129,7 @@ public class SunManager : MonoBehaviour
 		{
             dOF.active = true;
             float targetDist = dOF.focusDistance.value;
-            Debug.Log(targetDist);
+           // Debug.Log(targetDist);
             var tween = DOTween.To(() => targetDist, x => targetDist = x, .1f, 2f).OnUpdate(() =>
             {
                 dOF.focusDistance.value = targetDist;
