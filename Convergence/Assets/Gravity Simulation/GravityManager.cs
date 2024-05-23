@@ -218,7 +218,7 @@ public class GravityManager : MonoBehaviour
     [Header("Debug")]
     [Tooltip("The number of gravity steps that have been applied so far.")]
     public int SimulationStep;
-
+    public bool MultiplayerCameraTest;
 
     [Header("Sprite Replacers")]
     [Tooltip("The closest texture map is applied.")]
@@ -384,7 +384,8 @@ public class GravityManager : MonoBehaviour
         if(PlayerCount>1)
         {
             isMultiplayer = true;
-            PlayerCount = Mathf.Clamp(Gamepad.all.Count,1,4);
+            if(!MultiplayerCameraTest)
+                PlayerCount = Mathf.Clamp(Gamepad.all.Count,1,4);
         }
 
         if (BlackHole!=null)
