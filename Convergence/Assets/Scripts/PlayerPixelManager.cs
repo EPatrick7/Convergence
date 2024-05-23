@@ -39,8 +39,9 @@ public class PlayerPixelManager : PixelManager
     [Header("Shield")]
     public Shield Shield;
 
+    [HideInInspector]
     [Tooltip("isShielding is true when the player input for it is active")]
-    protected bool isShielding = false;
+    public bool isShielding { get; private set; } = false;
     [HideInInspector]
     public bool shieldActivated;
 
@@ -420,7 +421,6 @@ public class PlayerPixelManager : PixelManager
         if (Ice > 0f)
         {
             CutsceneManager.Instance?.PlayerShielded();
-            shieldActivated = true;
         }
 
         isShielding = true;
@@ -451,6 +451,8 @@ public class PlayerPixelManager : PixelManager
 
     public override bool ShieldIsActive()
     {
+        if (Shield == null) return false;
+
         return Shield.IsActive();
     }
     #endregion

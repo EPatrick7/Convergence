@@ -67,7 +67,7 @@ public class IndicatorManager : MonoBehaviour
 			{
                 if (targetIndicators[i].target == target)
 				{
-                    targetIndicators[i].GetComponent<TargetIndicator>().UpdateColor(color);
+                    targetIndicators[i].UpdateColor(color);
 				}
 			}
 		}

@@ -44,6 +44,7 @@ public class CameraLook : MonoBehaviour
             }
         }
     }
+
     private void OnDestroy()
     {
         camLooks.Remove(this);

@@ -18,7 +18,7 @@ public class Shield : MonoBehaviour
 
     public Color inactiveColor;
 
-    private PixelManager pixel;
+    private PlayerPixelManager player;
 
     private Collider2D col;
 
@@ -27,11 +27,13 @@ public class Shield : MonoBehaviour
 
     private ParticleSystem objPS;
 
-    private Tween tween;
+    private Coroutine coroutine;
+
+    private Sequence tweenSequence;
 
     private void Awake()
     {
-        pixel = GetComponentInParent<PixelManager>();
+        player = GetComponentInParent<PlayerPixelManager>();
 
         col = GetComponentInParent<Collider2D>();
 
@@ -54,39 +56,18 @@ public class Shield : MonoBehaviour
 
     public void ShieldUp()
     {
-        if (col == null || col.enabled) return;
+        if (IsActive()) return;
 
         if (maskSpr == null) return;
 
-        if (pixel.Ice < 1.0f) return;
+        if (coroutine != null) return;
 
-        maskSpr.sortingOrder = pixel.GetComponent<SpriteRenderer>().sortingOrder + 2;
-        overlaySpr.sortingOrder = maskSpr.sortingOrder +1;
-
-        /*
-        if (objPS != null)
-		{
-            objPS.gameObject.SetActive(true);
-		}
-        */
-
-
-        tween?.Kill();
-
-        var seq = DOTween.Sequence();
-
-        seq.Append(DOTween.To(() => maskSpr.color, x => maskSpr.color = x, activeColor, ShieldDelay));
-        //seq.Insert(0, DOTween.To(() => overlaySpr.color, x => overlaySpr.color = x, activeColor, ShieldDelay));
-        seq.OnComplete(ShieldUpOnComplete);
-        seq.Play();
-        
+        coroutine = StartCoroutine(ShieldTick(TickRate));
     }
 
     private void ShieldUpOnComplete()
     {
         Enabled(true);
-
-        StartCoroutine(ShieldTick(TickRate));
     }
 
     public void ShieldDown()
@@ -102,14 +83,14 @@ public class Shield : MonoBehaviour
 		}
         */
         
-        tween?.Kill();
+        tweenSequence?.Kill();
 
-        var seq = DOTween.Sequence();
+        tweenSequence = DOTween.Sequence();
 
-        seq.Append(DOTween.To(() => maskSpr.color, x => maskSpr.color = x, inactiveColor, ShieldDelay));
+        tweenSequence.Append(DOTween.To(() => maskSpr.color, x => maskSpr.color = x, inactiveColor, ShieldDelay));
         //seq.Insert(0, DOTween.To(() => overlaySpr.color, x => overlaySpr.color = x, inactiveColor, ShieldDelay));
-        seq.OnComplete(ShieldDownOnComplete);
-        seq.Play();
+        tweenSequence.OnComplete(ShieldDownOnComplete);
+        tweenSequence.Play();
 
     }
 
@@ -120,16 +101,63 @@ public class Shield : MonoBehaviour
 
     private IEnumerator ShieldTick(float interval)
     {
-        while (col.enabled && pixel.Ice > 0f)
+        while (player.isShielding)
         {
-            float expendedIce = Mathf.Max(1f, Mathf.Clamp(pixel.mass() + pixel.Ice, pixel.Ice, pixel.Ice * 10f) * ShieldCost) * interval;
-            pixel.Ice -= expendedIce*0.75f;
+            while (IsActive() && player.Ice > 0f)
+            {
+                float expendedIce = Mathf.Max(1f, Mathf.Clamp(player.mass() + player.Ice, player.Ice, player.Ice * 10f) * ShieldCost) * interval;
+                player.Ice -= expendedIce * 0.75f;
+
+                yield return interval;
+            }
+
+            if (!tweenSequence.IsActive())
+            {
+                if (!IsActive())
+                {
+                    if (player.Ice > 0f)
+                    {
+                        player.shieldActivated = true;
+
+                        maskSpr.sortingOrder = player.GetComponent<SpriteRenderer>().sortingOrder + 2;
+                        overlaySpr.sortingOrder = maskSpr.sortingOrder + 1;
+
+                        /*
+                        if (objPS != null)
+                        {
+                            objPS.gameObject.SetActive(true);
+                        }
+                        */
+
+
+                        tweenSequence?.Kill();
+
+                        tweenSequence = DOTween.Sequence();
+
+                        tweenSequence.Append(DOTween.To(() => maskSpr.color, x => maskSpr.color = x, activeColor, ShieldDelay));
+                        //seq.Insert(0, DOTween.To(() => overlaySpr.color, x => overlaySpr.color = x, activeColor, ShieldDelay));
+                        tweenSequence.OnComplete(ShieldUpOnComplete);
+                        tweenSequence.Play();
+                    }
+                }
+                else
+                {
+                    player.playerPixel.shieldActivated = false;
+
+                    ShieldDown();
+                }
+            }
 
             yield return interval;
         }
-        pixel.playerPixel.shieldActivated = false;
+
+        player.playerPixel.shieldActivated = false;
 
         ShieldDown();
+
+        StopCoroutine(coroutine);
+
+        coroutine = null;
     }
 
     private void Enabled(bool enabled)
@@ -141,6 +169,6 @@ public class Shield : MonoBehaviour
 
     private void OnDestroy()
     {
-        tween?.Kill();
+        tweenSequence?.Kill();
     }
 }
