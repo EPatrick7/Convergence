@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Left click to launch part of your mass and move yourself.
+  m_text: Left click to spend part of your mass and launch away from the cursor.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -147,7 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a625e6edd88cf4409e358f05be2d815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ToSwapIfGamePad: Press X to launch part of your mass and move yourself.
+  ToSwapIfGamePad: Press X to spend part of your mass to move. Use the Left Joystick
+    to aim.
   DefaultText: 
 --- !u!1 &361264213697139307
 GameObject:
@@ -2294,7 +2295,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hold right click to spend ice and shield yourself from being consumed.
+  m_text: Hold right click to spend ice and shield yourself and bleed off speed.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2375,8 +2376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a625e6edd88cf4409e358f05be2d815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ToSwapIfGamePad: Hold the left trigger to spend ice and shield yourself from being
-    consumed.
+  ToSwapIfGamePad: Hold the left trigger to spend ice and shield yourself and bleed
+    off speed.
   DefaultText: 
 --- !u!1 &5493097433510524302
 GameObject:

@@ -10064,6 +10064,7 @@ MonoBehaviour:
   ShieldCost: 0.05
   ShieldDelay: 0.1
   TickRate: 0.1
+  ShieldDrag: 0.3
   activeColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   inactiveColor: {r: 1, g: 1, b: 1, a: 0}
   overlaySpr: {fileID: 3272749874773122615}

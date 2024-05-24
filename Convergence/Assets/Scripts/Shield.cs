@@ -14,6 +14,9 @@ public class Shield : MonoBehaviour
     [Min(0), Tooltip("The interval in seconds between each shield tick")]
     public float TickRate = 0.1f;
 
+    [Tooltip("The linear drag applied when shield is up.")]
+    public float ShieldDrag = 0;
+
     public Color activeColor;
 
     public Color inactiveColor;
@@ -164,7 +167,10 @@ public class Shield : MonoBehaviour
     {
         transform.parent.gameObject.layer = enabled ? LayerMask.NameToLayer("Ignore Pixel") : LayerMask.NameToLayer("Player");
 
-        if (col != null) col.enabled = enabled;
+        if (col != null) {
+            col.enabled = enabled;
+                }
+        transform.parent.GetComponent<Rigidbody2D>().drag = enabled ? ShieldDrag:0;
     }
 
     private void OnDestroy()

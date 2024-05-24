@@ -64,6 +64,7 @@ public class PlayerPixelManager : PixelManager
 
     private Camera cam;
     bool hasRegistered;
+
     
     public void RegisterInputs()
     {
