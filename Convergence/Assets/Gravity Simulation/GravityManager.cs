@@ -812,6 +812,14 @@ public class GravityManager : MonoBehaviour
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(),0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
 
+                        if(acceleration.sqrMagnitude>15)
+                        {
+                            if (this_pixel.isPlayer)
+                            {
+                                this_pixel.playerPixel.Shield.Bonk();
+                            }
+                        }
+
                         UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
                     }
                     else

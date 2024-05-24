@@ -10064,10 +10064,11 @@ MonoBehaviour:
   ShieldCost: 0.05
   ShieldDelay: 0.1
   TickRate: 0.1
-  ShieldDrag: 0.3
+  ShieldDrag: 0.6
   activeColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   inactiveColor: {r: 1, g: 1, b: 1, a: 0}
   overlaySpr: {fileID: 3272749874773122615}
+  DragBonkCooldown: 0
 --- !u!1 &8805943661841445020
 GameObject:
   m_ObjectHideFlags: 0

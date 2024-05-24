@@ -339,18 +339,20 @@ public class PixelManager : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!ShieldIsActive())
+        PixelManager other = collision.gameObject.GetComponent<PixelManager>();
+
+        if (other != null && !other.isKilled && !isKilled && rigidBody != null)
         {
-            PixelManager other = collision.gameObject.GetComponent<PixelManager>();
-            if (other != null && !other.isKilled && !isKilled && rigidBody != null)
+            if (!ShieldIsActive())
             {
 
-                if(isPlayer)
+
+                if (isPlayer)
                 {
-                    playerPixel.Bonk(other.mass() > mass(),other.mass()< mass()/20f,other.mass()>mass()/2f);
+                    playerPixel.Bonk(other.mass() > mass(), other.mass() < mass() / 20f, other.mass() > mass() / 2f);
                 }
 
-                if ((other.mass() <= mass() && !((other.ConstantMass&&playerPixel==null)|| (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole)))|| (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole)||(ConstantMass&&other.playerPixel==null))
+                if ((other.mass() <= mass() && !((other.ConstantMass && playerPixel == null) || (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole))) || (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole) || (ConstantMass && other.playerPixel == null))
                 {
                     Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * StickyFactor);
                     other.rigidBody.velocity -= sticky_force;
@@ -362,9 +364,16 @@ public class PixelManager : MonoBehaviour
                     StealElement(other, AbsorptionSpeed, ElementType.Ice);
                     StealElement(other, AbsorptionSpeed, ElementType.Gas);
                 }
+                
+            }
+            else if(playerPixel!=null)
+            {
+                if(other.mass()>mass()*0.5f)
+                {
+                    playerPixel.Shield.Bonk();
+                }
             }
         }
-
     }
     /*private void OnCollisionStay2D(Collision2D collision)
     {

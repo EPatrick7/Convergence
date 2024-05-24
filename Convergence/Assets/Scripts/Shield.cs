@@ -111,6 +111,9 @@ public class Shield : MonoBehaviour
                 float expendedIce = Mathf.Max(1f, Mathf.Clamp(player.mass() + player.Ice, player.Ice, player.Ice * 10f) * ShieldCost) * interval;
                 player.Ice -= expendedIce * 0.75f;
 
+
+                CheckDrag();
+
                 yield return interval;
             }
 
@@ -170,7 +173,22 @@ public class Shield : MonoBehaviour
         if (col != null) {
             col.enabled = enabled;
                 }
-        transform.parent.GetComponent<Rigidbody2D>().drag = enabled ? ShieldDrag:0;
+        CheckDrag();
+    }
+    [HideInInspector]
+    public float DragBonkCooldown;
+    public void Bonk()
+    {
+        DragBonkCooldown = Time.timeSinceLevelLoad + 2;
+    }
+    public bool justGotBonked()
+    {
+        return Time.timeSinceLevelLoad < DragBonkCooldown;
+    }
+    public void CheckDrag()
+    {
+        transform.parent.GetComponent<Rigidbody2D>().angularDrag = (!justGotBonked() && transform.parent.gameObject.layer == LayerMask.NameToLayer("Ignore Pixel")) ? ShieldDrag : 0;
+        transform.parent.GetComponent<Rigidbody2D>().drag = (!justGotBonked()&&transform.parent.gameObject.layer== LayerMask.NameToLayer("Ignore Pixel")) ? ShieldDrag:0;
     }
 
     private void OnDestroy()
