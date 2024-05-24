@@ -172,9 +172,19 @@ public class PlayerHud : MonoBehaviour
         if (player.mass() < 10000||!isMass)
         {
             string cap_string = CalcMax() >= 0f ? CalcMax().ToString("0") : text.text.Split("/")[1];
-            value = Mathf.Min(value, Int32.Parse(cap_string));
-
-            text.text = string.Format("{0}/{1}", value.ToString("0"), cap_string);
+            int readValue= Int32.Parse(cap_string);
+            //string overflow = readValue<=value ? "+" : "";
+            //if (isMass)
+            //    overflow = "";
+            //value = Mathf.Min(value, readValue);
+            if (isMass)
+            {
+                text.text = string.Format("{0}/{1}", value.ToString("0"), cap_string);
+            }
+            else
+            {
+                text.text = string.Format("{0}", value.ToString("0"));
+            }
         } else
 		{
             text.text = "CONVERGE";
