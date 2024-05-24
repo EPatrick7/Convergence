@@ -51,7 +51,7 @@ MonoBehaviour:
   coverNum: 3
   spawnRadius: 1000
   alphaVal: 0.03
-  coverAlphaVal: 0.05
+  coverAlphaVal: 0.025
   Spread: 100
   coverSpread: 100
   Scale: 15
@@ -63,6 +63,7 @@ MonoBehaviour:
   - {r: 0.49043325, g: 0.199, b: 1, a: 0}
   - {r: 0.11372549, g: 0.8, b: 0, a: 0}
   - {r: 0.8, g: 0.34869152, b: 0, a: 0}
+  SeedMode: 0
 --- !u!1 &6421987038770633400
 GameObject:
   m_ObjectHideFlags: 0
