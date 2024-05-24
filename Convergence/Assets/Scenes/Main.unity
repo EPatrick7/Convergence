@@ -216,10 +216,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerHud
       objectReference: {fileID: 0}
-    - target: {fileID: 1480557274498888358, guid: fc455009cb69d0c42b27073e51b2bfb0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1592551207180958582, guid: fc455009cb69d0c42b27073e51b2bfb0, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -235,10 +231,6 @@ PrefabInstance:
     - target: {fileID: 3581738633432382415, guid: fc455009cb69d0c42b27073e51b2bfb0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5274014119995891833, guid: fc455009cb69d0c42b27073e51b2bfb0, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.7421036
       objectReference: {fileID: 0}
     - target: {fileID: 5672895134106640543, guid: fc455009cb69d0c42b27073e51b2bfb0, type: 3}
       propertyPath: m_AnchorMax.x
@@ -355,6 +347,10 @@ PrefabInstance:
       value: 591
       objectReference: {fileID: 0}
     - target: {fileID: 1144000894709134995, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1220907201926879363, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -506,6 +502,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 880481fbdb700e54abb43803d320638b, type: 3}
+    - target: {fileID: 5622783925493847843, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5812563513103412286, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Type
       value: 0
