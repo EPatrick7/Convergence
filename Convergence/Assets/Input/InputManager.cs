@@ -47,6 +47,17 @@ public class InputManager : MonoBehaviour
 
         return null;
     }
+    public bool HasGamepad()
+    {
+        foreach (InputDevice dev in playerInput.devices)
+        {
+            if (dev.GetType().ToString().Contains("Gamepad"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public void SetRumble(float min,float max, Color col)
     {
         if(playerInput.devices.Count<=0)

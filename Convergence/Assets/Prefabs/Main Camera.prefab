@@ -222,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killNotifier: {fileID: 0}
   playerInput: {fileID: 0}
-  PlayerId: 0
+  PlayerId: 1
   ShouldColorPlayer: 0
   PlayerColors:
   - {r: 1, g: 0, b: 0, a: 1}

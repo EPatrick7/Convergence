@@ -253,7 +253,7 @@ public class PlayerPixelManager : PixelManager
         Vector2 ejectDirection = MouseDirection();
 
         // Create ejected pixel
-        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.525f), Pixel.transform.rotation, transform.parent);
+        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.625f), Pixel.transform.rotation, transform.parent);
 
         // Handle mass of player and ejected pixel
         float ejectedMass = Mathf.Round(mass() * SplitScale * 64) / 64f;

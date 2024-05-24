@@ -43,6 +43,26 @@ public class PlayerHud : MonoBehaviour
     [Range(1,4)]
     public int PlayerID = 1;
 
+
+    public IconImageSwap ControlIcon_Mass;
+    public IconImageSwap ControlIcon_Gas;
+    public IconImageSwap ControlIcon_Ice;
+    private void FixedUpdate()
+    {
+        if(player!=null&& player.pInput!=null&&player.pInput.devices.Count>0)
+        {
+            ControlIcon_Mass.gameObject.SetActive(true);
+            ControlIcon_Gas.gameObject.SetActive(player.Gas > 0);
+            ControlIcon_Ice.gameObject.SetActive(player.Ice > 0);
+
+        }
+        else
+        {
+            ControlIcon_Mass.gameObject.SetActive(false);
+            ControlIcon_Gas.gameObject.SetActive(false);
+            ControlIcon_Ice.gameObject.SetActive(false);
+        }
+    }
     void Awake()
     {
         gravityManager = FindObjectOfType<GravityManager>();
