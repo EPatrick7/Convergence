@@ -391,8 +391,7 @@ public class PixelManager : MonoBehaviour
 
     public void UpdateTexture(Sprite target,Color targColor)
     {
-        GetComponent<SpriteRenderer>().color = Color.Lerp(GetComponent<SpriteRenderer>().color, targColor,0.1f);
-        spriteTransitioner?.UpdateTexture(target);
+        spriteTransitioner?.UpdateTexture(target,targColor);
     }
 
     public virtual bool ShieldIsActive()

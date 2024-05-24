@@ -29,13 +29,17 @@ public class PixelSpriteTransitioner : MonoBehaviour
         queue.transitioner = this;
     }
 
-    public void UpdateTexture(Sprite target)
+    public void UpdateTexture(Sprite target,Color targColor)
     {
         transitionRenderer.sortingOrder = pixelRenderer.sortingOrder + 1;
-
+        
         if (latestTarget == target)
         {
-            transitionRenderer.color = pixelRenderer.color;
+            if (queue.transitions.Count <= 0)
+            {
+                pixelRenderer.color = Color.Lerp(GetComponent<SpriteRenderer>().color, targColor, 0.1f);
+                transitionRenderer.color = pixelRenderer.color;
+            }
             return;
         }
 
@@ -74,7 +78,7 @@ public class TransitionQueue
 {
     public PixelSpriteTransitioner transitioner;
 
-    private Queue<Tween> transitions = new Queue<Tween>();
+    public Queue<Tween> transitions = new Queue<Tween>();
 
     public void AddTransition(Sprite to, SpriteRenderer pixel, SpriteRenderer transition, float duration)
     {
