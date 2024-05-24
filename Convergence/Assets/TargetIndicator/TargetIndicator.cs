@@ -111,7 +111,6 @@ public class TargetIndicator : MonoBehaviour
     {
         Vector3 indicatorPos = camera.WorldToViewportPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
 
-        Debug.Log(indicatorPos);
         //if target in front of camera and within bounds of frustum
 
         if (indicatorPos.z >= 0f && indicatorPos.x <= 1f && indicatorPos.y <= 1f && indicatorPos.x >= 0f && indicatorPos.y >= 0f)
