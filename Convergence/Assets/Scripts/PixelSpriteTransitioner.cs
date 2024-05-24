@@ -33,7 +33,11 @@ public class PixelSpriteTransitioner : MonoBehaviour
     {
         transitionRenderer.sortingOrder = pixelRenderer.sortingOrder + 1;
 
-        if (latestTarget == target) return;
+        if (latestTarget == target)
+        {
+            transitionRenderer.color = pixelRenderer.color;
+            return;
+        }
 
         latestTarget = target;
 

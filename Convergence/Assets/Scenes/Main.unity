@@ -1323,6 +1323,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 878192728}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+      propertyPath: SunTransition_GasReq
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: textureMaps.Array.data[0].Texture
       value: 
       objectReference: {fileID: 21300000, guid: e06603b339816bf439082d26d431818e, type: 3}

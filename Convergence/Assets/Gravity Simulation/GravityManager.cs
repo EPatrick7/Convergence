@@ -650,6 +650,7 @@ public class GravityManager : MonoBehaviour
 
         Sprite targ=null;
         float mass = pixel.mass();
+        Color col_target = Color.white;
         float gas = pixel.Gas;
         float ice = pixel.Ice;
         TextureMap closest_map = textureMaps[0];
@@ -683,10 +684,20 @@ public class GravityManager : MonoBehaviour
         }
 
         if (pixel.ConstantMass)
+        {
             targ = None;
+            col_target = BlackHoleColor;
+        }
+        if(mass>=10000&&pixel.playerPixel!=null)
+        {
+            col_target = BlackHoleColor;
+        }
 
-        pixel.UpdateTexture(targ);
+        
+
+        pixel.UpdateTexture(targ,col_target);
     }
+    public Color BlackHoleColor;
     public IEnumerator GravRun()
     {
         //Run forever

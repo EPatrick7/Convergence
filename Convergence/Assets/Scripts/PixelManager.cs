@@ -389,8 +389,9 @@ public class PixelManager : MonoBehaviour
         }
     }*/
 
-    public void UpdateTexture(Sprite target)
+    public void UpdateTexture(Sprite target,Color targColor)
     {
+        GetComponent<SpriteRenderer>().color = Color.Lerp(GetComponent<SpriteRenderer>().color, targColor,0.1f);
         spriteTransitioner?.UpdateTexture(target);
     }
 
