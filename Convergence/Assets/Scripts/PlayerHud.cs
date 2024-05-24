@@ -177,6 +177,9 @@ public class PlayerHud : MonoBehaviour
             //if (isMass)
             //    overflow = "";
             //value = Mathf.Min(value, readValue);
+
+            text.text = string.Format("{0}", value.ToString("0"));
+            /*
             if (isMass)
             {
                 text.text = string.Format("{0}/{1}", value.ToString("0"), cap_string);
@@ -185,6 +188,7 @@ public class PlayerHud : MonoBehaviour
             {
                 text.text = string.Format("{0}", value.ToString("0"));
             }
+            */
         } else
 		{
             text.text = "CONVERGE";
