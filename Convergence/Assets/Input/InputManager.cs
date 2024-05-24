@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock;
@@ -122,6 +123,10 @@ public class InputManager : MonoBehaviour
             LilRumbleContribution += MicroCollisionRumble;
 
     }
+    public void DangerRumble()
+    {
+        RumbleAmount += dangerRumble;
+    }
     public void EjectRumble()
     {
         RumbleAmount += ejectRumble;
@@ -158,7 +163,7 @@ public class InputManager : MonoBehaviour
     public float MaxCollisionRumble = 0.2f;
     public float MedCollisionRumble = 0.1f;
     public float SmallCollisionRumble = 0.05f;
-    public float LargeCollisionRumble = 1f;
+    public float LargeCollisionRumble = 2f;
     public float MicroCollisionRumble = 0;
 
     public float MaxAmbientRumble = 0.2f;
@@ -169,6 +174,7 @@ public class InputManager : MonoBehaviour
     public float propelRumble = 0.02f;
 
     public float respawnRumble = 0.05f;
+    public float dangerRumble = 1f;
 
     public float MaxRumble = 10;
     public float RumbleScalar=1;

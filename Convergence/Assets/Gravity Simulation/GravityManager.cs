@@ -771,14 +771,20 @@ public class GravityManager : MonoBehaviour
 
                             if (this_pixel != null&&this_pixel.GetComponent<PlayerPixelManager>() == null&& look.focusedPixel!=null)
                             {
+                                PlayerPixelManager player = look.focusedPixel;
                                 if (look.focusedPixel.shieldActivated)
                                 {
-                                    PlayerPixelManager player = look.focusedPixel;
                                     //this_pixel
                                     if (Vector2.Distance(player.transform.position, this_pixel.transform.position)<player.ShieldRadius())
                                     {
                                        this_pixel.transform.position=player.transform.position+ (this_pixel.transform.position-player.transform.position).normalized*(player.ShieldRadius()+(this_pixel.transform.lossyScale.x));
                                     }
+
+                                    
+                                }
+                                if (this_pixel.mass()>player.mass() && (this_pixel.AboutToHit(player)||player.AboutToHit(this_pixel)))
+                                {
+                                    player.WarnDanger();
                                 }
                             }
 

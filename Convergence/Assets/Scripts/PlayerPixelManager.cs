@@ -65,6 +65,31 @@ public class PlayerPixelManager : PixelManager
     private Camera cam;
     bool hasRegistered;
 
+    float dangerUntil;
+    Coroutine dangerAwait;
+    private bool notInDanger()
+    {
+        return Time.timeSinceLevelLoad > dangerUntil;
+    }
+    public IEnumerator DangerWaitUnitl()
+    {
+        //Activate Warning HUD
+        //Debug.Log("Player " + PlayerID + " is in danger!");
+        yield return new WaitUntil(notInDanger);
+        //Deactivate Warning HUD
+        //Debug.Log("Player " + PlayerID + " is no longer in danger!");
+        dangerAwait = null;
+    }
+    public void WarnDanger()
+    {
+        camLook.inputManager.DangerRumble();
+        dangerUntil = Time.timeSinceLevelLoad + 1.5f;
+        if(dangerAwait== null)
+        {
+            dangerAwait=StartCoroutine(DangerWaitUnitl());
+        }
+    }
+
     
     public void RegisterInputs()
     {

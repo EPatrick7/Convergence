@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.Mathematics;
 
 public class PixelManager : MonoBehaviour
 {
@@ -126,6 +127,38 @@ public class PixelManager : MonoBehaviour
     [HideInInspector]
     public float BlackHoleTransition_MassReq=7500;
     //Check if a body should transition between Planet Types.
+
+    //Gets a point on the surface of the GravityBody origin that points towards target.
+    Vector2 pointTowards(PixelManager targ)
+    {
+        float radius = this.radius()/2f;
+        Vector2 origin = transform.position;
+        Vector2 target=targ.transform.position;
+
+
+        return new Vector2(origin.x, origin.y) + ((new Vector2(target.x, target.y) - new Vector2(origin.x, origin.y)).normalized * radius);
+    }
+    //Returns true if with current velocities this gameobject is about to hit the target gameobject should nothing change.
+    public bool AboutToHit(PixelManager target,float timeStep=1.5f)
+    {
+        Vector2 thisPos = pointTowards(target);
+        Vector2 targPos = target.pointTowards(this);
+        Vector2 futurePos = thisPos + (rigidBody.velocity * timeStep);
+        float dot = (Vector2.Dot(targPos - thisPos, futurePos - thisPos) / (futurePos - thisPos).sqrMagnitude);
+        Vector2 projected_targPos = thisPos+dot* (futurePos- thisPos);
+
+        //Debug.DrawLine(thisPos, futurePos,Color.white);
+        //Debug.DrawLine(thisPos, targPos, Color.gray);
+        //Debug.DrawLine(thisPos, projected_targPos,Color.red);
+
+        if(dot>0&& Vector2.Distance(projected_targPos,targPos)< target.radius()/2f)
+        {
+            //The projection point is almost the same as the targPoint so it means that this object will hit targPos on route to futurePos
+            return true;
+        }
+        return false;
+    }
+
     public void CheckTransitions()
     {
         PlanetType last = planetType;
