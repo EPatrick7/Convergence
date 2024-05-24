@@ -109,10 +109,12 @@ public class TargetIndicator : MonoBehaviour
 
     protected void SetIndicatorPosition()
     {
-        Vector3 indicatorPos = camera.WorldToScreenPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
+        Vector3 indicatorPos = camera.WorldToViewportPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
 
+        Debug.Log(indicatorPos);
         //if target in front of camera and within bounds of frustum
-        if (indicatorPos.z >= 0f && indicatorPos.x <= canvasRect.rect.width * canvasRect.localScale.x && indicatorPos.y <= canvasRect.rect.height * canvasRect.localScale.x && indicatorPos.x >= 0f && indicatorPos.y >= 0f)
+
+        if (indicatorPos.z >= 0f && indicatorPos.x <= 1f && indicatorPos.y <= 1f && indicatorPos.x >= 0f && indicatorPos.y >= 0f)
 		{
             indicatorPos.z = 0f; //set z to 0, since 2D
             targetOutOfSight(false, indicatorPos); //target is in sight
@@ -129,7 +131,7 @@ public class TargetIndicator : MonoBehaviour
             targetOutOfSight(true, indicatorPos);
 		}
 
-        rectTransform.position = indicatorPos;
+        rectTransform.position = target.transform.position;
 
     }
 
