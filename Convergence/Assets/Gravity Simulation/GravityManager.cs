@@ -782,7 +782,7 @@ public class GravityManager : MonoBehaviour
 
                                     
                                 }
-                                if (this_pixel.mass()>player.mass() && this_pixel.AboutToHitMutual(player))
+                                if (this_pixel.mass()>player.mass() && !(this_pixel.planetType!=PixelManager.PlanetType.BlackHole && player.planetType==PixelManager.PlanetType.BlackHole) && this_pixel.AboutToHitMutual(player))
                                 {
                                     player.WarnDanger();
                                 }
