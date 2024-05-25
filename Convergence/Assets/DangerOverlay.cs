@@ -26,10 +26,25 @@ public class DangerOverlay : MonoBehaviour
         CheckDanger();
     }
 
+    private void FadeOutOverlay()
+	{
+        tween?.Kill();
+        var tempColor = dangerOverlay.color;
+        tempColor.a = 0;
+        tween = dangerOverlay.DOColor(tempColor, .5f);
+        tween.Play();
+    }
+
     private void CheckDanger()
     {
         if (hud.GetPlayer() == null)
+        {
+            if (dangerOverlay.color.a > 0)
+            {
+                FadeOutOverlay();
+            }
             return;
+        }
         if (hud.GetPlayer().inDanger)
         {
             tween?.Kill();
@@ -42,11 +57,7 @@ public class DangerOverlay : MonoBehaviour
         else
         {
             //dangerOverlay.gameObject.SetActive(false);
-            tween?.Kill();
-            var tempColor = dangerOverlay.color;
-            tempColor.a = 0;
-            tween = dangerOverlay.DOColor(tempColor, .5f);
-            tween.Play();
+            FadeOutOverlay();
         }
     }
     private void OnDestroy()
