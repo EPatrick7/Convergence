@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.Mathematics;
 
 public class PixelManager : MonoBehaviour
 {
@@ -126,6 +127,38 @@ public class PixelManager : MonoBehaviour
     [HideInInspector]
     public float BlackHoleTransition_MassReq=7500;
     //Check if a body should transition between Planet Types.
+
+    //Gets a point on the surface of the GravityBody origin that points towards target.
+    Vector2 pointTowards(PixelManager targ)
+    {
+        float radius = this.radius()/2f;
+        Vector2 origin = transform.position;
+        Vector2 target=targ.transform.position;
+
+
+        return new Vector2(origin.x, origin.y) + ((new Vector2(target.x, target.y) - new Vector2(origin.x, origin.y)).normalized * radius);
+    }
+    //Returns true if with current velocities this gameobject is about to hit the target gameobject should nothing change.
+    public bool AboutToHit(PixelManager target,float timeStep=1.5f)
+    {
+        Vector2 thisPos = pointTowards(target);
+        Vector2 targPos = target.pointTowards(this);
+        Vector2 futurePos = thisPos + (rigidBody.velocity * timeStep);
+        float dot = (Vector2.Dot(targPos - thisPos, futurePos - thisPos) / (futurePos - thisPos).sqrMagnitude);
+        Vector2 projected_targPos = thisPos+dot* (futurePos- thisPos);
+
+        //Debug.DrawLine(thisPos, futurePos,Color.white);
+        //Debug.DrawLine(thisPos, targPos, Color.gray);
+        //Debug.DrawLine(thisPos, projected_targPos,Color.red);
+
+        if(dot>0&& Vector2.Distance(projected_targPos,targPos)< target.radius()/2f)
+        {
+            //The projection point is almost the same as the targPoint so it means that this object will hit targPos on route to futurePos
+            return true;
+        }
+        return false;
+    }
+
     public void CheckTransitions()
     {
         PlanetType last = planetType;
@@ -339,18 +372,20 @@ public class PixelManager : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!ShieldIsActive())
+        PixelManager other = collision.gameObject.GetComponent<PixelManager>();
+
+        if (other != null && !other.isKilled && !isKilled && rigidBody != null)
         {
-            PixelManager other = collision.gameObject.GetComponent<PixelManager>();
-            if (other != null && !other.isKilled && !isKilled && rigidBody != null)
+            if (!ShieldIsActive())
             {
 
-                if(isPlayer)
+
+                if (isPlayer)
                 {
-                    playerPixel.Bonk(other.mass() > mass(),other.mass()< mass()/20f,other.mass()>mass()/2f);
+                    playerPixel.Bonk(other.mass() > mass(), other.mass() < mass() / 20f, other.mass() > mass() / 2f);
                 }
 
-                if ((other.mass() <= mass() && !((other.ConstantMass&&playerPixel==null)|| (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole)))|| (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole)||(ConstantMass&&other.playerPixel==null))
+                if ((other.mass() <= mass() && !((other.ConstantMass && playerPixel == null) || (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole))) || (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole) || (ConstantMass && other.playerPixel == null))
                 {
                     Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * StickyFactor);
                     other.rigidBody.velocity -= sticky_force;
@@ -362,9 +397,16 @@ public class PixelManager : MonoBehaviour
                     StealElement(other, AbsorptionSpeed, ElementType.Ice);
                     StealElement(other, AbsorptionSpeed, ElementType.Gas);
                 }
+                
+            }
+            else if(playerPixel!=null)
+            {
+                if(other.mass()>mass()*0.5f)
+                {
+                    playerPixel.Shield.Bonk();
+                }
             }
         }
-
     }
     /*private void OnCollisionStay2D(Collision2D collision)
     {
@@ -389,9 +431,9 @@ public class PixelManager : MonoBehaviour
         }
     }*/
 
-    public void UpdateTexture(Sprite target)
+    public void UpdateTexture(Sprite target,Color targColor)
     {
-        spriteTransitioner?.UpdateTexture(target);
+        spriteTransitioner?.UpdateTexture(target,targColor);
     }
 
     public virtual bool ShieldIsActive()

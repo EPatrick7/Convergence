@@ -64,6 +64,32 @@ public class PlayerPixelManager : PixelManager
 
     private Camera cam;
     bool hasRegistered;
+
+    float dangerUntil;
+    Coroutine dangerAwait;
+    private bool notInDanger()
+    {
+        return Time.timeSinceLevelLoad > dangerUntil;
+    }
+    public IEnumerator DangerWaitUnitl()
+    {
+        //Activate Warning HUD
+        //Debug.Log("Player " + PlayerID + " is in danger!");
+        yield return new WaitUntil(notInDanger);
+        //Deactivate Warning HUD
+        //Debug.Log("Player " + PlayerID + " is no longer in danger!");
+        dangerAwait = null;
+    }
+    public void WarnDanger()
+    {
+        camLook.inputManager.DangerRumble();
+        dangerUntil = Time.timeSinceLevelLoad + 1.5f;
+        if(dangerAwait== null)
+        {
+            dangerAwait=StartCoroutine(DangerWaitUnitl());
+        }
+    }
+
     
     public void RegisterInputs()
     {
@@ -253,7 +279,7 @@ public class PlayerPixelManager : PixelManager
         Vector2 ejectDirection = MouseDirection();
 
         // Create ejected pixel
-        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.525f), Pixel.transform.rotation, transform.parent);
+        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.625f), Pixel.transform.rotation, transform.parent);
 
         // Handle mass of player and ejected pixel
         float ejectedMass = Mathf.Round(mass() * SplitScale * 64) / 64f;

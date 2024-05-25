@@ -14,6 +14,9 @@ public class Shield : MonoBehaviour
     [Min(0), Tooltip("The interval in seconds between each shield tick")]
     public float TickRate = 0.1f;
 
+    [Tooltip("The linear drag applied when shield is up.")]
+    public float ShieldDrag = 0;
+
     public Color activeColor;
 
     public Color inactiveColor;
@@ -108,6 +111,9 @@ public class Shield : MonoBehaviour
                 float expendedIce = Mathf.Max(1f, Mathf.Clamp(player.mass() + player.Ice, player.Ice, player.Ice * 10f) * ShieldCost) * interval;
                 player.Ice -= expendedIce * 0.75f;
 
+
+                CheckDrag();
+
                 yield return interval;
             }
 
@@ -164,7 +170,25 @@ public class Shield : MonoBehaviour
     {
         transform.parent.gameObject.layer = enabled ? LayerMask.NameToLayer("Ignore Pixel") : LayerMask.NameToLayer("Player");
 
-        if (col != null) col.enabled = enabled;
+        if (col != null) {
+            col.enabled = enabled;
+                }
+        CheckDrag();
+    }
+    [HideInInspector]
+    public float DragBonkCooldown;
+    public void Bonk()
+    {
+        DragBonkCooldown = Time.timeSinceLevelLoad + 2;
+    }
+    public bool justGotBonked()
+    {
+        return Time.timeSinceLevelLoad < DragBonkCooldown;
+    }
+    public void CheckDrag()
+    {
+        transform.parent.GetComponent<Rigidbody2D>().angularDrag = (!justGotBonked() && transform.parent.gameObject.layer == LayerMask.NameToLayer("Ignore Pixel")) ? ShieldDrag : 0;
+        transform.parent.GetComponent<Rigidbody2D>().drag = (!justGotBonked()&&transform.parent.gameObject.layer== LayerMask.NameToLayer("Ignore Pixel")) ? ShieldDrag:0;
     }
 
     private void OnDestroy()

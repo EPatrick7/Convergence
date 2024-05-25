@@ -650,6 +650,7 @@ public class GravityManager : MonoBehaviour
 
         Sprite targ=null;
         float mass = pixel.mass();
+        Color col_target = Color.white;
         float gas = pixel.Gas;
         float ice = pixel.Ice;
         TextureMap closest_map = textureMaps[0];
@@ -683,10 +684,20 @@ public class GravityManager : MonoBehaviour
         }
 
         if (pixel.ConstantMass)
+        {
             targ = None;
+            col_target = BlackHoleColor;
+        }
+        if(mass>=10000&&pixel.playerPixel!=null)
+        {
+            col_target = BlackHoleColor;
+        }
 
-        pixel.UpdateTexture(targ);
+        
+
+        pixel.UpdateTexture(targ,col_target);
     }
+    public Color BlackHoleColor;
     public IEnumerator GravRun()
     {
         //Run forever
@@ -760,14 +771,20 @@ public class GravityManager : MonoBehaviour
 
                             if (this_pixel != null&&this_pixel.GetComponent<PlayerPixelManager>() == null&& look.focusedPixel!=null)
                             {
+                                PlayerPixelManager player = look.focusedPixel;
                                 if (look.focusedPixel.shieldActivated)
                                 {
-                                    PlayerPixelManager player = look.focusedPixel;
                                     //this_pixel
                                     if (Vector2.Distance(player.transform.position, this_pixel.transform.position)<player.ShieldRadius())
                                     {
                                        this_pixel.transform.position=player.transform.position+ (this_pixel.transform.position-player.transform.position).normalized*(player.ShieldRadius()+(this_pixel.transform.lossyScale.x));
                                     }
+
+                                    
+                                }
+                                if (this_pixel.mass()>player.mass() && (this_pixel.AboutToHit(player)||player.AboutToHit(this_pixel)))
+                                {
+                                    player.WarnDanger();
                                 }
                             }
 
@@ -800,6 +817,14 @@ public class GravityManager : MonoBehaviour
                         }
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(),0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
+
+                        if(acceleration.sqrMagnitude>15)
+                        {
+                            if (this_pixel.isPlayer)
+                            {
+                                this_pixel.playerPixel.Shield.Bonk();
+                            }
+                        }
 
                         UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
                     }

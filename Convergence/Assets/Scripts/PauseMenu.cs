@@ -305,7 +305,9 @@ public class PauseMenu : MonoBehaviour
         }
         else
         {
-            if ((targDelayTime - loadDelay) + 0.1f < Time.timeSinceLevelLoad)
+            float delay = loadDelay;
+            if (id > 2) delay = tutloadDelay;
+            if ((targDelayTime - (delay)) + 0.2f < Time.timeSinceLevelLoad)
             {
                 StopCoroutine(menuFrozen);
                 menuFrozen = null;

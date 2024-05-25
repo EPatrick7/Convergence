@@ -43,6 +43,26 @@ public class PlayerHud : MonoBehaviour
     [Range(1,4)]
     public int PlayerID = 1;
 
+
+    public IconImageSwap ControlIcon_Mass;
+    public IconImageSwap ControlIcon_Gas;
+    public IconImageSwap ControlIcon_Ice;
+    private void FixedUpdate()
+    {
+        if(player!=null&& player.pInput!=null&&player.pInput.devices.Count>0)
+        {
+            ControlIcon_Mass.gameObject.SetActive(true);
+            ControlIcon_Gas.gameObject.SetActive(player.Gas > 0);
+            ControlIcon_Ice.gameObject.SetActive(player.Ice > 0);
+
+        }
+        else
+        {
+            ControlIcon_Mass.gameObject.SetActive(false);
+            ControlIcon_Gas.gameObject.SetActive(false);
+            ControlIcon_Ice.gameObject.SetActive(false);
+        }
+    }
     void Awake()
     {
         gravityManager = FindObjectOfType<GravityManager>();
@@ -152,9 +172,23 @@ public class PlayerHud : MonoBehaviour
         if (player.mass() < 10000||!isMass)
         {
             string cap_string = CalcMax() >= 0f ? CalcMax().ToString("0") : text.text.Split("/")[1];
-            value = Mathf.Min(value, Int32.Parse(cap_string));
+            int readValue= Int32.Parse(cap_string);
+            //string overflow = readValue<=value ? "+" : "";
+            //if (isMass)
+            //    overflow = "";
+            //value = Mathf.Min(value, readValue);
 
-            text.text = string.Format("{0}/{1}", value.ToString("0"), cap_string);
+            text.text = string.Format("{0}", value.ToString("0"));
+            /*
+            if (isMass)
+            {
+                text.text = string.Format("{0}/{1}", value.ToString("0"), cap_string);
+            }
+            else
+            {
+                text.text = string.Format("{0}", value.ToString("0"));
+            }
+            */
         } else
 		{
             text.text = "CONVERGE";

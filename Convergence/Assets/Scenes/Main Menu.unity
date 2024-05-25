@@ -21610,18 +21610,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: Scale
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: SeedMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverNum
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6946215090596114782, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

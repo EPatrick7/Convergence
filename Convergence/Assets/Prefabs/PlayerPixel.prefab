@@ -10064,9 +10064,11 @@ MonoBehaviour:
   ShieldCost: 0.05
   ShieldDelay: 0.1
   TickRate: 0.1
+  ShieldDrag: 0.6
   activeColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   inactiveColor: {r: 1, g: 1, b: 1, a: 0}
   overlaySpr: {fileID: 3272749874773122615}
+  DragBonkCooldown: 0
 --- !u!1 &8805943661841445020
 GameObject:
   m_ObjectHideFlags: 0
@@ -15125,6 +15127,7 @@ MonoBehaviour:
   rigidBody: {fileID: 0}
   playerPixel: {fileID: 0}
   isPlayer: 0
+  startPos: {x: 0, y: 0, z: 0}
   gas: 0
   planetType: 0
   SunTransition_MassReq: 750
@@ -15146,8 +15149,9 @@ MonoBehaviour:
   StarvationFX: {fileID: 8416834171931631731}
   RespawnFX: {fileID: 4854698766069789408, guid: 89b016c27105f784e813cdf99e254077, type: 3}
   PlayerIcon: {fileID: 3151728951788388796}
-  PlayerID: 0
+  PlayerID: 1
   hasDeregistered: 0
+  camLook: {fileID: 0}
   pInput: {fileID: 0}
 --- !u!1001 &5426371677843915187
 PrefabInstance:

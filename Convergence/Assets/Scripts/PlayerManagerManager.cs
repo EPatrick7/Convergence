@@ -105,6 +105,9 @@ public class PlayerManagerManager : MonoBehaviour
         }*/
         InputManager.PlayerId=PlayerId;
         PlayerHud.PlayerID=PlayerId;
+        PlayerHud.ControlIcon_Gas.PlayerId = PlayerId;
+        PlayerHud.ControlIcon_Ice.PlayerId = PlayerId;
+        PlayerHud.ControlIcon_Mass.PlayerId = PlayerId;
         PlayerKillNotifier.PlayerID = PlayerId;
 
         InputManager.gameObject.SetActive(true);
