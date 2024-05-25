@@ -49,5 +49,8 @@ public class DangerOverlay : MonoBehaviour
             tween.Play();
         }
     }
-
+    private void OnDestroy()
+    {
+        tween?.Kill();
+    }
 }
