@@ -2483,6 +2483,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
+      propertyPath: ToSwapIfXBox
+      value: 
+      objectReference: {fileID: 21300000, guid: 1e9c31be5a4c11e43a1ea54f660f536f, type: 3}
+    - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: DefaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 6b14a6776bd61124fb7cd379f2591b9d, type: 3}
@@ -2640,6 +2644,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
+      propertyPath: ToSwapIfXBox
+      value: 
+      objectReference: {fileID: 21300000, guid: d7b8cc3f79ef76e47a568bbb33a80e78, type: 3}
+    - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: DefaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 16dcefabaabd705458d9d1c0a7d3ea73, type: 3}
@@ -2788,6 +2796,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
+      propertyPath: ToSwapIfXBox
+      value: 
+      objectReference: {fileID: 21300000, guid: a07fec660a8133f498407af737fd662a, type: 3}
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: DefaultSprite
       value: 

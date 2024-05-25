@@ -271,6 +271,8 @@ public class PlayerPixelManager : PixelManager
     #region Eject
     private void Eject(InputAction.CallbackContext context)
     {
+        if (Time.timeSinceLevelLoad < 0.1f)
+            return;
         if (!canEject) return;
 
         if (cam == null) return;

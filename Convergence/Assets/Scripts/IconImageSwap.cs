@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class IconImageSwap : MonoBehaviour
 {
+    public Sprite ToSwapIfXBox;
     public Sprite ToSwapIfGamePad;
     public Sprite DefaultSprite;
     [Range(1,4)]
@@ -31,7 +32,10 @@ public class IconImageSwap : MonoBehaviour
 
             if (InputManager.inputManagers!=null&&InputManager.inputManagers.Count > 0&& InputManager.GetManager(PlayerId)!=null && InputManager.GetManager(PlayerId).playerInput.devices.Count > 0 && InputManager.GetManager(PlayerId).playerInput!=null&& InputManager.GetManager(PlayerId).HasGamepad())
             {
-                GetComponent<Image>().sprite = ToSwapIfGamePad;
+                if(InputManager.GetManager(PlayerId).HasXBox())
+                    GetComponent<Image>().sprite = ToSwapIfXBox;
+                else
+                    GetComponent<Image>().sprite = ToSwapIfGamePad;
             }
             else
             {

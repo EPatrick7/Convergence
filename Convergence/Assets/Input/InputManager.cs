@@ -48,11 +48,24 @@ public class InputManager : MonoBehaviour
 
         return null;
     }
+    public bool HasXBox()
+    {
+        foreach (InputDevice dev in playerInput.devices)
+        {
+            if (dev.GetType().ToString().Contains("Gamepad") || dev.GetType().ToString().Contains("Controller"))
+            {
+                if(dev.GetType().ToString().Contains("X"))
+                    return true;
+            }
+        }
+        return false;
+
+    }
     public bool HasGamepad()
     {
         foreach (InputDevice dev in playerInput.devices)
         {
-            if (dev.GetType().ToString().Contains("Gamepad"))
+            if (dev.GetType().ToString().Contains("Gamepad")|| dev.GetType().ToString().Contains("Controller"))
             {
                 return true;
             }
