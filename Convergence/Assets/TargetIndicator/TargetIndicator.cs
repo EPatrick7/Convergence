@@ -41,7 +41,6 @@ public class TargetIndicator : MonoBehaviour
     private float valueToLerp;
     private bool spawned = false;
 
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -156,11 +155,14 @@ public class TargetIndicator : MonoBehaviour
             }
         }
 
-        float offset = (canvasRect.rect.width * canvasRect.localScale.x * 0.55f) + (Vector3.Distance(origin, targetPos) * 0.1f) - 50f;
+        float offset = (canvasRect.rect.width * canvasRect.localScale.x * 0.35f);
+
+        if (triggerDist < indicatorManager.bholeTriggerDist)
+            offset += Mathf.Clamp((Vector3.Distance(origin, targetPos) * 0.1f), 0, canvasRect.rect.width * canvasRect.localScale.x * 0.25f);
 
         hitPoint.x += dir.x * offset;
         hitPoint.y += dir.y * offset;
-        rectTransform.position = hitPoint;
+        rectTransform.position = new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z);
     }
 
     protected void FadeOutAlpha()

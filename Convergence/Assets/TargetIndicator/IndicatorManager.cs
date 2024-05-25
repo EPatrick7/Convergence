@@ -123,7 +123,8 @@ public class IndicatorManager : MonoBehaviour
             indicator.GetComponent<TargetIndicator>().OutOfSightOffset *= offsetMultiplier;
             indicator.indicatorManager = this;
 
-            indicator.gameObject.layer = LayerMask.NameToLayer(string.Format("P{0}UI", PlayerID));
+            indicator.gameObject.layer = LayerMask.NameToLayer(string.Format("P{0}Only", PlayerID));
+            indicator.offscreenTargetIndicatorImage.gameObject.layer = indicator.gameObject.layer;
             //Debug.Log(targetIndicators.Count);
         }
     }
