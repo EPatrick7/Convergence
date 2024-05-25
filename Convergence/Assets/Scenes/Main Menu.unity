@@ -376,6 +376,7 @@ MonoBehaviour:
   ejectRumble: 0.2
   propelRumble: 0.02
   respawnRumble: 0.05
+  dangerRumble: 1
   MaxRumble: 10
   RumbleScalar: 1
   PitchScalar: {x: 1, y: 1}
@@ -550,7 +551,7 @@ MonoBehaviour:
   cutsceneManager: {fileID: 0}
   multiplayer: 0
   isPressingHome: 0
-  loadDelay: 8
+  loadDelay: 7.5
   tutloadDelay: 3
   hasDeregistered: 0
 --- !u!1 &427704393
@@ -6057,12 +6058,13 @@ MonoBehaviour:
   Scale: 25
   coverScale: 0
   StartSpeed: {x: 0, y: 0}
+  maxParticleSize: 0
   objColor:
   - {r: 0, g: 0.43849897, b: 1, a: 0}
   - {r: 1, g: 0.19209038, b: 0, a: 0}
   - {r: 0.15619439, g: 0.735849, b: 0.3066391, a: 0}
   - {r: 0.26835674, g: 0.109803915, b: 0.62352943, a: 0}
-  SeedMode: 0
+  SeedMode: 1
 --- !u!4 &641926758
 Transform:
   m_ObjectHideFlags: 0
@@ -21610,6 +21612,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
+      propertyPath: SeedMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
+      propertyPath: maxParticleSize
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 6946215090596114782, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -22505,12 +22515,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 237117387}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
+      propertyPath: DispersePower
+      value: -200
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: ShakeStopDelay
       value: 3.7
       objectReference: {fileID: 0}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: ShakeStartDelay
-      value: 3
+      value: 3.1
       objectReference: {fileID: 0}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: buttons.Array.size

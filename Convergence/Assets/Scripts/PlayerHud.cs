@@ -37,6 +37,9 @@ public class PlayerHud : MonoBehaviour
     [SerializeField]
     private TMP_Text gasText;
 
+    [SerializeField]
+    private Image dangerOverlay;
+
     [HideInInspector]
     public bool Initialized;
 
@@ -49,7 +52,9 @@ public class PlayerHud : MonoBehaviour
     public IconImageSwap ControlIcon_Ice;
     private void FixedUpdate()
     {
-        if(player!=null&& player.pInput!=null&&player.pInput.devices.Count>0)
+
+        //CheckDanger();
+        if (player!=null&& player.pInput!=null&&player.pInput.devices.Count>0)
         {
             ControlIcon_Mass.gameObject.SetActive(true);
             ControlIcon_Gas.gameObject.SetActive(player.Gas > 0);
@@ -201,6 +206,11 @@ public class PlayerHud : MonoBehaviour
         UpdateElement(PlayerPixelManager.ElementType.Ice, 0f);
         UpdateElement(PlayerPixelManager.ElementType.Gas, 0f);
     }
+
+    public PlayerPixelManager GetPlayer()
+	{
+        return player;
+	}
 
     private void OnDestroy()
     {

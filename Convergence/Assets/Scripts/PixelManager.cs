@@ -138,21 +138,37 @@ public class PixelManager : MonoBehaviour
 
         return new Vector2(origin.x, origin.y) + ((new Vector2(target.x, target.y) - new Vector2(origin.x, origin.y)).normalized * radius);
     }
+    public bool AboutToHitMutual(PixelManager target)
+    {
+        return (AboutToHit(target) || target.AboutToHit(this))|| (AboutToHit(target,0.5f) || target.AboutToHit(this,0.5f));
+    }
     //Returns true if with current velocities this gameobject is about to hit the target gameobject should nothing change.
     public bool AboutToHit(PixelManager target,float timeStep=1.5f)
     {
         Vector2 thisPos = pointTowards(target);
         Vector2 targPos = target.pointTowards(this);
-        Vector2 futurePos = thisPos + (rigidBody.velocity * timeStep);
-        float dot = (Vector2.Dot(targPos - thisPos, futurePos - thisPos) / (futurePos - thisPos).sqrMagnitude);
-        Vector2 projected_targPos = thisPos+dot* (futurePos- thisPos);
 
-        //Debug.DrawLine(thisPos, futurePos,Color.white);
-        //Debug.DrawLine(thisPos, targPos, Color.gray);
+        Vector2 targFuturePos = targPos + (target.rigidBody.velocity * timeStep);
+        Vector2 futurePos = thisPos + (rigidBody.velocity * timeStep);
+        float dot = (Vector2.Dot(targFuturePos - thisPos, futurePos - thisPos) / (futurePos - thisPos).sqrMagnitude);
+        Vector2 projected_targPos = dot* (futurePos- thisPos);
+        if(dot<0)
+        {//Pointing Backwards
+            projected_targPos = Vector2.zero;
+        }
+        projected_targPos=thisPos+ projected_targPos.normalized * Mathf.Max(0, Mathf.Min((projected_targPos).magnitude, (futurePos-thisPos).magnitude));
+
+        //Debug.DrawLine(thisPos, futurePos,Color.blue);
+       // Debug.DrawLine(thisPos, targFuturePos, Color.gray);
         //Debug.DrawLine(thisPos, projected_targPos,Color.red);
 
-        if(dot>0&& Vector2.Distance(projected_targPos,targPos)< target.radius()/2f)
+        if(dot>0&& Vector2.Distance(projected_targPos, targFuturePos) < radius()/2f)
         {
+
+
+          //  Debug.DrawLine(thisPos, projected_targPos, Color.green);
+            //Debug.DrawLine(projected_targPos, targFuturePos, Color.green);
+
             //The projection point is almost the same as the targPoint so it means that this object will hit targPos on route to futurePos
             return true;
         }

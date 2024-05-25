@@ -39,7 +39,7 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             if ((EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
             {
-                if (Input.GetKey(KeyCode.Return) && GravityManager.Instance.isMultiplayer)
+                if (Input.GetKey(KeyCode.Return))
                 {
                     GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
                 }

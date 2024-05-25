@@ -431,6 +431,7 @@ MonoBehaviour:
   massIcon: {fileID: 1422988632593639407}
   iceText: {fileID: 4627963713392338704}
   gasText: {fileID: 6867358075363684028}
+  dangerOverlay: {fileID: 0}
   Initialized: 0
   PlayerID: 1
   ControlIcon_Mass: {fileID: 8198331215262871087}
@@ -2376,7 +2377,7 @@ PrefabInstance:
     - target: {fileID: 205838133634221170, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b89115e7c8ee2e44f94c1294b40babd1, type: 3}
+      objectReference: {fileID: 21300000, guid: 6b14a6776bd61124fb7cd379f2591b9d, type: 3}
     - target: {fileID: 205838133634221170, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -2463,11 +2464,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 25.2
+      value: 25.470001
       objectReference: {fileID: 0}
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.7200011
+      value: -1.5899965
       objectReference: {fileID: 0}
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2484,7 +2485,7 @@ PrefabInstance:
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: DefaultSprite
       value: 
-      objectReference: {fileID: 21300000, guid: b89115e7c8ee2e44f94c1294b40babd1, type: 3}
+      objectReference: {fileID: 21300000, guid: 6b14a6776bd61124fb7cd379f2591b9d, type: 3}
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: ToSwapIfGamePad
       value: 
@@ -2495,7 +2496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5413555702109996736, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2529,7 +2530,7 @@ PrefabInstance:
     - target: {fileID: 205838133634221170, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 335bdbaab4c27d845a0c62d9f8d2bf86, type: 3}
+      objectReference: {fileID: 21300000, guid: 16dcefabaabd705458d9d1c0a7d3ea73, type: 3}
     - target: {fileID: 205838133634221170, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -2620,11 +2621,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -8
+      value: -7.7299986
       objectReference: {fileID: 0}
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.7200011
+      value: -1.5899965
       objectReference: {fileID: 0}
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2641,14 +2642,14 @@ PrefabInstance:
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: DefaultSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 335bdbaab4c27d845a0c62d9f8d2bf86, type: 3}
+      objectReference: {fileID: 21300000, guid: 16dcefabaabd705458d9d1c0a7d3ea73, type: 3}
     - target: {fileID: 5413555702109996736, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_Name
       value: IceIcon_Control
       objectReference: {fileID: 0}
     - target: {fileID: 5413555702109996736, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2682,7 +2683,7 @@ PrefabInstance:
     - target: {fileID: 205838133634221170, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 936acf134f8e9af48a22bc7c86ed80ff, type: 3}
+      objectReference: {fileID: 21300000, guid: daec3c7f42a02f743b0fe2b6646d1fd4, type: 3}
     - target: {fileID: 205838133634221170, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -2769,11 +2770,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -42.77
+      value: -42.5
       objectReference: {fileID: 0}
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.72
+      value: -1.59
       objectReference: {fileID: 0}
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2790,7 +2791,7 @@ PrefabInstance:
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: DefaultSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 936acf134f8e9af48a22bc7c86ed80ff, type: 3}
+      objectReference: {fileID: 21300000, guid: daec3c7f42a02f743b0fe2b6646d1fd4, type: 3}
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: ToSwapIfGamePad
       value: 
@@ -2805,7 +2806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5413555702109996736, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
