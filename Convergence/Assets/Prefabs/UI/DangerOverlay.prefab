@@ -89,5 +89,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hud: {fileID: 0}
-  maxAlpha: 0.1
+  maxAlpha: 0.075
   fadeTime: 0.5

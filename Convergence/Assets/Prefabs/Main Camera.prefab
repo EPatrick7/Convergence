@@ -241,6 +241,7 @@ MonoBehaviour:
   ejectRumble: 0.1
   propelRumble: 0.033
   respawnRumble: 0.8
+  dangerRumble: 0.1
   MaxRumble: 0.5
   RumbleScalar: 0.15
   PitchScalar: {x: 0.9, y: 1.1}
