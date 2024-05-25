@@ -56,7 +56,7 @@ MonoBehaviour:
   coverSpread: 100
   Scale: 15
   coverScale: 10
-  StartSpeed: {x: -2, y: 2}
+  StartSpeed: {x: -5, y: 5}
   maxParticleSize: 100
   objColor:
   - {r: 0, g: 0.43921566, b: 1, a: 0}
