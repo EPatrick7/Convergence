@@ -157,11 +157,8 @@ public class TargetIndicator : MonoBehaviour
             GeometryUtility.CalculateFrustumPlanes(camera, planes);
             for (var i = 0; i < 4; i++)
             {
-                // Raycast against the plane
                 if (planes[i].Raycast(ray, out var distance))
                 {
-                    // Since a plane is mathematical infinite
-                    // what you would want is the one that hits with the shortest ray distance
                     if (distance < currentMinDistance)
                     {
                         hitPoint = ray.GetPoint(distance);
@@ -170,12 +167,14 @@ public class TargetIndicator : MonoBehaviour
                 }
             }
 
-            float offset = (canvasRect.rect.width * canvasRect.localScale.x * 0.375f);
+            targetOutOfSight(Vector3.Distance(origin, targetPos) > currentMinDistance, targetPos);
+
+            float offset = (canvasRect.rect.width * canvasRect.localScale.x * 0.35f);
 
             if (triggerDist < indicatorManager.bholeTriggerDist)
-                offset += Mathf.Clamp((Vector3.Distance(origin, targetPos) * 0.1f), 0, canvasRect.rect.width * canvasRect.localScale.x * 0.5f);
+                offset += Mathf.Clamp((Vector3.Distance(origin, targetPos) * 0.25f), 0, canvasRect.rect.width * canvasRect.localScale.x * 0.5f);
             else
-                offset *= 1.35f;
+                offset *= 1.65f;
 
             hitPoint.x += dir.x * offset;
             hitPoint.y += dir.y * offset;
