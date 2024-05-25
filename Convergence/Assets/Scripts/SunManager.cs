@@ -77,10 +77,11 @@ public class SunManager : MonoBehaviour
     bool isShaking = false;
     public float ShakeStartDelay;
     public float ShakeStopDelay;
+    public float DispersePower = -600;
     public IEnumerator ShakeDelay()
     {
         yield return new WaitForSeconds(ShakeStartDelay);
-        GravityManager.Instance.drift_power = -150;
+        GravityManager.Instance.drift_power = DispersePower;
         isShaking = true;
         yield return new WaitForSeconds(ShakeStopDelay);
         isShaking = false;

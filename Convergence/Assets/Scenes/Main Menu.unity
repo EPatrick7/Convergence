@@ -22510,12 +22510,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 237117387}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
+      propertyPath: DispersePower
+      value: -200
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: ShakeStopDelay
       value: 3.7
       objectReference: {fileID: 0}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: ShakeStartDelay
-      value: 3
+      value: 3.1
       objectReference: {fileID: 0}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: buttons.Array.size
