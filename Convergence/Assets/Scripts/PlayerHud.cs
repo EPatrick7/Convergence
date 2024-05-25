@@ -37,6 +37,9 @@ public class PlayerHud : MonoBehaviour
     [SerializeField]
     private TMP_Text gasText;
 
+    [SerializeField]
+    private Image dangerOverlay;
+
     [HideInInspector]
     public bool Initialized;
 
@@ -102,6 +105,7 @@ public class PlayerHud : MonoBehaviour
         UpdateSlider(massSlider, value, cap);
         UpdateText(massText, value, cap,true);
         UpdateIcon(value);
+        CheckDanger();
     }
 
     private void UpdateIcon(float value)
@@ -201,6 +205,17 @@ public class PlayerHud : MonoBehaviour
         UpdateElement(PlayerPixelManager.ElementType.Ice, 0f);
         UpdateElement(PlayerPixelManager.ElementType.Gas, 0f);
     }
+
+    private void CheckDanger()
+	{
+        if (player.inDanger)
+		{
+            dangerOverlay.gameObject.SetActive(true);
+		} else
+		{
+            dangerOverlay.gameObject.SetActive(false);
+		}
+	}
 
     private void OnDestroy()
     {

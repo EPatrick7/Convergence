@@ -66,6 +66,7 @@ public class PlayerPixelManager : PixelManager
     bool hasRegistered;
 
     float dangerUntil;
+    public bool inDanger = false;
     Coroutine dangerAwait;
     private bool notInDanger()
     {
@@ -76,6 +77,7 @@ public class PlayerPixelManager : PixelManager
         //Activate Warning HUD
         //Debug.Log("Player " + PlayerID + " is in danger!");
         yield return new WaitUntil(notInDanger);
+        inDanger = false;
         //Deactivate Warning HUD
         //Debug.Log("Player " + PlayerID + " is no longer in danger!");
         dangerAwait = null;
@@ -83,6 +85,7 @@ public class PlayerPixelManager : PixelManager
     public void WarnDanger()
     {
         camLook.inputManager.DangerRumble();
+        inDanger = true;
         dangerUntil = Time.timeSinceLevelLoad + 1.5f;
         if(dangerAwait== null)
         {
