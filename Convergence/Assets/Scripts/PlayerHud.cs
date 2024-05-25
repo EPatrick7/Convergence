@@ -53,7 +53,7 @@ public class PlayerHud : MonoBehaviour
     private void FixedUpdate()
     {
 
-        CheckDanger();
+        //CheckDanger();
         if (player!=null&& player.pInput!=null&&player.pInput.devices.Count>0)
         {
             ControlIcon_Mass.gameObject.SetActive(true);
@@ -207,17 +207,9 @@ public class PlayerHud : MonoBehaviour
         UpdateElement(PlayerPixelManager.ElementType.Gas, 0f);
     }
 
-    private void CheckDanger()
+    public PlayerPixelManager GetPlayer()
 	{
-        if (player == null)
-            return;
-        if (player.inDanger)
-		{
-            dangerOverlay.gameObject.SetActive(true);
-		} else
-		{
-            dangerOverlay.gameObject.SetActive(false);
-		}
+        return player;
 	}
 
     private void OnDestroy()
