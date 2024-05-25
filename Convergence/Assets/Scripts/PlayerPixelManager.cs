@@ -65,6 +65,23 @@ public class PlayerPixelManager : PixelManager
     private Camera cam;
     bool hasRegistered;
 
+    private bool hasWonGame;
+    public void WinGame(PixelManager other)
+    {
+        //If we just consumed the central black hole...
+        ConstantMass = true;
+        other.rigidBody.constraints = RigidbodyConstraints2D.None;
+        rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
+        rigidBody.mass += 10000;
+        GravityManager.Instance.drift_power = 100;
+        GravityManager.Instance.DoParticleRespawn = false;
+        GravityManager.Instance.respawn_players = false;
+        GravityManager.GameWinner = playerPixel;
+        hasWonGame = true;
+        BlackHoleState.RadiusScalar *= 1.3f;
+        CutsceneManager.Instance?.BlackHoleConsumed();
+    }
+
     float dangerUntil;
     public bool inDanger = false;
     Coroutine dangerAwait;
@@ -274,6 +291,8 @@ public class PlayerPixelManager : PixelManager
         if (Time.timeSinceLevelLoad < 0.1f)
             return;
         if (!canEject) return;
+        if (hasWonGame)
+            return;
 
         if (cam == null) return;
 
@@ -365,6 +384,9 @@ public class PlayerPixelManager : PixelManager
     {
         if (isPropelling) return;
 
+        if (hasWonGame)
+            return;
+
 
         isPropelling = true;
 
@@ -449,6 +471,9 @@ public class PlayerPixelManager : PixelManager
     private void StartShield(InputAction.CallbackContext context)
     {
         if (Shield == null) return;
+        if (hasWonGame)
+            return;
+
 
         if (isShielding) return;
 

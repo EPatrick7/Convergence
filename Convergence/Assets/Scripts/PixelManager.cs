@@ -315,17 +315,7 @@ public class PixelManager : MonoBehaviour
             }
             if (other.ConstantMass && other.planetType == PlanetType.BlackHole)
             {
-                //If we just consumed the central black hole...
-                ConstantMass = true;
-                other.rigidBody.constraints = RigidbodyConstraints2D.None;
-                rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
-                rigidBody.mass += 10000;
-                GravityManager.Instance.drift_power = 100;
-                GravityManager.Instance.DoParticleRespawn = false;
-                GravityManager.Instance.respawn_players = false;
-                GravityManager.GameWinner = playerPixel;
-                BlackHoleState.RadiusScalar *= 1.3f;
-                CutsceneManager.Instance?.BlackHoleConsumed();
+                playerPixel.WinGame(other);
             }
         }
         if (other.mass()-other.MassOverride <= 1)
