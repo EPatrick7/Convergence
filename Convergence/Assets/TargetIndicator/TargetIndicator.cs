@@ -41,6 +41,9 @@ public class TargetIndicator : MonoBehaviour
     private float valueToLerp;
     private bool spawned = false;
 
+
+    private RenderMode renderMode;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -57,6 +60,7 @@ public class TargetIndicator : MonoBehaviour
         this.target = target;
         this.camera = camera;
         canvasRect = canvas.GetComponent<RectTransform>();
+        renderMode = canvas.renderMode;
         rectTransform.SetAsFirstSibling(); //set indicator as first child so UI lays over it
         this.triggerDist = triggerDist;
         offscreenTargetIndicatorImage.color = color;
@@ -69,6 +73,7 @@ public class TargetIndicator : MonoBehaviour
         this.target = target;
         this.camera = camera;
         canvasRect = canvas.GetComponent<RectTransform>();
+        renderMode = canvas.renderMode;
         rectTransform.SetAsFirstSibling(); //set indicator as first child so UI lays over it
         this.triggerDist = triggerDist;
         maxIndicatorAlpha = maxAlpha;
@@ -109,60 +114,73 @@ public class TargetIndicator : MonoBehaviour
 
     protected void SetIndicatorPosition()
     {
-        Vector3 indicatorPos = camera.WorldToViewportPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
+        Vector3 indicatorPos;//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
 
-        //if target in front of camera and within bounds of frustum
-        if (indicatorPos.z >= 0f && indicatorPos.x < 1f && indicatorPos.y < 1f && indicatorPos.x > 0f && indicatorPos.y > 0f)
-		{
-            indicatorPos.z = 0f; //set z to 0, since 2D
-            targetOutOfSight(false, indicatorPos); //target is in sight
-		}
-        else if (indicatorPos.z >= 0f)
-		{
-            indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
-            targetOutOfSight(true, indicatorPos);
-		}
-        else
-		{
-            indicatorPos *= -1f;
-            indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
-            targetOutOfSight(true, indicatorPos);
-        }
-
-        Vector3 camPos = camera.transform.position;
-        Vector3 targetPos = target.transform.position;
-
-        Vector3 origin = new Vector3(camPos.x, camPos.y, targetPos.z);
-        Vector3 dir = (target.transform.position - origin).normalized;
-        Ray ray = new Ray(origin, dir);
-
-        float currentMinDistance = Mathf.Infinity;
-        Vector3 hitPoint = Vector3.zero;
-        Plane[] planes = new Plane[6];
-        GeometryUtility.CalculateFrustumPlanes(camera, planes);
-        for (var i = 0; i < 4; i++)
+        if (renderMode == RenderMode.ScreenSpaceOverlay)
         {
-            // Raycast against the plane
-            if (planes[i].Raycast(ray, out var distance))
+            indicatorPos = camera.WorldToScreenPoint(target.transform.position);
+
+            //if target in front of camera and within bounds of frustum
+            if (indicatorPos.z >= 0f && indicatorPos.x <= canvasRect.rect.width * canvasRect.localScale.x && indicatorPos.y <= canvasRect.rect.height * canvasRect.localScale.x && indicatorPos.x >= 0f && indicatorPos.y >= 0f)
             {
-                // Since a plane is mathematical infinite
-                // what you would want is the one that hits with the shortest ray distance
-                if (distance < currentMinDistance)
+                indicatorPos.z = 0f; //set z to 0, since 2D
+                targetOutOfSight(false, indicatorPos); //target is in sight
+            }
+            else if (indicatorPos.z >= 0f)
+            {
+                indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
+                targetOutOfSight(true, indicatorPos);
+            }
+            else
+            {
+                indicatorPos *= -1f;
+                indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
+                targetOutOfSight(true, indicatorPos);
+            }
+
+            rectTransform.position = indicatorPos;
+        }
+        else
+        {
+            indicatorPos = camera.WorldToViewportPoint(target.transform.position);
+
+            Vector3 camPos = camera.transform.position;
+            Vector3 targetPos = target.transform.position;
+
+            Vector3 origin = new Vector3(camPos.x, camPos.y, targetPos.z);
+            Vector3 dir = (target.transform.position - origin).normalized;
+            Ray ray = new Ray(origin, dir);
+
+            float currentMinDistance = Mathf.Infinity;
+            Vector3 hitPoint = Vector3.zero;
+            Plane[] planes = new Plane[6];
+            GeometryUtility.CalculateFrustumPlanes(camera, planes);
+            for (var i = 0; i < 4; i++)
+            {
+                // Raycast against the plane
+                if (planes[i].Raycast(ray, out var distance))
                 {
-                    hitPoint = ray.GetPoint(distance);
-                    currentMinDistance = distance;
+                    // Since a plane is mathematical infinite
+                    // what you would want is the one that hits with the shortest ray distance
+                    if (distance < currentMinDistance)
+                    {
+                        hitPoint = ray.GetPoint(distance);
+                        currentMinDistance = distance;
+                    }
                 }
             }
+
+            float offset = (canvasRect.rect.width * canvasRect.localScale.x * 0.375f);
+
+            if (triggerDist < indicatorManager.bholeTriggerDist)
+                offset += Mathf.Clamp((Vector3.Distance(origin, targetPos) * 0.1f), 0, canvasRect.rect.width * canvasRect.localScale.x * 0.5f);
+            else
+                offset *= 1.35f;
+
+            hitPoint.x += dir.x * offset;
+            hitPoint.y += dir.y * offset;
+            rectTransform.position = new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z);
         }
-
-        float offset = (canvasRect.rect.width * canvasRect.localScale.x * 0.35f);
-
-        if (triggerDist < indicatorManager.bholeTriggerDist)
-            offset += Mathf.Clamp((Vector3.Distance(origin, targetPos) * 0.1f), 0, canvasRect.rect.width * canvasRect.localScale.x * 0.25f);
-
-        hitPoint.x += dir.x * offset;
-        hitPoint.y += dir.y * offset;
-        rectTransform.position = new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z);
     }
 
     protected void FadeOutAlpha()
