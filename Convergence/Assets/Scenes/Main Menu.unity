@@ -6058,6 +6058,7 @@ MonoBehaviour:
   Scale: 25
   coverScale: 0
   StartSpeed: {x: 0, y: 0}
+  maxParticleSize: 0
   objColor:
   - {r: 0, g: 0.43849897, b: 1, a: 0}
   - {r: 1, g: 0.19209038, b: 0, a: 0}
@@ -21614,6 +21615,10 @@ PrefabInstance:
     - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: SeedMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
+      propertyPath: maxParticleSize
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6946215090596114782, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: m_LocalPosition.x
