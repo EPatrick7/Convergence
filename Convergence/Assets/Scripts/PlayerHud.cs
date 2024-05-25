@@ -52,7 +52,9 @@ public class PlayerHud : MonoBehaviour
     public IconImageSwap ControlIcon_Ice;
     private void FixedUpdate()
     {
-        if(player!=null&& player.pInput!=null&&player.pInput.devices.Count>0)
+
+        CheckDanger();
+        if (player!=null&& player.pInput!=null&&player.pInput.devices.Count>0)
         {
             ControlIcon_Mass.gameObject.SetActive(true);
             ControlIcon_Gas.gameObject.SetActive(player.Gas > 0);
@@ -105,7 +107,6 @@ public class PlayerHud : MonoBehaviour
         UpdateSlider(massSlider, value, cap);
         UpdateText(massText, value, cap,true);
         UpdateIcon(value);
-        CheckDanger();
     }
 
     private void UpdateIcon(float value)
@@ -208,6 +209,8 @@ public class PlayerHud : MonoBehaviour
 
     private void CheckDanger()
 	{
+        if (player == null)
+            return;
         if (player.inDanger)
 		{
             dangerOverlay.gameObject.SetActive(true);
