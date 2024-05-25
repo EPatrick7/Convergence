@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using static UnityEngine.UI.Image;
 
 public class TargetIndicator : MonoBehaviour
 {
@@ -112,7 +113,7 @@ public class TargetIndicator : MonoBehaviour
         Vector3 indicatorPos = camera.WorldToViewportPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
 
         //if target in front of camera and within bounds of frustum
-        if (indicatorPos.z >= 0f && indicatorPos.x <= 1f && indicatorPos.y <= 1f && indicatorPos.x >= 0f && indicatorPos.y >= 0f)
+        if (indicatorPos.z >= 0f && indicatorPos.x < 1f && indicatorPos.y < 1f && indicatorPos.x > 0f && indicatorPos.y > 0f)
 		{
             indicatorPos.z = 0f; //set z to 0, since 2D
             targetOutOfSight(false, indicatorPos); //target is in sight
@@ -127,9 +128,37 @@ public class TargetIndicator : MonoBehaviour
             indicatorPos *= -1f;
             indicatorPos = OutOfRangeIndicatorPosB(indicatorPos);
             targetOutOfSight(true, indicatorPos);
-		}
+        }
 
-        rectTransform.position = new Vector3(target.transform.position.x, target.transform.position.y, indicatorPos.z);
+        Vector3 camPos = camera.transform.position;
+        Vector3 targetPos = target.transform.position;
+
+        Vector3 origin = new Vector3(camPos.x, camPos.y, targetPos.z);
+        Vector3 dir = (target.transform.position - origin).normalized;
+        Ray ray = new Ray(origin, dir);
+
+        float currentMinDistance = Mathf.Infinity;
+        Vector3 hitPoint = Vector3.zero;
+        Plane[] planes = new Plane[6];
+        GeometryUtility.CalculateFrustumPlanes(camera, planes);
+        for (var i = 0; i < 4; i++)
+        {
+            // Raycast against the plane
+            if (planes[i].Raycast(ray, out var distance))
+            {
+                // Since a plane is mathematical infinite
+                // what you would want is the one that hits with the shortest ray distance
+                if (distance < currentMinDistance)
+                {
+                    hitPoint = ray.GetPoint(distance);
+                    currentMinDistance = distance;
+                }
+            }
+        }
+
+        hitPoint.x += dir.x * -outOfSightOffset;
+        hitPoint.y += dir.y * -outOfSightOffset;
+        rectTransform.position = hitPoint;
     }
 
     protected void FadeOutAlpha()
@@ -173,12 +202,12 @@ public class TargetIndicator : MonoBehaviour
 	{
         var tempCol = offscreenTargetIndicatorImage.color;
         if (timeElapsed < lerpDuration && target.transform.position != Vector3.zero) //if indicator not faded in and its not for the blackhole
-		{
+        {
             tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, timeElapsed / lerpDuration); //lerp to maxIndicatorAlpha before setting accurately for smooth fade in
             offscreenTargetIndicatorImage.color = tempCol;
             timeElapsed += Time.fixedDeltaTime;
-		} else
-		{
+        } else
+        {
             spawned = true;
             float currentDist = Vector3.Distance(target.transform.position, camera.transform.position);
 
@@ -186,9 +215,9 @@ public class TargetIndicator : MonoBehaviour
             {
                 //Increase brightness as you get farther away
                 float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);
-                if(GravityManager.Instance.world_wrap && currentDist >GravityManager.Instance.wrap_dist-700)
+                if (GravityManager.Instance.world_wrap && currentDist > GravityManager.Instance.wrap_dist - 700)
                 {
-                    frac *= Mathf.Max(0, 1 - ((currentDist- (GravityManager.Instance.wrap_dist - 700)) / 700f));
+                    frac *= Mathf.Max(0, 1 - ((currentDist - (GravityManager.Instance.wrap_dist - 700)) / 700f));
                 }
                 tempCol.a = Mathf.Lerp(0f, maxIndicatorAlpha, frac);
                 offscreenTargetIndicatorImage.color = tempCol;
