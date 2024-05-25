@@ -10,7 +10,11 @@ public class DangerOverlay : MonoBehaviour
     [SerializeField]
     private PlayerHud hud;
 
+    [SerializeField]
+    private float maxAlpha, fadeTime;
+
     private Image dangerOverlay;
+
 
     private Tween tween;
 
@@ -31,7 +35,16 @@ public class DangerOverlay : MonoBehaviour
         tween?.Kill();
         var tempColor = dangerOverlay.color;
         tempColor.a = 0;
-        tween = dangerOverlay.DOColor(tempColor, .5f);
+        tween = dangerOverlay.DOColor(tempColor, fadeTime);
+        tween.Play();
+    }
+
+    private void FadeInOverlay() 
+    {
+        tween?.Kill();
+        var tempColor = dangerOverlay.color;
+        tempColor.a = maxAlpha;
+        tween = dangerOverlay.DOColor(tempColor, fadeTime);
         tween.Play();
     }
 
@@ -47,12 +60,8 @@ public class DangerOverlay : MonoBehaviour
         }
         if (hud.GetPlayer().inDanger)
         {
-            tween?.Kill();
-            var tempColor = dangerOverlay.color;
-            tempColor.a = .2f;
-            tween = dangerOverlay.DOColor(tempColor, .5f);
-            tween.Play();
             //dangerOverlay.gameObject.SetActive(true);
+            FadeInOverlay();
         }
         else
         {
