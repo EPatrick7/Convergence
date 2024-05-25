@@ -62,7 +62,7 @@ public class PixelManager : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         playerPixel = GetComponent<PlayerPixelManager>();
         isPlayer = playerPixel != null;
-        if (!isPlayer) indManagers = FindObjectsOfType<IndicatorManager>();
+        indManagers = FindObjectsOfType<IndicatorManager>();
 
         spriteTransitioner = GetComponentInChildren<PixelSpriteTransitioner>();
     }
