@@ -156,8 +156,10 @@ public class TargetIndicator : MonoBehaviour
             }
         }
 
-        hitPoint.x += dir.x * -outOfSightOffset;
-        hitPoint.y += dir.y * -outOfSightOffset;
+        float offset = (canvasRect.rect.width * canvasRect.localScale.x * 0.55f) + (Vector3.Distance(origin, targetPos) * 0.1f) - 50f;
+
+        hitPoint.x += dir.x * offset;
+        hitPoint.y += dir.y * offset;
         rectTransform.position = hitPoint;
     }
 
