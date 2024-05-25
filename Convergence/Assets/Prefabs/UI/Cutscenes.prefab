@@ -149,6 +149,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: Press X to spend part of your mass to move. Use the Left Joystick
     to aim.
+  ToSwapIfXBox: Press A to spend part of your mass to move. Use the Left Joystick
+    to aim.
+  UseAltXBox: 1
   DefaultText: 
 --- !u!1 &361264213697139307
 GameObject:
@@ -1944,6 +1947,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: Follow the purple glow to find your way back to the central black
     hole.
+  ToSwapIfXBox: 
+  UseAltXBox: 0
   DefaultText: 
 --- !u!1 &4021679417028424324
 GameObject:
@@ -2228,6 +2233,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: Press Options to open the pause menu if you need to restart the
     round.
+  ToSwapIfXBox: Press Start to open the pause menu if you need to restart the round.
+  UseAltXBox: 1
   DefaultText: 
 --- !u!1 &4965276798186709314
 GameObject:
@@ -2378,6 +2385,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: Hold the left trigger to spend ice and shield yourself and bleed
     off speed.
+  ToSwapIfXBox: 
+  UseAltXBox: 0
   DefaultText: 
 --- !u!1 &5493097433510524302
 GameObject:
@@ -3023,6 +3032,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: Hold right trigger to burn gas and propel yourself forward.
+  ToSwapIfXBox: 
+  UseAltXBox: 0
   DefaultText: 
 --- !u!1 &7990067605185252855
 GameObject:
