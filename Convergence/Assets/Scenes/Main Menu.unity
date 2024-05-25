@@ -551,7 +551,7 @@ MonoBehaviour:
   cutsceneManager: {fileID: 0}
   multiplayer: 0
   isPressingHome: 0
-  loadDelay: 8
+  loadDelay: 7.5
   tutloadDelay: 3
   hasDeregistered: 0
 --- !u!1 &427704393
