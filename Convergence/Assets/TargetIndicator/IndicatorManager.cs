@@ -17,6 +17,9 @@ public class IndicatorManager : MonoBehaviour
     [SerializeField]
     private GameObject TargetIndicatorPrefab;
 
+    [Range(1, 4)]
+    public int PlayerID = 1;
+
     //[SerializeField]
     //private float triggerDist;
 
@@ -119,6 +122,8 @@ public class IndicatorManager : MonoBehaviour
             targetIndicators.Add(indicator);
             indicator.GetComponent<TargetIndicator>().OutOfSightOffset *= offsetMultiplier;
             indicator.indicatorManager = this;
+
+            indicator.gameObject.layer = LayerMask.NameToLayer(string.Format("P{0}UI", PlayerID));
             //Debug.Log(targetIndicators.Count);
         }
     }

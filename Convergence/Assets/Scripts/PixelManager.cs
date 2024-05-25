@@ -189,7 +189,7 @@ public class PixelManager : MonoBehaviour
             PlanetTypeChanged?.Invoke(planetType,last);
         }
 
-        if (!spawnBhole && !isPlayer)
+        if (!spawnBhole)
         {
             if (mass() > SunTransition_MassReq && !indicating)
             {
@@ -197,6 +197,8 @@ public class PixelManager : MonoBehaviour
                 {
                     for (var i = 0; i < indManagers.Length; i++)
 					{
+                        if (isPlayer && playerPixel.PlayerID == indManagers[i].PlayerID) continue;
+
                         indManagers[i].AddTargetIndicator(gameObject, indManagers[i].sunTriggerDist, indManagers[i].sunColor);
                     }
                     indicating = true;

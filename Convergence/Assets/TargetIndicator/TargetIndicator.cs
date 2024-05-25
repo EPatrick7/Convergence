@@ -112,7 +112,6 @@ public class TargetIndicator : MonoBehaviour
         Vector3 indicatorPos = camera.WorldToViewportPoint(target.transform.position);//camera.WorldToScreenPoint(target.transform.position); //get pos of target relative to screenspace
 
         //if target in front of camera and within bounds of frustum
-
         if (indicatorPos.z >= 0f && indicatorPos.x <= 1f && indicatorPos.y <= 1f && indicatorPos.x >= 0f && indicatorPos.y >= 0f)
 		{
             indicatorPos.z = 0f; //set z to 0, since 2D
@@ -130,8 +129,7 @@ public class TargetIndicator : MonoBehaviour
             targetOutOfSight(true, indicatorPos);
 		}
 
-        rectTransform.position = target.transform.position;
-
+        rectTransform.position = new Vector3(target.transform.position.x, target.transform.position.y, indicatorPos.z);
     }
 
     protected void FadeOutAlpha()

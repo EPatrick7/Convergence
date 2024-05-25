@@ -722,7 +722,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 4095
+      value: 69631
       objectReference: {fileID: 0}
     - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
@@ -749,6 +749,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2574554042745912042, guid: 9778751600db1744d94b04661f36d59f, type: 3}
+      propertyPath: PlayerID
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3909391262138898764, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: PlayerID
       value: 4
       objectReference: {fileID: 0}
@@ -894,7 +898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 6143
+      value: 38911
       objectReference: {fileID: 0}
     - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
@@ -921,6 +925,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2574554042745912042, guid: 9778751600db1744d94b04661f36d59f, type: 3}
+      propertyPath: PlayerID
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3909391262138898764, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: PlayerID
       value: 3
       objectReference: {fileID: 0}
@@ -1459,7 +1467,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 7167
+      value: 23551
       objectReference: {fileID: 0}
     - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
@@ -1486,6 +1494,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2574554042745912042, guid: 9778751600db1744d94b04661f36d59f, type: 3}
+      propertyPath: PlayerID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3909391262138898764, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: PlayerID
       value: 2
       objectReference: {fileID: 0}
@@ -1794,7 +1806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: MultiplayerCameraTest
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: random_respawn_players
@@ -1860,6 +1872,10 @@ PrefabInstance:
     - target: {fileID: 893602672699735284, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 1.8214989
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 15871
       objectReference: {fileID: 0}
     - target: {fileID: 2136206891371535575, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_AnchorMax.x
