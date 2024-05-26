@@ -2173,7 +2173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6024165576097979102, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
       propertyPath: m_Depth
-      value: -5
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 6024165576097979102, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
       propertyPath: near clip plane
@@ -2266,10 +2266,6 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
-      propertyPath: SpawnRadius
-      value: 2025
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: respawn_players
       value: 1
       objectReference: {fileID: 0}
@@ -2283,7 +2279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: MultiplayerCameraTest
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: random_respawn_players
@@ -2482,18 +2478,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: Spread
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: coverSpread
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
-      propertyPath: spawnRadius
-      value: 7500
-      objectReference: {fileID: 0}
     - target: {fileID: 2913809570870256178, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: ShapeModule.radius.value
       value: 1.3125
