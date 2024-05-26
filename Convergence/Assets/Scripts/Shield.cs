@@ -187,8 +187,8 @@ public class Shield : MonoBehaviour
     }
     public void CheckDrag()
     {
-        transform.parent.GetComponent<Rigidbody2D>().angularDrag = (!justGotBonked() && transform.parent.gameObject.layer == LayerMask.NameToLayer("Ignore Pixel")) ? ShieldDrag : 0;
-        transform.parent.GetComponent<Rigidbody2D>().drag = (!justGotBonked()&&transform.parent.gameObject.layer== LayerMask.NameToLayer("Ignore Pixel")) ? ShieldDrag:0;
+        transform.parent.GetComponent<Rigidbody2D>().angularDrag = (!justGotBonked()&&!player.inDanger && transform.parent.gameObject.layer == LayerMask.NameToLayer("Ignore Pixel")) ? ShieldDrag : 0;
+        transform.parent.GetComponent<Rigidbody2D>().drag = (!justGotBonked()&& !player.inDanger&&transform.parent.gameObject.layer== LayerMask.NameToLayer("Ignore Pixel")) ? ShieldDrag:0;
     }
 
     private void OnDestroy()
