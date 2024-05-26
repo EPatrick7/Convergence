@@ -1155,6 +1155,10 @@ PrefabInstance:
       value: 1.8214989
       objectReference: {fileID: 0}
     - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
+      propertyPath: m_Depth
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 69631
       objectReference: {fileID: 0}
@@ -1344,6 +1348,10 @@ PrefabInstance:
     - target: {fileID: 893602672699735284, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 1.8214989
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
+      propertyPath: m_Depth
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -1928,6 +1936,10 @@ PrefabInstance:
       value: 1.8214989
       objectReference: {fileID: 0}
     - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
+      propertyPath: m_Depth
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664791463313142884, guid: 9778751600db1744d94b04661f36d59f, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 23551
       objectReference: {fileID: 0}
@@ -2161,7 +2173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6024165576097979102, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
       propertyPath: m_Depth
-      value: -2
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 6024165576097979102, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
       propertyPath: near clip plane
@@ -2271,7 +2283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: MultiplayerCameraTest
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: random_respawn_players

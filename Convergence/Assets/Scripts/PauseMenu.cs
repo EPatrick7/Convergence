@@ -178,6 +178,17 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public void UpdateHud(int playerId,bool state)
+    {
+        foreach (PlayerHud hud in playerHUD)
+        {
+            if (hud.PlayerID == playerId)
+            {
+                hud.gameObject.SetActive(state);
+                return;
+            }
+        }
+    }
     private void UpdateHuds(bool state)
     {
         foreach(PlayerHud hud in playerHUD)

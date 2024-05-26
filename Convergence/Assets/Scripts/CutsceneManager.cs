@@ -122,9 +122,13 @@ public class CutsceneManager : MonoBehaviour
         else
         {
             // Color of the player that consumed this player
-            UnityEngine.Color color = InputManager.GetManager(eater.PlayerID).PlayerColors[eater.PlayerID];
+            InputManager manager = InputManager.GetManager(eater.PlayerID);
+            if (manager != null)
+            {
+                UnityEngine.Color color = manager.PlayerColors[eater.PlayerID-1];
 
-            OnPlayerDeath.SetText(string.Format("<color=#{0}>Player #{1}</color> Killed You", UnityEngine.ColorUtility.ToHtmlStringRGBA(color), eater.PlayerID));
+                OnPlayerDeath.SetText(string.Format("<color=#{0}>Player #{1}</color> Killed You", UnityEngine.ColorUtility.ToHtmlStringRGBA(color), eater.PlayerID));
+            }
         }
 
         LoadCutscene(OnPlayerDeath);

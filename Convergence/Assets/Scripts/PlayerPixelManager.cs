@@ -97,7 +97,8 @@ public class PlayerPixelManager : PixelManager
     private bool isPropelling = false;
 
     bool hasRegistered;
-    private bool hasWonGame;
+    [HideInInspector]
+    public bool hasWonGame;
     float dangerUntil;
     public bool inDanger = false;
     Coroutine dangerAwait; [HideInInspector]

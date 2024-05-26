@@ -27,11 +27,33 @@ public class CameraLook : MonoBehaviour
         }
         camLooks.Add(this);
     }
+    bool inWinState;
+    public IEnumerator DelayedFinalCameraSnap()
+    {
+       // PauseMenu.Instance.UpdateHud(PlayerID, false);
 
+        yield return new WaitForSeconds(10f);
+       // cam.depth -=100;
+       // if (PlayerID == focusedPixel.PlayerID)
+       // {
+       //     cam.depth += 5;
+        //}
+        
+      //  cam.rect = new Rect(Vector2.zero, Vector2.one);
+        
+
+        
+    }
     private void FixedUpdate()
     {
         if (focusedPixel != null)
         {
+            if(focusedPixel.playerPixel.hasWonGame&&!inWinState&&GravityManager.Instance.isMultiplayer)
+            {
+                inWinState = true;
+                StartCoroutine(DelayedFinalCameraSnap());
+            }
+
             transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
 
             cam.orthographicSize = UpdateCamSize(); //Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f,0),0.1f).x;
