@@ -55,105 +55,30 @@ public class PlayerPixelManager : PixelManager
     public GameObject PlayerIcon;
     [Range(1,4)]
     public int PlayerID;
-    private bool canEject = true;
 
-    private bool isPropelling = false;
+    [HideInInspector]
+    public bool hasDeregistered;
 
 
     private GravityManager gravityManager;
-
     private Camera cam;
-    bool hasRegistered;
-
-    private bool hasWonGame;
-    public void WinGame(PixelManager other)
-    {
-        //If we just consumed the central black hole...
-        ConstantMass = true;
-        other.rigidBody.constraints = RigidbodyConstraints2D.None;
-        rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
-        rigidBody.mass += 10000;
-        GravityManager.Instance.drift_power = 100;
-        GravityManager.Instance.DoParticleRespawn = false;
-        GravityManager.Instance.respawn_players = false;
-        GravityManager.GameWinner = playerPixel;
-        hasWonGame = true;
-        BlackHoleState.RadiusScalar *= 1.3f;
-        CutsceneManager.Instance?.BlackHoleConsumed();
-    }
-
-    float dangerUntil;
-    public bool inDanger = false;
-    Coroutine dangerAwait;
-    private bool notInDanger()
-    {
-        return Time.timeSinceLevelLoad > dangerUntil;
-    }
-    public IEnumerator DangerWaitUnitl()
-    {
-        //Activate Warning HUD
-        //Debug.Log("Player " + PlayerID + " is in danger!");
-        yield return new WaitUntil(notInDanger);
-        inDanger = false;
-        //Deactivate Warning HUD
-        //Debug.Log("Player " + PlayerID + " is no longer in danger!");
-        dangerAwait = null;
-    }
-    public void WarnDanger()
-    {
-        camLook.inputManager.DangerRumble();
-        inDanger = true;
-        dangerUntil = Time.timeSinceLevelLoad + 1.5f;
-        if(dangerAwait== null)
-        {
-            dangerAwait=StartCoroutine(DangerWaitUnitl());
-        }
-    }
-
-    
-    public void RegisterInputs()
-    {
-        if(hasRegistered)
-        {
-            Debug.LogWarning("Cannot double register a player!");
-        }
-        if (!hasRegistered)
-        {
-            hasRegistered = true;
-            pInput.actions.FindActionMap("Player").FindAction("Eject").performed += Eject;
-            pInput.actions.FindActionMap("Player").FindAction("Propel").started += StartPropel;
-            pInput.actions.FindActionMap("Player").FindAction("Propel").canceled += CancelPropel;
-            pInput.actions.FindActionMap("Player").FindAction("Shield").started += StartShield;
-            pInput.actions.FindActionMap("Player").FindAction("Shield").canceled += CancelShield;
-        }
-    }
-    [HideInInspector]
-    public bool hasDeregistered;
-    public void DeregisterInputs()
-    {
-        if (hasRegistered)
-        {
-            hasRegistered = false;
-            hasDeregistered = true;
-            pInput.actions.FindActionMap("Player").FindAction("Eject").performed -= Eject;
-            pInput.actions.FindActionMap("Player").FindAction("Propel").started -= StartPropel;
-            pInput.actions.FindActionMap("Player").FindAction("Propel").canceled -= CancelPropel;
-            pInput.actions.FindActionMap("Player").FindAction("Shield").started -= StartShield;
-            pInput.actions.FindActionMap("Player").FindAction("Shield").canceled -= CancelShield;
-        }
-    }
-    public Vector2 MousePos()
-    {
-        if(!hasRegistered)
-        {
-            Debug.LogWarning("Tried to get MouseDirection, Input not Ready!");
-            return Vector2.zero;
-        }
-        return pInput.actions.FindActionMap("Player").FindAction("MousePosition").ReadValue<Vector2>(); 
-    }
-    [HideInInspector]
     public CameraLook camLook;
     public PlayerInput pInput;
+
+    private bool canEject = true;
+    private bool isPropelling = false;
+
+    bool hasRegistered;
+    private bool hasWonGame;
+    float dangerUntil;
+    public bool inDanger = false;
+    Coroutine dangerAwait; [HideInInspector]
+    Vector2 lastMousePos = new Vector2(0, -1);
+
+
+
+
+
     private void Start()
     {
 
@@ -180,6 +105,9 @@ public class PlayerPixelManager : PixelManager
         StartCoroutine(DelayedRegister());
 
     }
+    //Delays registering the inputs until a system is located.
+
+    #region Inputs
     public IEnumerator DelayedRegister()
     {
         while (pInput == null)
@@ -213,7 +141,6 @@ public class PlayerPixelManager : PixelManager
         }
         RegisterInputs();
     }
-    Vector2 lastMousePos=new Vector2(0,-1);
     public Vector2 MouseDirection()
     {
         if (!hasRegistered)
@@ -236,6 +163,64 @@ public class PlayerPixelManager : PixelManager
         {
             return (cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0)) - transform.position).normalized;
         }
+    }
+    public void DeregisterInputs()
+    {
+        if (hasRegistered)
+        {
+            hasRegistered = false;
+            hasDeregistered = true;
+            pInput.actions.FindActionMap("Player").FindAction("Eject").performed -= Eject;
+            pInput.actions.FindActionMap("Player").FindAction("Propel").started -= StartPropel;
+            pInput.actions.FindActionMap("Player").FindAction("Propel").canceled -= CancelPropel;
+            pInput.actions.FindActionMap("Player").FindAction("Shield").started -= StartShield;
+            pInput.actions.FindActionMap("Player").FindAction("Shield").canceled -= CancelShield;
+        }
+    }
+    public Vector2 MousePos()
+    {
+        if (!hasRegistered)
+        {
+            Debug.LogWarning("Tried to get MouseDirection, Input not Ready!");
+            return Vector2.zero;
+        }
+        return pInput.actions.FindActionMap("Player").FindAction("MousePosition").ReadValue<Vector2>();
+    }
+    public void RegisterInputs()
+    {
+        if (hasRegistered)
+        {
+            Debug.LogWarning("Cannot double register a player!");
+        }
+        if (!hasRegistered)
+        {
+            hasRegistered = true;
+            pInput.actions.FindActionMap("Player").FindAction("Eject").performed += Eject;
+            pInput.actions.FindActionMap("Player").FindAction("Propel").started += StartPropel;
+            pInput.actions.FindActionMap("Player").FindAction("Propel").canceled += CancelPropel;
+            pInput.actions.FindActionMap("Player").FindAction("Shield").started += StartShield;
+            pInput.actions.FindActionMap("Player").FindAction("Shield").canceled += CancelShield;
+        }
+    }
+
+    #endregion
+
+    #region Events
+
+    public void WinGame(PixelManager other)
+    {
+        //If we just consumed the central black hole...
+        ConstantMass = true;
+        other.rigidBody.constraints = RigidbodyConstraints2D.None;
+        rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
+        rigidBody.mass += 10000;
+        GravityManager.Instance.drift_power = 100;
+        GravityManager.Instance.DoParticleRespawn = false;
+        GravityManager.Instance.respawn_players = false;
+        GravityManager.GameWinner = playerPixel;
+        hasWonGame = true;
+        BlackHoleState.RadiusScalar *= 1.3f;
+        CutsceneManager.Instance?.BlackHoleConsumed();
     }
     public void RunDeath()
     {
@@ -282,9 +267,44 @@ public class PlayerPixelManager : PixelManager
             camLook.focusedPixel = GravityManager.GameWinner;
         }
     }
+    public void Ambient()
+    {
+        camLook?.inputManager?.AmbientRumble(planetType);
+    }
+    public void Bonk(bool isLarger, bool isMicroscopic, bool isSlightlySmaller)
+    {
+        camLook.inputManager.BonkRumble(isLarger, isMicroscopic, isSlightlySmaller);
+    }
 
+    #endregion
 
-    
+    #region Danger
+    private bool notInDanger()
+    {
+        return Time.timeSinceLevelLoad > dangerUntil;
+    }
+    public IEnumerator DangerWaitUnitl()
+    {
+        //Activate Warning HUD
+        //Debug.Log("Player " + PlayerID + " is in danger!");
+        yield return new WaitUntil(notInDanger);
+        inDanger = false;
+        //Deactivate Warning HUD
+        //Debug.Log("Player " + PlayerID + " is no longer in danger!");
+        dangerAwait = null;
+    }
+    public void WarnDanger()
+    {
+        camLook.inputManager.DangerRumble();
+        inDanger = true;
+        dangerUntil = Time.timeSinceLevelLoad + 1.5f;
+        if (dangerAwait == null)
+        {
+            dangerAwait = StartCoroutine(DangerWaitUnitl());
+        }
+    }
+    #endregion
+
     #region Eject
     private void Eject(InputAction.CallbackContext context)
     {
@@ -459,14 +479,6 @@ public class PlayerPixelManager : PixelManager
     }
     #endregion
 
-    public void Ambient()
-    {
-        camLook?.inputManager?.AmbientRumble(planetType);
-    }
-    public void Bonk(bool isLarger,bool isMicroscopic,bool isSlightlySmaller)
-    {
-        camLook.inputManager.BonkRumble(isLarger, isMicroscopic, isSlightlySmaller);
-    }
     #region Shield
     private void StartShield(InputAction.CallbackContext context)
     {
