@@ -108,8 +108,8 @@ public class Shield : MonoBehaviour
         {
             while (IsActive() && player.Ice > 0f)
             {
-                float expendedIce = Mathf.Max(1f, Mathf.Clamp(player.mass() + player.Ice, player.Ice, player.Ice * 10f) * ShieldCost) * interval;
-                player.Ice -= expendedIce * 0.75f;
+                float expendedIce = Mathf.Max(1f, Mathf.Clamp(player.radius() + player.Ice, player.Ice, player.Ice * 10f) * ShieldCost) * interval;
+                player.Ice -= expendedIce * 0.75f*0.5f;
 
 
                 CheckDrag();
