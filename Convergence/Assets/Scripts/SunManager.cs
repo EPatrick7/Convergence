@@ -20,10 +20,10 @@ public class SunManager : MonoBehaviour
     private SpriteRenderer sprite;
 
     [SerializeField]
-    private List<TextMeshProUGUI> buttons = new List<TextMeshProUGUI>();
-
+    private CanvasGroup mainUI;
+    
     [SerializeField]
-    private List<TextMeshProUGUI> multiButtons = new List<TextMeshProUGUI>();
+    private CanvasGroup opUI;
 
     [SerializeField]
     private TextMeshProUGUI title;
@@ -44,6 +44,8 @@ public class SunManager : MonoBehaviour
     private Tween Ttext;
     private Tween TMtext;
     private Tween Tcam;
+    private Tween opTween;
+    private Tween mainTween;
 
     // Start is called before the first frame update
     void Start()
@@ -52,13 +54,9 @@ public class SunManager : MonoBehaviour
         ps = GetComponentInChildren<ParticleSystem>();
         ps.Stop();
         icon = title.GetComponentInChildren<Image>();
-        for (var i = 0; i < multiButtons.Count; i++)
-		{
-            var tempColor = multiButtons[i].color;
-            tempColor.a = 0;
-            multiButtons[i].color = tempColor; //set transparent to 0
-           // DisableButton(multiButtons[i]); //and disable button
-        }
+
+        opUI.alpha = 0;
+        opUI.interactable = false;
         //camera = Camera.main;
     }
 
@@ -91,12 +89,8 @@ public class SunManager : MonoBehaviour
 	{
         TcamSize?.Kill();
         StartCoroutine(ShakeDelay());
-        if (!multiplayer) {
-            FadeOutMainButtons();
-        } else
-		{
-            FadeOutMultiButtons();
-        }
+
+        FadeOutMainButtons();
 
         Vector3 newPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
         
@@ -154,18 +148,14 @@ public class SunManager : MonoBehaviour
         cam.Play();
     }
 
+    /*
     public void multiStart()
 	{
         TcamSize?.Kill();
         StartCoroutine(ShakeDelay());
-        if (!multiplayer)
-        {
-            FadeOutMainButtons();
-        }
-        else
-        {
-            FadeOutMultiButtons();
-        }
+        
+        FadeOutMainButtons();
+
         Vector3 newPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
 
         Color newTCol = title.color;
@@ -181,31 +171,28 @@ public class SunManager : MonoBehaviour
         cam.Insert(0, title.DOColor(newTCol, 1)); //fade out title
         cam.Insert(0, icon.DOColor(newICol, 2)); //fade out icon
         cam.Play();
-
     }
+    */
 
-    public void multiSetup()
+    public void optionStart()
 	{
-        multiplayer = true;
-
         FadeOutMainButtons();
-        FadeInMultiButtons();
+        FadeInOptions();
 
         Tcam?.Kill();
-        Tcam = Camera.main.transform.DOMoveX(300, 2); //move camera to other side of screen
+        Tcam = Camera.main.transform.DOMoveX(300, 2);
         Tcam.Play();
 	}
 
-    public void multiBack()
+	public void optionBack()
 	{
-        multiplayer = false;
-        FadeOutMultiButtons();
-        FadeInMainButtons();
+		FadeOutOptions();
+		FadeInMainButtons();
 
         Tcam?.Kill();
-        Tcam = Camera.main.transform.DOMoveX(-300, 2); //move camera back
+        Tcam = Camera.main.transform.DOMoveX(-300, 2);
         Tcam.Play();
-    }
+	}
 
     private void DisableButton(TextMeshProUGUI button)
 	{
@@ -219,54 +206,50 @@ public class SunManager : MonoBehaviour
 
     private void FadeOutMainButtons()
 	{
-        Ttext?.Kill();
-        for (var i = 0; i < buttons.Count; i++) //fade out main buttons
+        mainUI.interactable = false;
+        float alpha = 1;
+        mainTween?.Kill();
+        mainTween = DOTween.To(()=> alpha, x => alpha = x, 0, 1).OnUpdate(() =>
         {
-            var tempColor = buttons[i].color;
-            tempColor.a = 0;
-            Ttext = buttons[i].DOColor(tempColor, 1);
-            //DisableButton(buttons[i]);
-            Ttext.Play();
-        }
+            mainUI.alpha = alpha;
+        });
+        mainTween.Play();
     }
 
     private void FadeInMainButtons()
 	{
-        Ttext?.Kill();
-        for (var i = 0; i < buttons.Count; i++) //fade in main buttons
+        mainUI.interactable = true;
+        float alpha = 0;
+        mainTween?.Kill();
+        mainTween = DOTween.To(() => alpha, x => alpha = x, 1, 1).OnUpdate(() =>
         {
-            var tempColor = buttons[i].color;
-            tempColor.a = 1;
-            Ttext = buttons[i].DOColor(tempColor, 1);
-            EnableButton(buttons[i]);
-            Ttext.Play();
-        }
+            mainUI.alpha = alpha;
+        });
+        mainTween.Play();
     }
 
-    private void FadeOutMultiButtons()
+    private void FadeInOptions()
 	{
-        TMtext?.Kill();
-        for (var i = 0; i < multiButtons.Count; i++) //fade out multi buttons
+        opUI.interactable = true;
+        float alpha = 0;
+        opTween?.Kill();
+        opTween = DOTween.To(() => alpha, x => alpha = x, 1, 1).OnUpdate(() =>
         {
-            var tempColor = multiButtons[i].color;
-            tempColor.a = 0;
-            TMtext = multiButtons[i].DOColor(tempColor, 1);
-            //DisableButton(multiButtons[i]);
-            TMtext.Play();
-        }
+            opUI.alpha = alpha;
+        });
+        opTween.Play();
     }
 
-    private void FadeInMultiButtons()
+    private void FadeOutOptions()
 	{
-        TMtext?.Kill();
-        for (var i = 0; i < multiButtons.Count; i++)
+        opUI.interactable = false;
+        float alpha = 1;
+        opTween?.Kill();
+        opTween = DOTween.To(() => alpha, x => alpha = x, 0, 1).OnUpdate(() =>
         {
-            var tempColor = multiButtons[i].color;
-            tempColor.a = 1;
-            TMtext = multiButtons[i].DOColor(tempColor, 1); //and tween button alpha to 1
-            EnableButton(multiButtons[i]);
-            TMtext.Play();
-        }
+            opUI.alpha = alpha;
+        });
+        opTween.Play();
     }
 
     public void StartPS()
