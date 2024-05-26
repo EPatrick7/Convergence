@@ -211,6 +211,8 @@ public class InputManager : MonoBehaviour
             }
         }
     }
+    [HideInInspector]
+    public bool hideOverlay;
     private void FixedUpdate()
     {
         RumbleAmount += Mathf.Min(LilRumbleContribution, MaxCollisionRumble);
@@ -228,7 +230,7 @@ public class InputManager : MonoBehaviour
 
         if(killNotifier!=null)
         {
-            killNotifier.overlay.gameObject.SetActive(playerInput.devices.Count<=0);
+            killNotifier.overlay.gameObject.SetActive(playerInput.devices.Count<=0&&!hideOverlay);
         }
 
      //   DeviceCount = playerInput.devices.Count;

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class CameraLook : MonoBehaviour
 
     private void Start()
     {
+        orthoMultiplier = 1;
         cam = GetComponent<Camera>();
         if (camLooks == null)
         {
@@ -28,22 +30,117 @@ public class CameraLook : MonoBehaviour
         camLooks.Add(this);
     }
     bool inWinState;
+    bool freezeFollow;
     public IEnumerator DelayedFinalCameraSnap()
     {
-       // PauseMenu.Instance.UpdateHud(PlayerID, false);
 
-        yield return new WaitForSeconds(10f);
-       // cam.depth -=100;
-       // if (PlayerID == focusedPixel.PlayerID)
-       // {
-       //     cam.depth += 5;
+        yield return new WaitForSeconds(2.5f);
+        if (PlayerID == focusedPixel.PlayerID)
+        {
+            focusedPixel.rigidBody.mass = 20000;
+           // yield return new WaitUntil(orthoUnchanged);
+        }
+        /*
+        else
+        {
+            yield return new WaitUntil(orthoUnchanged);
+            yield return new WaitForSeconds(1f);
+        }*/
+        float TemporthoSize = cam.orthographicSize;
+        cam.orthographicSize = 2001.499f;//Max Value
+        freezeFollow = true;
+        PauseMenu.Instance.UpdateHud(PlayerID, false);
+        inputManager.hideOverlay = true;
+        cam.cullingMask |= LayerMask.GetMask("P1");
+        cam.cullingMask |= LayerMask.GetMask("P2");
+        cam.cullingMask |= LayerMask.GetMask("P3");
+        cam.cullingMask |= LayerMask.GetMask("P4");
+
+
+        Vector2 targPos = cam.transform.position;
+        Vector2 RtargSize = Vector2.zero;
+        Vector2 RtargPos = Vector2.one;
+        bool lerpRect=false;
+        switch (GravityManager.Instance.PlayerCount)
+        {
+            case 1:
+                targPos = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, -10));
+                lerpRect = true;
+                break;
+            case 2:
+                if (PlayerID == 1)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 0.5f, -10));
+                else if (PlayerID == 2)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(1, 0.5f, -10));
+
+                break;
+            case 3:
+                if (PlayerID == 1)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 1, -10));
+                else if (PlayerID == 2)
+                {
+                    Rect r = cam.rect;
+
+                    RtargSize = new Vector2(0.5f, 0);
+                    RtargPos = new Vector2(0.5f, 1);
+
+                    cam.orthographicSize *= 2;
+                    cam.rect = new Rect(RtargSize, RtargPos);
+
+                    targPos = cam.ViewportToWorldPoint(new Vector3(1f, 0.5f, -10));
+
+                    cam.orthographicSize /=2f;
+                    cam.rect = r;
+                    orthoMultiplier =2;
+
+                    lerpRect = true;
+                }
+                else if (PlayerID == 3)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 0, -10));
+
+                break;
+            case 4:
+                if (PlayerID == 1)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 1, -10));
+                else if (PlayerID == 2)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(1,1, -10));
+                else if (PlayerID == 3)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 0, -10));
+                else if (PlayerID == 4)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(1, 0, -10));
+
+                break;
+        }
+        cam.orthographicSize = TemporthoSize;
+        for (int i =0;i<50;i++)
+        {
+            yield return new WaitForFixedUpdate();
+            cam.transform.position = Vector2.Lerp(cam.transform.position,targPos,0.1f);
+            if(lerpRect)
+            {
+                cam.rect = new Rect(Vector2.Lerp(cam.rect.position, RtargSize, 0.1f), Vector2.Lerp(cam.rect.size, RtargPos, 0.1f));
+            }
+        }
+
+        if(lerpRect)
+            cam.rect = new Rect(RtargSize, RtargPos);
+        // if (PlayerID == focusedPixel.PlayerID)
+        // {
+        //     cam.depth += 5;
         //}
-        
-      //  cam.rect = new Rect(Vector2.zero, Vector2.one);
-        
 
-        
+        //cam.rect = new Rect(Vector2.zero, Vector2.one);
+
+
+
     }
+    bool orthoUnchanged()
+    {
+        return Time.timeSinceLevelLoad > lastOrthoChange;
+    }
+    float orthoMultiplier=1;
+    float lastOrthoSize;
+    float lastOrthoChange;
     private void FixedUpdate()
     {
         if (focusedPixel != null)
@@ -53,10 +150,17 @@ public class CameraLook : MonoBehaviour
                 inWinState = true;
                 StartCoroutine(DelayedFinalCameraSnap());
             }
-
-            transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
-
-            cam.orthographicSize = UpdateCamSize(); //Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f,0),0.1f).x;
+            if (!freezeFollow)
+            {
+                transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
+            }
+            cam.orthographicSize =  UpdateCamSize(); //Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f,0),0.1f).x;
+            if(lastOrthoSize!=cam.orthographicSize)
+            {
+                lastOrthoChange = Time.timeSinceLevelLoad + 0.1f;
+                lastOrthoSize = cam.orthographicSize;
+            }
+        
         }
         else if (respawner != null)
         {
@@ -70,7 +174,7 @@ public class CameraLook : MonoBehaviour
 
     private float UpdateCamSize()
     {
-        var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0), new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f, 0), 0.1f).x;
+        var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0), orthoMultiplier* new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f, 0), 0.1f).x;
         if (camLooks.Count <= 1) //less than or equal to 1 player camera (no multiplayer cams)
 		{
             var ppCam = Camera.main.GetUniversalAdditionalCameraData();
