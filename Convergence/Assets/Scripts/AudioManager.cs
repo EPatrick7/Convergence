@@ -43,6 +43,8 @@ public class AudioManager : MonoBehaviour
     {
         MusicVolume = PlayerPrefs.GetFloat("Volume_Music", 1f);
         SFXVolume = PlayerPrefs.GetFloat("Volume_SFX", 1f);
+        audioMusic.volume = maxVol * MusicVolume;
+        audioSFX.volume = maxVol * SFXVolume;
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
