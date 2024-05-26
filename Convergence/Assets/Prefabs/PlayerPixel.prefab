@@ -10064,7 +10064,7 @@ MonoBehaviour:
   ShieldCost: 0.05
   ShieldDelay: 0.1
   TickRate: 0.1
-  ShieldDrag: 0.8
+  ShieldDrag: 1
   activeColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   inactiveColor: {r: 1, g: 1, b: 1, a: 0}
   overlaySpr: {fileID: 3272749874773122615}
@@ -15331,9 +15331,91 @@ MonoBehaviour:
     m_RotationOrder: 4
   VelMagnOffset: 100
   EjectionRate: 0.1
-  PropulsionForceScale: 8
+  RadiusPropCostScale_Multiplier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9999967
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 9.322723
+      value: 8.185999
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  PropulsionForceScale: 0.2
+  VelocityMagnitudePropForceDampenScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.7482185
+      outSlope: -0.7482185
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9904785
+      value: 0.25890562
+      inSlope: -0.036659505
+      outSlope: -0.036659505
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11534373
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusPropForceDampenScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -5.731817
+      outSlope: -5.731817
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.13434932
+      value: 0.22993433
+      inSlope: -0.058791254
+      outSlope: -0.058791254
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2279062
+      outWeight: 0.081650816
+    - serializedVersion: 3
+      time: 1.1077204
+      value: 0.13742776
+      inSlope: -0.09225389
+      outSlope: -0.09225389
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08397608
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  PropVelMagnOffset: 100
   PropulsionRate: 0.1
-  PropulsionCost: 0.5
+  PropulsionCost: 1.5
   Shield: {fileID: 2769585074338307199}
   shieldActivated: 0
   GasJet: {fileID: 6114046427485457751}

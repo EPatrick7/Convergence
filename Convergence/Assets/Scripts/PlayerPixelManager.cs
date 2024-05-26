@@ -47,8 +47,16 @@ public class PlayerPixelManager : PixelManager
     public float EjectionRate = 1.0f;
 
     [Header("Propulsion")]
+    [Tooltip("The multiplier to split scale applied based on radius (1->1000)")]
+    public AnimationCurve RadiusPropCostScale_Multiplier;
     [Min(0), Tooltip("The scale the pixel will be propelled based on the gas expended")]
     public float PropulsionForceScale = 10.0f;
+    [Tooltip("On a scale of 1->((Radius())^2*VelMagnOffset) In Velocity sqr magnitude units, is a number multiplied to the PFS")]
+    public AnimationCurve VelocityMagnitudePropForceDampenScale;
+    [Tooltip("On a scale of 1->1000 In Radius units, is a number multiplied to the PFS")]
+    public AnimationCurve RadiusPropForceDampenScale;
+    [Tooltip("The above curve is on a scale of 1->((Radius())^2*VelMagnOffset) In Velocity sqr magnitude units, and is a number multiplied to the PFS")]
+    public float PropVelMagnOffset = 50;
 
     [Min(0), Tooltip("The cooldown in seconds for propelling")]
     public float PropulsionRate = 0.1f;
@@ -494,15 +502,23 @@ public class PlayerPixelManager : PixelManager
                 if (streak > 1)
                 {
 
-                    float expendedGas = Mathf.Max(1f, mass() + Gas) * PropulsionCost * interval;
+                    float expendedGas = Mathf.Max(1f, radius() + Gas) * PropulsionCost * interval * RadiusPropCostScale_Multiplier.Evaluate(radius() / 1000f);
 
-                    Gas -= expendedGas * 0.75f;
+                    Gas -= Mathf.Max(5,expendedGas * 0.75f*(1/ VelocityMagnitudePropForceDampenScale.Evaluate(rigidBody.velocity.sqrMagnitude / (PropVelMagnOffset * radius() * radius()))));
 
                     Vector2 propelDirection = MouseDirection();
+                    /*Legacy Force
                     float propulsionForce = expendedGas * PropulsionForceScale;
 
 
                     rigidBody.velocity += (propelDirection * propulsionForce) / mass() * -1 * Mathf.Min(5.5f, Mathf.Max(1, (mass() / 50f)));
+                    */
+
+                    float dampener = 1;
+                    dampener *= VelocityMagnitudePropForceDampenScale.Evaluate(rigidBody.velocity.sqrMagnitude / (PropVelMagnOffset * radius() * radius()));
+                    dampener *= RadiusPropForceDampenScale.Evaluate(radius() / 1000f);
+                    float propulsionForce = radius() * -PropulsionForceScale*dampener;
+                    rigidBody.velocity += propelDirection * propulsionForce;
 
                     if (Gas > 0f)
                     {
