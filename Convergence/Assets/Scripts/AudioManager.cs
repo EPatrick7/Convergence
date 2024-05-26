@@ -3,24 +3,29 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
 
     [SerializeField]
-    private AudioSource audioSFX;
+    private AudioSource sfxSource, musicSource;
 
     [SerializeField]
-    private AudioSource audioMusic;
+    private AudioMixer musicMixer, sfxMixer;
 
     [SerializeField]
-    private float fadeINTime, fadeOUTTime, maxVol;
+    private float fadeINTime, fadeOUTTime;
 
     [SerializeField]
     private List<AudioClip> sfx = new List<AudioClip>();
 
     [SerializeField]
     private List<AudioClip> music = new List<AudioClip>();
+
+    [SerializeField]
+    private List<Button> buttons = new List<Button>();
 
     private enum Mode
 	{
@@ -51,9 +56,21 @@ public class AudioManager : MonoBehaviour
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        audioMusic.clip = music[(int)gameMode];
+    {       
+        musicSource.clip = music[(int)gameMode];
+        sfxSource.Stop();
+        FadeInSFX();
         FadeInMusic();
+        buttons.Clear();
+        if (scene.name == "Main Menu")
+		{
+            buttons.Add(GameObject.Find("startButton").GetComponent<Button>());
+            buttons.Add(GameObject.Find("multiButton").GetComponent<Button>());
+            buttons.Add(GameObject.Find("tutorialButton").GetComponent<Button>());
+            buttons[0].onClick.AddListener(delegate { SoloSelect(); });
+            buttons[1].onClick.AddListener(delegate { MultiSelect(); });
+            buttons[2].onClick.AddListener(delegate { TutorialSelect(); });
+		}
         /*
         switch (gameMode)
 		{
@@ -64,31 +81,62 @@ public class AudioManager : MonoBehaviour
         */
     }
 
+    private float ConvertToMixer(float input)
+	{
+        return Mathf.Log10(input) * 20;
+	}
+
     public void FadeOutSFX()
 	{
-        audioSFX.DOFade(0f, fadeOUTTime);
+        sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(0.001f), fadeOUTTime);
 	}
+
+    public void FadeInSFX()
+	{
+        sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(PlayerPrefs.GetFloat("SFXVol")), fadeOUTTime);
+    }
 
     public void FadeOutMusic()
 	{
-        audioMusic.DOFade(0f, fadeOUTTime);
+        musicMixer.DOSetFloat("MusicVol", ConvertToMixer(0.001f), fadeOUTTime);
 	}
 
     public void FadeInMusic()
 	{
-        audioMusic.Play();
-        audioMusic.DOFade(maxVol, fadeINTime);
-	}
+        musicMixer.DOSetFloat("MusicVol", ConvertToMixer(PlayerPrefs.GetFloat("MusicVol")), fadeOUTTime);
+        musicSource.Play();
+    }
 
     public void MenuSelect()
 	{
-        audioSFX.Play();
-        audioMusic.DOFade(0f, fadeOUTTime);
+        Debug.Log("MenuSelect");
+        sfxSource.Play();
+        Debug.Log(sfxSource.clip);
+        FadeOutMusic();
+        FadeOutSFX();
+	}
+
+    public void MainSelect()
+	{
+        MenuSelect();
+        gameMode = Mode.Menu;
 	}
 
     public void SoloSelect()
 	{
         MenuSelect();
         gameMode = Mode.Solo;
+	}
+
+    public void MultiSelect()
+	{
+        MenuSelect();
+        gameMode = Mode.Multiplayer;
+	}
+
+    public void TutorialSelect()
+	{
+        MenuSelect();
+        gameMode = Mode.Tutorial;
 	}
 }
