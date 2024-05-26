@@ -14,13 +14,17 @@ public class AudioManager : MonoBehaviour
     private AudioSource audioMusic;
 
     [SerializeField]
-    private float fadeINTime, fadeOUTTime, maxVol;
+    private float fadeINTime, fadeOUTTime,fadeCHANGETime, maxVol;
 
     [SerializeField]
     private List<AudioClip> sfx = new List<AudioClip>();
 
     [SerializeField]
     private List<AudioClip> music = new List<AudioClip>();
+
+
+    public static float MusicVolume;
+    public static float SFXVolume;
 
     private enum Mode
 	{
@@ -37,6 +41,8 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
+        MusicVolume = PlayerPrefs.GetFloat("Volume_Music", 1f);
+        SFXVolume = PlayerPrefs.GetFloat("Volume_SFX", 1f);
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
@@ -63,7 +69,11 @@ public class AudioManager : MonoBehaviour
 		}
         */
     }
-
+    public void AdjustVolume()
+    {
+        audioMusic.DOFade(maxVol * MusicVolume, fadeCHANGETime);
+        audioSFX.DOFade(maxVol * SFXVolume, fadeCHANGETime);
+    }
     public void FadeOutSFX()
 	{
         audioSFX.DOFade(0f, fadeOUTTime);
@@ -77,7 +87,7 @@ public class AudioManager : MonoBehaviour
     public void FadeInMusic()
 	{
         audioMusic.Play();
-        audioMusic.DOFade(maxVol, fadeINTime);
+        audioMusic.DOFade(maxVol* MusicVolume, fadeINTime);
 	}
 
     public void MenuSelect()

@@ -344,6 +344,7 @@ MonoBehaviour:
   audioMusic: {fileID: 2037707713}
   fadeINTime: 3
   fadeOUTTime: 3
+  fadeCHANGETime: 0.1
   maxVol: 0.5
   sfx:
   - {fileID: 8300000, guid: 60cc1de4afe69274c92e16c4d8d58f56, type: 3}
@@ -6387,6 +6388,7 @@ GameObject:
   - component: {fileID: 855833960}
   - component: {fileID: 855833961}
   - component: {fileID: 855833962}
+  - component: {fileID: 855833963}
   m_Layer: 5
   m_Name: sfxSlider
   m_TagString: Untagged
@@ -6466,7 +6468,19 @@ MonoBehaviour:
   m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 855833963}
+        m_TargetAssemblyTypeName: AudioSlider, Assembly-CSharp
+        m_MethodName: UpdateValue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &855833962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6481,6 +6495,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
+--- !u!114 &855833963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855833959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61586dfe3a38084baaef4bfdf50a37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
 --- !u!1 &913227152
 GameObject:
   m_ObjectHideFlags: 0
@@ -22970,6 +22997,7 @@ GameObject:
   - component: {fileID: 1625414888}
   - component: {fileID: 1625414889}
   - component: {fileID: 1625414890}
+  - component: {fileID: 1625414891}
   m_Layer: 5
   m_Name: musicSlider
   m_TagString: Untagged
@@ -23049,7 +23077,19 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1625414891}
+        m_TargetAssemblyTypeName: AudioSlider, Assembly-CSharp
+        m_MethodName: UpdateValue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1625414890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23064,6 +23104,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
+--- !u!114 &1625414891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625414887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61586dfe3a38084baaef4bfdf50a37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
 --- !u!1 &1659979696
 GameObject:
   m_ObjectHideFlags: 0

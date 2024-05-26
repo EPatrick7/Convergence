@@ -1,24 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class AudioSlider : MonoBehaviour
 {
-    public enum AudioSliderType {None,Music,SFX};  
-    Slider slider;
+    public enum AudioSliderType {None,Music,SFX};
+    UnityEngine.UI.Slider slider;
     public AudioSliderType type;    
     void Start()
     {
-        slider=gameObject.GetComponent<Slider>();
+        slider=GetComponent<UnityEngine.UI.Slider>();
 
-        slider.value = PlayerPrefs.GetFloat(gameObject.name, 1f);
+        if(type==AudioSliderType.Music)
+            slider.value = PlayerPrefs.GetFloat("Volume_Music", slider.value);
+        else if (type == AudioSliderType.SFX)
+            slider.value = PlayerPrefs.GetFloat("Volume_SFX", slider.value);
 
-        ShareValue();
+        UpdateValue();
     }
-    public void UpdateValue(float val)
+    public void UpdateValue()
     {
-        PlayerPrefs.SetFloat(gameObject.name, val);
+        if (type == AudioSliderType.Music)
+            PlayerPrefs.SetFloat("Volume_Music", slider.value);
+        else if (type == AudioSliderType.SFX)
+           PlayerPrefs.SetFloat("Volume_SFX", slider.value);
         ShareValue();
     }
 
@@ -26,11 +31,12 @@ public class AudioSlider : MonoBehaviour
     {
         if(type==AudioSliderType.Music)
         {
-
+            AudioManager.MusicVolume = slider.value;
+            AudioManager.Instance.AdjustVolume();
         }
         else if (type == AudioSliderType.SFX)
         {
-
+            AudioManager.SFXVolume = slider.value;
         }
     }
 }
