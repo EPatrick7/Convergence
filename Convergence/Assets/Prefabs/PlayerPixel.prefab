@@ -15386,15 +15386,15 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -5.731817
-      outSlope: -5.731817
+      inSlope: -6.6530747
+      outSlope: -6.6530747
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.13434932
-      value: 0.22993433
+      time: 0.12471339
+      value: 0.17027247
       inSlope: -0.058791254
       outSlope: -0.058791254
       tangentMode: 0
@@ -15402,8 +15402,8 @@ MonoBehaviour:
       inWeight: 0.2279062
       outWeight: 0.081650816
     - serializedVersion: 3
-      time: 1.1077204
-      value: 0.13742776
+      time: 1.1010065
+      value: 0.03372903
       inSlope: -0.09225389
       outSlope: -0.09225389
       tangentMode: 0
@@ -15415,7 +15415,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   PropVelMagnOffset: 100
   PropulsionRate: 0.1
-  PropulsionCost: 1.5
+  PropulsionCost: 1
   Shield: {fileID: 2769585074338307199}
   shieldActivated: 0
   GasJet: {fileID: 6114046427485457751}
