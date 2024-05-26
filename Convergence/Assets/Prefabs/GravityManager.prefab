@@ -60,7 +60,7 @@ MonoBehaviour:
   InitRandomElementComposition: 255
   DoParticleRespawn: 1
   distance_scale: 10
-  g: 6.6743
+  g: 8.342875
   min_dist: 7
   offset_drift: {x: 0, y: 0}
   drift_power: 0.1

@@ -17,11 +17,31 @@ public class PlayerPixelManager : PixelManager
     [Header("Ejection")]
     [Min(0), Tooltip("The proportional size the ejected pixel will be")]
     public float SplitScale = 0.1f;
-    [Min(0), Tooltip("The proportional elements the ejected pixel will steal")]
-    public float SplitElements = 0.05f;
+    [Min(1),Tooltip("The multiplier to split scale applied post sun")]
+    public float postSunSplitScale_Multiplier = 3f;
 
-    [Min(0), Tooltip("The scale the pixel will be propelled based on the mass of the ejected pixel")]
-    public float EjectionForceScale = 50.0f;
+    [ Tooltip("The multiplier to split scale applied based on radius (1->1000)")]
+    public AnimationCurve RadiusSplitScale_Multiplier;
+
+    [Tooltip("The scale the pixel will be propelled based on the mass of the ejected pixel")]
+    public float EjectionForceScale = 2.0f;
+
+    [Tooltip("The multiplier applied to the ejected body speed")]
+    public float EjectedSpeedMult = 50;
+
+    [Tooltip("On a scale of 0->750 In Stage in mass, is a number multiplied to the EFS")]
+    public AnimationCurve PlanetForceDampenScale;
+    [Tooltip("On a scale of 750->7500 In Stage in mass, is a number multiplied to the EFS")]
+    public AnimationCurve SunForceDampenScale;
+    [Tooltip("On a scale of 7500->10000 In Stage in mass, is a number multiplied to the EFS")]
+    public AnimationCurve BHForceDampenScale;
+    [Tooltip("On a scale of 1->1000 In Radius units, is a number multiplied to the EFS")]
+    public AnimationCurve RadiusForceDampenScale;
+
+    [Tooltip("On a scale of 1->((Radius())^2*VelMagnOffset) In Velocity sqr magnitude units, is a number multiplied to the EFS")]
+    public AnimationCurve VelocityMagnitudeForceDampenScale;
+    [Tooltip("The above curve is on a scale of 1->((Radius())^2*VelMagnOffset) In Velocity sqr magnitude units, and is a number multiplied to the EFS")]
+    public float VelMagnOffset =50;
 
     [Min(0), Tooltip("The cooldown in seconds for ejecting pixels")]
     public float EjectionRate = 1.0f;
@@ -323,13 +343,21 @@ public class PlayerPixelManager : PixelManager
         Vector2 ejectDirection = MouseDirection();
 
         // Create ejected pixel
-        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.625f), Pixel.transform.rotation, transform.parent);
+        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.63f), Pixel.transform.rotation, transform.parent);
 
         // Handle mass of player and ejected pixel
+        /* Legacy Mass
         float ejectedMass = Mathf.Round(mass() * SplitScale * 64) / 64f;
 
         ejectedMass /= Mathf.Min(6, Mathf.Max(1, (mass() / 500f)));
-        
+        */
+        float splitMultiplier = 1;
+        if(mass()>SunTransition_MassReq*1.25f)
+        {
+            splitMultiplier *=postSunSplitScale_Multiplier;
+        }
+        splitMultiplier *= RadiusSplitScale_Multiplier.Evaluate(radius() / 1000f);
+        float ejectedMass = Mathf.Round(radius() * splitMultiplier * SplitScale * 64) / 64f;
 
         rigidBody.mass -= ejectedMass;
 
@@ -338,6 +366,7 @@ public class PlayerPixelManager : PixelManager
         pixel.transform.localScale = Vector3.one * pixel.GetComponent<PixelManager>().radius(ejectedMass);
 
         // Handle ejection push
+        /*Legacy Force
         float force = (ejectedMass + Mathf.Clamp(ejectedMass / Mathf.Log(ejectedMass), 0f, Mathf.Pow(ejectedMass, 2f))) * EjectionForceScale;
 
 
@@ -348,6 +377,22 @@ public class PlayerPixelManager : PixelManager
         rigidBody.velocity += (ejectDirection * force) / mass() * -1 * Mathf.Max(1, (mass() / 600f));
 
         gravityManager.RegisterBody(pixel, (ejectDirection * force) / pixel.GetComponent<PixelManager>().mass());
+        */
+        float dampener = PlanetForceDampenScale.Evaluate(mass() / SunTransition_MassReq);
+        if(mass()>=SunTransition_MassReq)
+        {
+            dampener*=SunForceDampenScale.Evaluate((mass() - SunTransition_MassReq) / (BlackHoleTransition_MassReq - SunTransition_MassReq));
+        }
+        if (mass() >= BlackHoleTransition_MassReq)
+        {
+            dampener*= BHForceDampenScale.Evaluate((mass() - BlackHoleTransition_MassReq) / (10000f - BlackHoleTransition_MassReq));
+        }
+        dampener *= RadiusForceDampenScale.Evaluate(radius() / 1000f);
+        dampener *= VelocityMagnitudeForceDampenScale.Evaluate(rigidBody.velocity.sqrMagnitude / (VelMagnOffset*radius() * radius()));
+        float force = EjectionForceScale*dampener;
+        rigidBody.velocity += ejectDirection * -force * radius();
+
+        gravityManager.RegisterBody(pixel, (ejectDirection *EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass))*force));
 
         InvokeMassChanged();
 

@@ -10064,7 +10064,7 @@ MonoBehaviour:
   ShieldCost: 0.05
   ShieldDelay: 0.1
   TickRate: 0.1
-  ShieldDrag: 0.6
+  ShieldDrag: 0.8
   activeColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   inactiveColor: {r: 1, g: 1, b: 1, a: 0}
   overlaySpr: {fileID: 3272749874773122615}
@@ -15136,9 +15136,200 @@ MonoBehaviour:
   spawnBhole: 0
   BlackHoleTransition_MassReq: 7500
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
-  SplitScale: 0.05
-  SplitElements: 0.05
-  EjectionForceScale: 150
+  SplitScale: 0.06
+  postSunSplitScale_Multiplier: 1.25
+  RadiusSplitScale_Multiplier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1.750006
+      inSlope: 2.0505254
+      outSlope: 2.0505254
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.037971973
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  EjectionForceScale: 1.5
+  EjectedSpeedMult: 75
+  PlanetForceDampenScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.08433616
+      value: 1.7786653
+      inSlope: -0.14351599
+      outSlope: -0.14351599
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: -0.015313342
+      value: 1.1869134
+      inSlope: -19.651999
+      outSlope: -19.651999
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.040727463
+      value: 0.39865822
+      inSlope: -0.16010055
+      outSlope: -0.16010055
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.05855432
+    - serializedVersion: 3
+      time: 0.99487305
+      value: 0.10661027
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  SunForceDampenScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0024818834
+      value: 0.7491132
+      inSlope: 0.042050175
+      outSlope: 0.042050175
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07478261
+    - serializedVersion: 3
+      time: 0.065116994
+      value: 0.6272572
+      inSlope: -0.16010055
+      outSlope: -0.16010055
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.05855432
+    - serializedVersion: 3
+      time: 0.9893799
+      value: 0.44491577
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  BHForceDampenScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.01210022
+      value: 1.1726927
+      inSlope: -0.00048531496
+      outSlope: -0.00048531496
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1598558
+    - serializedVersion: 3
+      time: 0.8878371
+      value: 1.012455
+      inSlope: -0.5012181
+      outSlope: -0.5012181
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.015625
+      value: 0.90773773
+      inSlope: -0.68513775
+      outSlope: -0.68513775
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.83140653
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusForceDampenScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2.373343
+      outSlope: -2.373343
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.0973869
+      value: 0.7688675
+      inSlope: -1.2846265
+      outSlope: -1.2846265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0443726
+      value: 0.5833435
+      inSlope: -0.19591002
+      outSlope: -0.19591002
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  VelocityMagnitudeForceDampenScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.8812667
+      outSlope: -0.8812667
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.11873326
+      inSlope: -0.036659505
+      outSlope: -0.036659505
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11534373
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  VelMagnOffset: 100
   EjectionRate: 0.1
   PropulsionForceScale: 8
   PropulsionRate: 0.1
@@ -15153,6 +15344,7 @@ MonoBehaviour:
   hasDeregistered: 0
   camLook: {fileID: 0}
   pInput: {fileID: 0}
+  inDanger: 0
 --- !u!1001 &5426371677843915187
 PrefabInstance:
   m_ObjectHideFlags: 0
