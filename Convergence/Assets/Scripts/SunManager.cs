@@ -195,7 +195,7 @@ public class SunManager : MonoBehaviour
         Tcam = Camera.main.transform.DOMoveX(300, 2);
         Tcam.Play();
 
-        timeOptionsOpened = Time.timeSinceLevelLoad+0.1f;
+        timeOptionsOpened = Time.timeSinceLevelLoad+0.25f;
 
     }
 
@@ -215,7 +215,7 @@ public class SunManager : MonoBehaviour
         Tcam.Play();
 
 
-        timeOptionsClosed = Time.timeSinceLevelLoad + 0.1f;
+        timeOptionsClosed = Time.timeSinceLevelLoad + 0.25f;
     }
 
     private void DisableButton(TextMeshProUGUI button)
