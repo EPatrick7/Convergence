@@ -177,9 +177,14 @@ public class SunManager : MonoBehaviour
         cam.Play();
     }
     */
-
+    float timeOptionsOpened;
+    float timeOptionsClosed;
     public void optionStart()
-	{
+    {
+        if (Time.timeSinceLevelLoad < timeOptionsClosed)
+        {
+            return;
+        }
         FadeOutMainButtons();
         FadeInOptions();
 
@@ -189,10 +194,18 @@ public class SunManager : MonoBehaviour
         Tcam?.Kill();
         Tcam = Camera.main.transform.DOMoveX(300, 2);
         Tcam.Play();
-	}
+
+        timeOptionsOpened = Time.timeSinceLevelLoad+0.1f;
+
+    }
 
 	public void optionBack()
 	{
+        if(Time.timeSinceLevelLoad< timeOptionsOpened)
+        {
+            return;
+        }
+
 		FadeOutOptions();
 		FadeInMainButtons();
         if(EventSystem.current.currentSelectedGameObject != null)
@@ -200,7 +213,10 @@ public class SunManager : MonoBehaviour
         Tcam?.Kill();
         Tcam = Camera.main.transform.DOMoveX(-300, 2);
         Tcam.Play();
-	}
+
+
+        timeOptionsClosed = Time.timeSinceLevelLoad + 0.1f;
+    }
 
     private void DisableButton(TextMeshProUGUI button)
 	{
@@ -214,7 +230,7 @@ public class SunManager : MonoBehaviour
 
     private void FadeOutMainButtons()
 	{
-        mainUI.interactable = false;
+       // mainUI.interactable = false;
         float alpha = 1;
         mainTween?.Kill();
         mainTween = DOTween.To(()=> alpha, x => alpha = x, 0, 1).OnUpdate(() =>
@@ -226,7 +242,7 @@ public class SunManager : MonoBehaviour
 
     private void FadeInMainButtons()
 	{
-        mainUI.interactable = true;
+     //   mainUI.interactable = true;
         float alpha = 0;
         mainTween?.Kill();
         mainTween = DOTween.To(() => alpha, x => alpha = x, 1, 1).OnUpdate(() =>
