@@ -31,6 +31,7 @@ public class TargetIndicator : MonoBehaviour
 
     private RectTransform canvasRect;
 
+    [SerializeField]
     private RectTransform rectTransform;
 
     public IndicatorManager indicatorManager;
@@ -44,12 +45,6 @@ public class TargetIndicator : MonoBehaviour
 
     private RenderMode renderMode;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        rectTransform = GetComponent<RectTransform>();
-        
-    }
     private void FixedUpdate()
     {
         offscreenTargetIndicatorImage.color = Color.Lerp(offscreenTargetIndicatorImage.color, new Color(targetColor.r, targetColor.g, targetColor.b, offscreenTargetIndicatorImage.color.a),0.1f);

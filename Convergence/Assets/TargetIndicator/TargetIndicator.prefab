@@ -168,4 +168,5 @@ MonoBehaviour:
   offscreenTargetIndicatorImage: {fileID: 3966682018258710078}
   OutOfSightOffset: -750
   target: {fileID: 0}
+  rectTransform: {fileID: 2585891167081459118}
   indicatorManager: {fileID: 0}
