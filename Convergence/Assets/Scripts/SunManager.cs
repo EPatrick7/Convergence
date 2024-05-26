@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class SunManager : MonoBehaviour
 {
@@ -37,6 +38,9 @@ public class SunManager : MonoBehaviour
     private VolumeProfile ppVol;
 
     private DepthOfField dOF;
+
+    public Selectable ExitOptions;
+    public Selectable Options;
 
     //private Camera camera;
 
@@ -179,6 +183,9 @@ public class SunManager : MonoBehaviour
         FadeOutMainButtons();
         FadeInOptions();
 
+        if (EventSystem.current.currentSelectedGameObject != null)
+            EventSystem.current.SetSelectedGameObject(Options.gameObject);
+
         Tcam?.Kill();
         Tcam = Camera.main.transform.DOMoveX(300, 2);
         Tcam.Play();
@@ -188,7 +195,8 @@ public class SunManager : MonoBehaviour
 	{
 		FadeOutOptions();
 		FadeInMainButtons();
-
+        if(EventSystem.current.currentSelectedGameObject != null)
+            EventSystem.current.SetSelectedGameObject(ExitOptions.gameObject);
         Tcam?.Kill();
         Tcam = Camera.main.transform.DOMoveX(-300, 2);
         Tcam.Play();
