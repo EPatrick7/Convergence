@@ -24,9 +24,6 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private List<AudioClip> music = new List<AudioClip>();
 
-    [SerializeField]
-    private List<Button> buttons = new List<Button>();
-
     public static float MusicVolume;
     public static float SFXVolume;
 
@@ -66,18 +63,6 @@ public class AudioManager : MonoBehaviour
         FadeInSFX();
         FadeInMusic();
         
-        /*
-        buttons.Clear();
-        if (scene.name == "Main Menu")
-		{
-            buttons.Add(GameObject.Find("startButton").GetComponent<Button>());
-            buttons.Add(GameObject.Find("multiButton").GetComponent<Button>());
-            buttons.Add(GameObject.Find("tutorialButton").GetComponent<Button>());
-            buttons[0].onClick.AddListener(delegate { SoloSelect(); });
-            buttons[1].onClick.AddListener(delegate { MultiSelect(); });
-            buttons[2].onClick.AddListener(delegate { TutorialSelect(); });
-		}
-        */
         /*
         switch (gameMode)
 		{
@@ -154,7 +139,9 @@ public class AudioManager : MonoBehaviour
 
     public void SoloSelect()
 	{
-        StartCoroutine(TimingWait());
+        StartCoroutine(FirstPopWait());
+        sfxSource.PlayOneShot(sfx[5]);
+        //StartCoroutine(SecondPopWait());
         MenuSelect();
         gameMode = Mode.Solo;
 	}
@@ -171,7 +158,7 @@ public class AudioManager : MonoBehaviour
         gameMode = Mode.Tutorial;
 	}
 
-    IEnumerator TimingWait()
+    IEnumerator FirstPopWait()
     {
         yield return new WaitForSeconds(2f);
         if (SceneManager.GetActiveScene().name != "Main Menu")
