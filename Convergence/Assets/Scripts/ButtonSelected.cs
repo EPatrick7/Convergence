@@ -15,12 +15,15 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField]
     private float normalScale;
 
-    private enum ButtonType { None, Solo, Multi, Tutorial, Other };
+    private enum ButtonType { None, Solo, Multi, Tutorial, Back, Other };
 
     [SerializeField]
     private ButtonType btnState = ButtonType.None;
 
     GameObject target;
+
+    private bool firstClick = false;
+
     private void Start()
     {
         if(GetComponent<UnityEngine.UI.Button>() != null)
@@ -53,6 +56,11 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if(pointerOver||(EventSystem.current!=null&&EventSystem.current.currentSelectedGameObject==gameObject))
         {
+            if (!firstClick)
+            {
+                AudioManager.Instance.HoverClick();
+                firstClick = true;
+            }
             if (target == gameObject)
             {
                 if ((EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
@@ -67,6 +75,7 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
         else
         {
+            if (firstClick) firstClick = false;
             target.transform.localScale = new Vector3(normalScale, normalScale, normalScale);
         }
     }
@@ -99,6 +108,10 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
             case ButtonType.Other:
                 AudioManager.Instance.GeneralSelect();
+                break;
+
+            case ButtonType.Back:
+                AudioManager.Instance.BackSelect();
                 break;
 		}
 	}

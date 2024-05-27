@@ -351,6 +351,9 @@ MonoBehaviour:
   sfx:
   - {fileID: 8300000, guid: 60cc1de4afe69274c92e16c4d8d58f56, type: 3}
   - {fileID: 8300000, guid: 0fbba70eb469c2f4898e20dd90a9bcca, type: 3}
+  - {fileID: 8300000, guid: b4ed3680fe3b53d4e8ac06c2fa76fedc, type: 3}
+  - {fileID: 8300000, guid: c687be3aed654e64cba8803b0e596dbf, type: 3}
+  - {fileID: 8300000, guid: 568be0e79364faf499d7194800995d9b, type: 3}
   music:
   - {fileID: 8300000, guid: e82d9035fecb64d4da7d3bbe7569acc5, type: 3}
   - {fileID: 8300000, guid: 01e36b68f4130f34d88a4e656797acb5, type: 3}
@@ -22355,7 +22358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
-  btnState: 4
+  btnState: 5
 --- !u!114 &1474322693
 MonoBehaviour:
   m_ObjectHideFlags: 0

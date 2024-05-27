@@ -136,6 +136,16 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(sfx[2]);
 	}
 
+    public void BackSelect()
+	{
+        sfxSource.PlayOneShot(sfx[4]);
+	}
+
+    public void HoverClick()
+	{
+        sfxSource.PlayOneShot(sfx[3]);
+	}
+
     public void MainSelect()
 	{
         MenuSelect();
@@ -164,6 +174,10 @@ public class AudioManager : MonoBehaviour
     IEnumerator TimingWait()
     {
         yield return new WaitForSeconds(2f);
+        if (SceneManager.GetActiveScene().name != "Main Menu")
+		{
+            yield break;
+		}
         sfxSource.PlayOneShot(sfx[1]);
     }
 }
