@@ -86,7 +86,6 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		switch (btnState)
 		{
             case ButtonType.Solo:
-                Debug.Log("Passing solo selected to AudioManager");
                 AudioManager.Instance.SoloSelect();
                 break;
 

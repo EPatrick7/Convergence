@@ -140,7 +140,6 @@ public class AudioManager : MonoBehaviour
 
     public void SoloSelect()
 	{
-        Debug.Log("Solo selected");
         MenuSelect();
         gameMode = Mode.Solo;
 	}
