@@ -24,6 +24,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private List<AudioClip> music = new List<AudioClip>();
 
+    [SerializeField]
+    private List<Button> buttons = new List<Button>();
+
     public static float MusicVolume;
     public static float SFXVolume;
 
@@ -42,10 +45,7 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        MusicVolume = PlayerPrefs.GetFloat("Volume_Music", 1f);
-        SFXVolume = PlayerPrefs.GetFloat("Volume_SFX", 1f);
-        audioMusic.volume = maxVol * MusicVolume;
-        audioSFX.volume = maxVol * SFXVolume;
+        AdjustVolume();
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
@@ -62,9 +62,11 @@ public class AudioManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {       
         musicSource.clip = music[(int)gameMode];
+        musicSource.Play();
         sfxSource.Stop();
         FadeInSFX();
         FadeInMusic();
+        /*
         buttons.Clear();
         if (scene.name == "Main Menu")
 		{
@@ -75,6 +77,7 @@ public class AudioManager : MonoBehaviour
             buttons[1].onClick.AddListener(delegate { MultiSelect(); });
             buttons[2].onClick.AddListener(delegate { TutorialSelect(); });
 		}
+        */
         /*
         switch (gameMode)
 		{
@@ -92,8 +95,10 @@ public class AudioManager : MonoBehaviour
 
     public void AdjustVolume()
     {
-        audioMusic.DOFade(maxVol * MusicVolume, fadeCHANGETime);
-        audioSFX.DOFade(maxVol * SFXVolume, fadeCHANGETime);
+        SFXVolume = PlayerPrefs.GetFloat("Volume_SFX", 1f);
+        MusicVolume = PlayerPrefs.GetFloat("Volume_Music", 1f);
+        sfxMixer.SetFloat("SFXVol", Mathf.Log10(SFXVolume) * 20);
+        musicMixer.SetFloat("MusicVol", Mathf.Log10(MusicVolume) * 20);
     }
 	
     public void FadeOutSFX()
@@ -103,7 +108,7 @@ public class AudioManager : MonoBehaviour
 
     public void FadeInSFX()
 	{
-        sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(PlayerPrefs.GetFloat("SFXVol")), fadeOUTTime);
+        sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(SFXVolume), fadeOUTTime);
     }
 
     public void FadeOutMusic()
@@ -113,17 +118,16 @@ public class AudioManager : MonoBehaviour
 
     public void FadeInMusic()
 	{
-        //musicMixer.DOSetFloat("MusicVol", ConvertToMixer(PlayerPrefs.GetFloat("MusicVol")), fadeOUTTime);
-        //musicSource.Play();
-        audioMusic.Play();
-        audioMusic.DOFade(maxVol* MusicVolume, fadeINTime);
+        musicMixer.DOSetFloat("MusicVol", ConvertToMixer(MusicVolume), fadeOUTTime);
+        musicSource.Play();
+        //audioMusic.Play();
+        //audioMusic.DOFade(maxVol* MusicVolume, fadeINTime);
 	}
 
     public void MenuSelect()
 	{
-        Debug.Log("MenuSelect");
+        sfxSource.clip = sfx[0];
         sfxSource.Play();
-        Debug.Log(sfxSource.clip);
         FadeOutMusic();
         FadeOutSFX();
 	}
@@ -136,6 +140,7 @@ public class AudioManager : MonoBehaviour
 
     public void SoloSelect()
 	{
+        Debug.Log("Solo selected");
         MenuSelect();
         gameMode = Mode.Solo;
 	}

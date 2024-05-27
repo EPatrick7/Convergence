@@ -14,6 +14,12 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     [SerializeField]
     private float normalScale;
+
+    private enum ButtonType { None, Solo, Multi, Tutorial };
+
+    [SerializeField]
+    private ButtonType btnState = ButtonType.None;
+
     GameObject target;
     private void Start()
     {
@@ -23,6 +29,7 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             target=transform.parent.gameObject;
         }
+        gameObject.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(TaskOnClick);
     }
     private void Update()
     {
@@ -72,6 +79,25 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void OnPointerExit(PointerEventData eventData)
 	{
         pointerOver = false;
+	}
+
+    private void TaskOnClick()
+	{
+		switch (btnState)
+		{
+            case ButtonType.Solo:
+                Debug.Log("Passing solo selected to AudioManager");
+                AudioManager.Instance.SoloSelect();
+                break;
+
+            case ButtonType.Multi:
+                AudioManager.Instance.MultiSelect();
+                break;
+
+            case ButtonType.Tutorial:
+                AudioManager.Instance.TutorialSelect();
+                break;
+		}
 	}
 
 
