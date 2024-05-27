@@ -29,6 +29,7 @@ public class CutsceneManager : MonoBehaviour
     public RectTransform Toast_Death;
     public RectTransform Toast_GameStartDelayed;
     public RectTransform Toast_GalaxyLost;
+    public RectTransform Toast_ConvergeHole;
 
     [Tooltip("The localX where the toast moves when loaded in.")]
     public float Load_LocalMoveX = 764;
@@ -97,6 +98,15 @@ public class CutsceneManager : MonoBehaviour
         if (lastToast != null && lastToast.gameObject.name == Toast_FirstIce.gameObject.name&& (out_taostTween == null || !out_taostTween.IsActive()))
         {
             UnloadToast(lastToast);
+        }
+    }
+    bool seenConvergeBlackHoleToast;
+    public void ConsumeMass(float newMass)
+    {
+        if (newMass >= 10050&&!seenConvergeBlackHoleToast)
+        {
+            seenConvergeBlackHoleToast = true;
+            LoadToast(0,Toast_ConvergeHole);
         }
     }
     public void ElementConsumed(PixelManager.ElementType type)

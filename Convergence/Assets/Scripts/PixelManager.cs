@@ -305,6 +305,7 @@ public class PixelManager : MonoBehaviour
         other.rigidBody.mass -=damage;
         if (playerPixel != null)
         {
+            CutsceneManager.Instance?.ConsumeMass(mass());
             if (other.Ice > 0 && other.Ice > other.Gas)
             {
                 CutsceneManager.Instance?.ElementConsumed(ElementType.Ice);
