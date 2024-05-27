@@ -15362,15 +15362,24 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.7482185
-      outSlope: -0.7482185
+      inSlope: -5.006507
+      outSlope: -5.006507
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.9904785
-      value: 0.25890562
+      time: 0.10452627
+      value: 0.47668853
+      inSlope: -0.9695936
+      outSlope: -0.9695936
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0089722
+      value: 0.13741514
       inSlope: -0.036659505
       outSlope: -0.036659505
       tangentMode: 0
@@ -15414,7 +15423,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   PropVelMagnOffset: 100
-  PropulsionRate: 0.1
+  PropulsionRate: 0.05
   PropulsionCost: 1
   Shield: {fileID: 2769585074338307199}
   shieldActivated: 0
@@ -15426,6 +15435,7 @@ MonoBehaviour:
   hasDeregistered: 0
   camLook: {fileID: 0}
   pInput: {fileID: 0}
+  hasWonGame: 0
   inDanger: 0
 --- !u!1001 &5426371677843915187
 PrefabInstance:

@@ -58,7 +58,7 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             if (!firstClick)
             {
-                AudioManager.Instance.HoverClick();
+                AudioManager.Instance?.HoverClick();
                 firstClick = true;
             }
             if (target == gameObject)
@@ -89,6 +89,7 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	{
         pointerOver = false;
 	}
+    
 
     private void TaskOnClick()
 	{

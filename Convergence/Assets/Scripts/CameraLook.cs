@@ -122,7 +122,8 @@ public class CameraLook : MonoBehaviour
             }
         }
 
-        if(lerpRect)
+        cam.transform.position = targPos;
+        if (lerpRect)
             cam.rect = new Rect(RtargSize, RtargPos);
         // if (PlayerID == focusedPixel.PlayerID)
         // {
@@ -131,8 +132,81 @@ public class CameraLook : MonoBehaviour
 
         //cam.rect = new Rect(Vector2.zero, Vector2.one);
 
+        finalizedMergedCam = true;
+
+    }
+    bool finalizedMergedCam;
+
+    public void MergeCam()
+    {
+        float TemporthoSize = cam.orthographicSize;
+        Vector3 Temppos = transform.position;
+        if(focusedPixel!=null)
+            transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
+
+        cam.orthographicSize = 2001.499f;//Max Value
+        Vector2 targPos = cam.transform.position;
+        Vector2 RtargSize = Vector2.zero;
+        Vector2 RtargPos = Vector2.one;
+        bool lerpRect = false;
+        switch (GravityManager.Instance.PlayerCount)
+        {
+            case 1:
+                targPos = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, -10));
+                lerpRect = true;
+                break;
+            case 2:
+                if (PlayerID == 1)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 0.5f, -10));
+                else if (PlayerID == 2)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(1, 0.5f, -10));
+
+                break;
+            case 3:
+                if (PlayerID == 1)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 1, -10));
+                else if (PlayerID == 2)
+                {
+                    Rect r = cam.rect;
+
+                    RtargSize = new Vector2(0.5f, 0);
+                    RtargPos = new Vector2(0.5f, 1);
+
+                    cam.orthographicSize *= 2;
+                    cam.rect = new Rect(RtargSize, RtargPos);
+
+                    targPos = cam.ViewportToWorldPoint(new Vector3(1f, 0.5f, -10));
+
+                    cam.orthographicSize /= 2f;
+                    cam.rect = r;
+                    orthoMultiplier = 2;
+
+                    lerpRect = true;
+                }
+                else if (PlayerID == 3)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 0, -10));
+
+                break;
+            case 4:
+                if (PlayerID == 1)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 1, -10));
+                else if (PlayerID == 2)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(1, 1, -10));
+                else if (PlayerID == 3)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(0, 0, -10));
+                else if (PlayerID == 4)
+                    targPos = cam.ViewportToWorldPoint(new Vector3(1, 0, -10));
+
+                break;
+        }
 
 
+        transform.position = Temppos;
+        cam.orthographicSize = TemporthoSize;
+
+        cam.transform.position = targPos;
+        if (lerpRect)
+            cam.rect = new Rect(RtargSize, RtargPos);
     }
     bool orthoUnchanged()
     {
@@ -153,6 +227,10 @@ public class CameraLook : MonoBehaviour
             if (!freezeFollow)
             {
                 transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
+            }
+            if(finalizedMergedCam)
+            {
+                MergeCam();
             }
             cam.orthographicSize =  UpdateCamSize(); //Vector2.Lerp(new Vector2(cam.orthographicSize,0),new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f,0),0.1f).x;
             if(lastOrthoSize!=cam.orthographicSize)
