@@ -14,7 +14,16 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     [SerializeField]
     private float normalScale;
-
+    GameObject target;
+    private void Start()
+    {
+        if(GetComponent<UnityEngine.UI.Button>() != null)
+            target = gameObject;
+        else
+        {
+            target=transform.parent.gameObject;
+        }
+    }
     private void Update()
     {
 
@@ -22,13 +31,13 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             if (GravityManager.Instance.isMultiplayer&&InputManager.GamePadDetected)
             {
-                if (Input.GetKeyDown(KeyCode.LeftArrow)&& GetComponent<UnityEngine.UI.Button>().navigation.selectOnLeft!=null)
+                if (Input.GetKeyDown(KeyCode.LeftArrow)&& GetComponent<Selectable>().navigation.selectOnLeft!=null)
                 {
-                    EventSystem.current.SetSelectedGameObject(GetComponent<UnityEngine.UI.Button>().navigation.selectOnLeft.gameObject);
+                    EventSystem.current.SetSelectedGameObject(GetComponent<Selectable>().navigation.selectOnLeft.gameObject);
                 }
-                if (Input.GetKeyDown(KeyCode.RightArrow)&& GetComponent<UnityEngine.UI.Button>().navigation.selectOnRight!=null)
+                if (Input.GetKeyDown(KeyCode.RightArrow)&& GetComponent<Selectable>().navigation.selectOnRight!=null)
                 {
-                    EventSystem.current.SetSelectedGameObject(GetComponent<UnityEngine.UI.Button>().navigation.selectOnRight.gameObject);
+                    EventSystem.current.SetSelectedGameObject(GetComponent<Selectable>().navigation.selectOnRight.gameObject);
                 }
             }
         }
@@ -37,18 +46,21 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if(pointerOver||(EventSystem.current!=null&&EventSystem.current.currentSelectedGameObject==gameObject))
         {
-            if ((EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
+            if (target == gameObject)
             {
-                if (Input.GetKey(KeyCode.Return))
+                if ((EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
                 {
-                    GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
+                    if (Input.GetKey(KeyCode.Return) &&GetComponent<UnityEngine.UI.Button>()!=null)
+                    {
+                        GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
+                    }
                 }
             }
-            gameObject.transform.localScale = new Vector3(hoverScale, hoverScale, hoverScale);
+            target.transform.localScale = new Vector3(hoverScale, hoverScale, hoverScale);
         }
         else
         {
-            gameObject.transform.localScale = new Vector3(normalScale, normalScale, normalScale);
+            target.transform.localScale = new Vector3(normalScale, normalScale, normalScale);
         }
     }
     bool pointerOver;

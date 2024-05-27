@@ -16,7 +16,7 @@ public class AudioManager : MonoBehaviour
     private AudioMixer musicMixer, sfxMixer;
 
     [SerializeField]
-    private float fadeINTime, fadeOUTTime;
+    private float fadeINTime, fadeOUTTime,fadeCHANGETime, maxVol;
 
     [SerializeField]
     private List<AudioClip> sfx = new List<AudioClip>();
@@ -24,8 +24,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private List<AudioClip> music = new List<AudioClip>();
 
-    [SerializeField]
-    private List<Button> buttons = new List<Button>();
+    public static float MusicVolume;
+    public static float SFXVolume;
 
     private enum Mode
 	{
@@ -42,6 +42,10 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
+        MusicVolume = PlayerPrefs.GetFloat("Volume_Music", 1f);
+        SFXVolume = PlayerPrefs.GetFloat("Volume_SFX", 1f);
+        audioMusic.volume = maxVol * MusicVolume;
+        audioSFX.volume = maxVol * SFXVolume;
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
@@ -86,6 +90,12 @@ public class AudioManager : MonoBehaviour
         return Mathf.Log10(input) * 20;
 	}
 
+    public void AdjustVolume()
+    {
+        audioMusic.DOFade(maxVol * MusicVolume, fadeCHANGETime);
+        audioSFX.DOFade(maxVol * SFXVolume, fadeCHANGETime);
+    }
+	
     public void FadeOutSFX()
 	{
         sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(0.001f), fadeOUTTime);
@@ -103,9 +113,11 @@ public class AudioManager : MonoBehaviour
 
     public void FadeInMusic()
 	{
-        musicMixer.DOSetFloat("MusicVol", ConvertToMixer(PlayerPrefs.GetFloat("MusicVol")), fadeOUTTime);
-        musicSource.Play();
-    }
+        //musicMixer.DOSetFloat("MusicVol", ConvertToMixer(PlayerPrefs.GetFloat("MusicVol")), fadeOUTTime);
+        //musicSource.Play();
+        audioMusic.Play();
+        audioMusic.DOFade(maxVol* MusicVolume, fadeINTime);
+	}
 
     public void MenuSelect()
 	{
