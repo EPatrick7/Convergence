@@ -119,11 +119,13 @@ public class PlayerHud : MonoBehaviour
             massIcon.sprite = stageIcons[1];
 		} else if (player.planetType == PixelManager.PlanetType.Sun && value > 5000 && value < 7500)
 		{
-            massIcon.sprite = stageIcons[2];
-		} else if (player.planetType == PixelManager.PlanetType.BlackHole && value > 9999)
+            massIcon.sprite = stageIcons[3];
+		} 
+        /*else if (player.planetType == PixelManager.PlanetType.BlackHole && value > 9999)
 		{
             massIcon.sprite = stageIcons[3];
 		}
+        */
 	}
 
     private float CalcMax()

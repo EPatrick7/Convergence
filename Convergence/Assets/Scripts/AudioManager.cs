@@ -60,12 +60,12 @@ public class AudioManager : MonoBehaviour
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {       
+    {
         musicSource.clip = music[(int)gameMode];
-        musicSource.Play();
         sfxSource.Stop();
         FadeInSFX();
         FadeInMusic();
+        
         /*
         buttons.Clear();
         if (scene.name == "Main Menu")
