@@ -2327,8 +2327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a625e6edd88cf4409e358f05be2d815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ToSwapIfGamePad: Follow the purple glow to find your way back to the central black
-    hole.
+  ToSwapIfGamePad: You are now capable of consuming the central black hole.
   ToSwapIfXBox: 
   UseAltXBox: 0
   DefaultText: 
