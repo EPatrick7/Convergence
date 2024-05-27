@@ -480,6 +480,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cutscenes
       objectReference: {fileID: 0}
+    - target: {fileID: 2610262470840660332, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfGamePad
+      value: You are now capable of consuming the central black hole.
+      objectReference: {fileID: 0}
     - target: {fileID: 3441736881403769610, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_IsActive
       value: 1
