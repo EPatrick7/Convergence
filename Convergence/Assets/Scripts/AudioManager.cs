@@ -62,7 +62,7 @@ public class AudioManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         musicSource.clip = music[(int)gameMode];
-        sfxSource.Stop();
+        sfxSource.Stop(); //stop transition SFX
         FadeInSFX();
         FadeInMusic();
         
@@ -129,7 +129,11 @@ public class AudioManager : MonoBehaviour
         sfxSource.clip = sfx[0];
         sfxSource.Play();
         FadeOutMusic();
-        FadeOutSFX();
+	}
+
+    public void GeneralSelect()
+	{
+        sfxSource.PlayOneShot(sfx[2]);
 	}
 
     public void MainSelect()
@@ -140,6 +144,7 @@ public class AudioManager : MonoBehaviour
 
     public void SoloSelect()
 	{
+        StartCoroutine(TimingWait());
         MenuSelect();
         gameMode = Mode.Solo;
 	}
@@ -155,4 +160,10 @@ public class AudioManager : MonoBehaviour
         MenuSelect();
         gameMode = Mode.Tutorial;
 	}
+
+    IEnumerator TimingWait()
+    {
+        yield return new WaitForSeconds(2f);
+        sfxSource.PlayOneShot(sfx[1]);
+    }
 }
