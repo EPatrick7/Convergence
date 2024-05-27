@@ -27,6 +27,8 @@ public class AudioManager : MonoBehaviour
     public static float MusicVolume;
     public static float SFXVolume;
 
+    private bool soloSelected;
+
     private enum Mode
 	{
         Menu,
@@ -42,6 +44,7 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
+        PlayerPrefs.SetInt("lastLevel", SceneManager.GetActiveScene().buildIndex);
         AdjustVolume();
         if (instance != null && instance != this)
         {
@@ -58,9 +61,19 @@ public class AudioManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        soloSelected = false;
         musicSource.clip = music[(int)gameMode];
-        sfxSource.Stop(); //stop transition SFX
-        FadeInSFX();
+        if (SceneManager.GetActiveScene().name != "Main Menu")
+		{
+            if (PlayerPrefs.GetInt("lastLevel") != scene.buildIndex)
+			{
+                sfxSource.Stop();
+            }
+		}
+        PlayerPrefs.SetInt("lastLevel", SceneManager.GetActiveScene().buildIndex);
+        //FadeOutSFX();
+        //sfxSource.Stop();
+        //FadeInSFX();
         FadeInMusic();
         
         /*
@@ -111,8 +124,7 @@ public class AudioManager : MonoBehaviour
 
     public void MenuSelect()
 	{
-        sfxSource.clip = sfx[0];
-        sfxSource.Play();
+        sfxSource.PlayOneShot(sfx[0]);
         FadeOutMusic();
 	}
 
@@ -133,15 +145,16 @@ public class AudioManager : MonoBehaviour
 
     public void MainSelect()
 	{
-        MenuSelect();
+        BackSelect();
+        FadeOutMusic();
         gameMode = Mode.Menu;
 	}
 
     public void SoloSelect()
 	{
+        soloSelected = true;
         StartCoroutine(FirstPopWait());
         sfxSource.PlayOneShot(sfx[5]);
-        //StartCoroutine(SecondPopWait());
         MenuSelect();
         gameMode = Mode.Solo;
 	}
@@ -161,7 +174,7 @@ public class AudioManager : MonoBehaviour
     IEnumerator FirstPopWait()
     {
         yield return new WaitForSeconds(2f);
-        if (SceneManager.GetActiveScene().name != "Main Menu")
+        if (SceneManager.GetActiveScene().name != "Main Menu" || !soloSelected) //check for soloSelected to fix weird bug where FirstPopWait() was being called when switching back to main menu really quick after skipping cutscene
 		{
             yield break;
 		}

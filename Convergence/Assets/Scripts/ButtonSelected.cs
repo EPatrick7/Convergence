@@ -15,7 +15,7 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField]
     private float normalScale;
 
-    private enum ButtonType { None, Solo, Multi, Tutorial, Back, Other };
+    private enum ButtonType { None, Solo, Multi, Tutorial, Back, Other, Main };
 
     [SerializeField]
     private ButtonType btnState = ButtonType.None;
@@ -113,6 +113,10 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
             case ButtonType.Back:
                 AudioManager.Instance.BackSelect();
+                break;
+
+            case ButtonType.Main:
+                AudioManager.Instance.MainSelect();
                 break;
 		}
 	}

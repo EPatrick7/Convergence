@@ -206,6 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
+  btnState: 5
 --- !u!1 &4741194946104391396
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +313,10 @@ MonoBehaviour:
   ResumeButton: {fileID: 4021837931263352032}
   playerHUD: []
   cutsceneManager: {fileID: 0}
+  multiplayer: 0
   isPressingHome: 0
+  loadDelay: 0
+  tutloadDelay: 0
   hasDeregistered: 0
 --- !u!1 &5646789192136364834
 GameObject:
@@ -656,6 +660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
+  btnState: 5
 --- !u!1 &7060095022085456782
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,3 +869,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
+  btnState: 6

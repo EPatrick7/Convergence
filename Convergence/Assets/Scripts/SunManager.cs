@@ -230,7 +230,7 @@ public class SunManager : MonoBehaviour
 
     private void FadeOutMainButtons()
 	{
-       // mainUI.interactable = false;
+        mainUI.interactable = false;
         float alpha = 1;
         mainTween?.Kill();
         mainTween = DOTween.To(()=> alpha, x => alpha = x, 0, 1).OnUpdate(() =>
@@ -242,7 +242,9 @@ public class SunManager : MonoBehaviour
 
     private void FadeInMainButtons()
 	{
-     //   mainUI.interactable = true;
+        //Don't need to comment out, cutscene skip works fine w/ disabled buttons
+        //Disabling them so you cant spam click them when going to optiosn
+        mainUI.interactable = true;
         float alpha = 0;
         mainTween?.Kill();
         mainTween = DOTween.To(() => alpha, x => alpha = x, 1, 1).OnUpdate(() =>
