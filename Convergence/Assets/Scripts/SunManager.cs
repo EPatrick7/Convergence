@@ -194,7 +194,7 @@ public class SunManager : MonoBehaviour
         FadeOutMainButtons();
         FadeInOptions();
 
-        if (Time.timeSinceLevelLoad < delayClickTime)
+        if (Time.timeSinceLevelLoad < delayClickTime&&!InputManager.GamePadDetected)
             EventSystem.current.SetSelectedGameObject(null);
         else if (EventSystem.current.currentSelectedGameObject != null)
             EventSystem.current.SetSelectedGameObject(Options.gameObject);
@@ -217,7 +217,7 @@ public class SunManager : MonoBehaviour
 
         FadeOutOptions();
 		FadeInMainButtons();
-        if (Time.timeSinceLevelLoad < delayClickTime)
+        if (Time.timeSinceLevelLoad < delayClickTime&&!InputManager.GamePadDetected)
             EventSystem.current.SetSelectedGameObject(null);
         else if (EventSystem.current.currentSelectedGameObject != null)
             EventSystem.current.SetSelectedGameObject(ExitOptions.gameObject);

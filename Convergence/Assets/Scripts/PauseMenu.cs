@@ -62,9 +62,10 @@ public class PauseMenu : MonoBehaviour
         InputManager.Instance.playerInput.UI.CloseMenu.performed += CloseMenu;
       */
     }
-    private void FixedUpdate()
+    private void Update()
     {
-        if(menuFrozen!=null&&(UnityEngine.Input.GetMouseButton(0)||UnityEngine.Input.GetKey(KeyCode.Return)))
+
+        if (menuFrozen != null && (UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.GetKeyDown(KeyCode.Return) || UnityEngine.Input.GetButtonDown("Fire1")))
         {
             if ((targDelayTime - loadDelay) + 0.1f < Time.timeSinceLevelLoad)
             {
@@ -74,6 +75,9 @@ public class PauseMenu : MonoBehaviour
             }
 
         }
+    }
+    private void FixedUpdate()
+    {
 
         if(isPauseMenu&&isPaused)
         {
