@@ -806,6 +806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectIfGamepad: {fileID: 995811003}
+  AltSelectIfGamepad: {fileID: 577270564}
   buttonColors:
     m_NormalColor: {r: 0, g: 0, b: 0, a: 0}
     m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0}
@@ -1214,7 +1215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
-  btnState: 4
+  btnState: 0
 --- !u!114 &577270563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22358,7 +22359,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
-  btnState: 5
+  btnState: 0
 --- !u!114 &1474322693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23896,6 +23897,10 @@ PrefabInstance:
       value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
+      propertyPath: OptionsButton
+      value: 
+      objectReference: {fileID: 1474322690}
+    - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: ShakeStopDelay
       value: 3.7
       objectReference: {fileID: 0}
@@ -23903,6 +23908,10 @@ PrefabInstance:
       propertyPath: ShakeStartDelay
       value: 3.1
       objectReference: {fileID: 0}
+    - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
+      propertyPath: CloseOptionsButton
+      value: 
+      objectReference: {fileID: 577270560}
     - target: {fileID: 3543573164736817552, guid: 61cfbcab404af1f47b5fc3cb7a1aa1a6, type: 3}
       propertyPath: buttons.Array.size
       value: 5

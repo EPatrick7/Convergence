@@ -17,6 +17,7 @@ using DG.Tweening;
 public class PauseMenu : MonoBehaviour
 {
     public Selectable SelectIfGamepad;
+    public Selectable AltSelectIfGamepad;
 
     public static PauseMenu Instance;
 
@@ -81,11 +82,23 @@ public class PauseMenu : MonoBehaviour
         if(EventSystem.current != null&& SelectIfGamepad!=null) {
             if(EventSystem.current.currentSelectedGameObject==null)
             {
-                if(InputManager.GamePadDetected)
-                    EventSystem.current.SetSelectedGameObject(SelectIfGamepad.gameObject);
-                else if (UnityEngine.Input.GetKey(KeyCode.UpArrow)|| UnityEngine.Input.GetKey(KeyCode.Return) || UnityEngine.Input.GetKey(KeyCode.DownArrow) || UnityEngine.Input.GetKey(KeyCode.LeftArrow) || UnityEngine.Input.GetKey(KeyCode.RightArrow))
+                if (AltSelectIfGamepad != null && SunManager.OptionsOpen)
                 {
-                    EventSystem.current.SetSelectedGameObject(SelectIfGamepad.gameObject);
+                    if (InputManager.GamePadDetected)
+                        EventSystem.current.SetSelectedGameObject(AltSelectIfGamepad.gameObject);
+                    else if (UnityEngine.Input.GetKey(KeyCode.UpArrow) || UnityEngine.Input.GetKey(KeyCode.Return) || UnityEngine.Input.GetKey(KeyCode.DownArrow) || UnityEngine.Input.GetKey(KeyCode.LeftArrow) || UnityEngine.Input.GetKey(KeyCode.RightArrow))
+                    {
+                        EventSystem.current.SetSelectedGameObject(AltSelectIfGamepad.gameObject);
+                    }
+                }
+                else
+                {
+                    if (InputManager.GamePadDetected)
+                        EventSystem.current.SetSelectedGameObject(SelectIfGamepad.gameObject);
+                    else if (UnityEngine.Input.GetKey(KeyCode.UpArrow) || UnityEngine.Input.GetKey(KeyCode.Return) || UnityEngine.Input.GetKey(KeyCode.DownArrow) || UnityEngine.Input.GetKey(KeyCode.LeftArrow) || UnityEngine.Input.GetKey(KeyCode.RightArrow))
+                    {
+                        EventSystem.current.SetSelectedGameObject(SelectIfGamepad.gameObject);
+                    }
                 }
             }
         }

@@ -50,6 +50,7 @@ public class SunManager : MonoBehaviour
     private Tween Tcam;
     private Tween opTween;
     private Tween mainTween;
+    public static bool OptionsOpen;
 
     // Start is called before the first frame update
     void Start()
@@ -64,9 +65,12 @@ public class SunManager : MonoBehaviour
         //camera = Camera.main;
     }
 
+    float delayClickTime;
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (Input.GetMouseButton(0))
+            delayClickTime = Time.timeSinceLevelLoad + 0.1f;
         Transform pos = gameObject.transform;
         pos.eulerAngles = new Vector3(pos.eulerAngles.x, pos.eulerAngles.y, pos.eulerAngles.z + angleIncrement);
         angle += angleIncrement;
@@ -185,10 +189,14 @@ public class SunManager : MonoBehaviour
         {
             return;
         }
+
+        OptionsOpen = true;
         FadeOutMainButtons();
         FadeInOptions();
 
-        if (EventSystem.current.currentSelectedGameObject != null)
+        if (Time.timeSinceLevelLoad < delayClickTime)
+            EventSystem.current.SetSelectedGameObject(null);
+        else if (EventSystem.current.currentSelectedGameObject != null)
             EventSystem.current.SetSelectedGameObject(Options.gameObject);
 
         Tcam?.Kill();
@@ -205,10 +213,13 @@ public class SunManager : MonoBehaviour
         {
             return;
         }
+        OptionsOpen = false;
 
-		FadeOutOptions();
+        FadeOutOptions();
 		FadeInMainButtons();
-        if(EventSystem.current.currentSelectedGameObject != null)
+        if (Time.timeSinceLevelLoad < delayClickTime)
+            EventSystem.current.SetSelectedGameObject(null);
+        else if (EventSystem.current.currentSelectedGameObject != null)
             EventSystem.current.SetSelectedGameObject(ExitOptions.gameObject);
         Tcam?.Kill();
         Tcam = Camera.main.transform.DOMoveX(-300, 2);
@@ -230,7 +241,8 @@ public class SunManager : MonoBehaviour
 
     private void FadeOutMainButtons()
 	{
-        mainUI.interactable = false;
+        //Controller Cutscene Skip Requires This Commented Out
+       // mainUI.interactable = false;
         float alpha = 1;
         mainTween?.Kill();
         mainTween = DOTween.To(()=> alpha, x => alpha = x, 0, 1).OnUpdate(() =>
@@ -286,6 +298,7 @@ public class SunManager : MonoBehaviour
 
     void OnDestroy()
 	{
+        OptionsOpen = false;
         DOTween.KillAll();
         if (ppVol.TryGet<DepthOfField>(out dOF))
         {
