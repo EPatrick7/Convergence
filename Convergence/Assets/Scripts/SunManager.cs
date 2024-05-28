@@ -241,6 +241,7 @@ public class SunManager : MonoBehaviour
 
     private void FadeOutMainButtons()
 	{
+        PauseMenu.Instance.isPressingFire = false;
         mainUI.interactable = false;
         float alpha = 1;
         mainTween?.Kill();

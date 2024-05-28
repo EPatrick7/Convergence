@@ -65,7 +65,7 @@ public class PauseMenu : MonoBehaviour
     private void Update()
     {
 
-        if (menuFrozen != null && (UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.GetKeyDown(KeyCode.Return) || UnityEngine.Input.GetButtonDown("Fire1")))
+        if (menuFrozen != null && (UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.GetKeyDown(KeyCode.Return)||(PauseMenu.Instance.isPressingFire&&Time.timeSinceLevelLoad < lastPressedFire+0.2f)))
         {
             if ((targDelayTime - loadDelay) + 0.1f < Time.timeSinceLevelLoad)
             {
@@ -156,6 +156,10 @@ public class PauseMenu : MonoBehaviour
 
             EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("OpenMenu").started += YesPresPause;
             EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("OpenMenu").canceled += NoPresPause;
+
+
+            EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("Eject").started += YesPresFire;
+            EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("Eject").canceled += NoPresFire;
 
         }
 
@@ -317,9 +321,20 @@ public class PauseMenu : MonoBehaviour
     {
         isPressingHome = false;
     }
+    [HideInInspector]
     public bool isPressingHome;
-
-
+    [HideInInspector]
+    public bool isPressingFire;
+    public float lastPressedFire;
+    public void YesPresFire(InputAction.CallbackContext context)
+    {
+        lastPressedFire = Time.timeSinceLevelLoad;
+        isPressingFire = true;
+    }
+    public void NoPresFire(InputAction.CallbackContext context)
+    {
+        isPressingFire = false;
+    }
     public void YesPresPause(InputAction.CallbackContext context)
     {
         isPressingSelect = true;
@@ -406,6 +421,9 @@ public class PauseMenu : MonoBehaviour
         {
             asset.FindActionMap("Player").FindAction("Home").started -= YesPresHome;
             asset.FindActionMap("Player").FindAction("Home").canceled -= NoPresHome;
+
+            asset.FindActionMap("Player").FindAction("Eject").started -= YesPresFire; 
+            asset.FindActionMap("Player").FindAction("Eject").canceled -= NoPresFire;
         }
     }
 }

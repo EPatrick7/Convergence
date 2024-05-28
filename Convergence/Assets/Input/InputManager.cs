@@ -31,6 +31,9 @@ public class InputManager : MonoBehaviour
             inputManagers = new List<InputManager>();
         }
         playerInput = GetComponent<PlayerInput>();
+
+
+
         inputManagers.Add(this);
         SetPlayerInput(true);
 
