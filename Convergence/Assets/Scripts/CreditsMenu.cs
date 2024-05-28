@@ -10,6 +10,10 @@ public class CreditsMenu : MonoBehaviour
     {
         Instance = this;
     }
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
     bool creditsRolling;
     bool creditsDelayed;
     public void DelayRollCredits()

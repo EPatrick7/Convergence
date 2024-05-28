@@ -286,7 +286,7 @@ public class PauseMenu : MonoBehaviour
         }
         
         indicatorManager.EnableIndicators();
-        UpdateHuds(true);
+        UpdateHuds((!GravityManager.Instance.isMultiplayer||GravityManager.GameWinner==null));
         CreditsMenu.Instance?.gameObject.SetActive(true);
         //cutsceneManager.gameObject.SetActive(true);
 

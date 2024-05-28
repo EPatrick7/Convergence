@@ -34,12 +34,14 @@ public class CameraLook : MonoBehaviour
     public IEnumerator DelayedFinalCameraSnap()
     {
 
-        yield return new WaitForSeconds(2.5f);
         if (PlayerID == focusedPixel.PlayerID)
         {
             focusedPixel.rigidBody.mass = 20000;
-           // yield return new WaitUntil(orthoUnchanged);
+            // yield return new WaitUntil(orthoUnchanged);
+            yield return new WaitForSeconds(1.5f);
         }
+        else
+            yield return new WaitForSeconds(0.5f);
         /*
         else
         {
@@ -112,13 +114,13 @@ public class CameraLook : MonoBehaviour
                 break;
         }
         cam.orthographicSize = TemporthoSize;
-        for (int i =0;i<50;i++)
+        for (int i =0;i<100;i++)
         {
             yield return new WaitForFixedUpdate();
-            cam.transform.position = Vector2.Lerp(cam.transform.position,targPos,0.1f);
+            cam.transform.position = Vector2.Lerp(cam.transform.position,targPos,0.05f);
             if(lerpRect)
             {
-                cam.rect = new Rect(Vector2.Lerp(cam.rect.position, RtargSize, 0.1f), Vector2.Lerp(cam.rect.size, RtargPos, 0.1f));
+                cam.rect = new Rect(Vector2.Lerp(cam.rect.position, RtargSize, 0.05f), Vector2.Lerp(cam.rect.size, RtargPos, 0.05f));
             }
         }
 
