@@ -196,10 +196,13 @@ public class CutsceneManager : MonoBehaviour
         GameObject obj=null;
         foreach(CameraLook look in CameraLook.camLooks)
         {
-            if (obj == null)
-                obj = look.focusedPixel.gameObject;
-            else if (obj != look.focusedPixel.gameObject)
-                return false;
+            if (look != null && look.focusedPixel != null)
+            {
+                if (obj == null)
+                    obj = look.focusedPixel.gameObject;
+                else if (obj != look.focusedPixel.gameObject)
+                    return false;
+            }
         }
         return true;
     }
