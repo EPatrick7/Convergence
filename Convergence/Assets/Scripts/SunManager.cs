@@ -242,7 +242,8 @@ public class SunManager : MonoBehaviour
     private void FadeOutMainButtons()
 	{
         //Controller Cutscene Skip Requires This Commented Out
-       // mainUI.interactable = false;
+        if(SunManager.OptionsOpen)
+            mainUI.interactable = false;
         float alpha = 1;
         mainTween?.Kill();
         mainTween = DOTween.To(()=> alpha, x => alpha = x, 0, 1).OnUpdate(() =>
