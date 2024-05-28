@@ -28,12 +28,16 @@ public class CameraLook : MonoBehaviour
             camLooks = new List<CameraLook>();
         }
         camLooks.Add(this);
+        maxViewedMass = float.MaxValue;
     }
     bool inWinState;
     bool freezeFollow;
+
+    float maxViewedMass;
     public IEnumerator DelayedFinalCameraSnap()
     {
 
+        maxViewedMass = 1000;
         if (PlayerID == focusedPixel.PlayerID)
         {
             focusedPixel.rigidBody.mass = 20000;
@@ -49,7 +53,7 @@ public class CameraLook : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }*/
         float TemporthoSize = cam.orthographicSize;
-        cam.orthographicSize = 2001.499f;//Max Value
+        cam.orthographicSize =Mathf.Min(maxViewedMass, 2001.499f);//Max Value
         freezeFollow = true;
         PauseMenu.Instance.UpdateHud(PlayerID, false);
         inputManager.hideOverlay = true;
@@ -146,7 +150,7 @@ public class CameraLook : MonoBehaviour
         if(focusedPixel!=null)
             transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
 
-        cam.orthographicSize = 2001.499f;//Max Value
+        cam.orthographicSize = Mathf.Min(maxViewedMass,2001.499f);//Max Value
         Vector2 targPos = cam.transform.position;
         Vector2 RtargSize = Vector2.zero;
         Vector2 RtargPos = Vector2.one;
@@ -254,7 +258,7 @@ public class CameraLook : MonoBehaviour
 
     private float UpdateCamSize()
     {
-        var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0), orthoMultiplier* new Vector2(50 + focusedPixel.transform.localScale.x * 1.5f, 0), 0.1f).x;
+        var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0),  new Vector2(Mathf.Min(maxViewedMass, orthoMultiplier*(50 + focusedPixel.transform.localScale.x * 1.5f)), 0), 0.1f).x;
         if (camLooks.Count <= 1) //less than or equal to 1 player camera (no multiplayer cams)
 		{
             var ppCam = Camera.main.GetUniversalAdditionalCameraData();

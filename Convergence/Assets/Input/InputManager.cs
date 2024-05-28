@@ -23,6 +23,7 @@ public class InputManager : MonoBehaviour
     public int PlayerId;
     public bool ShouldColorPlayer;
     public Color[] PlayerColors;
+    public String[] PlayerNames;
     private void Awake()
     {
         if (inputManagers == null)

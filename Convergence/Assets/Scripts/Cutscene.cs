@@ -30,6 +30,8 @@ public class Cutscene : MonoBehaviour
     public AudioSource voiceOver;
     String text;
     int timesRun;
+    [HideInInspector]
+    public bool DisableSetText;
     private void OnEnable()
     {
         if (allowRepeats || timesRun == 0)
@@ -53,27 +55,40 @@ public class Cutscene : MonoBehaviour
         {
             voiceOver.Play();
         }
+        bool onSkipMode = false;
+
         foreach(char c in text)
         {
             caption.text += c;
-            
-            if (c == ' '&&PerWordDelay>0)
+
+            if (c == '<') onSkipMode = true;
+            if (c == '>') onSkipMode = false;
+
+            if (!onSkipMode)
             {
-                yield return new WaitForSeconds(PerWordDelay);
-            }
-            else if (PerCharDelay>0)
-            {
-                yield return new WaitForSeconds(PerCharDelay);
+
+                if (c == ' ' && PerWordDelay > 0)
+                {
+                    yield return new WaitForSeconds(PerWordDelay);
+                }
+                else if (PerCharDelay > 0)
+                {
+                    yield return new WaitForSeconds(PerCharDelay);
+                }
             }
         }
         yield return new WaitForSeconds(PostPrintDelay);
-
+        onSkipMode = false;
 
         float hopeTime = Time.timeSinceLevelLoad + CinematicBarOutroDelay;
         foreach(char c in text)
         {
             caption.text = caption.text.Remove(caption.text.Length - 1);
-            yield return new WaitForSeconds(PerCharDelay/10f);
+
+            if (c == '>') onSkipMode = true;
+            if (c == '<') onSkipMode = false;
+            if (!onSkipMode)
+                yield return new WaitForSeconds(PerCharDelay/10f);
         }
         CinematicBars.Instance.ExitCinematic(CinematicBarOutroDelay);
         yield return new WaitForSeconds(Mathf.Max(0,hopeTime-Time.timeSinceLevelLoad));
@@ -84,6 +99,8 @@ public class Cutscene : MonoBehaviour
 
     public void SetText(string t)
     {
+        if (DisableSetText)
+            return;
         text = t.Trim();
     }
 }

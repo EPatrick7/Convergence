@@ -380,6 +380,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1020614206}
     m_Modifications:
+    - target: {fileID: 151325922727885316, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1021377224636474528, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 591
@@ -390,11 +394,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1144000894709134995, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1220907201926879363, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1248646285298113864, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1536658261953161334, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -406,12 +414,68 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: mode
-      value: 2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: GameStart
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: OnlyToasts
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_Death
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: OnPlayerDeath
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_FirstGas
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_FirstIce
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_GameStart
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: OnStarDevolution
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: OnStarTransition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_GalaxyLost
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_ConvergeHole
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: OnBlueStarTransition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: OnBlackHoleTransition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: Toast_GameStartDelayed
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: OnGalacticBlackHoleConsumed
+      value: 
+      objectReference: {fileID: 1156587161}
     - target: {fileID: 2168398321684330324, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -118.60614
@@ -426,7 +490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3441736881403769610, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3687255902358054716, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Pivot.x
@@ -552,6 +616,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 880481fbdb700e54abb43803d320638b, type: 3}
+    - target: {fileID: 5622783925493847843, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5812563513103412286, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Type
       value: 0
@@ -696,7 +764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3553677590578177048, guid: 4daae5dd23e541f4f8f4577afc91f305, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4361247823725853406, guid: 4daae5dd23e541f4f8f4577afc91f305, type: 3}
       propertyPath: m_Pivot.x
@@ -924,6 +992,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1156587161 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5957558990417374742, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+  m_PrefabInstance: {fileID: 642198869}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd632a8a113d6ae4ab615e6ac7513af0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1217282466 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4747012495308962388, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}

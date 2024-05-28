@@ -333,7 +333,7 @@ public class PixelManager : MonoBehaviour
 
                // Debug.LogFormat("{0} | {1} | {2} | {3}", other.playerPixel, other.playerPixel.PlayerID, PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID), playerPixel);
                 if(other.playerPixel!=null&& playerPixel!=null)
-                    PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID)?.Notify(playerPixel,"Player "+playerPixel.PlayerID);
+                    PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID)?.Notify(playerPixel,playerPixel.pInput.GetComponent<InputManager>().PlayerNames[playerPixel.PlayerID-1]+ " Player");
             }
             Destroy(other.gameObject);
         }

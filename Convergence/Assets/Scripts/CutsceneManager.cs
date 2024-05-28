@@ -124,6 +124,8 @@ public class CutsceneManager : MonoBehaviour
     }
     public void PlayerConsumed(PlayerPixelManager eater = null)
     {
+        if (OnPlayerDeath == null)
+            return;
         if (eater == null)
         {
             // Default Text
@@ -137,12 +139,13 @@ public class CutsceneManager : MonoBehaviour
             {
                 UnityEngine.Color color = manager.PlayerColors[eater.PlayerID-1];
 
-                OnPlayerDeath.SetText(string.Format("<color=#{0}>Player #{1}</color> Killed You", UnityEngine.ColorUtility.ToHtmlStringRGBA(color), eater.PlayerID));
+                OnPlayerDeath.SetText(string.Format("<color=#{0}>{1} Player</color> Killed You", UnityEngine.ColorUtility.ToHtmlStringRGBA(color), manager.PlayerNames[eater.PlayerID - 1]));
             }
         }
 
         LoadCutscene(OnPlayerDeath);
-        StartCoroutine(DelayToastDeath());
+        if(Toast_Death!=null)
+            StartCoroutine(DelayToastDeath());
     }
     public IEnumerator DelayToastDeath()
     {
@@ -158,7 +161,47 @@ public class CutsceneManager : MonoBehaviour
     }
     public void BlackHoleConsumed()
     {
+        if (GravityManager.Instance.isMultiplayer)
+            StartCoroutine(DelayBlackHoleMultiplayer());
+        else
+            LoadCutscene(OnGalacticBlackHoleConsumed);
+    }
+    public IEnumerator DelayBlackHoleMultiplayer()
+    {
+        yield return new WaitUntil(allCamsSame);
+        yield return new WaitForSeconds(3);
+
+        PlayerPixelManager winner = GravityManager.GameWinner;
+
+        InputManager manager = InputManager.GetManager(winner.PlayerID);
+        if (manager != null)
+        {
+            UnityEngine.Color color = manager.PlayerColors[winner.PlayerID - 1];
+
+            OnGalacticBlackHoleConsumed.SetText(string.Format("<color=#{0}>{1} Player</color> has won the game!", UnityEngine.ColorUtility.ToHtmlStringRGBA(color), manager.PlayerNames[winner.PlayerID-1]));
+            OnGalacticBlackHoleConsumed.DisableSetText = true;
+        }
+
         LoadCutscene(OnGalacticBlackHoleConsumed);
+ 
+        yield return new WaitForSeconds(1);
+        yield return new WaitUntil(CinematicBars.notCinematic);
+        yield return new WaitForSeconds(0.5f);
+
+        if (!PauseMenu.isPaused)
+            PauseMenu.Instance.ForcePause();
+    }
+    bool allCamsSame()
+    {
+        GameObject obj=null;
+        foreach(CameraLook look in CameraLook.camLooks)
+        {
+            if (obj == null)
+                obj = look.focusedPixel.gameObject;
+            else if (obj != look.focusedPixel.gameObject)
+                return false;
+        }
+        return true;
     }
     private void Initialize()
     {
@@ -203,6 +246,8 @@ public class CutsceneManager : MonoBehaviour
     }
     public void LoadCutscene(Cutscene c)
     {
+        if (c == null)
+            return;
         if (mode==LimitStates.OnlyToasts||mode==LimitStates.None)
             return;
         if (c != null)
@@ -295,7 +340,8 @@ public class CutsceneManager : MonoBehaviour
 
     public void UnloadToast(RectTransform toast)
     {//Force unloads the toast right now.
-
+        if (toast == null)
+            return;
         if (loadToast != null)
         {
             taostTween?.Kill();

@@ -221,9 +221,17 @@ public class PauseMenu : MonoBehaviour
             Pause();
         }
     }
+    public void ForcePause()
+    {
+        Pause();
+    }
+    public TextMeshProUGUI PauseText;
     public void Pause()
     {
-
+        if(GravityManager.GameWinner!=null&& PauseText!=null)
+        {
+            PauseText.text = "- GAME OVER -";
+        }
         openedMenu = Time.timeSinceLevelLoad;
         isPaused = true;
         foreach (InputManager inputManager in InputManager.inputManagers)
