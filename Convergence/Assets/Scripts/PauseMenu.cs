@@ -64,7 +64,7 @@ public class PauseMenu : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(menuFrozen!=null&&UnityEngine.Input.GetMouseButton(0))
+        if(menuFrozen!=null&&(UnityEngine.Input.GetMouseButton(0)||UnityEngine.Input.GetKey(KeyCode.Return)))
         {
             if ((targDelayTime - loadDelay) + 0.1f < Time.timeSinceLevelLoad)
             {
