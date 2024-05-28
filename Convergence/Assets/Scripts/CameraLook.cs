@@ -275,7 +275,10 @@ public class CameraLook : MonoBehaviour
 
     private float UpdateCamSize()
     {
-        var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0), orthoMultiplier * new Vector2(Mathf.Min(maxViewedMass, (50 + focusedPixel.transform.localScale.x * 1.5f)), 0), 0.1f).x;
+        float minRadius= 1;
+        if (GravityManager.Instance.isMultiplayer)
+            minRadius=75;
+        var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0), orthoMultiplier * new Vector2(Mathf.Min(maxViewedMass, Mathf.Max(minRadius,(50 + focusedPixel.transform.localScale.x * 1.5f))), 0), 0.1f).x;
         if (camLooks.Count <= 1) //less than or equal to 1 player camera (no multiplayer cams)
 		{
             var ppCam = Camera.main.GetUniversalAdditionalCameraData();
