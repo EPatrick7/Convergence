@@ -633,6 +633,7 @@ public class GravityManager : MonoBehaviour
 
     void OnDestroy()
     {
+        GameWinner = null;
         if (bodyBuffer != null)
             bodyBuffer.Release();
     }

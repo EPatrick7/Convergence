@@ -250,7 +250,8 @@ public class PauseMenu : MonoBehaviour
         }
         
         FadeInPPVol();
-        indicatorManager.DisableIndicators();
+
+        IndicatorManager.DisableAllIndicators();
         UpdateHuds(false);
         CreditsMenu.Instance?.gameObject.SetActive(false);
         //cutsceneManager.gameObject.SetActive(false);
@@ -292,8 +293,8 @@ public class PauseMenu : MonoBehaviour
                 ppCam.cameraStack[0].GetUniversalAdditionalCameraData().renderPostProcessing = false;
             }
         }
-        
-        indicatorManager.EnableIndicators();
+        if(GravityManager.GameWinner==null)
+            IndicatorManager.EnableAllIndicators();
         UpdateHuds((!GravityManager.Instance.isMultiplayer||GravityManager.GameWinner==null));
         CreditsMenu.Instance?.gameObject.SetActive(true);
         //cutsceneManager.gameObject.SetActive(true);

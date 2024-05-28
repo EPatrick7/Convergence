@@ -41,6 +41,7 @@ public class CameraLook : MonoBehaviour
         if (PlayerID == focusedPixel.PlayerID)
         {
             focusedPixel.rigidBody.mass = 20000;
+            IndicatorManager.DisableAllIndicators();
             // yield return new WaitUntil(orthoUnchanged);
             yield return new WaitForSeconds(1.5f);
         }
@@ -258,7 +259,7 @@ public class CameraLook : MonoBehaviour
 
     private float UpdateCamSize()
     {
-        var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0),  new Vector2(Mathf.Min(maxViewedMass, orthoMultiplier*(50 + focusedPixel.transform.localScale.x * 1.5f)), 0), 0.1f).x;
+        var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0), orthoMultiplier * new Vector2(Mathf.Min(maxViewedMass, (50 + focusedPixel.transform.localScale.x * 1.5f)), 0), 0.1f).x;
         if (camLooks.Count <= 1) //less than or equal to 1 player camera (no multiplayer cams)
 		{
             var ppCam = Camera.main.GetUniversalAdditionalCameraData();

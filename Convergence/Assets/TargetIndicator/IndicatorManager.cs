@@ -20,6 +20,35 @@ public class IndicatorManager : MonoBehaviour
     [Range(1, 4)]
     public int PlayerID = 1;
 
+    public static List<IndicatorManager> instances = new List<IndicatorManager>();
+    private void Start()
+    {
+        if(instances==null) instances = new List<IndicatorManager>();
+        instances.Add(this);
+    }
+    private void OnDestroy()
+    {
+        instances.Remove(this);
+    }
+    public static void DisableAllIndicators()
+    {
+        if (instances == null) instances = new List<IndicatorManager>();
+        foreach (IndicatorManager manager in instances)
+        {
+            manager.DisableIndicators();
+        }
+
+    }
+    public static void EnableAllIndicators()
+    {
+        if (instances == null) instances = new List<IndicatorManager>();
+        foreach (IndicatorManager manager in instances)
+        {
+            manager.EnableIndicators();
+        }
+
+    }
+
     //[SerializeField]
     //private float triggerDist;
 
