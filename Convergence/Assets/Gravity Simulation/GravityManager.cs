@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.InputSystem;
+using UnityEngine.LowLevel;
 using UnityEngine.Rendering;
 
 #region DataStructure
@@ -257,7 +258,9 @@ public class GravityManager : MonoBehaviour
     public Vector2 CloseGoodiesRange = new Vector2(40, 60);
     [Tooltip("Range of spawning from which goodies will spawn around the player.")]
     public Vector2 GoodiesRange = new Vector2(40, 175);
-     
+    [Tooltip("The number of NPC planets that will receive goodies as if they were players.")]
+    public int NPCGoodiesRecieverCount;
+
     bool isWithinCamera(CameraLook look, Vector2 loc)
     {
         Vector3 vp = look.GetComponent<Camera>().WorldToViewportPoint(loc);
@@ -449,46 +452,7 @@ public class GravityManager : MonoBehaviour
 
                 //Generate Goodies Area:
 
-                for (int k = 0; k < PlayerGoodiesCount; k++)
-                {
-
-                    Vector2 loc = UnityEngine.Random.insideUnitCircle.normalized;
-                    Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale / 5f - loc * 3f;
-                    float mass_mult = 1.5f;
-
-                    if (k < Close_PlayerGoodiesCount)
-                    {
-                        loc *= UnityEngine.Random.Range(CloseGoodiesRange.x, CloseGoodiesRange.y);
-
-                    }
-                    else
-                        loc *= UnityEngine.Random.Range(GoodiesRange.x, GoodiesRange.y);
-
-
-                    sharedVelocity += OrbitalVector(loc);
-                    Vector3 elements = Vector3.zero;
-                    int randomEl = UnityEngine.Random.Range(0, 3);
-                    switch (randomEl)
-                    {
-                        case 0:
-                            elements = new Vector3(1, 0, 0);
-                            break;
-                        case 1:
-                            elements = new Vector3(0, 1, 0);
-                            break;
-                        case 2:
-                            elements = new Vector3(0, 0, 1);
-                            break;
-                    }
-                    elements *= InitRandomElementComposition;
-
-                    GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0) + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
-                    pixel.GetComponent<Rigidbody2D>().mass /= mass_mult;
-                    //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
-                    RegisterBody(pixel, sharedVelocity, elements);
-
-                }
-
+                GenerateGoodiesArea(playerLoc,1);
 
                 //
 
@@ -553,12 +517,63 @@ public class GravityManager : MonoBehaviour
                     RegisterBody(pixel, sharedVelocity);
                 }
 
+                if(i<NPCGoodiesRecieverCount)
+                {
+                    GenerateGoodiesArea(loc,0.25f);
+                }
+
+
             }
         }
         Initialized?.Invoke();
 
 
         StartCoroutine(GravRun());
+    }
+    void GenerateGoodiesArea(Vector2 playerLoc,float densityOffset)
+    {
+        for (int k = 0; k < PlayerGoodiesCount; k++)
+        {
+
+            Vector2 loc = UnityEngine.Random.insideUnitCircle.normalized;
+            Vector2 sharedVelocity = UnityEngine.Random.insideUnitCircle * InitVelocityScale / 5f - loc * 3f;
+            float mass_mult = 1.5f;
+
+            if (k < Close_PlayerGoodiesCount)
+            {
+                loc *= UnityEngine.Random.Range(CloseGoodiesRange.x, CloseGoodiesRange.y);
+
+            }
+            else
+                loc *= UnityEngine.Random.Range(GoodiesRange.x, GoodiesRange.y);
+
+            loc *= densityOffset;
+
+
+            sharedVelocity += OrbitalVector(loc);
+            Vector3 elements = Vector3.zero;
+            int randomEl = UnityEngine.Random.Range(0, 3);
+            switch (randomEl)
+            {
+                case 0:
+                    elements = new Vector3(1, 0, 0);
+                    break;
+                case 1:
+                    elements = new Vector3(0, 1, 0);
+                    break;
+                case 2:
+                    elements = new Vector3(0, 0, 1);
+                    break;
+            }
+            elements *= InitRandomElementComposition;
+
+            GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0) + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
+            pixel.GetComponent<Rigidbody2D>().mass /= mass_mult;
+            //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
+            RegisterBody(pixel, sharedVelocity, elements);
+
+        }
+
     }
     public Vector2 RespawnPos()
     {

@@ -34,18 +34,34 @@ public class CameraLook : MonoBehaviour
     bool freezeFollow;
 
     float maxViewedMass;
+
+    bool allCamsSame()
+    {
+        GameObject obj = null;
+        foreach (CameraLook look in CameraLook.camLooks)
+        {
+            if (look != null && look.focusedPixel != null)
+            {
+                if (obj == null)
+                    obj = look.focusedPixel.gameObject;
+                else if (obj != look.focusedPixel.gameObject)
+                    return false;
+            }
+        }
+        return true;
+    }
     public IEnumerator DelayedFinalCameraSnap()
     {
-
         maxViewedMass = 1000;
+        yield return new WaitUntil(allCamsSame);
         if (PlayerID == focusedPixel.PlayerID)
         {
             focusedPixel.rigidBody.mass = 20000;
             IndicatorManager.DisableAllIndicators();
             // yield return new WaitUntil(orthoUnchanged);
-            yield return new WaitForSeconds(1.5f);
+         //   yield return new WaitForSeconds(1.5f);
         }
-        else
+       // else
             yield return new WaitForSeconds(0.5f);
         /*
         else
