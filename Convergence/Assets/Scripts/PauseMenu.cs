@@ -244,6 +244,7 @@ public class PauseMenu : MonoBehaviour
         FadeInPPVol();
         indicatorManager.DisableIndicators();
         UpdateHuds(false);
+        CreditsMenu.Instance?.gameObject.SetActive(false);
         //cutsceneManager.gameObject.SetActive(false);
 
         //EventSystem.current.SetSelectedGameObject(ResumeButton);
@@ -286,6 +287,7 @@ public class PauseMenu : MonoBehaviour
         
         indicatorManager.EnableIndicators();
         UpdateHuds(true);
+        CreditsMenu.Instance?.gameObject.SetActive(true);
         //cutsceneManager.gameObject.SetActive(true);
 
         gameObject.SetActive(false);

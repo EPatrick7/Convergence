@@ -96,27 +96,27 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		switch (btnState)
 		{
             case ButtonType.Solo:
-                AudioManager.Instance.SoloSelect();
+                AudioManager.Instance?.SoloSelect();
                 break;
 
             case ButtonType.Multi:
-                AudioManager.Instance.MultiSelect();
+                AudioManager.Instance?.MultiSelect();
                 break;
 
             case ButtonType.Tutorial:
-                AudioManager.Instance.TutorialSelect();
+                AudioManager.Instance?.TutorialSelect();
                 break;
 
             case ButtonType.Other:
-                AudioManager.Instance.GeneralSelect();
+                AudioManager.Instance?.GeneralSelect();
                 break;
 
             case ButtonType.Back:
-                AudioManager.Instance.BackSelect();
+                AudioManager.Instance?.BackSelect();
                 break;
 
             case ButtonType.Main:
-                AudioManager.Instance.MainSelect();
+                AudioManager.Instance?.MainSelect();
                 break;
 		}
 	}

@@ -5,7 +5,6 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
 using static UnityEngine.GraphicsBuffer;
 using DG.Tweening;
 
@@ -250,6 +249,9 @@ public class PlayerPixelManager : PixelManager
         hasWonGame = true;
         BlackHoleState.RadiusScalar *= 1.3f;
         CutsceneManager.Instance?.BlackHoleConsumed();
+
+        CreditsMenu.Instance?.DelayRollCredits();
+
     }
     public void RunDeath()
     {
