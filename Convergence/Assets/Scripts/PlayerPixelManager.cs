@@ -408,7 +408,7 @@ public class PlayerPixelManager : PixelManager
         {
             ejectMulti /=5;
         }
-        if (mass()>BlackHoleTransition_MassReq)
+        if (mass()>BlackHoleTransition_MassReq*0.9f)
         {
             ejectMulti *= 50;
         }    

@@ -38,12 +38,16 @@ public class CameraLook : MonoBehaviour
     bool allCamsSame()
     {
         GameObject obj = null;
+        bool setPlayer=false;
         foreach (CameraLook look in CameraLook.camLooks)
         {
             if (look != null && look.focusedPixel != null)
             {
-                if (obj == null)
+                if (obj == null && !setPlayer)
+                {
                     obj = look.focusedPixel.gameObject;
+                    setPlayer = true;
+                }
                 else if (obj != look.focusedPixel.gameObject)
                     return false;
             }
