@@ -34,7 +34,7 @@ public class CutsceneManager : MonoBehaviour
     [Tooltip("The localX where the toast moves when loaded in.")]
     public float Load_LocalMoveX = 764;
     [Tooltip("The localX where the toast moves when unloaded out.")]
-    public float Unload_LocalMoveX = 1132;
+    public float Unload_LocalMoveX = 1300;
 
     [Tooltip("How long a toast takes to move in/out of the screen.")]
     public float toast_unload_duration = 1;
@@ -58,6 +58,8 @@ public class CutsceneManager : MonoBehaviour
     bool hasSeenLostSpace;
     public void DistToBlackHole(float dist)
     {
+        if (Toast_GalaxyLost == null)
+            return;
         if(dist< lastDist)
         {//Returning to central black hole
             if (lastToast != null && lastToast.gameObject.name == Toast_GalaxyLost.gameObject.name && (out_taostTween == null || !out_taostTween.IsActive()))
@@ -74,6 +76,8 @@ public class CutsceneManager : MonoBehaviour
     }
     public void PlayerPaused()
     {
+        if (Toast_Death == null)
+            return;
         if (lastToast != null && lastToast.gameObject.name == Toast_Death.gameObject.name && (out_taostTween == null || !out_taostTween.IsActive()))
         {
             UnloadToast(lastToast);
@@ -81,13 +85,17 @@ public class CutsceneManager : MonoBehaviour
     }
     public void PlayerEjected()
     {
-        if(lastToast!=null&&lastToast.gameObject.name== Toast_GameStart.gameObject.name&&!CinematicBars.isCinematic && (out_taostTween==null||!out_taostTween.IsActive()))
+        if (Toast_GameStart == null)
+            return;
+        if (lastToast!=null&&lastToast.gameObject.name== Toast_GameStart.gameObject.name&&!CinematicBars.isCinematic && (out_taostTween==null||!out_taostTween.IsActive()))
         {
             UnloadToast(lastToast);
         }
     }
     public void PlayerPropelled()
     {
+        if (Toast_FirstGas == null)
+            return;
         if (lastToast != null && lastToast.gameObject.name == Toast_FirstGas.gameObject.name && (out_taostTween == null || !out_taostTween.IsActive()))
         {
             UnloadToast(lastToast);
@@ -95,6 +103,8 @@ public class CutsceneManager : MonoBehaviour
     }
     public void PlayerShielded()
     {
+        if (Toast_FirstIce == null)
+            return;
         if (lastToast != null && lastToast.gameObject.name == Toast_FirstIce.gameObject.name&& (out_taostTween == null || !out_taostTween.IsActive()))
         {
             UnloadToast(lastToast);
@@ -103,6 +113,8 @@ public class CutsceneManager : MonoBehaviour
     bool seenConvergeBlackHoleToast;
     public void ConsumeMass(float newMass)
     {
+        if (Toast_ConvergeHole == null)
+            return;
         if (newMass >= 10050&&!seenConvergeBlackHoleToast)
         {
             seenConvergeBlackHoleToast = true;
@@ -215,7 +227,8 @@ public class CutsceneManager : MonoBehaviour
             player.PlanetTypeChanged += UpdatePlanetType;
         }
         LoadCutscene(GameStart);
-        LoadToast(4f,Toast_GameStart);
+
+        LoadToast(GameStart == null ? 0f:4f, Toast_GameStart) ;
         StartCoroutine(ReallyDelayedToast(Toast_GameStartDelayed));
     }
     #endregion
@@ -287,8 +300,8 @@ public class CutsceneManager : MonoBehaviour
             LoadCutscene(OnBlackHoleTransition);
         }
     }
-
-    RectTransform lastToast;
+    [HideInInspector]
+    public RectTransform lastToast;
     Coroutine loadToast;
 
     private Tween taostTween;
@@ -324,7 +337,7 @@ public class CutsceneManager : MonoBehaviour
     public IEnumerator DelayLoadToast(float wait, RectTransform toast)
     {
         lastToast = toast;
-        if(wait > 0)
+        if (wait > 0)
             yield return new WaitForSeconds(wait);
 
         if(CinematicBars.isCinematic)
@@ -333,7 +346,7 @@ public class CutsceneManager : MonoBehaviour
         }
         //Load Toast
         taostTween?.Kill();
-        taostTween = toast.DOLocalMoveX(764, toast_unload_duration);
+        taostTween = toast.DOLocalMoveX(Load_LocalMoveX, toast_unload_duration);
         taostTween.Play();
 
         yield return new WaitForSeconds(toast_duration);
@@ -361,7 +374,7 @@ public class CutsceneManager : MonoBehaviour
         yield return new WaitUntil(NoOutTween);
         //Unload Toast;
         out_taostTween?.Kill();
-        out_taostTween = toast.DOLocalMoveX(1300, toast_unload_duration);
+        out_taostTween = toast.DOLocalMoveX(Unload_LocalMoveX, toast_unload_duration);
         out_taostTween.Play();
         yield return new WaitForSeconds(toast_unload_duration);
 

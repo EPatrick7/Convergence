@@ -132,6 +132,7 @@ MonoBehaviour:
   SunTransition_GasReq: 750
   BlackHoleTransition_MassReq: 7500
   indicatorManager: {fileID: 0}
+  WaitForPlayerInput: 0
   PlayerGoodiesCount: 18
   Close_PlayerGoodiesCount: 4
   CloseGoodiesRange: {x: 40, y: 60}
@@ -139,3 +140,4 @@ MonoBehaviour:
   NPCGoodiesRecieverCount: 10
   wrap_dist: 0
   BlackHoleColor: {r: 0.8627451, g: 0, b: 1, a: 1}
+  EjectCount: 0

@@ -248,6 +248,8 @@ public class GravityManager : MonoBehaviour
 
     //private List<IndicatorManager> indManagers = new List<IndicatorManager>();
     private IndicatorManager[] indManagers;
+    [Tooltip("If true, the gravity simulation will wait for some player input before running gravity")]
+    public bool WaitForPlayerInput;
 
     [Header("Player Buffs")]
     [Tooltip("How many planets will be spawned in the radius around a player.")]
@@ -714,8 +716,18 @@ public class GravityManager : MonoBehaviour
         pixel.UpdateTexture(targ,col_target);
     }
     public Color BlackHoleColor;
+    [HideInInspector]
+    public int EjectCount;
+    bool firstEjection()
+    {
+        return EjectCount>0;
+    }
     public IEnumerator GravRun()
     {
+        if(WaitForPlayerInput)
+        {
+            yield return new WaitUntil(firstEjection);
+        }
         //Run forever
         while (true)
         {

@@ -347,6 +347,7 @@ public class PlayerPixelManager : PixelManager
 
         if (cam == null) return;
 
+        GravityManager.Instance.EjectCount++;
 
         CutsceneManager.Instance?.PlayerEjected();
 

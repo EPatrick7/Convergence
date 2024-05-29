@@ -45,6 +45,8 @@ public class PixelManager : MonoBehaviour
     [SerializeField]
     private float ice;
 
+    public Vector2 InitialVelocity;
+
     [HideInInspector]
     public Rigidbody2D rigidBody;
     [HideInInspector]
@@ -69,6 +71,10 @@ public class PixelManager : MonoBehaviour
     private void Start()
     {
         Initialize();
+        if (rigidBody.velocity.magnitude == 0)
+        {
+            rigidBody.velocity = InitialVelocity;
+        }
     }
     public float Ice
     {

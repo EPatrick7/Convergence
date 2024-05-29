@@ -574,6 +574,7 @@ MonoBehaviour:
   PerWordDelay: 0.1
   CinematicBarOutroDelay: 1
   voiceOver: {fileID: 0}
+  DisableSetText: 0
 --- !u!1 &781111139621732754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1333,6 +1334,7 @@ MonoBehaviour:
   PerWordDelay: 0.1
   CinematicBarOutroDelay: 1
   voiceOver: {fileID: 0}
+  DisableSetText: 0
 --- !u!1 &2207568011719817587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,7 +1412,7 @@ MonoBehaviour:
   Toast_GalaxyLost: {fileID: 5651645490791717408}
   Toast_ConvergeHole: {fileID: 370935005908027800}
   Load_LocalMoveX: 764
-  Unload_LocalMoveX: 1132
+  Unload_LocalMoveX: 1300
   toast_unload_duration: 1
   toast_duration: 10
   ToastQueueFrozen: 0
@@ -1473,6 +1475,7 @@ MonoBehaviour:
   PerWordDelay: 0.1
   CinematicBarOutroDelay: 1
   voiceOver: {fileID: 0}
+  DisableSetText: 0
 --- !u!1 &2829078531721141564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,6 +1669,7 @@ MonoBehaviour:
   PerWordDelay: 0.1
   CinematicBarOutroDelay: 1
   voiceOver: {fileID: 0}
+  DisableSetText: 0
 --- !u!1 &3235427473026376146
 GameObject:
   m_ObjectHideFlags: 0
@@ -3147,6 +3151,7 @@ MonoBehaviour:
   PerWordDelay: 0.1
   CinematicBarOutroDelay: 1
   voiceOver: {fileID: 0}
+  DisableSetText: 0
 --- !u!1 &6956490145513592104
 GameObject:
   m_ObjectHideFlags: 0
@@ -3206,6 +3211,7 @@ MonoBehaviour:
   PerWordDelay: 0.1
   CinematicBarOutroDelay: 1
   voiceOver: {fileID: 0}
+  DisableSetText: 0
 --- !u!1 &7335806982402093574
 GameObject:
   m_ObjectHideFlags: 0
@@ -3893,6 +3899,7 @@ MonoBehaviour:
   PerWordDelay: 0.1
   CinematicBarOutroDelay: 1
   voiceOver: {fileID: 0}
+  DisableSetText: 0
 --- !u!1 &8823781386708489575
 GameObject:
   m_ObjectHideFlags: 0
