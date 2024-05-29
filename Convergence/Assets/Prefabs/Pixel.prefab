@@ -225,7 +225,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.45
 --- !u!50 &6458838302973239873
 Rigidbody2D:
   serializedVersion: 4
@@ -354,12 +354,13 @@ MonoBehaviour:
   ConstantMass: 0
   MassOverride: 0
   ice: 0
+  InitialVelocity: {x: 0, y: 0}
   rigidBody: {fileID: 0}
   playerPixel: {fileID: 0}
   isPlayer: 0
+  startPos: {x: 0, y: 0, z: 0}
   gas: 0
   planetType: 0
-  isShielding: 0
   SunTransition_MassReq: 750
   SunTransition_GasReq: 1000
   indManagers: []

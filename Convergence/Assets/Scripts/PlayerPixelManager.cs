@@ -456,7 +456,7 @@ public class PlayerPixelManager : PixelManager
         if (!GasJet.isPlaying)
         {
             GasJet.Play();
-            AudioManager.Instance.StartPlayerJet();
+            AudioManager.Instance?.StartPlayerJet();
         }
     }
     public void StopParticles()
@@ -466,7 +466,7 @@ public class PlayerPixelManager : PixelManager
         if (GasJet.isPlaying)
         {
             GasJet.Stop();
-            AudioManager.Instance.StopPlayerJet();
+            AudioManager.Instance?.StopPlayerJet();
         }
     }
     private void StartPropel(InputAction.CallbackContext context)
