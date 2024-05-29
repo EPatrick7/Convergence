@@ -769,7 +769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killNotifier: {fileID: 0}
   playerInput: {fileID: 0}
-  PlayerId: 0
+  PlayerId: 1
   ShouldColorPlayer: 0
   PlayerColors: []
   PlayerNames: []
@@ -23051,6 +23051,10 @@ PrefabInstance:
     - target: {fileID: 2533120594799640101, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
+      propertyPath: PlayerId
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: ToSwapIfXBox
