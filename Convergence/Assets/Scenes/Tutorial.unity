@@ -2268,7 +2268,7 @@ MonoBehaviour:
   Toast_GameStartDelayed: {fileID: 0}
   Toast_GalaxyLost: {fileID: 0}
   Toast_ConvergeHole: {fileID: 0}
-  Load_LocalMoveX: 764
+  Load_LocalMoveX: 728
   Unload_LocalMoveX: 1300
   toast_unload_duration: 1
   toast_duration: 60
