@@ -212,6 +212,11 @@ public class GravityManager : MonoBehaviour
     public float max_npc_mass = 10000;
     [Tooltip("Whether or not to teleport objects nearing the world border to the other side of the world.")]
     public bool world_wrap=false;
+
+    public enum BorderNPCBehavior {None,Despawn,Wrap,WrapHybrid};
+    [Tooltip("How should NPC planets react to exiting the galaxy?")]
+    public BorderNPCBehavior borderBehavior;
+
     [Header("Time Managers")]
     [Tooltip("How much physics time should occur between each gravity check.")]
     public float TimePerGravitySample = 0.1f;
@@ -823,9 +828,47 @@ public class GravityManager : MonoBehaviour
                                 inView = true;
                             }
                         }
-                        if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView && gravUniverse.pixels[i].GetComponent<PlayerPixelManager>() == null)
+                        if (gravUniverse.pixels[i].GetComponent<PlayerPixelManager>() == null)
                         {
-                            Destroy(gravUniverse.pixels[i].gameObject);
+                            if (borderBehavior == BorderNPCBehavior.Despawn)
+                            {
+                                if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
+                                {
+                                    Destroy(gravUniverse.pixels[i].gameObject);
+                                }
+                            }
+                            else if (borderBehavior == BorderNPCBehavior.Wrap)
+                            {
+                                float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
+                                if (bh_dist > wrap_dist && !inView)
+                                {
+                                    Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
+                                    bool isSeen = isWithinACamera(target);
+                                    if(!isSeen)
+                                        this_pixel.transform.position = target;
+                                }
+                            }
+                            else if (borderBehavior == BorderNPCBehavior.WrapHybrid)
+                            {
+                                if (this_pixel.mass() < SunTransition_MassReq*0.75f)
+                                {
+                                    if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
+                                    {
+                                        Destroy(gravUniverse.pixels[i].gameObject);
+                                    }
+                                }
+                                else
+                                {
+                                    float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
+                                    if (bh_dist > wrap_dist && !inView)
+                                    {
+                                        Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
+                                        bool isSeen = isWithinACamera(target);
+                                        if (!isSeen)
+                                            this_pixel.transform.position = target;
+                                    }
+                                }
+                            }
                         }
                     }
 

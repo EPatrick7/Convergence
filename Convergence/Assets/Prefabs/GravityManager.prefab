@@ -69,6 +69,7 @@ MonoBehaviour:
   random_respawn_players: 1
   max_npc_mass: 10000
   world_wrap: 1
+  borderBehavior: 3
   TimePerGravitySample: 0.0075
   SimulationStep: 0
   MultiplayerCameraTest: 0
