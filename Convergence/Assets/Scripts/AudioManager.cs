@@ -30,6 +30,8 @@ public class AudioManager : MonoBehaviour
     public static float MusicVolume;
     public static float SFXVolume;
 
+    private Tween propelTween;
+
     private bool soloSelected;
 
     private enum Mode
@@ -176,17 +178,37 @@ public class AudioManager : MonoBehaviour
 
     public void StartPlayerJet()
 	{
+        if (propelTween != null)
+		{
+            playerSFXSource.volume = 1;
+            propelTween.Kill();
+		}
         playerSFXSource.clip = playersfx[0];
-        playerSFXSource.time = 0;
         playerSFXSource.Play();
 	}
 
     public void StopPlayerJet()
 	{
+        sfxSource.PlayOneShot(playersfx[1]);
         //playerSFXSource.time = playerSFXSource.clip.length * .975f;
-        playerSFXSource.Stop();
+        propelTween?.Kill();
+        propelTween = playerSFXSource.DOFade(0, .5f);
+        propelTween.OnComplete(PlayerSFXSourceReset);
+        propelTween.Play();
+
         //Debug.Log("Stopping");
     }
+
+    private void PlayerSFXSourceReset()
+	{
+        playerSFXSource.Stop();
+        playerSFXSource.volume = 1;
+	}
+
+    public void PlayerEject()
+	{
+        playerSFXSource.PlayOneShot(playersfx[2]);
+	}
 
     IEnumerator FirstPopWait()
     {
