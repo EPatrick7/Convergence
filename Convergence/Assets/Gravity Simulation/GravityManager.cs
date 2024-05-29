@@ -213,7 +213,7 @@ public class GravityManager : MonoBehaviour
     [Tooltip("Whether or not to teleport objects nearing the world border to the other side of the world.")]
     public bool world_wrap=false;
 
-    public enum BorderNPCBehavior {None,Despawn,Wrap};
+    public enum BorderNPCBehavior {None,Despawn,Wrap,WrapHybrid};
     [Tooltip("How should NPC planets react to exiting the galaxy?")]
     public BorderNPCBehavior borderBehavior;
 
@@ -846,6 +846,27 @@ public class GravityManager : MonoBehaviour
                                     bool isSeen = isWithinACamera(target);
                                     if(!isSeen)
                                         this_pixel.transform.position = target;
+                                }
+                            }
+                            else if (borderBehavior == BorderNPCBehavior.WrapHybrid)
+                            {
+                                if (this_pixel.mass() < SunTransition_MassReq*0.75f)
+                                {
+                                    if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
+                                    {
+                                        Destroy(gravUniverse.pixels[i].gameObject);
+                                    }
+                                }
+                                else
+                                {
+                                    float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
+                                    if (bh_dist > wrap_dist && !inView)
+                                    {
+                                        Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
+                                        bool isSeen = isWithinACamera(target);
+                                        if (!isSeen)
+                                            this_pixel.transform.position = target;
+                                    }
                                 }
                             }
                         }
