@@ -547,13 +547,13 @@ public class PlayerPixelManager : PixelManager
                 }
                 streak++;
             }
-            else
+            else if (Gas <= 0f || !isPropelling)
             {
                 yield return new WaitForSeconds(interval);
                 StopParticles();
             }
         }
-        StopParticles();
+        //StopParticles();
 
     }
     #endregion
@@ -572,6 +572,7 @@ public class PlayerPixelManager : PixelManager
         if (Ice > 0f)
         {
             CutsceneManager.Instance?.PlayerShielded();
+            AudioManager.Instance?.PlayerShieldUp();
         }
 
         isShielding = true;

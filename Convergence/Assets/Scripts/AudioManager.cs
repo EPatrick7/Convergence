@@ -189,6 +189,7 @@ public class AudioManager : MonoBehaviour
 
     public void StopPlayerJet()
 	{
+        Debug.Log("StopPlayerJet");
         sfxSource.PlayOneShot(playersfx[1]);
         //playerSFXSource.time = playerSFXSource.clip.length * .975f;
         propelTween?.Kill();
@@ -208,6 +209,11 @@ public class AudioManager : MonoBehaviour
     public void PlayerEject()
 	{
         playerSFXSource.PlayOneShot(playersfx[2]);
+	}
+
+    public void PlayerShieldUp()
+	{
+        playerSFXSource.PlayOneShot(playersfx[3]);
 	}
 
     IEnumerator FirstPopWait()
