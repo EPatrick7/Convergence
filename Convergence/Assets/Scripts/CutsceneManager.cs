@@ -85,7 +85,7 @@ public class CutsceneManager : MonoBehaviour
     }
     public void PlayerEjected()
     {
-        if (Toast_GameStart == null)
+        if (Toast_GameStart == null||Time.timeSinceLevelLoad<1.5f)
             return;
         if (lastToast!=null&&lastToast.gameObject.name== Toast_GameStart.gameObject.name&&!CinematicBars.isCinematic && (out_taostTween==null||!out_taostTween.IsActive()))
         {
@@ -226,9 +226,9 @@ public class CutsceneManager : MonoBehaviour
         {
             player.PlanetTypeChanged += UpdatePlanetType;
         }
-        LoadCutscene(GameStart);
-
-        LoadToast(GameStart == null ? 0f:4f, Toast_GameStart) ;
+        if(GameStart!=null)
+            LoadCutscene(GameStart);
+        LoadToast(GetComponent<TutorialManager>()!=null ? 0.5f:4f, Toast_GameStart) ;
         StartCoroutine(ReallyDelayedToast(Toast_GameStartDelayed));
     }
     #endregion
@@ -300,8 +300,7 @@ public class CutsceneManager : MonoBehaviour
             LoadCutscene(OnBlackHoleTransition);
         }
     }
-    [HideInInspector]
-    public RectTransform lastToast;
+     RectTransform lastToast;
     Coroutine loadToast;
 
     private Tween taostTween;
@@ -358,6 +357,7 @@ public class CutsceneManager : MonoBehaviour
     {//Force unloads the toast right now.
         if (toast == null)
             return;
+
         if (loadToast != null)
         {
             taostTween?.Kill();
