@@ -32,6 +32,9 @@ public class SunManager : MonoBehaviour
     [SerializeField]
     private InputManager inputManager;
 
+    [SerializeField]
+    private CanvasGroup skipUI;
+
     private bool multiplayer = false;
 
     [SerializeField]
@@ -44,12 +47,7 @@ public class SunManager : MonoBehaviour
 
     //private Camera camera;
 
-    private Tween TcamSize;
-    private Tween Ttext;
-    private Tween TMtext;
-    private Tween Tcam;
-    private Tween opTween;
-    private Tween mainTween;
+    private Tween TcamSize, Ttext, TMtext, Tcam, opTween, mainTween, skipTween;
     public static bool OptionsOpen;
 
     // Start is called before the first frame update
@@ -62,6 +60,7 @@ public class SunManager : MonoBehaviour
 
         opUI.alpha = 0;
         opUI.interactable = false;
+        skipUI.alpha = 0;
         //camera = Camera.main;
     }
 
@@ -98,6 +97,8 @@ public class SunManager : MonoBehaviour
         TcamSize?.Kill();
         StartCoroutine(ShakeDelay());
 
+        FadeInSkipUI();
+
         FadeOutMainButtons();
 
         Vector3 newPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
@@ -125,6 +126,9 @@ public class SunManager : MonoBehaviour
 
     public void tutorialStart()
 	{
+
+        FadeInSkipUI();
+
         FadeOutMainButtons();
         Vector3 newPos = new Vector3(gameObject.transform.position.x + Camera.main.pixelWidth/3f, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
 
@@ -227,6 +231,17 @@ public class SunManager : MonoBehaviour
 
 
         timeOptionsClosed = Time.timeSinceLevelLoad + 0.25f;
+    }
+
+    private void FadeInSkipUI()
+	{
+        float alpha = 0;
+        skipTween?.Kill();
+        skipTween = DOTween.To(() => alpha, x => alpha = x, .5f, 2).OnUpdate(() =>
+        {
+            skipUI.alpha = alpha;
+        });
+        skipTween.Play();
     }
 
     private void DisableButton(TextMeshProUGUI button)

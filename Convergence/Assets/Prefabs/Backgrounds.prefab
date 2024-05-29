@@ -52,7 +52,7 @@ MonoBehaviour:
   spawnRadius: 1000
   alphaVal: 0.03
   coverAlphaVal: 0.025
-  Spread: 100
+  Spread: 90
   coverSpread: 100
   Scale: 15
   coverScale: 10
