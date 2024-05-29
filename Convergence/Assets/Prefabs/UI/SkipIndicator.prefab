@@ -297,6 +297,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: daec3c7f42a02f743b0fe2b6646d1fd4, type: 3}
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
+      propertyPath: ToSwapIfSwitch
+      value: 
+      objectReference: {fileID: 21300000, guid: 9f0ebdba28a1bbc47b29fce7d3974f63, type: 3}
+    - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: ToSwapIfGamePad
       value: 
       objectReference: {fileID: 21300000, guid: 70fdc0c707198604f8f912f8bbfe2ca0, type: 3}
