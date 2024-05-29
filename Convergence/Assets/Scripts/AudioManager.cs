@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 {
 
     [SerializeField]
-    private AudioSource sfxSource, musicSource;
+    private AudioSource sfxSource, musicSource, playerSFXSource;
 
     [SerializeField]
     private AudioMixer musicMixer, sfxMixer;
@@ -23,6 +23,9 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField]
     private List<AudioClip> music = new List<AudioClip>();
+
+    [SerializeField]
+    private List<AudioClip> playersfx = new List<AudioClip>();
 
     public static float MusicVolume;
     public static float SFXVolume;
@@ -170,6 +173,20 @@ public class AudioManager : MonoBehaviour
         MenuSelect();
         gameMode = Mode.Tutorial;
 	}
+
+    public void StartPlayerJet()
+	{
+        playerSFXSource.clip = playersfx[0];
+        playerSFXSource.time = 0;
+        playerSFXSource.Play();
+	}
+
+    public void StopPlayerJet()
+	{
+        //playerSFXSource.time = playerSFXSource.clip.length * .975f;
+        playerSFXSource.Stop();
+        //Debug.Log("Stopping");
+    }
 
     IEnumerator FirstPopWait()
     {

@@ -450,21 +450,24 @@ public class PlayerPixelManager : PixelManager
 
     public void StartParticles()
     {
-
         GasJet.transform.localScale = new Vector3(Mathf.Max(1, transform.localScale.x / 15f), Mathf.Max(1, transform.localScale.y / 15f), Mathf.Max(1, transform.localScale.z /15f));
         var em = GasJet.emission;
         em.enabled = true;
         if (!GasJet.isPlaying)
+        {
             GasJet.Play();
+            AudioManager.Instance.StartPlayerJet();
+        }
     }
     public void StopParticles()
     {
-
-
         var em = GasJet.emission;
         em.enabled = false;
         if (GasJet.isPlaying)
+        {
             GasJet.Stop();
+            AudioManager.Instance.StopPlayerJet();
+        }
     }
     private void StartPropel(InputAction.CallbackContext context)
     {
@@ -475,7 +478,7 @@ public class PlayerPixelManager : PixelManager
 
 
         isPropelling = true;
-
+        
         StartCoroutine(Propel(PropulsionRate));
     }
 
