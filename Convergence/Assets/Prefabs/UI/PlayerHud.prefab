@@ -2491,6 +2491,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 6b14a6776bd61124fb7cd379f2591b9d, type: 3}
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
+      propertyPath: ToSwapIfSwitch
+      value: 
+      objectReference: {fileID: 21300000, guid: 3f60c6ae828b027449b416f26be844d6, type: 3}
+    - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: ToSwapIfGamePad
       value: 
       objectReference: {fileID: 21300000, guid: 1e9c31be5a4c11e43a1ea54f660f536f, type: 3}
@@ -2651,6 +2655,10 @@ PrefabInstance:
       propertyPath: DefaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: 16dcefabaabd705458d9d1c0a7d3ea73, type: 3}
+    - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
+      propertyPath: ToSwapIfSwitch
+      value: 
+      objectReference: {fileID: 21300000, guid: 626d1a2202d2da7439181d11b627c3da, type: 3}
     - target: {fileID: 5413555702109996736, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: m_Name
       value: IceIcon_Control
@@ -2804,6 +2812,10 @@ PrefabInstance:
       propertyPath: DefaultSprite
       value: 
       objectReference: {fileID: 21300000, guid: daec3c7f42a02f743b0fe2b6646d1fd4, type: 3}
+    - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
+      propertyPath: ToSwapIfSwitch
+      value: 
+      objectReference: {fileID: 21300000, guid: 0bacbc714447fad4fbc6af67f3262446, type: 3}
     - target: {fileID: 2941369965577436010, guid: da946b59e226144428cb84b5d9eafa3b, type: 3}
       propertyPath: ToSwapIfGamePad
       value: 

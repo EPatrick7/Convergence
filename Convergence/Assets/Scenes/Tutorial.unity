@@ -5077,6 +5077,9 @@ MonoBehaviour:
   ToSwapIfXBox: Your planet's mass determines its size. Pressing the A Button will
     sacrifice a part of that mass to launch you in the opposite direction of the
     Left Joystick. When two bodies collide, the larger one consumes the smaller.
+  ToSwapIfSwitch: Your planet's mass determines its size. Pressing the B Button will
+    sacrifice a part of that mass to launch you in the opposite direction of the
+    Left Joystick. When two bodies collide, the larger one consumes the smaller.
   UseAltXBox: 1
   DefaultText: 
 --- !u!1 &781111138980342983
@@ -5310,6 +5313,7 @@ MonoBehaviour:
   ToSwapIfGamePad: Press Options to open the pause menu if you need to restart the
     round.
   ToSwapIfXBox: Press Start to open the pause menu if you need to restart the round.
+  ToSwapIfSwitch: 
   UseAltXBox: 1
   DefaultText: 
 --- !u!1 &1144000894067203014
@@ -5895,6 +5899,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToSwapIfGamePad: You are now capable of consuming the central black hole.
   ToSwapIfXBox: 
+  ToSwapIfSwitch: 
   UseAltXBox: 0
   DefaultText: 
 --- !u!224 &2645008827442880968
@@ -6321,6 +6326,7 @@ MonoBehaviour:
     to burn through your supply of gas and propel yourself in the opposite direction
     of the Left Joystick.
   ToSwapIfXBox: 
+  ToSwapIfSwitch: 
   UseAltXBox: 0
   DefaultText: 
 --- !u!114 &4039702428701817339
@@ -6437,6 +6443,7 @@ MonoBehaviour:
     a defensive ice shield to bounce off of larger bodies harmlessly. Using the Ice
     Shield will also bleed off a significant amount of speed.
   ToSwapIfXBox: 
+  ToSwapIfSwitch: 
   UseAltXBox: 0
   DefaultText: 
 --- !u!114 &4357035625858851313
@@ -8030,6 +8037,7 @@ MonoBehaviour:
   ToSwapIfGamePad: Follow the purple glow to find your way back to the central black
     hole.
   ToSwapIfXBox: 
+  ToSwapIfSwitch: 
   UseAltXBox: 0
   DefaultText: 
 --- !u!224 &7668373601007346867
