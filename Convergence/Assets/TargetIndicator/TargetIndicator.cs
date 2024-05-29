@@ -42,6 +42,8 @@ public class TargetIndicator : MonoBehaviour
     private float valueToLerp;
     private bool spawned = false;
 
+    public bool isCentralBlackHole;
+
 
     private RenderMode renderMode;
 
@@ -227,7 +229,7 @@ public class TargetIndicator : MonoBehaviour
             spawned = true;
             float currentDist = Vector3.Distance(target.transform.position, camera.transform.position);
 
-            if (triggerDist >= 2000) //if indicator is for spawn black hole
+            if (isCentralBlackHole) //if indicator is for spawn black hole
             {
                 //Increase brightness as you get farther away
                 float frac = (currentDist - triggerDist) / ((triggerDist * 1.3f) - triggerDist);

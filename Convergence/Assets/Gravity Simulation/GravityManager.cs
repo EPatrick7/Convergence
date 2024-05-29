@@ -409,7 +409,7 @@ public class GravityManager : MonoBehaviour
             RegisterBody(bHole, Vector2.zero);
             for (var i = 0; i < indManagers.Length; i++)
 			{
-                indManagers[i].AddTargetIndicator(bHole, indManagers[i].bholeTriggerDist, indManagers[i].bholeColor);
+                indManagers[i].AddTargetIndicator(bHole, indManagers[i].bholeTriggerDist, indManagers[i].bholeColor,true);
             }
         }
 

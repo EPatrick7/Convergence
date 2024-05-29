@@ -226,9 +226,10 @@ MonoBehaviour:
   ShouldColorPlayer: 0
   PlayerColors:
   - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 1, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 1, g: 1, b: 0, a: 1}
+  PlayerNames: []
   RumbleAmount: 0
   MaxCollisionRumble: 0.24
   MedCollisionRumble: 0.15
@@ -245,6 +246,7 @@ MonoBehaviour:
   MaxRumble: 0.5
   RumbleScalar: 0.15
   PitchScalar: {x: 0.9, y: 1.1}
+  hideOverlay: 0
 --- !u!114 &6884456806515635834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,6 +336,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: a7fe44cb-6174-4196-b433-b6126da5d54c
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c888e89b-1a78-49f3-8c32-214f0ace421f
+    m_ActionName: Player/Home
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

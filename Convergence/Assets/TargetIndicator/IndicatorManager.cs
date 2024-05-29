@@ -141,11 +141,12 @@ public class IndicatorManager : MonoBehaviour
 	}
     */
 
-    public void AddTargetIndicator(GameObject target, float tDist, Color color) //overloaded w/ tDist parameter
+    public void AddTargetIndicator(GameObject target, float tDist, Color color,bool ICB=false) //overloaded w/ tDist parameter
     {
         if (target != null)
         {
             TargetIndicator indicator = GameObject.Instantiate(TargetIndicatorPrefab, canvas.transform).GetComponent<TargetIndicator>();
+            indicator.isCentralBlackHole = ICB;
             indicator.transform.SetAsLastSibling();
             indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, maxIndicatorAlpha);
             targetIndicators.Add(indicator);
