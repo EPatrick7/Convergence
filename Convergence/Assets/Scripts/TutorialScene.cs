@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GravityManager;
 
 public class TutorialScene : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class TutorialScene : MonoBehaviour
     public enum LoafLink {None,MassIntro,IceIntro,GasIntro};
 
     public LoafLink loafLink;
+
+    public float GiftGasonLoad;
+    public float GiftIceonLoad;
     private void OnDrawGizmosSelected()
     {
         if(Application.isEditor&&!Application.isPlaying&& RelativeToPos!=null)
@@ -81,6 +85,17 @@ public class TutorialScene : MonoBehaviour
             StartCoroutine(DelayLoafLoad());
         }
 
+        if (ListenedObject!= null)
+        {
+            ListenedObject.Gas += GiftGasonLoad;
+            ListenedObject.Ice += GiftIceonLoad;
+
+            if (ListenedObject.rigidBody != null)
+            {
+                ListenedObject.CheckTransitions();
+                GravityManager.Instance.UpdateTexture(ListenedObject);
+            }
+        }
         if (Time.timeSinceLevelLoad<0.1f||TutorialManager.instance==null)
         {
             hasLoaded = true;
