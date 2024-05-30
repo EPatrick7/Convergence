@@ -245,7 +245,9 @@ public class PlayerPixelManager : PixelManager
     public void WinGame(PixelManager other)
     {
         //If we just consumed the central black hole...
+        other.ConstantMass = false;
         ConstantMass = true;
+        other.MassOverride = 0;
         other.rigidBody.constraints = RigidbodyConstraints2D.None;
         rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
         rigidBody.mass += 10000;

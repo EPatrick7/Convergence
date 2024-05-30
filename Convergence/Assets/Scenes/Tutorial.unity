@@ -3825,7 +3825,7 @@ Transform:
   m_GameObject: {fileID: 1467076665}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.6, y: -142.7, z: 0}
+  m_LocalPosition: {x: 322, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4842,7 +4842,7 @@ MonoBehaviour:
   FreeOnLoad: []
   Cleared: 0
   ListenedObject: {fileID: 1901594635}
-  Requirement: 3
+  Requirement: 2
   RelativeToPos: {fileID: 1901594636}
   clearType: 2
   LoadOnClear: {fileID: 345889221}
@@ -8021,7 +8021,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: SpawnRadius
-      value: 1000
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: drift_power

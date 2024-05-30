@@ -314,7 +314,6 @@ public class PixelManager : MonoBehaviour
             rigidBody.mass = GravityManager.Instance.max_npc_mass;
         }
 
-        other.rigidBody.mass -=damage;
         if (playerPixel != null)
         {
             CutsceneManager.Instance?.ConsumeMass(mass());
@@ -326,11 +325,14 @@ public class PixelManager : MonoBehaviour
             {
                     CutsceneManager.Instance?.ElementConsumed(ElementType.Gas);
             }
-            if (other.ConstantMass && other.planetType == PlanetType.BlackHole)
+            if (GravityManager.GameWinner==null&& other.ConstantMass && other.planetType == PlanetType.BlackHole)
             {
                 playerPixel.WinGame(other);
+                damage = 0;
+
             }
         }
+        other.rigidBody.mass -= damage;
         if (other.mass()-other.MassOverride <= 1)
         {
             //Floating point artithmetic means we loose some net mass overall here :(
