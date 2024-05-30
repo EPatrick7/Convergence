@@ -132,6 +132,12 @@ public class PixelManager : MonoBehaviour
 
     [HideInInspector]
     public float BlackHoleTransition_MassReq=7500;
+
+    public float GasMultiplier()
+    {
+        return 1;
+    }
+
     //Check if a body should transition between Planet Types.
 
     //Gets a point on the surface of the GravityBody origin that points towards target.
@@ -288,7 +294,7 @@ public class PixelManager : MonoBehaviour
             damage = Mathf.Round(damage * 64) / 64f;
 
             if (!ConstantMass)
-                Gas += damage;
+                Gas += damage* GasMultiplier();
             other.Gas -= damage;
         }
     }

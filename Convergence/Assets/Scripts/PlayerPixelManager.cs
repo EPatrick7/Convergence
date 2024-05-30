@@ -19,6 +19,13 @@ public class PlayerPixelManager : PixelManager
     [Min(1),Tooltip("The multiplier to split scale applied post sun")]
     public float postSunSplitScale_Multiplier = 3f;
 
+    [Tooltip("The multiplier to the gas element absorption based on mass (1->10000)")]
+    public AnimationCurve GasPickupMultiplier;
+    public float GasMultiplier()
+    {
+        return GasPickupMultiplier.Evaluate(mass() / 10000f);
+    }
+
     [ Tooltip("The multiplier to split scale applied based on radius (1->1000)")]
     public AnimationCurve RadiusSplitScale_Multiplier;
 

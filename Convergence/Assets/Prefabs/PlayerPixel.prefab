@@ -15124,6 +15124,7 @@ MonoBehaviour:
   ConstantMass: 0
   MassOverride: 0
   ice: 0
+  InitialVelocity: {x: 0, y: 0}
   rigidBody: {fileID: 0}
   playerPixel: {fileID: 0}
   isPlayer: 0
@@ -15138,6 +15139,48 @@ MonoBehaviour:
   Pixel: {fileID: 5954944233520970111, guid: fdaea038ed686cc4fa69eccf675892b2, type: 3}
   SplitScale: 0.06
   postSunSplitScale_Multiplier: 1.25
+  GasPickupMultiplier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.064347826
+      value: 1
+      inSlope: 0.022888072
+      outSlope: 0.022888072
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4093954
+      value: 0.4125572
+      inSlope: -1.0311875
+      outSlope: -1.0311875
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.2000122
+      inSlope: -0.359877
+      outSlope: -0.359877
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   RadiusSplitScale_Multiplier:
     serializedVersion: 2
     m_Curve:
