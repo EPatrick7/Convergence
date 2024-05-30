@@ -464,9 +464,9 @@ public class PlayerPixelManager : PixelManager
         em.enabled = true;
         if (!GasJet.isPlaying)
         {
-            GasJet.Play();
             AudioManager.Instance?.StartPlayerJet();
         }
+        GasJet.Play();
     }
     public void StopParticles()
     {
@@ -474,9 +474,9 @@ public class PlayerPixelManager : PixelManager
         em.enabled = false;
         if (GasJet.isPlaying)
         {
-            GasJet.Stop();
             AudioManager.Instance?.StopPlayerJet();
         }
+        GasJet.Stop();
     }
     private void StartPropel(InputAction.CallbackContext context)
     {
@@ -554,13 +554,13 @@ public class PlayerPixelManager : PixelManager
                 }
                 streak++;
             }
-            else if (Gas <= 0f || !isPropelling)
+            else
             {
                 yield return new WaitForSeconds(interval);
                 StopParticles();
             }
         }
-        //StopParticles();
+        StopParticles();
 
     }
     #endregion
