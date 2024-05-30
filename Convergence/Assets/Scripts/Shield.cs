@@ -114,7 +114,7 @@ public class Shield : MonoBehaviour
         while (player.isShielding)
         {
 
-            while (IsActive() && player.Ice > 0f)
+            while (IsActive() && player.Ice > 0f && !GravityManager.Instance.SimulationFrozen())
             {
                 float expendedIce = Mathf.Max(1f, Mathf.Clamp(player.radius() + player.Ice, player.Ice, player.Ice * 10f) * ShieldCost) * interval;
                 player.Ice -= Mathf.Max(1,expendedIce * 0.75f*0.5f);

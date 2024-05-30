@@ -525,7 +525,7 @@ public class PlayerPixelManager : PixelManager
         int streak=0;
         while (isPropelling)
         {
-            if (Gas > 0f)
+            if (Gas > 0f&&!GravityManager.Instance.SimulationFrozen())
             {
 
                 yield return new WaitForSeconds(interval);
