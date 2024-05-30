@@ -408,20 +408,40 @@ public class PixelManager : MonoBehaviour
 
                 if ((other.mass() <= mass() && !((other.ConstantMass && playerPixel == null) || (other.planetType == PlanetType.BlackHole && planetType != PlanetType.BlackHole))) || (other.planetType != PlanetType.BlackHole && planetType == PlanetType.BlackHole) || (ConstantMass && other.playerPixel == null))
                 {
-                    Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * StickyFactor);
-                    other.rigidBody.velocity -= sticky_force;
+                    if (!other.ShieldIsActive())
+                    {
+                        Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * StickyFactor);
+                        other.rigidBody.velocity -= sticky_force;
 
-                    //   Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * other.StickyFactor);
-                    // rigidBody.velocity += sticky_force;
+                        //   Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * other.StickyFactor);
+                        // rigidBody.velocity += sticky_force;
 
-                    StealMass(other, AbsorptionSpeed);
-                    StealElement(other, AbsorptionSpeed, ElementType.Ice);
-                    StealElement(other, AbsorptionSpeed, ElementType.Gas);
+                        StealMass(other, AbsorptionSpeed);
+                        StealElement(other, AbsorptionSpeed, ElementType.Ice);
+                        StealElement(other, AbsorptionSpeed, ElementType.Gas);
+                    }
+                    else
+                    {
+
+                        if (mass()*0.5f > other.mass())
+                        {
+                            if (ConstantMass)
+                            {
+                                Vector2 sticky_force = ((collision.transform.position - transform.position).normalized * 10);
+                                other.rigidBody.velocity += sticky_force;
+                            }
+                            other.playerPixel.Shield.Bonk();
+                        }
+                    }
                 }
                 
             }
             else if(playerPixel!=null)
             {
+                if(GravityManager.GameWinner!=null)
+                {
+                    Ice /= 2f;
+                }
                 if(other.mass()>mass()*0.5f)
                 {
                     playerPixel.Shield.Bonk();

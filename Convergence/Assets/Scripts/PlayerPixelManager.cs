@@ -249,7 +249,8 @@ public class PlayerPixelManager : PixelManager
         other.rigidBody.constraints = RigidbodyConstraints2D.None;
         rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
         rigidBody.mass += 10000;
-        GravityManager.Instance.drift_power = 100;
+        GravityManager.Instance.offset_drift = transform.position;
+        GravityManager.Instance.drift_power = 150;
         GravityManager.Instance.DoParticleRespawn = false;
         GravityManager.Instance.respawn_players = false;
         GravityManager.GameWinner = playerPixel;
