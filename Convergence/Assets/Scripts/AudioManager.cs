@@ -166,6 +166,9 @@ public class AudioManager : MonoBehaviour
 
     public void MultiSelect()
 	{
+        soloSelected = true;
+        StartCoroutine(FirstPopWait());
+        sfxSource.PlayOneShot(sfx[5]);
         MenuSelect();
         gameMode = Mode.Multiplayer;
 	}
@@ -190,7 +193,7 @@ public class AudioManager : MonoBehaviour
     public void StopPlayerJet()
 	{
      //   Debug.Log("StopPlayerJet");
-        sfxSource.PlayOneShot(playersfx[1]);
+        //sfxSource.PlayOneShot(playersfx[1]);
         //playerSFXSource.time = playerSFXSource.clip.length * .975f;
         propelTween?.Kill();
         propelTween = playerSFXSource.DOFade(0, .5f);

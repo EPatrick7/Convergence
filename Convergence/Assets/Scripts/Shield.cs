@@ -59,6 +59,7 @@ public class Shield : MonoBehaviour
 
     public void ShieldUp()
     {
+
         if (IsActive()) return;
 
         if (maskSpr == null) return;
@@ -106,6 +107,9 @@ public class Shield : MonoBehaviour
     {
         while (player.isShielding)
         {
+            maskSpr.sortingOrder = player.GetComponent<SpriteRenderer>().sortingOrder + 2;
+            overlaySpr.sortingOrder = maskSpr.sortingOrder + 1;
+
             while (IsActive() && player.Ice > 0f)
             {
                 float expendedIce = Mathf.Max(1f, Mathf.Clamp(player.radius() + player.Ice, player.Ice, player.Ice * 10f) * ShieldCost) * interval;
@@ -125,10 +129,7 @@ public class Shield : MonoBehaviour
                     {
                         player.shieldActivated = true;
 
-                        maskSpr.sortingOrder = player.GetComponent<SpriteRenderer>().sortingOrder + 2;
-                        overlaySpr.sortingOrder = maskSpr.sortingOrder + 1;
-
-                        /*
+                                                /*
                         if (objPS != null)
                         {
                             objPS.gameObject.SetActive(true);
