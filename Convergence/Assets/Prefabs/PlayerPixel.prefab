@@ -15206,7 +15206,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   EjectionForceScale: 1.5
-  EjectedSpeedMult: 75
+  EjectedSpeedMult: 150
   PlanetForceDampenScale:
     serializedVersion: 2
     m_Curve:

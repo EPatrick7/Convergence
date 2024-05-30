@@ -62,10 +62,11 @@ public class TutorialManager : CutsceneManager
             UnloadLoaf(Current_Loaf);
         }
     }
-
-    public void LoadedTutorial(int id)
+    [HideInInspector]
+    public bool hasBonked;
+    public void Bonk()
     {
-
+        hasBonked = true;
     }
 
 }

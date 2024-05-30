@@ -312,6 +312,7 @@ public class PlayerPixelManager : PixelManager
     }
     public void Bonk(bool isLarger, bool isMicroscopic, bool isSlightlySmaller)
     {
+        TutorialManager.instance?.Bonk();
         camLook.inputManager.BonkRumble(isLarger, isMicroscopic, isSlightlySmaller);
     }
 

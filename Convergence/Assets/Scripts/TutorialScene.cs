@@ -5,17 +5,16 @@ using static GravityManager;
 
 public class TutorialScene : MonoBehaviour
 {
-    public int TutorialID;
     bool hasLoaded;
     public GameObject[] FreeOnLoad;
     public bool Cleared;
     public PixelManager ListenedObject;
     public float Requirement = -1;
     public GameObject RelativeToPos;
-    public enum ClearType {ConsumedAll,MassMin,KillCount};
+    public enum ClearType {ConsumedAll,MassMin,KillCount,Bonk};
     public ClearType clearType;
     public TutorialScene LoadOnClear;
-    public enum LoafLink {None,MassIntro,IceIntro,GasIntro};
+    public enum LoafLink {None,MassIntro,IceIntro,GasIntro,TutorialEnd};
 
     public LoafLink loafLink;
 
@@ -46,6 +45,10 @@ public class TutorialScene : MonoBehaviour
             else if(clearType== ClearType.KillCount&&transform.childCount<=Requirement) {
                 Clear();
             }
+            else if(clearType==ClearType.Bonk&&TutorialManager.instance.hasBonked)
+            {
+                Clear();
+            }
         }
     }
     public void Clear()
@@ -73,6 +76,10 @@ public class TutorialScene : MonoBehaviour
                 break;
             case LoafLink.IceIntro:
                 TutorialManager.instance?.TriggerLoaf(TutorialManager.instance?.Loaf_IceIntro, this);
+                break;
+            case LoafLink.TutorialEnd:
+                GravityManager.Instance.is_tutorial_ending = true;
+                //ListenedObject.rigidBody.gravityScale = 1f;
                 break;
             case LoafLink.None:
                 break;
@@ -107,7 +114,6 @@ public class TutorialScene : MonoBehaviour
         }
         if (!hasLoaded)
         {
-            TutorialManager.instance.LoadedTutorial(TutorialID);
             GravityManager.Instance.PreRegister_Block(this.transform);
             hasLoaded = true;
             foreach(GameObject freeG in FreeOnLoad)

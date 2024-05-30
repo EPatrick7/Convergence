@@ -8,6 +8,7 @@ using UnityEngine.Android;
 using UnityEngine.InputSystem;
 using UnityEngine.LowLevel;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 #region DataStructure
 //If you ever add more floats to GravityBody, be sure to adjust the sizeof(float) * # of floats in buffer setup, and the corresponding struct in compute shader!
@@ -212,6 +213,9 @@ public class GravityManager : MonoBehaviour
     public float max_npc_mass = 10000;
     [Tooltip("Whether or not to teleport objects nearing the world border to the other side of the world.")]
     public bool world_wrap=false;
+
+    [Tooltip("Whether or not to load a scene at next world wrap.")]
+    public bool is_tutorial_ending;
 
     public enum BorderNPCBehavior {None,Despawn,Wrap,WrapHybrid};
     [Tooltip("How should NPC planets react to exiting the galaxy?")]
@@ -807,6 +811,12 @@ public class GravityManager : MonoBehaviour
                         float bh_dist = Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position);
                         if (bh_dist>wrap_dist&&world_wrap&&this_pixel.playerPixel.camLook.LastNumPixelsInView<=1)
                         {
+                            if(is_tutorial_ending)
+                            {
+                                SceneManager.LoadScene(1);
+                            }
+
+
                             Vector3 localP = this_pixel.transform.InverseTransformPoint(this_pixel.playerPixel.camLook.transform.position);
                             this_pixel.transform.position = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
                             this_pixel.playerPixel.camLook.transform.position=this_pixel.transform.TransformPoint(localP);
