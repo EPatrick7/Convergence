@@ -1133,7 +1133,7 @@ MonoBehaviour:
   RelativeToPos: {fileID: 1901594636}
   clearType: 2
   LoadOnClear: {fileID: 1251442317}
-  loafLink: 0
+  loafLink: 2
 --- !u!1001 &350162346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4942,7 +4942,7 @@ MonoBehaviour:
   RelativeToPos: {fileID: 1901594636}
   clearType: 2
   LoadOnClear: {fileID: 345889221}
-  loafLink: 0
+  loafLink: 3
 --- !u!1001 &1901594633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8123,7 +8123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: borderBehavior
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: offset_drift.x
