@@ -30,9 +30,11 @@ public class AudioManager : MonoBehaviour
     public static float MusicVolume;
     public static float SFXVolume;
 
-    private Tween propelTween;
+    private Tween propelTween, musicTween;
 
     private bool soloSelected;
+
+    private bool restartingMusic;
 
     private enum Mode
 	{
@@ -91,7 +93,9 @@ public class AudioManager : MonoBehaviour
         */
     }
 
-    private float ConvertToMixer(float input)
+	#region Core Functions
+
+	private float ConvertToMixer(float input)
 	{
         return Mathf.Log10(input) * 20;
 	}
@@ -116,16 +120,54 @@ public class AudioManager : MonoBehaviour
 
     public void FadeOutMusic()
 	{
-        musicMixer.DOSetFloat("MusicVol", ConvertToMixer(0.001f), fadeOUTTime);
+        musicTween?.Kill();
+        musicTween = musicMixer.DOSetFloat("MusicVol", ConvertToMixer(0.001f), fadeOUTTime);
+        musicTween.OnComplete(musicSource.Stop);
+        musicTween.Play();
 	}
 
     public void FadeInMusic()
 	{
-        musicMixer.DOSetFloat("MusicVol", ConvertToMixer(MusicVolume), fadeOUTTime);
         musicSource.Play();
+        musicMixer.DOSetFloat("MusicVol", ConvertToMixer(MusicVolume), fadeOUTTime);
+        StartCoroutine(CheckIfPlaying());
         //audioMusic.Play();
         //audioMusic.DOFade(maxVol* MusicVolume, fadeINTime);
 	}
+
+    private void RestartMusic()
+	{
+        //Debug.LogWarning("Fading Out Music and waiting to restart");
+        FadeOutMusic();
+        StartCoroutine(RestartWait());
+
+	}
+
+    IEnumerator RestartWait()
+    {
+        yield return new WaitForSeconds(fadeOUTTime + 1f);
+        //Debug.LogWarning("Playing music again and fading back in");
+        FadeInMusic();
+        restartingMusic = false;
+    }
+
+    IEnumerator CheckIfPlaying()
+    {
+        while (musicSource.isPlaying)
+        {
+            if (musicSource.time > musicSource.clip.length * .95f && !restartingMusic)
+            {
+                restartingMusic = true;
+                RestartMusic();
+            }
+            //Debug.Log("Checking Music");
+            yield return new WaitForSeconds(1f); // Check every second
+        }
+    }
+
+    #endregion
+
+    #region Menu Buttons
 
     public void MenuSelect()
 	{
@@ -179,6 +221,10 @@ public class AudioManager : MonoBehaviour
         gameMode = Mode.Tutorial;
 	}
 
+    #endregion
+
+    #region SFX
+
     public void StartPlayerJet()
 	{
         if (propelTween != null)
@@ -228,4 +274,7 @@ public class AudioManager : MonoBehaviour
 		}
         sfxSource.PlayOneShot(sfx[1]);
     }
+
+	#endregion
+
 }
