@@ -722,21 +722,51 @@ public class GravityManager : MonoBehaviour
     }
     public Color BlackHoleColor;
     [HideInInspector]
-    public int EjectCount;
-    bool firstEjection()
+    public bool AllowSimulation;
+    public void FreezeSimulation()
     {
-        return EjectCount>0;
+        AllowSimulation = false;
+        for (int i = 0; i < gravUniverse.numBodies; i++)
+        {
+            if (gravUniverse.pixels[i] != null)
+            {
+                //Does not work for central black hole.
+                gravUniverse.pixels[i].GetComponent<PixelManager>().InitialVelocity = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity;
+                gravUniverse.pixels[i].GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            }
+        }
+    }
+    public void UnfreezeSimulation()
+    {
+        AllowSimulation = true;
+        for (int i = 0; i < gravUniverse.numBodies; i++)
+        {
+            if (gravUniverse.pixels[i] != null)
+            {
+                //Does not work for central black hole.
+                gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity=gravUniverse.pixels[i].GetComponent<PixelManager>().InitialVelocity;
+                gravUniverse.pixels[i].GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+            }
+        }
+    }
+    public bool SimulationFrozen()
+    {
+        return WaitForPlayerInput &&!AllowSimulation;
+    }
+    bool simulationUnfrozen()
+    {
+        return AllowSimulation;
     }
     public IEnumerator GravRun()
     {
-        if(WaitForPlayerInput)
-        {
-            yield return new WaitUntil(firstEjection);
-        }
         //Run forever
         while (true)
         {
-            if(DoParticleRespawn)
+            if (WaitForPlayerInput && !AllowSimulation)
+            {
+                yield return new WaitUntil(simulationUnfrozen);
+            }
+            if (DoParticleRespawn)
             {
                 for(int i =1;i%8!=0&&gravUniverse.numBodies < SpawnCount;i++)
                     Respawn();

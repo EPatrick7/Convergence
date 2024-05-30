@@ -14,6 +14,9 @@ public class TutorialScene : MonoBehaviour
     public enum ClearType {ConsumedAll,MassMin,KillCount};
     public ClearType clearType;
     public TutorialScene LoadOnClear;
+    public enum LoafLink {None,MassIntro,IceIntro,GasIntro};
+
+    public LoafLink loafLink;
     private void OnDrawGizmosSelected()
     {
         if(Application.isEditor&&!Application.isPlaying&& RelativeToPos!=null)
@@ -53,9 +56,32 @@ public class TutorialScene : MonoBehaviour
             }
         }
     }
+    public IEnumerator DelayLoafLoad()
+    {
+        yield return new WaitForFixedUpdate();
+        switch (loafLink)
+        {
+            case LoafLink.MassIntro:
+                TutorialManager.instance?.TriggerLoaf(TutorialManager.instance?.Loaf_MassIntro, this);
+                break;
+            case LoafLink.GasIntro:
+                TutorialManager.instance?.TriggerLoaf(TutorialManager.instance?.Loaf_GasIntro, this);
+                break;
+            case LoafLink.IceIntro:
+                TutorialManager.instance?.TriggerLoaf(TutorialManager.instance?.Loaf_IceIntro, this);
+                break;
+            case LoafLink.None:
+                break;
+        }
+    }
     private void OnEnable()
     {
-        if(Time.timeSinceLevelLoad<0.1f||TutorialManager.instance==null)
+        if (!hasLoaded)
+        {
+            StartCoroutine(DelayLoafLoad());
+        }
+
+        if (Time.timeSinceLevelLoad<0.1f||TutorialManager.instance==null)
         {
             hasLoaded = true;
 
