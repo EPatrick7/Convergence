@@ -33,7 +33,10 @@ public class Shield : MonoBehaviour
     private Coroutine coroutine;
 
     private Sequence tweenSequence;
-
+    public bool StillCooking()
+    {
+        return coroutine != null;
+    }
     private void Awake()
     {
         player = GetComponentInParent<PlayerPixelManager>();
@@ -55,6 +58,11 @@ public class Shield : MonoBehaviour
     public bool IsActive()
     {
         return col.enabled;
+    }
+    private void FixedUpdate()
+    {
+        maskSpr.sortingOrder = player.GetComponent<SpriteRenderer>().sortingOrder + 2;
+        overlaySpr.sortingOrder = maskSpr.sortingOrder + 1;
     }
 
     public void ShieldUp()
@@ -88,9 +96,7 @@ public class Shield : MonoBehaviour
         */
         
         tweenSequence?.Kill();
-
         tweenSequence = DOTween.Sequence();
-
         tweenSequence.Append(DOTween.To(() => maskSpr.color, x => maskSpr.color = x, inactiveColor, ShieldDelay));
         //seq.Insert(0, DOTween.To(() => overlaySpr.color, x => overlaySpr.color = x, inactiveColor, ShieldDelay));
         tweenSequence.OnComplete(ShieldDownOnComplete);
@@ -107,8 +113,6 @@ public class Shield : MonoBehaviour
     {
         while (player.isShielding)
         {
-            maskSpr.sortingOrder = player.GetComponent<SpriteRenderer>().sortingOrder + 2;
-            overlaySpr.sortingOrder = maskSpr.sortingOrder + 1;
 
             while (IsActive() && player.Ice > 0f)
             {
@@ -125,7 +129,7 @@ public class Shield : MonoBehaviour
             {
                 if (!IsActive())
                 {
-                    if (player.Ice > 0f)
+                    if (player.Ice > 0f&& player.isShielding)
                     {
                         player.shieldActivated = true;
 

@@ -605,7 +605,6 @@ public class PlayerPixelManager : PixelManager
         isShielding = false;
 
         shieldActivated = false;
-
         Shield.ShieldDown();
     }
 
