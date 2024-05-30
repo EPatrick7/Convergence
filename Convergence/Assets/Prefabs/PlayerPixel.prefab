@@ -15152,7 +15152,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.064347826
+      time: 0.07
       value: 1
       inSlope: 0.022888072
       outSlope: 0.022888072
@@ -15161,19 +15161,19 @@ MonoBehaviour:
       inWeight: 1
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.4093954
-      value: 0.4125572
-      inSlope: -1.0311875
-      outSlope: -1.0311875
-      tangentMode: 34
+      time: 0.099999994
+      value: 0.21129489
+      inSlope: -0.1959967
+      outSlope: -0.1959967
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.06394987
     - serializedVersion: 3
       time: 1
       value: 0.2000122
-      inSlope: -0.359877
-      outSlope: -0.359877
+      inSlope: -0.012536314
+      outSlope: -0.012536314
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -15387,8 +15387,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 9.322723
-      value: 8.185999
+      time: 8.915009
+      value: 12.290216
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -15421,8 +15421,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1.0089722
-      value: 0.13741514
+      time: 0.99413276
+      value: -0.00030495226
       inSlope: -0.036659505
       outSlope: -0.036659505
       tangentMode: 0
@@ -15454,8 +15454,8 @@ MonoBehaviour:
       inWeight: 0.2279062
       outWeight: 0.17366141
     - serializedVersion: 3
-      time: 0.49391744
-      value: 0.12025063
+      time: 0.67320824
+      value: 0.019176409
       inSlope: -0.033697534
       outSlope: -0.033697534
       tangentMode: 0
@@ -15463,8 +15463,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.13139503
     - serializedVersion: 3
-      time: 1.0923665
-      value: 0.10551896
+      time: 1.044759
+      value: 0.006153725
       inSlope: -0.060167946
       outSlope: -0.060167946
       tangentMode: 0
