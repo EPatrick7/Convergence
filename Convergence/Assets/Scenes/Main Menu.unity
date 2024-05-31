@@ -366,12 +366,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1438ad80d64e5bf4eb3103243cab87f3, type: 3}
   - {fileID: 8300000, guid: 4535e3288d1b41346a30de95935a1074, type: 3}
   playersfx:
-  - {fileID: 8300000, guid: 7ec6dad4b7d0dc245a1dc9e42ff08a43, type: 3}
+  - {fileID: 8300000, guid: dfd544770c3adf44f9fbc6f6c04d69ae, type: 3}
   - {fileID: 8300000, guid: e89b6f91696760e45aef4ec795d7eb8e, type: 3}
-  - {fileID: 8300000, guid: 865068f44641f0d47ae5fe82d79e7639, type: 3}
+  - {fileID: 8300000, guid: e5c57a5c7b45c5d4fad6a6fcc3f4d10a, type: 3}
   - {fileID: 8300000, guid: c0ee9e2441ccedc4d912d52f911ced0a, type: 3}
   - {fileID: 8300000, guid: 31fdba0ba15f368478f77db1c9e9dbcc, type: 3}
   - {fileID: 8300000, guid: 5e508821545cd954d90703825d4b6950, type: 3}
+  - {fileID: 8300000, guid: 971fed64f1fbdb54891728087b443f0c, type: 3}
 --- !u!1001 &88196628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21915,6 +21916,9 @@ MonoBehaviour:
   respawner: {fileID: 0}
   LastNumPixelsInView: 0
   NumPixelsInView: 0
+  OverideLookAt: 0
+  OverideLookPos: {x: 0, y: 0}
+  OverideLookScale: 0
 --- !u!1001 &1331732995
 PrefabInstance:
   m_ObjectHideFlags: 0

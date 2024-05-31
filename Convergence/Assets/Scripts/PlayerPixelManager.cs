@@ -367,7 +367,15 @@ public class PlayerPixelManager : PixelManager
         camLook.inputManager.EjectRumble();
         Vector2 ejectDirection = MouseDirection();
 
-        AudioManager.Instance?.PlayerEject();
+        if (mass() < 750)
+		{
+            AudioManager.Instance?.PlayerEject();
+        } else
+		{
+            Debug.Log("Big Eject");
+            AudioManager.Instance?.PlayerEjectBig();
+		}
+        
 
         // Create ejected pixel
         GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.63f), Pixel.transform.rotation, transform.parent);

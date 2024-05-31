@@ -283,6 +283,11 @@ public class AudioManager : MonoBehaviour
         playerSFXSource.PlayOneShot(playersfx[2]);
 	}
 
+    public void PlayerEjectBig()
+	{
+        playerSFXSource.PlayOneShot(playersfx[6]);
+    }
+
     public void PlayerShieldUp()
 	{
         playerSFXSource.PlayOneShot(playersfx[3]);
