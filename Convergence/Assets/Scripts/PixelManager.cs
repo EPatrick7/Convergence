@@ -186,6 +186,9 @@ public class PixelManager : MonoBehaviour
         return false;
     }
 
+    private bool BlueSunExpand;
+    private float BlueSunTransition_MassReq = 5000;
+
     public void CheckTransitions()
     {
         PlanetType last = planetType;
@@ -194,17 +197,37 @@ public class PixelManager : MonoBehaviour
             if (mass() > SunTransition_MassReq && Gas >= SunTransition_GasReq)
             {
                 planetType = PlanetType.Sun;
+                if (isPlayer)
+				{
+                    AudioManager.Instance?.PlayerExpandSFX();
+                }
             }
         }
         else if (planetType == PlanetType.Sun)
         {
+            if (mass() > BlueSunTransition_MassReq && !BlueSunExpand)
+			{
+                if (isPlayer)
+                {
+                    BlueSunExpand = true;
+                    AudioManager.Instance?.PlayerExpandSFX();
+                }
+            }
             if (mass() > BlackHoleTransition_MassReq)
             {
                 //if(isPlayer)  
                 //transform.gameObject.layer = LayerMask.NameToLayer("Black Hole");
 
                 planetType = PlanetType.BlackHole;
+                if (isPlayer)
+                {
+                    AudioManager.Instance?.PlayerExpandSFX();
+                }
             }
+            else if (isPlayer && mass() < (BlueSunTransition_MassReq * 0.9f) && mass() > SunTransition_MassReq*0.9f)
+			{
+                BlueSunExpand = false;
+			}
             else if(mass() < SunTransition_MassReq*0.9f)
             {
                 planetType = PlanetType.Planet;
@@ -252,7 +275,7 @@ public class PixelManager : MonoBehaviour
                     }    
                     
                 }
-                else if (mass() > 5000)
+                else if (mass() > BlueSunTransition_MassReq)
                 {
                     for (var i = 0; i < indManagers.Length; i++)
                     {
@@ -352,6 +375,10 @@ public class PixelManager : MonoBehaviour
                     PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID)?.Notify(playerPixel,playerPixel.pInput.GetComponent<InputManager>().PlayerNames[playerPixel.PlayerID-1]+ " Player");
             }
             Destroy(other.gameObject);
+            if (isPlayer)
+			{
+                AudioManager.Instance?.PlayerAbsorbSFX();
+            }
         }
 
         InvokeMassChanged();

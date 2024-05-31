@@ -110,10 +110,6 @@ public class PlayerPixelManager : PixelManager
     Coroutine dangerAwait; [HideInInspector]
     Vector2 lastMousePos = new Vector2(0, -1);
 
-
-
-
-
     private void Start()
     {
 

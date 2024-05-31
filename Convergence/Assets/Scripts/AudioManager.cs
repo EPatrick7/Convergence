@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 {
 
     [SerializeField]
-    private AudioSource sfxSource, musicSource, playerSFXSource;
+    private AudioSource sfxSource, musicSource, playerSFXSource, absorbSFXSource;
 
     [SerializeField]
     private AudioMixer musicMixer, sfxMixer;
@@ -276,6 +276,16 @@ public class AudioManager : MonoBehaviour
 		}
         sfxSource.PlayOneShot(sfx[1]);
     }
+
+    public void PlayerAbsorbSFX()
+	{
+        absorbSFXSource.PlayOneShot(playersfx[5]);
+	}
+
+    public void PlayerExpandSFX()
+	{
+        playerSFXSource.PlayOneShot(playersfx[4]);
+	}
 
 	#endregion
 
