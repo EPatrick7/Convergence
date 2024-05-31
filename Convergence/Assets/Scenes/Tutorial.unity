@@ -5203,6 +5203,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LoadScene
       objectReference: {fileID: 0}
+    - target: {fileID: 1803162911845470972, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3104076453196292326, guid: f616e458eda8ea44a9eab21e9e8e5868, type: 3}
       propertyPath: m_fontSize
       value: 59
@@ -10010,7 +10014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2649279917022632655, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: maxParticleSize
-      value: 200
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6946215090596114782, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: m_LocalPosition.x
