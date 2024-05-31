@@ -71,10 +71,9 @@ public class PixelManager : MonoBehaviour
     private void Start()
     {
         Initialize();
-        if (rigidBody.velocity.magnitude == 0)
-        {
-            rigidBody.velocity = InitialVelocity;
-        }
+        
+        rigidBody.velocity += InitialVelocity;
+        
     }
     public float Ice
     {
@@ -328,10 +327,13 @@ public class PixelManager : MonoBehaviour
             if (GravityManager.GameWinner==null&& other.ConstantMass && other.planetType == PlanetType.BlackHole)
             {
                 playerPixel.WinGame(other);
+                
                 damage = 0;
 
             }
         }
+        if (other.spawnBhole)
+            damage /= 3f;
         other.rigidBody.mass -= damage;
         if (other.mass()-other.MassOverride <= 1)
         {
