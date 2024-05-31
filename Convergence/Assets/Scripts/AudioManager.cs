@@ -30,7 +30,7 @@ public class AudioManager : MonoBehaviour
     public static float MusicVolume;
     public static float SFXVolume;
 
-    private Tween propelTween, musicTween;
+    private Tween propelTween, musicTween, dangerTween;
 
     private bool soloSelected;
 
@@ -231,7 +231,16 @@ public class AudioManager : MonoBehaviour
 	{
         if (musicSource.pitch == 1)
 		{
-            musicSource.pitch *= 1.05f;
+            float pitchVal = 1;
+            dangerTween?.Kill();
+            dangerTween = DOTween.To(() => pitchVal, x => pitchVal = x, musicSource.pitch * 1.05f, 2f).OnUpdate(() =>
+            {
+                musicSource.pitch = pitchVal;
+                Debug.Log(pitchVal);
+                Debug.Log("Increasing");
+            });
+            dangerTween.Play();
+            //musicSource.pitch *= 1.05f;
             //musicMixer.SetFloat("PitchBend", 1f / 1.5f);
         }
 
@@ -239,9 +248,18 @@ public class AudioManager : MonoBehaviour
 
     public void NormalSpeed()
     {
-        musicSource.pitch = 1;
+        float pitchVal = musicSource.pitch;
+        dangerTween?.Kill();
+        dangerTween = DOTween.To(() => pitchVal, x => pitchVal = x, 1f, 2f).OnUpdate(() =>
+        {
+            musicSource.pitch = pitchVal;
+            Debug.Log(pitchVal);
+            Debug.Log("Decreasing");
+        });
+        dangerTween.Play();
+        //musicSource.pitch = 1;
         //musicMixer.SetFloat("PitchBend", 1f);
-	}
+    }
 
     public void DialogueSFX()
 	{

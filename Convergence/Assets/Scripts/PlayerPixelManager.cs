@@ -262,6 +262,7 @@ public class PlayerPixelManager : PixelManager
     public void RunDeath()
     {
         AudioManager.Instance?.StopPlayerJet();
+        AudioManager.Instance?.NormalSpeed();
         if (RespawnFX != null && GravityManager.Instance.respawn_players)
         {
             PlayerRespawner r = Instantiate(RespawnFX, transform.position, RespawnFX.transform.rotation, transform.parent).GetComponent<PlayerRespawner>();
