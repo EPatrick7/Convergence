@@ -19,6 +19,10 @@ public class CameraLook : MonoBehaviour
     [HideInInspector]
     public int NumPixelsInView;
 
+    public bool OverideLookAt;
+    public Vector2 OverideLookPos;
+    public float OverideLookScale;
+
     private void Start()
     {
         orthoMultiplier = 1;
@@ -244,7 +248,23 @@ public class CameraLook : MonoBehaviour
     float lastOrthoChange;
     private void FixedUpdate()
     {
-        if (focusedPixel != null)
+        if (OverideLookAt)
+        {
+            transform.position = Vector3.Lerp(transform.position, new Vector3(OverideLookPos.x, OverideLookPos.y, transform.position.z), 0.15f);
+            var newSize = Vector2.Lerp(new Vector2(cam.orthographicSize, 0),new Vector2(OverideLookScale, 0), 0.1f).x;
+            if (camLooks.Count <= 1) //less than or equal to 1 player camera (no multiplayer cams)
+            {
+                var ppCam = Camera.main.GetUniversalAdditionalCameraData();
+                if (ppCam.cameraStack.Count > 0)
+                {
+                    ppCam.cameraStack[0].orthographicSize = newSize;
+                }
+            }
+            cam.orthographicSize = newSize;
+
+
+        }
+        else if (focusedPixel != null)
         {
             if(focusedPixel.playerPixel.hasWonGame&&!inWinState&&GravityManager.Instance.isMultiplayer)
             {

@@ -27,7 +27,9 @@ public class TutorialManager : CutsceneManager
     }
     public IEnumerator LoadOutTutorialAnim()
     {
-        yield return new WaitForFixedUpdate();
+        foreach(CameraLook camLook in CameraLook.camLooks)
+            camLook.OverideLookAt = true;
+        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(0);
     }
 

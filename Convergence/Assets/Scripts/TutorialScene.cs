@@ -61,6 +61,10 @@ public class TutorialScene : MonoBehaviour
             {
                 LoadOnClear.transform.position = LoadOnClear.RelativeToPos.transform.position;
             }
+            if(loafLink==LoafLink.TutorialEnd)
+            {
+                TutorialManager.instance.LoadOutTutorial();
+            }
         }
     }
     public IEnumerator DelayLoafLoad()
