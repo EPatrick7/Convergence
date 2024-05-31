@@ -813,7 +813,7 @@ public class GravityManager : MonoBehaviour
                         {
                             if(is_tutorial_ending)
                             {
-                                SceneManager.LoadScene(1);
+                                TutorialManager.instance?.LoadOutTutorial();
                             }
 
 

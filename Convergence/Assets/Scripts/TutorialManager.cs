@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialManager : CutsceneManager
 {
@@ -14,6 +15,22 @@ public class TutorialManager : CutsceneManager
 
 
     LoafManager Current_Loaf;
+
+    bool isOutloading;
+    public void LoadOutTutorial()
+    {
+        if(!isOutloading)
+        {
+            isOutloading = true;
+            StartCoroutine(LoadOutTutorialAnim());
+        }
+    }
+    public IEnumerator LoadOutTutorialAnim()
+    {
+        yield return new WaitForFixedUpdate();
+        SceneManager.LoadScene(0);
+    }
+
     private void Start()
     {
         instance = this;
