@@ -27,6 +27,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private List<AudioClip> playersfx = new List<AudioClip>();
 
+    [SerializeField]
+    private List<AudioClip> absorbsfx = new List<AudioClip>();
+
     public static float MusicVolume;
     public static float SFXVolume;
 
@@ -285,7 +288,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayerEjectBig()
 	{
-        absorbSFXSource.PlayOneShot(playersfx[6]); //so PlayerJet sfx doesn't fade it out
+        absorbSFXSource.PlayOneShot(playersfx[5]); //so PlayerJet sfx doesn't fade it out
     }
 
     public void PlayerShieldUp()
@@ -305,7 +308,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayerAbsorbSFX()
 	{
-        absorbSFXSource.PlayOneShot(playersfx[5]);
+        absorbSFXSource.PlayOneShot(absorbsfx[Random.Range(0, absorbsfx.Count)]);
 	}
 
     public void PlayerExpandSFX()
