@@ -124,6 +124,7 @@ public class AudioManager : MonoBehaviour
         musicTween = musicMixer.DOSetFloat("MusicVol", ConvertToMixer(0.001f), fadeOUTTime);
         musicTween.OnComplete(musicSource.Stop);
         musicTween.Play();
+        Debug.Log("FadeOutMusic called");
 	}
 
     public void FadeInMusic()
@@ -137,7 +138,7 @@ public class AudioManager : MonoBehaviour
 
     private void RestartMusic()
 	{
-        //Debug.LogWarning("Fading Out Music and waiting to restart");
+        Debug.LogWarning("Fading Out Music and waiting to restart");
         FadeOutMusic();
         StartCoroutine(RestartWait());
 
@@ -146,7 +147,7 @@ public class AudioManager : MonoBehaviour
     IEnumerator RestartWait()
     {
         yield return new WaitForSeconds(fadeOUTTime + 1f);
-        //Debug.LogWarning("Playing music again and fading back in");
+        Debug.LogWarning("Playing music again and fading back in");
         FadeInMusic();
         restartingMusic = false;
     }
@@ -155,12 +156,12 @@ public class AudioManager : MonoBehaviour
     {
         while (musicSource.isPlaying)
         {
-            if (musicSource.time > musicSource.clip.length * .95f && !restartingMusic)
+            if (musicSource.time > musicSource.clip.length * .99f && !restartingMusic)
             {
                 restartingMusic = true;
                 RestartMusic();
             }
-            //Debug.Log("Checking Music");
+            Debug.Log("Checking Music");
             yield return new WaitForSeconds(1f); // Check every second
         }
     }

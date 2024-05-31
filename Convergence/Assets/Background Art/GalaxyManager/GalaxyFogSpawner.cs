@@ -42,7 +42,7 @@ public class GalaxyFogSpawner : MonoBehaviour
     private Vector2 StartSpeed;
 
     [SerializeField]
-    private float maxParticleSize;
+    private float maxParticleSize, minParticleSize;
 
     [SerializeField]
     private List<Color> objColor = new List<Color>();
@@ -72,6 +72,7 @@ public class GalaxyFogSpawner : MonoBehaviour
             ParticleSystem objPS = obj.GetComponentInChildren<ParticleSystem>();
             ParticleSystemRenderer objPSR = obj.GetComponentInChildren<ParticleSystemRenderer>();
             objPSR.maxParticleSize = maxParticleSize;
+            objPSR.minParticleSize = minParticleSize;
             objPS.randomSeed = (uint)Random.Range(10, 100000000);
             objPS.Play();
             var col = objPS.colorOverLifetime;
