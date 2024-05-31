@@ -362,9 +362,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: dffb4e8cc7617b144b63c869764b7374, type: 3}
   music:
   - {fileID: 8300000, guid: a15cf9a5e025f6f4088ddfbbf3adbcf3, type: 3}
-  - {fileID: 8300000, guid: 01e36b68f4130f34d88a4e656797acb5, type: 3}
-  - {fileID: 8300000, guid: fa55644eca6f9fe4898ac704b273a589, type: 3}
-  - {fileID: 8300000, guid: 681ebc18de83a4946851d850bbffef9b, type: 3}
+  - {fileID: 8300000, guid: c8e94cb75eeb8a941911d2f6c77539e8, type: 3}
+  - {fileID: 8300000, guid: 1438ad80d64e5bf4eb3103243cab87f3, type: 3}
+  - {fileID: 8300000, guid: 4535e3288d1b41346a30de95935a1074, type: 3}
   playersfx:
   - {fileID: 8300000, guid: 7ec6dad4b7d0dc245a1dc9e42ff08a43, type: 3}
   - {fileID: 8300000, guid: e89b6f91696760e45aef4ec795d7eb8e, type: 3}
