@@ -227,6 +227,22 @@ public class AudioManager : MonoBehaviour
 
     #region SFX
 
+    public void InDangerSpeed()
+	{
+        if (musicSource.pitch == 1)
+		{
+            musicSource.pitch *= 1.05f;
+            //musicMixer.SetFloat("PitchBend", 1f / 1.5f);
+        }
+
+    }
+
+    public void NormalSpeed()
+    {
+        musicSource.pitch = 1;
+        //musicMixer.SetFloat("PitchBend", 1f);
+	}
+
     public void DialogueSFX()
 	{
         sfxSource.PlayOneShot(sfx[6]);

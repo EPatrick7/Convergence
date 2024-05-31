@@ -328,12 +328,14 @@ public class PlayerPixelManager : PixelManager
         //Debug.Log("Player " + PlayerID + " is in danger!");
         yield return new WaitUntil(notInDanger);
         inDanger = false;
+        AudioManager.Instance?.NormalSpeed();
         //Deactivate Warning HUD
         //Debug.Log("Player " + PlayerID + " is no longer in danger!");
         dangerAwait = null;
     }
     public void WarnDanger()
     {
+        AudioManager.Instance?.InDangerSpeed();
         camLook.inputManager.DangerRumble();
         inDanger = true;
         dangerUntil = Time.timeSinceLevelLoad + 1.5f;

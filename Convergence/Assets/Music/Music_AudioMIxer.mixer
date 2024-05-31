@@ -18,6 +18,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 8c57b61159157594aa228936cbe1f6ee
     name: MusicVol
+  - guid: 56e529b1cb7a45d4992cf318698c3458
+    name: PitchBend
   m_AudioMixerGroupViews:
   - guids:
     - 8f384bc8739f7764a8bbaa5cef79009a

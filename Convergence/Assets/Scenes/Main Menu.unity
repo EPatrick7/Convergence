@@ -380,6 +380,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1797586913459643658, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: mode
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2207568011719817587, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Name
       value: Cutscenes
