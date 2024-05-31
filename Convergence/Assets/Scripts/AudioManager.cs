@@ -232,7 +232,7 @@ public class AudioManager : MonoBehaviour
         if (musicSource.pitch == 1)
 		{
             musicMixer.SetFloat("PitchMaster", 1.1f);
-            musicMixer.SetFloat("PitchBend", .9f);
+            //musicMixer.SetFloat("PitchBend", .9f);
         }
 
     }
@@ -240,7 +240,7 @@ public class AudioManager : MonoBehaviour
     public void NormalSpeed()
     {
         musicMixer.SetFloat("PitchMaster", 1f);
-        musicMixer.SetFloat("PitchBend", 1f);
+        //musicMixer.SetFloat("PitchBend", 1f);
     }
 
     public void DialogueSFX()
@@ -280,12 +280,12 @@ public class AudioManager : MonoBehaviour
 
     public void PlayerEject()
 	{
-        playerSFXSource.PlayOneShot(playersfx[2]);
+        absorbSFXSource.PlayOneShot(playersfx[2]);
 	}
 
     public void PlayerEjectBig()
 	{
-        playerSFXSource.PlayOneShot(playersfx[6]);
+        absorbSFXSource.PlayOneShot(playersfx[6]); //so PlayerJet sfx doesn't fade it out
     }
 
     public void PlayerShieldUp()
