@@ -227,6 +227,11 @@ public class AudioManager : MonoBehaviour
 
     #region SFX
 
+    public void DialogueSFX()
+	{
+        sfxSource.PlayOneShot(sfx[6]);
+	}
+
     public void StartPlayerJet()
 	{
         if (propelTween != null)

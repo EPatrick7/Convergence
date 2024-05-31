@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class CutsceneManager : MonoBehaviour
 {
-    public enum LimitStates{Normal,OnlyToasts,None};
+    public enum LimitStates{Normal,OnlyToasts,None,MainMenu};
     public LimitStates mode;
     public static CutsceneManager Instance;
     private GravityManager gravityManager;
@@ -226,7 +226,7 @@ public class CutsceneManager : MonoBehaviour
         {
             player.PlanetTypeChanged += UpdatePlanetType;
         }
-        if(GameStart!=null)
+        if(GameStart!=null && mode != LimitStates.MainMenu)
             LoadCutscene(GameStart);
         LoadToast(GetComponent<TutorialManager>()!=null ? 0.5f:4f, Toast_GameStart) ;
         StartCoroutine(ReallyDelayedToast(Toast_GameStartDelayed));

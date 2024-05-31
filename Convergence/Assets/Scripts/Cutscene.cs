@@ -60,6 +60,7 @@ public class Cutscene : MonoBehaviour
         foreach(char c in text)
         {
             caption.text += c;
+            AudioManager.Instance?.DialogueSFX();
 
             if (c == '<') onSkipMode = true;
             if (c == '>') onSkipMode = false;
