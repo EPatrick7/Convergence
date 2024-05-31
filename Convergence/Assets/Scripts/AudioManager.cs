@@ -231,6 +231,7 @@ public class AudioManager : MonoBehaviour
 	{
         if (musicSource.pitch == 1)
 		{
+            /*
             float pitchVal = 1;
             dangerTween?.Kill();
             dangerTween = DOTween.To(() => pitchVal, x => pitchVal = x, musicSource.pitch * 1.05f, 2f).OnUpdate(() =>
@@ -240,6 +241,11 @@ public class AudioManager : MonoBehaviour
                 Debug.Log("Increasing");
             });
             dangerTween.Play();
+            */
+            musicMixer.SetFloat("PitchMaster", 1.1f);
+            musicMixer.SetFloat("PitchBend", .9f);
+            //musicMixer.DOSetFloat("PitchMaster", 1.05f, 2f);
+            //musicMixer.DOSetFloat("PitchBend", .95f, 2f);
             //musicSource.pitch *= 1.05f;
             //musicMixer.SetFloat("PitchBend", 1f / 1.5f);
         }
@@ -248,6 +254,7 @@ public class AudioManager : MonoBehaviour
 
     public void NormalSpeed()
     {
+        /*
         float pitchVal = musicSource.pitch;
         dangerTween?.Kill();
         dangerTween = DOTween.To(() => pitchVal, x => pitchVal = x, 1f, 2f).OnUpdate(() =>
@@ -257,6 +264,11 @@ public class AudioManager : MonoBehaviour
             Debug.Log("Decreasing");
         });
         dangerTween.Play();
+        */
+        musicMixer.SetFloat("PitchMaster", 1f);
+        musicMixer.SetFloat("PitchBend", 1f);
+        //musicMixer.DOSetFloat("PitchMaster", 1f, 2f);
+        //musicMixer.DOSetFloat("PitchBend", 1f, 2f);
         //musicSource.pitch = 1;
         //musicMixer.SetFloat("PitchBend", 1f);
     }
