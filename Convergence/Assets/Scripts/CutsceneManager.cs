@@ -14,6 +14,7 @@ public class CutsceneManager : MonoBehaviour
 
 
     public Cutscene GameStart;
+    public Cutscene GameStart_Respawn;
     public Cutscene OnStarDevolution;
     public Cutscene OnStarTransition;
     public Cutscene OnBlueStarTransition;
@@ -41,6 +42,8 @@ public class CutsceneManager : MonoBehaviour
     [Tooltip("How long a toast takes before loading out.")]
     public float toast_duration = 6;
     PlayerPixelManager player;
+
+    public static bool IsFromMainMenu;
     void Awake()
     {
         Instance = this;
@@ -226,8 +229,18 @@ public class CutsceneManager : MonoBehaviour
         {
             player.PlanetTypeChanged += UpdatePlanetType;
         }
-        if(GameStart!=null && mode != LimitStates.MainMenu)
-            LoadCutscene(GameStart);
+        if (GameStart != null && mode != LimitStates.MainMenu)
+        {
+            if(IsFromMainMenu || GameStart_Respawn==null)
+            {
+                IsFromMainMenu = false;
+                LoadCutscene(GameStart);
+            }
+            else
+            {
+                LoadCutscene(GameStart_Respawn);
+            }
+        }
         LoadToast(GetComponent<TutorialManager>()!=null ? 0.5f:4f, Toast_GameStart) ;
         StartCoroutine(ReallyDelayedToast(Toast_GameStartDelayed));
     }

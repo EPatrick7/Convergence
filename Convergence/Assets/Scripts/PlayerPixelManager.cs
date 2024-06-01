@@ -244,6 +244,7 @@ public class PlayerPixelManager : PixelManager
         //If we just consumed the central black hole...
         other.ConstantMass = false;
         ConstantMass = true;
+        other.rigidBody.mass+= other.MassOverride/50f;
         other.MassOverride = 0;
         other.rigidBody.constraints = RigidbodyConstraints2D.None;
         rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
