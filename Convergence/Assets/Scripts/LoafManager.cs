@@ -85,7 +85,7 @@ public class LoafManager : MonoBehaviour
         }
 
 
-        if (LoafID==0&&TutorialManager.instance.isLoafVisible() && !PauseMenu.isPaused)
+        if (LoafID==0&&TutorialManager.instance.isLoafVisible() && !PauseMenu.isPaused && !TutorialManager.instance.TutorialLive)
         {
             bool going_Right = false, goingLeft = false;
             if (inputManager.playerInput.currentControlScheme == "Gamepad")
