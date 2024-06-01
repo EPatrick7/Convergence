@@ -183,7 +183,7 @@ public class TargetIndicator : MonoBehaviour
             hitPoint.x += dir.x * offset;
             hitPoint.y += dir.y * offset;
 
-            rectTransform.position = new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z);
+            rectTransform.position = Vector3.Lerp(rectTransform.position, new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z), 0.1f);
         }
     }
 
