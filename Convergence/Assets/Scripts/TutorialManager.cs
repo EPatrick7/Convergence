@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class TutorialManager : CutsceneManager
 {
     public static TutorialManager instance;
+    public CanvasGroup PuaseOverlayGroup;
     public CanvasGroup LoafGroup;
 
     public bool isLoafVisible()
@@ -18,8 +20,42 @@ public class TutorialManager : CutsceneManager
     public LoafManager Loaf_IceIntro;
     public LoafManager Loaf_GasIntro;
 
+    public void EnableAlpha()
+    {
+        PuaseOverlayGroup.alpha = 0;
+    }
+    public void DisableAlpha()
+    {
+        if (!TutorialLive)
+        {
+            PuaseOverlayGroup.alpha = 1;
+        }
+        else
+        { PuaseOverlayGroup.alpha = 0; }
+    }
 
     LoafManager Current_Loaf;
+
+    [HideInInspector]
+    public bool TutorialLive;
+    Tween loafTween;
+    public void ActivateTutorialScene(TutorialScene scene)
+    {
+        TutorialLive = true;
+        scene.gameObject.SetActive(true);
+        loafTween?.Kill();
+        loafTween = LoafGroup.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 1000), 0.5f);
+        loafTween.onComplete += SetAlphaZero;
+        loafTween.Play();
+
+        GravityManager.Instance.UnfreezeSimulation();
+    }
+    public void SetAlphaZero()
+    {
+        loafTween?.Kill();
+        loafTween = LoafGroup.DOFade(0, 0.5f);
+        loafTween.Play();
+    }
 
     #region OutLoad
     bool isOutloading;
@@ -46,6 +82,7 @@ public class TutorialManager : CutsceneManager
     }
     private void OnDestroy()
     {
+        loafTween?.Kill();
         instance = null;
     }
 

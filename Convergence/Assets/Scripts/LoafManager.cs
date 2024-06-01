@@ -6,6 +6,7 @@ using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine.WSA;
 using UnityEngine.Windows;
 using Unity.VisualScripting;
+using UnityEditor.VersionControl;
 
 public class LoafManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class LoafManager : MonoBehaviour
     public static List<LoafManager> loafManagers;
 
     public CanvasGroup PlayText;
+
+    public TutorialScene tutorialScene;
 
     RectTransform rectTransform;
     InputManager inputManager;
@@ -63,19 +66,34 @@ public class LoafManager : MonoBehaviour
         buttonTween.Play();
     }
     float delayBeforeNextChange;
+    bool wantsToLoadSceneNow;
     private void Update()
     {
         UpdatePlayTextAlpha(isSelectedLoaf() ? 1 : 0);
 
+        if (inputManager == null)
+        {
+            inputManager = InputManager.GetManager(1);
+        }
+        else if (isSelectedLoaf()&&Time.timeSinceLevelLoad>0.5f&&!TutorialManager.instance.TutorialLive&&!PauseMenu.isPaused)
+        {
+            if (UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.GetKeyDown(KeyCode.Return) || inputManager.playerInput.actions.FindActionMap("Player").FindAction("Eject").IsPressed())
+            {
+                if (!wantsToLoadSceneNow)
+                {
+                    TutorialManager.instance.ActivateTutorialScene(tutorialScene);
+                    wantsToLoadSceneNow = true;
+                }
+            }
+            else
+                wantsToLoadSceneNow = false;
+        }
 
-        if (LoafID==0&&TutorialManager.instance.isLoafVisible())
+
+        if (LoafID==0&&TutorialManager.instance.isLoafVisible() && !PauseMenu.isPaused)
         {
             bool going_Right = false, goingLeft = false;
-            if (inputManager == null)
-            {
-                inputManager = InputManager.GetManager(1);
-            }
-            else if (inputManager.playerInput.currentControlScheme == "Gamepad")
+            if (inputManager.playerInput.currentControlScheme == "Gamepad")
             {
                 Vector2 mouseDir = inputManager.playerInput.actions.FindActionMap("Player").FindAction("MousePosition").ReadValue<Vector2>().normalized;
                 if(mouseDir.sqrMagnitude<=0.1f)
@@ -83,17 +101,17 @@ public class LoafManager : MonoBehaviour
                     delayBeforeNextChange = 0;
                 }
                 
-                if (Mathf.Abs(mouseDir.y) < 0.2f&& Time.timeSinceLevelLoad > delayBeforeNextChange)
+                if (Mathf.Abs(mouseDir.y) < 0.5f&& Time.timeSinceLevelLoad > delayBeforeNextChange)
                 {
-                    if (mouseDir.x > 0.2f)
+                    if (mouseDir.x > 0.1f)
                     {
-                        delayBeforeNextChange = Time.timeSinceLevelLoad + 0.5f;
+                        delayBeforeNextChange = Time.timeSinceLevelLoad + 0.2f;
 
                         going_Right = true;
                     }
-                    else if (mouseDir.x < -0.2f)
+                    else if (mouseDir.x < -0.1f)
                     {
-                        delayBeforeNextChange = Time.timeSinceLevelLoad + 0.5f;
+                        delayBeforeNextChange = Time.timeSinceLevelLoad + 0.2f;
                         goingLeft = true;
                     }
                 }
@@ -121,13 +139,19 @@ public class LoafManager : MonoBehaviour
                     }
                 }
             }
+            int lastLoafId = SelectedLoafID;
             if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow)||going_Right)
             {
                 UpdateSelectedLoafID(SelectedLoafID + 1);
+
+                if (lastLoafId == SelectedLoafID)
+                    delayBeforeNextChange = 0;
             }
-            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow)||goingLeft)
+            else if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow)||goingLeft)
             {
                 UpdateSelectedLoafID(SelectedLoafID - 1);
+                if (lastLoafId == SelectedLoafID)
+                    delayBeforeNextChange = 0;
             }
         }
     }

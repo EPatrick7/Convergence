@@ -316,7 +316,10 @@ MonoBehaviour:
   cutsceneManager: {fileID: 0}
   multiplayer: 0
   PauseText: {fileID: 8841943692910736558}
+  RestartText: {fileID: 499247345899090255}
   isPressingHome: 0
+  isPressingFire: 0
+  lastPressedFire: 0
   loadDelay: 0
   tutloadDelay: 0
   hasDeregistered: 0

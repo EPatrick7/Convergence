@@ -231,6 +231,8 @@ public class PauseMenu : MonoBehaviour
         Pause();
     }
     public TextMeshProUGUI PauseText;
+    public TextMeshProUGUI RestartText;
+
     public void Pause()
     {
 
@@ -242,6 +244,13 @@ public class PauseMenu : MonoBehaviour
         {
             PauseText.text = "- GAME OVER -";
         }
+        if(TutorialManager.instance!=null&& RestartText!=null)
+        {
+            RestartText.text = TutorialManager.instance.TutorialLive ? "End Tutorial":"Reload";
+        }
+
+        TutorialManager.instance?.DisableAlpha();
+
         openedMenu = Time.timeSinceLevelLoad;
         isPaused = true;
         foreach (InputManager inputManager in InputManager.inputManagers)
@@ -293,6 +302,7 @@ public class PauseMenu : MonoBehaviour
             inputManager.SetPlayerInput(true);
             inputManager.SetUIInput(false);
         }
+        TutorialManager.instance?.EnableAlpha();
         //SetPPVol(false);
         FadeOutPPVol();
         if (!multiplayer) 
