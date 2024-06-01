@@ -37,6 +37,7 @@ public class AudioManager : MonoBehaviour
 
     private bool soloSelected, restartingMusic;
     private bool gameEnd = false;
+    private float transitionNum = 0;
 
     private enum Mode
 	{
@@ -70,6 +71,7 @@ public class AudioManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        transitionNum++;
         soloSelected = false;
         musicSource.clip = music[(int)gameMode];
         if (SceneManager.GetActiveScene().name != "Main Menu")
@@ -319,11 +321,13 @@ public class AudioManager : MonoBehaviour
 
     IEnumerator FirstPopWait()
     {
+        float sceneNum = transitionNum;
         yield return new WaitForSeconds(2f);
-        if (SceneManager.GetActiveScene().name != "Main Menu" || !soloSelected) //check for soloSelected to fix weird bug where FirstPopWait() was being called when switching back to main menu really quick after skipping cutscene
+        if (SceneManager.GetActiveScene().name != "Main Menu" || !soloSelected || sceneNum != transitionNum) //check for soloSelected to fix weird bug where FirstPopWait() was being called when switching back to main menu really quick after skipping cutscene
 		{
             yield break;
 		}
+        Debug.Log(transitionNum);
         sfxSource.PlayOneShot(sfx[1]);
     }
 
