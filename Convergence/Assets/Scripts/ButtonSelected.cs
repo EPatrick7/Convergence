@@ -58,7 +58,8 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             if (!firstClick)
             {
-                AudioManager.Instance?.HoverClick();
+                if(transform.parent==null||(transform.parent.GetComponent<CanvasGroup>() == null|| transform.parent.GetComponent<CanvasGroup>().alpha>0))
+                    AudioManager.Instance?.HoverClick();
                 firstClick = true;
             }
             if (target == gameObject)
