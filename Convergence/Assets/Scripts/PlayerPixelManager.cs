@@ -435,9 +435,9 @@ public class PlayerPixelManager : PixelManager
         if (mass()>BlackHoleTransition_MassReq*0.9f)
         {
             ejectMulti *= 50;
-        }    
+        }
 
-        gravityManager.RegisterBody(pixel, rigidBody.velocity+ (ejectDirection* ejectMulti * EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass)) * Mathf.Max(0.25f, force)));
+        gravityManager.RegisterBody(pixel, rigidBody.velocity+ ejectDirection.normalized*0.25f+ (ejectDirection* ejectMulti * EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass)) * Mathf.Max(0.25f, force)));
 
         InvokeMassChanged();
 
