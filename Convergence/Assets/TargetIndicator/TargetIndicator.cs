@@ -183,7 +183,7 @@ public class TargetIndicator : MonoBehaviour
             hitPoint.x += dir.x * offset;
             hitPoint.y += dir.y * offset;
 
-            rectTransform.position = Vector3.Lerp(rectTransform.position, new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z), 0.1f);
+            rectTransform.position = isCentralBlackHole && timeElapsed >= 1.0f ? Vector3.Lerp(rectTransform.position, new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z), 0.1f) : new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z);
         }
     }
 
