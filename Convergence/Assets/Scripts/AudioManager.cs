@@ -35,9 +35,8 @@ public class AudioManager : MonoBehaviour
 
     private Tween propelTween, musicTween, dangerTween, sfxTween;
 
-    private bool soloSelected;
-
-    private bool restartingMusic;
+    private bool soloSelected, restartingMusic;
+    private bool gameEnd = false;
 
     private enum Mode
 	{
@@ -139,6 +138,10 @@ public class AudioManager : MonoBehaviour
         musicSource.Play();
         musicMixer.DOSetFloat("MusicVol", ConvertToMixer(MusicVolume), fadeOUTTime);
         StartCoroutine(CheckIfPlaying());
+        if (gameEnd)
+		{
+            FadeInSFX();
+		}
         //audioMusic.Play();
         //audioMusic.DOFade(maxVol* MusicVolume, fadeINTime);
 	}
@@ -200,6 +203,10 @@ public class AudioManager : MonoBehaviour
 
     public void MainSelect()
 	{
+        playerSFXSource.Stop();
+        absorbSFXSource.Stop();
+        indicatorSFXSource.Stop();
+        jetSFXSource.Stop();
         BackSelect();
         FadeOutMusic();
         gameMode = Mode.Menu;
@@ -334,7 +341,6 @@ public class AudioManager : MonoBehaviour
 	{
         absorbSFXSource.PlayOneShot(sfx[8]);
         FadeOutMusic();
-        //StartCoroutine(VictoryHoot());
 	}
 
     public void PlayerWinFailSFX()
@@ -345,15 +351,11 @@ public class AudioManager : MonoBehaviour
 
     public void PlayerWinSucceedSFX()
 	{
-        StartCoroutine(VictoryHoot());
-	}
-
-    IEnumerator VictoryHoot()
-	{
-        yield return new WaitForSeconds(12f);
+        Debug.Log("PlayerWinSucceedSFX triggered");
+        gameEnd = true;
         FadeOutSFX();
         FadeInMusic();
-	}
+    }
 
 	#endregion
 

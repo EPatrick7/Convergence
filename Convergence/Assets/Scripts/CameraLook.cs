@@ -268,6 +268,7 @@ public class CameraLook : MonoBehaviour
         {
             if(focusedPixel.playerPixel.hasWonGame&&!inWinState&&GravityManager.Instance.isMultiplayer)
             {
+                AudioManager.Instance?.PlayerWinSucceedSFX();
                 inWinState = true;
                 StartCoroutine(DelayedFinalCameraSnap());
             }

@@ -38,6 +38,7 @@ public class CreditsMenu : MonoBehaviour
     {
         yield return new WaitUntil(CinematicBars.notCinematic);
         yield return new WaitForSeconds(delay);
+        AudioManager.Instance?.PlayerWinSucceedSFX();
         creditsDelayed = true;
         RollCredits();
     }
