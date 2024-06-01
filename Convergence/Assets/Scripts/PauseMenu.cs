@@ -149,6 +149,7 @@ public class PauseMenu : MonoBehaviour
         }
         else //if (!isPauseMenu)
         {
+            CutsceneManager.IsFromMainMenu = true;
             asset = EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset;
             asset.FindActionMap("Player").Enable();
             EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset.FindActionMap("Player").FindAction("Home").started += YesPresHome;
