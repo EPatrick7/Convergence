@@ -137,6 +137,7 @@ public class TargetIndicator : MonoBehaviour
 
             rectTransform.position = indicatorPos;
         }
+        // Is Multiplayer
         else
         {
             indicatorPos = camera.WorldToViewportPoint(target.transform.position);
@@ -166,15 +167,22 @@ public class TargetIndicator : MonoBehaviour
 
             targetOutOfSight(Vector3.Distance(origin, targetPos) > currentMinDistance, targetPos);
 
-            float offset = (canvasRect.rect.width * canvasRect.localScale.x * 0.35f);
-
-            if (triggerDist < indicatorManager.bholeTriggerDist)
-                offset += Mathf.Clamp((Vector3.Distance(origin, targetPos) * 0.25f), 0, canvasRect.rect.width * canvasRect.localScale.x * 0.5f);
+            float offset;
+            if (isCentralBlackHole)
+            {
+                offset = canvasRect.rect.width * canvasRect.localScale.x * -0.0225f;
+            }
             else
-                offset *= 1.65f;
+            {
+
+                offset = canvasRect.rect.width * canvasRect.localScale.x * 0.35f;
+
+                offset += Mathf.Clamp((Vector3.Distance(origin, targetPos) * 0.25f), 0, canvasRect.rect.width * canvasRect.localScale.x * 0.5f);
+            }
 
             hitPoint.x += dir.x * offset;
             hitPoint.y += dir.y * offset;
+
             rectTransform.position = new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z);
         }
     }
@@ -342,9 +350,11 @@ public class TargetIndicator : MonoBehaviour
 
     private Vector3 rotationOutOfSightTargetIndicator(Vector3 indicatorPos)
 	{
-        Vector3 canvasCenter = new Vector3(canvasRect.rect.width / 2f, canvasRect.rect.height / 2f, 0f) * canvasRect.localScale.x; //get center of canvas
-        float angle = Vector3.SignedAngle(Vector3.up, indicatorPos - canvasCenter, Vector3.forward); //calc signedAngle between pos of indicator and direction Up
+        Vector3 center = renderMode == RenderMode.ScreenSpaceOverlay ? new Vector3(canvasRect.rect.width / 2f, canvasRect.rect.height / 2f, 0f) * canvasRect.localScale.x : new Vector3(camera.transform.position.x, camera.transform.position.y, indicatorPos.z);
+
+        float angle = Vector3.SignedAngle(Vector3.up, indicatorPos - center, Vector3.forward); //calc signedAngle between pos of indicator and direction Up
+        
         return new Vector3(0f, 0f, angle);
-	}
+    }
 
 }
