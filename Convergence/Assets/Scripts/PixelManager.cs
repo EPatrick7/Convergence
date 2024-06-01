@@ -375,10 +375,12 @@ public class PixelManager : MonoBehaviour
                     PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID)?.Notify(playerPixel,playerPixel.pInput.GetComponent<InputManager>().PlayerNames[playerPixel.PlayerID-1]+ " Player");
             }
             Destroy(other.gameObject);
-            if (isPlayer)
+            /*
+            if (isPlayer && other.mass() > (mass()/10))
 			{
                 AudioManager.Instance?.PlayerAbsorbSFX();
             }
+            */
         }
 
         InvokeMassChanged();

@@ -83,7 +83,7 @@ public class AudioManager : MonoBehaviour
         PlayerPrefs.SetInt("lastLevel", SceneManager.GetActiveScene().buildIndex);
         //FadeOutSFX();
         //sfxSource.Stop();
-        //FadeInSFX();
+        FadeInSFX();
         FadeInMusic();
         
         /*
@@ -325,6 +325,27 @@ public class AudioManager : MonoBehaviour
     public void PlayerExpandSFX()
 	{
         playerSFXSource.PlayOneShot(playersfx[4]);
+	}
+
+    public void PlayerWinSFX()
+	{
+        Debug.Log("Win SFX");
+        if (propelTween != null)
+        {
+            playerSFXSource.volume = 1;
+            propelTween.Kill();
+        }
+        //FadeInSFX();
+        playerSFXSource.PlayOneShot(sfx[8]);
+        FadeOutMusic();
+        StartCoroutine(VictoryHoot());
+	}
+
+    IEnumerator VictoryHoot()
+	{
+        yield return new WaitForSeconds(12f);
+        FadeOutSFX();
+        //FadeInMusic();
 	}
 
 	#endregion

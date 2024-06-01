@@ -148,6 +148,7 @@ public class InputManager : MonoBehaviour
         else if(!isMicroscopic)
         {
             LilRumbleContribution += SmallCollisionRumble;
+            AudioManager.Instance?.PlayerAbsorbSFX();
         }
         else
             LilRumbleContribution += MicroCollisionRumble;

@@ -355,7 +355,7 @@ MonoBehaviour:
   fadeCHANGETime: 0.1
   maxVol: 0.5
   sfx:
-  - {fileID: 8300000, guid: 60cc1de4afe69274c92e16c4d8d58f56, type: 3}
+  - {fileID: 8300000, guid: d38e552f31aaa734c85c31b19a100002, type: 3}
   - {fileID: 8300000, guid: 0fbba70eb469c2f4898e20dd90a9bcca, type: 3}
   - {fileID: 8300000, guid: d7cae99e95f048f448d3037d80472e95, type: 3}
   - {fileID: 8300000, guid: c687be3aed654e64cba8803b0e596dbf, type: 3}
@@ -363,6 +363,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7bbc38db2ad932341958fcbbaeac5913, type: 3}
   - {fileID: 8300000, guid: dffb4e8cc7617b144b63c869764b7374, type: 3}
   - {fileID: 8300000, guid: 1553a287495bc004fa871b827c642267, type: 3}
+  - {fileID: 8300000, guid: 6cf09eea8e9b8bf4dbf7a27cd7b8d9ce, type: 3}
   music:
   - {fileID: 8300000, guid: a8bc980798074de458d1960ec4a8868c, type: 3}
   - {fileID: 8300000, guid: f54ef7aafb7b8674c9e51c4c143dedf0, type: 3}

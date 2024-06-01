@@ -240,6 +240,7 @@ public class PlayerPixelManager : PixelManager
 
     public void WinGame(PixelManager other)
     {
+        AudioManager.Instance?.PlayerWinSFX();
         //If we just consumed the central black hole...
         other.ConstantMass = false;
         ConstantMass = true;
