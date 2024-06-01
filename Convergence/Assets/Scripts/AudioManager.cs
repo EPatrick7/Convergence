@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 {
 
     [SerializeField]
-    private AudioSource sfxSource, musicSource, playerSFXSource, absorbSFXSource;
+    private AudioSource sfxSource, musicSource, playerSFXSource, absorbSFXSource, indicatorSFXSource;
 
     [SerializeField]
     private AudioMixer musicMixer, sfxMixer;
@@ -232,17 +232,28 @@ public class AudioManager : MonoBehaviour
 
     public void InDangerSpeed()
 	{
+        if (!indicatorSFXSource.isPlaying)
+		{
+            indicatorSFXSource.volume = 0f;
+            indicatorSFXSource.DOFade(1f, fadeOUTTime);
+            indicatorSFXSource.PlayOneShot(sfx[7]);
+        }
+        /*
         if (musicSource.pitch == 1)
 		{
             musicMixer.SetFloat("PitchMaster", 1.1f);
             //musicMixer.SetFloat("PitchBend", .9f);
         }
+        */
 
     }
 
     public void NormalSpeed()
     {
-        musicMixer.SetFloat("PitchMaster", 1f);
+        Tween tween = indicatorSFXSource.DOFade(0f, fadeOUTTime);
+        tween.OnComplete(indicatorSFXSource.Stop);
+        tween.Play();
+        //musicMixer.SetFloat("PitchMaster", 1f);
         //musicMixer.SetFloat("PitchBend", 1f);
     }
 

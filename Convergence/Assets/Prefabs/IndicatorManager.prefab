@@ -48,8 +48,9 @@ MonoBehaviour:
   targetIndicators: []
   camera: {fileID: 0}
   TargetIndicatorPrefab: {fileID: 3273725713259189405, guid: 1cc0b4a5807625947b76c29aa5e6cb89, type: 3}
+  BlackHoleIndicatorPrefab: {fileID: 3273725713259189405, guid: 25caefec3a1e0d34986c166f9eb116b9, type: 3}
   PlayerID: 1
-  maxIndicatorAlpha: 0.05
+  maxIndicatorAlpha: 0.04
   bholeColor: {r: 0.69019604, g: 0, b: 1, a: 0}
   bholeTriggerDist: 250
   sunColor: {r: 1, g: 0.16666667, b: 0, a: 0}

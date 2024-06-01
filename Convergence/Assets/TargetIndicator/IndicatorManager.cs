@@ -17,6 +17,9 @@ public class IndicatorManager : MonoBehaviour
     [SerializeField]
     private GameObject TargetIndicatorPrefab;
 
+    [SerializeField]
+    private GameObject BlackHoleIndicatorPrefab;
+
     [Range(1, 4)]
     public int PlayerID = 1;
 
@@ -145,17 +148,33 @@ public class IndicatorManager : MonoBehaviour
     {
         if (target != null)
         {
-            TargetIndicator indicator = GameObject.Instantiate(TargetIndicatorPrefab, canvas.transform).GetComponent<TargetIndicator>();
-            indicator.isCentralBlackHole = ICB;
-            indicator.transform.SetAsLastSibling();
-            indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, maxIndicatorAlpha);
-            targetIndicators.Add(indicator);
-            indicator.GetComponent<TargetIndicator>().OutOfSightOffset *= offsetMultiplier;
-            indicator.indicatorManager = this;
+            if (ICB)
+			{
+                TargetIndicator indicator = GameObject.Instantiate(BlackHoleIndicatorPrefab, canvas.transform).GetComponent<TargetIndicator>();
+                indicator.isCentralBlackHole = ICB;
+                indicator.transform.SetAsLastSibling();
+                indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, 1);
+                targetIndicators.Add(indicator);
+                indicator.GetComponent<TargetIndicator>().OutOfSightOffset *= offsetMultiplier;
+                indicator.indicatorManager = this;
 
-            indicator.gameObject.layer = LayerMask.NameToLayer(string.Format("P{0}Only", PlayerID));
-            indicator.offscreenTargetIndicatorImage.gameObject.layer = indicator.gameObject.layer;
-            //Debug.Log(targetIndicators.Count);
+                indicator.gameObject.layer = LayerMask.NameToLayer(string.Format("P{0}Only", PlayerID));
+                indicator.offscreenTargetIndicatorImage.gameObject.layer = indicator.gameObject.layer;
+            } else
+			{
+                TargetIndicator indicator = GameObject.Instantiate(TargetIndicatorPrefab, canvas.transform).GetComponent<TargetIndicator>();
+                indicator.isCentralBlackHole = ICB;
+                indicator.transform.SetAsLastSibling();
+                indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, maxIndicatorAlpha);
+                targetIndicators.Add(indicator);
+                indicator.GetComponent<TargetIndicator>().OutOfSightOffset *= offsetMultiplier;
+                indicator.indicatorManager = this;
+
+                indicator.gameObject.layer = LayerMask.NameToLayer(string.Format("P{0}Only", PlayerID));
+                indicator.offscreenTargetIndicatorImage.gameObject.layer = indicator.gameObject.layer;
+                //Debug.Log(targetIndicators.Count);
+            }
+
         }
     }
 
