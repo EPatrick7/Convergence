@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine.WSA;
+using UnityEngine.Windows;
 
 public class LoafManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class LoafManager : MonoBehaviour
     
     public static List<LoafManager> loafManagers;
     RectTransform rectTransform;
+    InputManager inputManager;
+
+    static float loafSpace = 1425;
 
     Tween moveTween;
 
@@ -21,7 +25,7 @@ public class LoafManager : MonoBehaviour
             loafManagers = new List<LoafManager>();
         loafManagers.Add(this);
 
-        rectTransform.anchoredPosition = new Vector2(2100*(LoafID-SelectedLoafID),0);
+        rectTransform.anchoredPosition = new Vector2(loafSpace * (LoafID-SelectedLoafID),0);
     }
     private void OnDestroy()
     {
@@ -39,23 +43,51 @@ public class LoafManager : MonoBehaviour
 
         foreach(LoafManager loafManager in loafManagers)
         {
-            Vector2 targAnchoredPos= new Vector2(2100 * (loafManager.LoafID-SelectedLoafID), 0);
+            Vector2 targAnchoredPos= new Vector2(loafSpace * (loafManager.LoafID-SelectedLoafID), 0);
             
             loafManager.moveTween?.Kill();
             loafManager.moveTween = loafManager.rectTransform.DOAnchorPos(targAnchoredPos, 1f);
             loafManager.moveTween.Play();
         }
     }
-
+    float delayBeforeNextChange;
     private void Update()
     {
-        if (LoafID==0)
+        if (LoafID==0&&TutorialManager.instance.isLoafVisible())
         {
-            if(Input.GetKeyDown(KeyCode.D))
+            bool going_Right = false, goingLeft = false;
+            if (inputManager == null)
+            {
+                inputManager = InputManager.GetManager(1);
+            }
+            else if (inputManager.playerInput.currentControlScheme == "Gamepad")
+            {
+                Vector2 mouseDir = inputManager.playerInput.actions.FindActionMap("Player").FindAction("MousePosition").ReadValue<Vector2>().normalized;
+                if(mouseDir.sqrMagnitude<=0.1f)
+                {
+                    delayBeforeNextChange = 0;
+                }
+                
+                if (Mathf.Abs(mouseDir.y) < 0.2f&& Time.timeSinceLevelLoad > delayBeforeNextChange)
+                {
+                    if (mouseDir.x > 0.2f)
+                    {
+                        delayBeforeNextChange = Time.timeSinceLevelLoad + 0.5f;
+
+                        going_Right = true;
+                    }
+                    else if (mouseDir.x < -0.2f)
+                    {
+                        delayBeforeNextChange = Time.timeSinceLevelLoad + 0.5f;
+                        goingLeft = true;
+                    }
+                }
+            }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow)||going_Right)
             {
                 UpdateSelectedLoafID(SelectedLoafID + 1);
             }
-            if (Input.GetKeyDown(KeyCode.A))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow)||goingLeft)
             {
                 UpdateSelectedLoafID(SelectedLoafID - 1);
             }

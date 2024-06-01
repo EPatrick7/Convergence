@@ -7,7 +7,12 @@ using UnityEngine.SceneManagement;
 public class TutorialManager : CutsceneManager
 {
     public static TutorialManager instance;
+    public CanvasGroup LoafGroup;
 
+    public bool isLoafVisible()
+    {
+        return LoafGroup.alpha > 0;
+    }
     [Header("Loafs")]
     public LoafManager Loaf_MassIntro;
     public LoafManager Loaf_IceIntro;
