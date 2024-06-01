@@ -437,7 +437,7 @@ public class PlayerPixelManager : PixelManager
             ejectMulti *= 50;
         }
 
-        gravityManager.RegisterBody(pixel, rigidBody.velocity+ ejectDirection.normalized*0.25f+ (ejectDirection* ejectMulti * EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass)) * Mathf.Max(0.25f, force)));
+        gravityManager.RegisterBody(pixel, rigidBody.velocity+ ejectDirection.normalized*7.25f+ (ejectDirection* ejectMulti * EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass)) * Mathf.Max(0.25f, force)));
 
         InvokeMassChanged();
 

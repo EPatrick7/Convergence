@@ -157,17 +157,33 @@ public class CutsceneManager : MonoBehaviour
                 OnPlayerDeath.SetText(string.Format("<color=#{0}>{1} Player</color> Killed You", UnityEngine.ColorUtility.ToHtmlStringRGBA(color), manager.PlayerNames[eater.PlayerID - 1]));
             }
         }
-
         LoadCutscene(OnPlayerDeath);
         if(Toast_Death!=null)
             StartCoroutine(DelayToastDeath());
     }
+
     public IEnumerator DelayToastDeath()
     {
         ToastQueueFrozen = true;
         yield return new WaitForSeconds(2);
-        if(!GravityManager.Instance.respawn_players)
+        if (!GravityManager.Instance.respawn_players)
+        {
             LoadToast(2f, Toast_Death);
+
+            StartCoroutine(DelayEndPause());
+        }
+    }
+    public IEnumerator DelayEndPause()
+    {
+        GravityManager.Instance.GameLost = true;
+        if (CinematicBars.isCinematic)
+        {
+            yield return new WaitUntil(CinematicBars.notCinematic);
+        }
+        yield return new WaitUntil(noToastLive);
+        yield return new WaitForSeconds(2);
+        if (!PauseMenu.isPaused)
+            PauseMenu.Instance.ForcePause();
     }
     
     public void IsBlueStar()

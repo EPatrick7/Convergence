@@ -39,7 +39,7 @@ public class CameraLook : MonoBehaviour
 
     float maxViewedMass;
 
-    bool allCamsSame()
+    public static bool allCamsSame()
     {
         GameObject obj = null;
         bool setPlayer=false;

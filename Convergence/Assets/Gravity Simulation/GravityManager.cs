@@ -272,6 +272,9 @@ public class GravityManager : MonoBehaviour
     [Tooltip("The number of NPC planets that will receive goodies as if they were players.")]
     public int NPCGoodiesRecieverCount;
 
+
+    [HideInInspector]
+    public bool GameLost;
     bool isWithinCamera(CameraLook look, Vector2 loc)
     {
         Vector3 vp = look.GetComponent<Camera>().WorldToViewportPoint(loc);

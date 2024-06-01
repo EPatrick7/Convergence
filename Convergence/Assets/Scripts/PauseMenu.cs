@@ -233,7 +233,12 @@ public class PauseMenu : MonoBehaviour
     public TextMeshProUGUI PauseText;
     public void Pause()
     {
-        if(GravityManager.GameWinner!=null&& PauseText!=null)
+
+        if (GravityManager.Instance.GameLost && PauseText != null)
+        {
+            PauseText.text = "- GAME OVER -";
+        }
+        if (GravityManager.GameWinner!=null&& PauseText!=null)
         {
             PauseText.text = "- GAME OVER -";
         }
@@ -300,7 +305,7 @@ public class PauseMenu : MonoBehaviour
         }
         if(GravityManager.GameWinner==null)
             IndicatorManager.EnableAllIndicators();
-        UpdateHuds((!GravityManager.Instance.isMultiplayer||GravityManager.GameWinner==null));
+        UpdateHuds((!GravityManager.Instance.isMultiplayer || (!CameraLook.allCamsSame())));
         CreditsMenu.Instance?.gameObject.SetActive(true);
         //cutsceneManager.gameObject.SetActive(true);
 
