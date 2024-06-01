@@ -915,6 +915,8 @@ public class GravityManager : MonoBehaviour
 
                     Vector2 acceleration = gravUniverse.bodies[i].acceleration();
                     gravUniverse.pixels[i].GetComponent<PixelManager>().CheckTransitions();
+                    gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale, Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(), 0.1f);
+
                     if (!float.IsNaN(acceleration.x) && !float.IsNaN(acceleration.y))
                     {
                         //Update acceleration of gravity
@@ -926,7 +928,6 @@ public class GravityManager : MonoBehaviour
 						{
                             gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(Mathf.Min(32767, body.mass));
                         }
-                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale,  Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(),0.1f);
                         gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
 
                         if(acceleration.sqrMagnitude>15)
