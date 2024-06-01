@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class LoafManager : MonoBehaviour
 {
-    public enum DisableTrigger {Never,Eject,Propel,Shield};
-    public DisableTrigger disableTrigger;
 
-    
 }

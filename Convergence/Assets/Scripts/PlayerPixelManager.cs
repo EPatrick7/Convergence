@@ -312,12 +312,6 @@ public class PlayerPixelManager : PixelManager
     {
         camLook?.inputManager?.AmbientRumble(planetType);
     }
-    public void Bonk(bool isLarger, bool isMicroscopic, bool isSlightlySmaller)
-    {
-        TutorialManager.instance?.Bonk();
-        camLook.inputManager.BonkRumble(isLarger, isMicroscopic, isSlightlySmaller);
-    }
-
     #endregion
 
     #region Danger
@@ -352,7 +346,6 @@ public class PlayerPixelManager : PixelManager
     #region Eject
     private void Eject(InputAction.CallbackContext context)
     {
-        TutorialManager.instance?.Eject();
         if (Time.timeSinceLevelLoad < 0.1f)
             return;
         if (!canEject) return;
@@ -495,7 +488,6 @@ public class PlayerPixelManager : PixelManager
     }
     private void StartPropel(InputAction.CallbackContext context)
     {
-        TutorialManager.instance?.Propel();
         if (isPropelling) return;
 
         if (hasWonGame)
@@ -582,12 +574,14 @@ public class PlayerPixelManager : PixelManager
 
     }
     #endregion
-
+    public void Bonk(bool isLarger, bool isMicroscopic, bool isSlightlySmaller)
+    {
+        camLook.inputManager.BonkRumble(isLarger, isMicroscopic, isSlightlySmaller);
+    }
     #region Shield
     private void StartShield(InputAction.CallbackContext context)
     {
-        TutorialManager.instance?.Shield();
-
+        
         if (Shield == null) return;
         if (hasWonGame)
             return;

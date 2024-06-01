@@ -214,9 +214,6 @@ public class GravityManager : MonoBehaviour
     [Tooltip("Whether or not to teleport objects nearing the world border to the other side of the world.")]
     public bool world_wrap=false;
 
-    [Tooltip("Whether or not to load a scene at next world wrap.")]
-    public bool is_tutorial_ending;
-
     public enum BorderNPCBehavior {None,Despawn,Wrap,WrapHybrid};
     [Tooltip("How should NPC planets react to exiting the galaxy?")]
     public BorderNPCBehavior borderBehavior;
@@ -814,11 +811,6 @@ public class GravityManager : MonoBehaviour
                         float bh_dist = Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position);
                         if (bh_dist>wrap_dist&&world_wrap&&this_pixel.playerPixel.camLook.LastNumPixelsInView<=1)
                         {
-                            if(is_tutorial_ending)
-                            {
-                                TutorialManager.instance?.LoadOutTutorial();
-                            }
-
 
                             Vector3 localP = this_pixel.transform.InverseTransformPoint(this_pixel.playerPixel.camLook.transform.position);
                             this_pixel.transform.position = (transform.position - this_pixel.transform.position).normalized * wrap_dist;

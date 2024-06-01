@@ -16,6 +16,7 @@ public class TutorialManager : CutsceneManager
 
     LoafManager Current_Loaf;
 
+    #region OutLoad
     bool isOutloading;
     public void LoadOutTutorial()
     {
@@ -32,7 +33,7 @@ public class TutorialManager : CutsceneManager
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(0);
     }
-
+    #endregion
     private void Start()
     {
         instance = this;
@@ -41,51 +42,6 @@ public class TutorialManager : CutsceneManager
     private void OnDestroy()
     {
         instance = null;
-    }
-    public void TriggerLoaf(LoafManager loaf,TutorialScene linked)
-    {
-        Current_Loaf = loaf;
-        GravityManager.Instance.FreezeSimulation();
-        LoadToast(0, loaf?.GetComponent<RectTransform>());
-    }
-    public void UnloadLoaf(LoafManager loaf)
-    {
-        GravityManager.Instance.UnfreezeSimulation();
-        UnloadToast(loaf.GetComponent<RectTransform>());
-        Current_Loaf = null;
-    }
-
-    //Called regardless of if the player sucessfully performed the action.
-    public void Eject()
-    {
-        if(Current_Loaf != null&&Current_Loaf.disableTrigger==LoafManager.DisableTrigger.Eject)
-        {
-            UnloadLoaf(Current_Loaf);
-        }
-    }
-    //Called regardless of if the player sucessfully performed the action.
-    public void Propel()
-    {
-
-        if (Current_Loaf != null && Current_Loaf.disableTrigger == LoafManager.DisableTrigger.Propel)
-        {
-            UnloadLoaf(Current_Loaf);
-        }
-    }
-    //Called regardless of if the player sucessfully performed the action.
-    public void Shield()
-    {
-
-        if (Current_Loaf != null && Current_Loaf.disableTrigger == LoafManager.DisableTrigger.Shield)
-        {
-            UnloadLoaf(Current_Loaf);
-        }
-    }
-    [HideInInspector]
-    public bool hasBonked;
-    public void Bonk()
-    {
-        hasBonked = true;
     }
 
 }
