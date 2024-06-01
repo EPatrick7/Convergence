@@ -56,6 +56,7 @@ public class IndicatorManager : MonoBehaviour
     //private float triggerDist;
 
     public float maxIndicatorAlpha;
+    public float maxBHoleIndicatorAlpha;
 
     public Color bholeColor;
     public float bholeTriggerDist;
@@ -153,7 +154,7 @@ public class IndicatorManager : MonoBehaviour
                 TargetIndicator indicator = GameObject.Instantiate(BlackHoleIndicatorPrefab, canvas.transform).GetComponent<TargetIndicator>();
                 indicator.isCentralBlackHole = ICB;
                 indicator.transform.SetAsLastSibling();
-                indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, 1);
+                indicator.InitializeTargetIndicator(target, camera, canvas, tDist, color, maxBHoleIndicatorAlpha);
                 targetIndicators.Add(indicator);
                 indicator.GetComponent<TargetIndicator>().OutOfSightOffset *= offsetMultiplier;
                 indicator.indicatorManager = this;
