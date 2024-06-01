@@ -5,18 +5,23 @@ using DG.Tweening;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine.WSA;
 using UnityEngine.Windows;
+using Unity.VisualScripting;
 
 public class LoafManager : MonoBehaviour
 {
     public static int SelectedLoafID;
     
     public static List<LoafManager> loafManagers;
+
+    public CanvasGroup PlayText;
+
     RectTransform rectTransform;
     InputManager inputManager;
 
     static float loafSpace = 1425;
 
     Tween moveTween;
+    Tween buttonTween;
 
     private void Start()
     {
@@ -30,6 +35,7 @@ public class LoafManager : MonoBehaviour
     private void OnDestroy()
     {
         moveTween?.Kill();
+        buttonTween?.Kill();
         loafManagers.Remove(this);
     }
     bool isSelectedLoaf()
@@ -46,13 +52,22 @@ public class LoafManager : MonoBehaviour
             Vector2 targAnchoredPos= new Vector2(loafSpace * (loafManager.LoafID-SelectedLoafID), 0);
             
             loafManager.moveTween?.Kill();
-            loafManager.moveTween = loafManager.rectTransform.DOAnchorPos(targAnchoredPos, 1f);
+            loafManager.moveTween = loafManager.rectTransform.DOAnchorPos(targAnchoredPos, 0.5f);
             loafManager.moveTween.Play();
         }
+    }
+    public void UpdatePlayTextAlpha(float newValue)
+    {
+        buttonTween?.Kill();
+        buttonTween = PlayText.DOFade(newValue, 0.5f);
+        buttonTween.Play();
     }
     float delayBeforeNextChange;
     private void Update()
     {
+        UpdatePlayTextAlpha(isSelectedLoaf() ? 1 : 0);
+
+
         if (LoafID==0&&TutorialManager.instance.isLoafVisible())
         {
             bool going_Right = false, goingLeft = false;
@@ -77,6 +92,29 @@ public class LoafManager : MonoBehaviour
                         going_Right = true;
                     }
                     else if (mouseDir.x < -0.2f)
+                    {
+                        delayBeforeNextChange = Time.timeSinceLevelLoad + 0.5f;
+                        goingLeft = true;
+                    }
+                }
+            }
+            else
+            {
+                float ScrollAxis = UnityEngine.Input.GetAxis("Mouse ScrollWheel");
+                if (Mathf.Abs(ScrollAxis) <= 0.1f&&Time.timeSinceLevelLoad < delayBeforeNextChange)
+                {
+                    delayBeforeNextChange-=0.01f;
+                }
+
+                if (Mathf.Abs(ScrollAxis) > 0.3f && Time.timeSinceLevelLoad > delayBeforeNextChange)
+                {
+                    if (ScrollAxis>0.1f)
+                    {
+                        delayBeforeNextChange = Time.timeSinceLevelLoad + 0.5f;
+
+                        going_Right = true;
+                    }
+                    else if (ScrollAxis<0.1)
                     {
                         delayBeforeNextChange = Time.timeSinceLevelLoad + 0.5f;
                         goingLeft = true;

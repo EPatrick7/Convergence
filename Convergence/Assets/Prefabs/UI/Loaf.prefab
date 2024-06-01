@@ -658,6 +658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be9b4ab0102336d4d888b6408ebb8899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayText: {fileID: 946939080393710793}
   LoafID: 0
   LoafLeft: {fileID: 0}
   LoafRight: {fileID: 0}
@@ -777,6 +778,7 @@ GameObject:
   - component: {fileID: 7529635464411966207}
   - component: {fileID: 1290718075773633524}
   - component: {fileID: 2395285654240689449}
+  - component: {fileID: 946939080393710793}
   m_Layer: 5
   m_Name: PlayText
   m_TagString: Untagged
@@ -901,6 +903,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!225 &946939080393710793
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8153170717120328722}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &9013232309824305876
 GameObject:
   m_ObjectHideFlags: 0
