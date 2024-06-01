@@ -186,7 +186,8 @@ public class PixelManager : MonoBehaviour
         return false;
     }
 
-    private bool BlueSunExpand;
+    private bool BlueSunExpand = false;
+    private bool GameEndBlackHole = false;
     private float BlueSunTransition_MassReq = 5000;
 
     public void CheckTransitions()
@@ -233,6 +234,21 @@ public class PixelManager : MonoBehaviour
                 planetType = PlanetType.Planet;
             }
         }
+        else if (planetType == PlanetType.BlackHole)
+		{
+            if (mass() >= 10000 && !GameEndBlackHole)
+			{
+                if (isPlayer)
+				{
+                    GameEndBlackHole = true;
+                    AudioManager.Instance?.PlayerWinSFX();
+                }
+			} else if (mass() < 10000 && GameEndBlackHole)
+			{
+                GameEndBlackHole = false;
+                AudioManager.Instance?.PlayerWinFailSFX();
+			}
+		}
 
         if (planetType != last)
         {

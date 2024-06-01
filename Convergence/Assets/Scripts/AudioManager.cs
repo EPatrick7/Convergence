@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 {
 
     [SerializeField]
-    private AudioSource sfxSource, musicSource, playerSFXSource, absorbSFXSource, indicatorSFXSource;
+    private AudioSource sfxSource, musicSource, playerSFXSource, absorbSFXSource, indicatorSFXSource, jetSFXSource;
 
     [SerializeField]
     private AudioMixer musicMixer, sfxMixer;
@@ -33,7 +33,7 @@ public class AudioManager : MonoBehaviour
     public static float MusicVolume;
     public static float SFXVolume;
 
-    private Tween propelTween, musicTween, dangerTween;
+    private Tween propelTween, musicTween, dangerTween, sfxTween;
 
     private bool soloSelected;
 
@@ -113,7 +113,10 @@ public class AudioManager : MonoBehaviour
 	
     public void FadeOutSFX()
 	{
-        sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(0.001f), fadeOUTTime);
+        sfxTween?.Kill();
+        sfxTween = sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(0.001f), fadeOUTTime);
+        sfxTween.OnComplete(absorbSFXSource.Stop);
+        sfxTween.Play();
 	}
 
     public void FadeInSFX()
@@ -266,11 +269,11 @@ public class AudioManager : MonoBehaviour
 	{
         if (propelTween != null)
 		{
-            playerSFXSource.volume = 1;
+            jetSFXSource.volume = 1;
             propelTween.Kill();
 		}
-        playerSFXSource.clip = playersfx[0];
-        playerSFXSource.Play();
+        jetSFXSource.clip = playersfx[0];
+        jetSFXSource.Play();
 	}
 
     public void StopPlayerJet()
@@ -279,7 +282,7 @@ public class AudioManager : MonoBehaviour
         //sfxSource.PlayOneShot(playersfx[1]);
         //playerSFXSource.time = playerSFXSource.clip.length * .975f;
         propelTween?.Kill();
-        propelTween = playerSFXSource.DOFade(0, .5f);
+        propelTween = jetSFXSource.DOFade(0, .5f);
         propelTween.OnComplete(PlayerSFXSourceReset);
         propelTween.Play();
 
@@ -288,8 +291,8 @@ public class AudioManager : MonoBehaviour
 
     private void PlayerSFXSourceReset()
 	{
-        playerSFXSource.Stop();
-        playerSFXSource.volume = 1;
+        jetSFXSource.Stop();
+        jetSFXSource.volume = 1;
 	}
 
     public void PlayerEject()
@@ -331,6 +334,17 @@ public class AudioManager : MonoBehaviour
 	{
         absorbSFXSource.PlayOneShot(sfx[8]);
         FadeOutMusic();
+        //StartCoroutine(VictoryHoot());
+	}
+
+    public void PlayerWinFailSFX()
+	{
+        absorbSFXSource.Stop();
+        FadeInMusic();
+	}
+
+    public void PlayerWinSucceedSFX()
+	{
         StartCoroutine(VictoryHoot());
 	}
 

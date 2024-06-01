@@ -20,6 +20,9 @@ public class IndicatorManager : MonoBehaviour
     [SerializeField]
     private GameObject BlackHoleIndicatorPrefab;
 
+    [SerializeField]
+    private bool isMainMenu = false;
+
     [Range(1, 4)]
     public int PlayerID = 1;
 
@@ -147,7 +150,7 @@ public class IndicatorManager : MonoBehaviour
 
     public void AddTargetIndicator(GameObject target, float tDist, Color color,bool ICB=false) //overloaded w/ tDist parameter
     {
-        if (target != null)
+        if (target != null && !isMainMenu)
         {
             if (ICB)
 			{
