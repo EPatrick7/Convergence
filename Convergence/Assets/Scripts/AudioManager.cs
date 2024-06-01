@@ -275,7 +275,7 @@ public class AudioManager : MonoBehaviour
 
     public void StopPlayerJet()
 	{
-     //   Debug.Log("StopPlayerJet");
+        // Debug.Log("StopPlayerJet");
         //sfxSource.PlayOneShot(playersfx[1]);
         //playerSFXSource.time = playerSFXSource.clip.length * .975f;
         propelTween?.Kill();
@@ -329,14 +329,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayerWinSFX()
 	{
-        Debug.Log("Win SFX");
-        if (propelTween != null)
-        {
-            playerSFXSource.volume = 1;
-            propelTween.Kill();
-        }
-        //FadeInSFX();
-        playerSFXSource.PlayOneShot(sfx[8]);
+        absorbSFXSource.PlayOneShot(sfx[8]);
         FadeOutMusic();
         StartCoroutine(VictoryHoot());
 	}
@@ -345,7 +338,7 @@ public class AudioManager : MonoBehaviour
 	{
         yield return new WaitForSeconds(12f);
         FadeOutSFX();
-        //FadeInMusic();
+        FadeInMusic();
 	}
 
 	#endregion

@@ -374,7 +374,6 @@ public class PlayerPixelManager : PixelManager
             AudioManager.Instance?.PlayerEject();
         } else
 		{
-            Debug.Log("Big Eject");
             AudioManager.Instance?.PlayerEjectBig();
 		}
         
