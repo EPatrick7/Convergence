@@ -221,7 +221,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 27565746}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1570540821}
+        m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+        m_MethodName: NextLoaf
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &27565746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1692,6 +1704,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 9c0e5dbe1455cf143b9d08b2ee199443, type: 3}
+    - target: {fileID: 1317773060980263543, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
       propertyPath: m_VideoClip
       value: 
@@ -3859,6 +3875,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: e26db927b54b1c44687ae1d1995c8eec, type: 3}
+    - target: {fileID: 1317773060980263543, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
       propertyPath: m_VideoClip
       value: 
@@ -4668,6 +4688,8 @@ MonoBehaviour:
   Loaf_MassIntro: {fileID: 1971119503}
   Loaf_IceIntro: {fileID: 1328577300}
   Loaf_GasIntro: {fileID: 2106657050}
+  LeftButton: {fileID: 1772273620}
+  RightButton: {fileID: 27565742}
   TutorialLive: 0
   TutorialCleared: 0
 --- !u!4 &1576063079 stripped
@@ -5361,7 +5383,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1772273624}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1570540821}
+        m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+        m_MethodName: PrevLoaf
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1772273624
 MonoBehaviour:
   m_ObjectHideFlags: 0

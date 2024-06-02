@@ -20,6 +20,22 @@ public class TutorialManager : CutsceneManager
     public LoafManager Loaf_IceIntro;
     public LoafManager Loaf_GasIntro;
 
+    public GameObject LeftButton;
+    public GameObject RightButton;
+    public void UpdateButtons()
+    {
+        LeftButton.SetActive(LoafManager.SelectedLoafID > 0);
+        RightButton.SetActive(LoafManager.SelectedLoafID <2);
+    }
+    public void NextLoaf()
+    {
+        LoafManager.UpdateSelectedLoafID(LoafManager.SelectedLoafID + 1);
+    }
+    public void PrevLoaf()
+    {
+        LoafManager.UpdateSelectedLoafID(LoafManager.SelectedLoafID - 1);
+        
+    }
     public void EnableAlpha()
     {
         PuaseOverlayGroup.alpha = 0;
@@ -81,7 +97,7 @@ public class TutorialManager : CutsceneManager
     private void Start()
     {
         instance = this;
-     
+        UpdateButtons();
     }
     private void OnDestroy()
     {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class LoafManager : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public class LoafManager : MonoBehaviour
             loafManager.moveTween = loafManager.rectTransform.DOAnchorPos(targAnchoredPos, 0.5f);
             loafManager.moveTween.Play();
         }
+        TutorialManager.instance?.UpdateButtons();
     }
     public void UpdatePlayTextAlpha(float newValue)
     {
@@ -62,6 +64,11 @@ public class LoafManager : MonoBehaviour
     }
     float delayBeforeNextChange;
     bool wantsToLoadSceneNow;
+    public bool IsMouseOver()
+    {
+        //Debug.Log(Vector2.Distance(new Vector2(0.5f, 0.5f), Camera.main.ScreenToViewportPoint(Input.mousePosition)));
+        return Vector2.Distance(new Vector2(0.5f,0.5f), Camera.main.ScreenToViewportPoint(Input.mousePosition))<0.33f;
+    }
     private void Update()
     {
         UpdatePlayTextAlpha(isSelectedLoaf() ? 1 : 0);
@@ -72,12 +79,15 @@ public class LoafManager : MonoBehaviour
         }
         else if (isSelectedLoaf()&&Time.timeSinceLevelLoad>0.5f&&!TutorialManager.instance.TutorialLive&&!PauseMenu.isPaused)
         {
-            if (UnityEngine.Input.GetMouseButtonDown(0) || UnityEngine.Input.GetKeyDown(KeyCode.Return) || inputManager.playerInput.actions.FindActionMap("Player").FindAction("Eject").IsPressed())
+            if ((UnityEngine.Input.GetMouseButtonDown(0)) || UnityEngine.Input.GetKeyDown(KeyCode.Return) || inputManager.playerInput.actions.FindActionMap("Player").FindAction("Eject").IsPressed())
             {
-                if (!wantsToLoadSceneNow)
+                if (inputManager.playerInput.currentControlScheme == "Gamepad" || IsMouseOver())
                 {
-                    TutorialManager.instance.ActivateTutorialScene(tutorialScene);
-                    wantsToLoadSceneNow = true;
+                    if (!wantsToLoadSceneNow)
+                    {
+                        TutorialManager.instance.ActivateTutorialScene(tutorialScene);
+                        wantsToLoadSceneNow = true;
+                    }
                 }
             }
             else
