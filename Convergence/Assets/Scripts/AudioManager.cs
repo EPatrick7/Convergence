@@ -45,7 +45,8 @@ public class AudioManager : MonoBehaviour
         Menu,
         Solo,
         Multiplayer,
-        Tutorial
+        Tutorial,
+        Win
 	}
     private Mode gameMode;
 
@@ -362,6 +363,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayerWinSFX()
 	{
+        absorbSFXSource.PlayOneShot(sfx[7]);
         absorbSFXSource.PlayOneShot(sfx[8]);
         FadeOutMusic();
 	}
@@ -376,6 +378,8 @@ public class AudioManager : MonoBehaviour
 	{
         gameEnd = true;
         FadeOutSFX();
+        gameMode = Mode.Win;
+        musicSource.clip = music[(int)gameMode];
         FadeInMusic();
     }
 

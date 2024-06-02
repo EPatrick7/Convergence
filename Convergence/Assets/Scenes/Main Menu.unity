@@ -365,23 +365,24 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cf8c90194af6a8d4488b4904719f3754, type: 3}
   - {fileID: 8300000, guid: 258c1961fa8a4294eb79dff8fbc9f17d, type: 3}
   - {fileID: 8300000, guid: 7bbc38db2ad932341958fcbbaeac5913, type: 3}
-  - {fileID: 8300000, guid: cf8c90194af6a8d4488b4904719f3754, type: 3}
-  - {fileID: 8300000, guid: 1553a287495bc004fa871b827c642267, type: 3}
-  - {fileID: 8300000, guid: 6cf09eea8e9b8bf4dbf7a27cd7b8d9ce, type: 3}
+  - {fileID: 8300000, guid: 02c543e11cdf0c749be78d4ffa2cf171, type: 3}
+  - {fileID: 8300000, guid: cca959a2bc8e51740b3e6063233acf4f, type: 3}
+  - {fileID: 8300000, guid: 2a1eea22998c4b24c9b9406fd014bf02, type: 3}
   music:
   - {fileID: 8300000, guid: a8bc980798074de458d1960ec4a8868c, type: 3}
   - {fileID: 8300000, guid: f54ef7aafb7b8674c9e51c4c143dedf0, type: 3}
   - {fileID: 8300000, guid: 1438ad80d64e5bf4eb3103243cab87f3, type: 3}
   - {fileID: 8300000, guid: 4535e3288d1b41346a30de95935a1074, type: 3}
+  - {fileID: 8300000, guid: d1bfc1994f4a9f44b8c94882acb253dd, type: 3}
   playersfx:
   - {fileID: 8300000, guid: 1f6c763c0a246d3448d4c0700937f4ee, type: 3}
   - {fileID: 8300000, guid: e89b6f91696760e45aef4ec795d7eb8e, type: 3}
   - {fileID: 8300000, guid: e5c57a5c7b45c5d4fad6a6fcc3f4d10a, type: 3}
-  - {fileID: 8300000, guid: c0ee9e2441ccedc4d912d52f911ced0a, type: 3}
+  - {fileID: 8300000, guid: 866eeff8d4b3aa94cb51ffcadd26dd23, type: 3}
   - {fileID: 8300000, guid: 31fdba0ba15f368478f77db1c9e9dbcc, type: 3}
   - {fileID: 8300000, guid: 6e8a873869ed103408c1ba0dc9b163f7, type: 3}
   absorbsfx:
-  - {fileID: 8300000, guid: 4506504f127e36344be158ac19a84b04, type: 3}
+  - {fileID: 8300000, guid: eaa24b5d9990e16428b5042cc592aa9f, type: 3}
   - {fileID: 8300000, guid: bf6141220f171054993a23b64270d77a, type: 3}
 --- !u!1001 &88196628
 PrefabInstance:
