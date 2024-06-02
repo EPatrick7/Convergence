@@ -226,7 +226,7 @@ MonoBehaviour:
   PlayerID: 0
   text: {fileID: 8197065055093449208}
   overlay: {fileID: 1358941899084166759}
-  perCharDelay: 0.1
+  perCharDelay: 0.05
 --- !u!1 &6042060373582635799
 GameObject:
   m_ObjectHideFlags: 0

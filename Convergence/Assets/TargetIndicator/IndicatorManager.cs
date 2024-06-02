@@ -70,7 +70,7 @@ public class IndicatorManager : MonoBehaviour
     public float offsetMultiplier=1;
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
      
         if (targetIndicators.Count > 0)

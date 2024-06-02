@@ -44,7 +44,6 @@ public class TargetIndicator : MonoBehaviour
 
     public bool isCentralBlackHole;
 
-
     private RenderMode renderMode;
 
     private void FixedUpdate()
@@ -170,11 +169,10 @@ public class TargetIndicator : MonoBehaviour
             float offset;
             if (isCentralBlackHole)
             {
-                offset = canvasRect.rect.width * canvasRect.localScale.x * -0.0225f;
+                offset = canvasRect.rect.width * canvasRect.localScale.x * -0.03f;
             }
             else
             {
-
                 offset = canvasRect.rect.width * canvasRect.localScale.x * 0.35f;
 
                 offset += Mathf.Clamp((Vector3.Distance(origin, targetPos) * 0.25f), 0, canvasRect.rect.width * canvasRect.localScale.x * 0.5f);
@@ -183,8 +181,15 @@ public class TargetIndicator : MonoBehaviour
             hitPoint.x += dir.x * offset;
             hitPoint.y += dir.y * offset;
 
-            rectTransform.position = isCentralBlackHole && timeElapsed >= 1.0f ? Vector3.Lerp(rectTransform.position, new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z), 0.1f) : new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z);
+            StartCoroutine(SetPositionOnFrameEnd(new Vector3(hitPoint.x, hitPoint.y, indicatorPos.z)));
         }
+    }
+
+    protected IEnumerator SetPositionOnFrameEnd(Vector3 pos)
+    {
+        yield return new WaitForEndOfFrame();
+
+        rectTransform.position = pos;
     }
 
     protected void FadeOutAlpha()
@@ -356,5 +361,4 @@ public class TargetIndicator : MonoBehaviour
         
         return new Vector3(0f, 0f, angle);
     }
-
 }
