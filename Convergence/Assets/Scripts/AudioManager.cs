@@ -262,7 +262,7 @@ public class AudioManager : MonoBehaviour
         if (!indicatorSFXSource.isPlaying)
 		{
             indicatorSFXSource.volume = 0f;
-            indicatorSFXSource.DOFade(1f, fadeOUTTime);
+            indicatorSFXSource.DOFade(1f, 1f);
             indicatorSFXSource.PlayOneShot(sfx[7]);
         }
         /*
