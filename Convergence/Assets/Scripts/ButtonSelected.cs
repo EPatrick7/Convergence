@@ -72,12 +72,12 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                     }
                 }
             }
-            target.transform.localScale = new Vector3(hoverScale, hoverScale, hoverScale);
+            target.transform.localScale = new Vector3(Mathf.Sign(target.transform.localScale.x) * hoverScale, Mathf.Sign(target.transform.localScale.y) * hoverScale, Mathf.Sign(target.transform.localScale.z) * hoverScale);
         }
         else
         {
             if (firstClick) firstClick = false;
-            target.transform.localScale = new Vector3(normalScale, normalScale, normalScale);
+            target.transform.localScale = new Vector3(Mathf.Sign(target.transform.localScale.x) * normalScale, Mathf.Sign(target.transform.localScale.y) * normalScale, Mathf.Sign(target.transform.localScale.z) * normalScale);
         }
     }
     bool pointerOver;
