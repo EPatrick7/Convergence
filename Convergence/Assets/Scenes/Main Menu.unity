@@ -358,6 +358,7 @@ MonoBehaviour:
   fadeOUTTime: 6
   fadeCHANGETime: 0.1
   maxVol: 0.5
+  rumbleFadeTime: 2
   sfx:
   - {fileID: 8300000, guid: ca04ba25e164e994b91c009751f50969, type: 3}
   - {fileID: 8300000, guid: edbea436aa82e4349bc1be9558c7d4ef, type: 3}
