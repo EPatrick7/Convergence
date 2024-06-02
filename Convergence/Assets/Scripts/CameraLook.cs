@@ -45,9 +45,9 @@ public class CameraLook : MonoBehaviour
         bool setPlayer=false;
         foreach (CameraLook look in CameraLook.camLooks)
         {
-            if (look != null && look.focusedPixel != null)
+            if (look != null)
             {
-                if (obj == null && !setPlayer)
+                if (!setPlayer)
                 {
                     obj = look.focusedPixel.gameObject;
                     setPlayer = true;
