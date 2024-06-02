@@ -93,8 +93,11 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     
 
     private void TaskOnClick()
-	{
-		switch (btnState)
+    {
+        if (Time.timeSinceLevelLoad <= 0.1f)
+            return;
+
+            switch (btnState)
 		{
             case ButtonType.Solo:
                 AudioManager.Instance?.SoloSelect();

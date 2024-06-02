@@ -52,6 +52,19 @@ public class InputManager : MonoBehaviour
 
         return null;
     }
+    public static bool NooneIsMouse()
+    {
+        if (InputManager.inputManagers == null || InputManager.inputManagers.Count == 0)
+            return false;
+        foreach(InputManager manager in inputManagers)
+        {
+            if(!manager.HasGamepad())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     public bool HasSwitch()
     {
         foreach (InputDevice dev in playerInput.devices)

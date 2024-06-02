@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class CutsceneManager : MonoBehaviour
 {
@@ -398,7 +400,11 @@ public class CutsceneManager : MonoBehaviour
         }
     }
 
-
+    private void Update()
+    {
+        Cursor.visible = !InputManager.NooneIsMouse();
+        
+    }
     private void OnDestroy()
     {
         if (Instance == this)
