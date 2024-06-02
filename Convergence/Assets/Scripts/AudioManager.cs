@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 {
 
     [SerializeField]
-    private AudioSource sfxSource, musicSource, playerSFXSource, absorbSFXSource, indicatorSFXSource, jetSFXSource;
+    private AudioSource sfxSource, musicSource, playerSFXSource, absorbSFXSource, absorb2SFXSource, indicatorSFXSource, jetSFXSource;
 
     [SerializeField]
     private AudioMixer musicMixer, sfxMixer;
@@ -37,6 +37,7 @@ public class AudioManager : MonoBehaviour
 
     private bool soloSelected, restartingMusic;
     private bool gameEnd = false;
+    private bool tutorialRestart = false;
     private float transitionNum = 0;
 
     private enum Mode
@@ -73,19 +74,22 @@ public class AudioManager : MonoBehaviour
     {
         transitionNum++;
         soloSelected = false;
-        musicSource.clip = music[(int)gameMode];
-        if (SceneManager.GetActiveScene().name != "Main Menu")
-		{
-            if (PlayerPrefs.GetInt("lastLevel") != scene.buildIndex)
-			{
-                sfxSource.Stop();
+        if (!tutorialRestart)
+        {
+            musicSource.clip = music[(int)gameMode];
+            if (SceneManager.GetActiveScene().name != "Main Menu")
+            {
+                if (PlayerPrefs.GetInt("lastLevel") != scene.buildIndex)
+                {
+                    sfxSource.Stop();
+                }
             }
-		}
-        PlayerPrefs.SetInt("lastLevel", SceneManager.GetActiveScene().buildIndex);
-        //FadeOutSFX();
-        //sfxSource.Stop();
-        FadeInSFX();
-        FadeInMusic();
+            PlayerPrefs.SetInt("lastLevel", SceneManager.GetActiveScene().buildIndex);
+            //FadeOutSFX();
+            //sfxSource.Stop();
+            FadeInSFX();
+            FadeInMusic();
+        }
         
         /*
         switch (gameMode)
@@ -200,11 +204,21 @@ public class AudioManager : MonoBehaviour
 
     public void HoverClick()
 	{
-        sfxSource.PlayOneShot(sfx[3]);
+        if (!soloSelected)
+		{
+            sfxSource.PlayOneShot(sfx[3]);
+        }
+	}
+
+    public void TutorialRestartSelect()
+	{
+        sfxSource.PlayOneShot(sfx[4]);
+        tutorialRestart = true;
 	}
 
     public void MainSelect()
 	{
+        tutorialRestart = false;
         playerSFXSource.Stop();
         absorbSFXSource.Stop();
         indicatorSFXSource.Stop();
@@ -327,13 +341,18 @@ public class AudioManager : MonoBehaviour
 		{
             yield break;
 		}
-        Debug.Log(transitionNum);
         sfxSource.PlayOneShot(sfx[1]);
     }
 
-    public void PlayerAbsorbSFX()
+    public void PlayerAbsorbBigSFX()
 	{
-        absorbSFXSource.PlayOneShot(absorbsfx[Random.Range(0, absorbsfx.Count)]);
+        absorb2SFXSource.PlayOneShot(absorbsfx[0]);
+		//absorbSFXSource.PlayOneShot(absorbsfx[Random.Range(0, absorbsfx.Count)]);
+	}
+
+    public void PlayerAbsorbSmallSFX()
+	{
+        absorb2SFXSource.PlayOneShot(absorbsfx[1]);
 	}
 
     public void PlayerExpandSFX()
