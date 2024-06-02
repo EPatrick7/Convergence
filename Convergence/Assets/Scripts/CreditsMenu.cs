@@ -40,6 +40,7 @@ public class CreditsMenu : MonoBehaviour
     }
     public IEnumerator RollDelay(float delay)
     {
+        yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(CinematicBars.notCinematic);
         yield return new WaitForSeconds(delay);
         AudioManager.Instance?.PlayerWinSucceedSFX();

@@ -255,6 +255,7 @@ public class PlayerPixelManager : PixelManager
         GravityManager.Instance.respawn_players = false;
         GravityManager.GameWinner = playerPixel;
         hasWonGame = true;
+        AudioManager.Instance?.PlayerAbsorbBigSFX();
         BlackHoleState.RadiusScalar *= 1.3f;
         CutsceneManager.Instance?.BlackHoleConsumed();
 
