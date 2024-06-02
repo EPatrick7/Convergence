@@ -56,9 +56,9 @@ public class PlayerHud : MonoBehaviour
         //CheckDanger();
         if (player!=null&& player.pInput!=null&&player.pInput.devices.Count>0)
         {
-            ControlIcon_Mass.gameObject.SetActive(true);
-            ControlIcon_Gas.gameObject.SetActive(player.Gas > 0);
-            ControlIcon_Ice.gameObject.SetActive(player.Ice > 0);
+            ControlIcon_Mass.gameObject.SetActive(!player.ConstantMass);
+            ControlIcon_Gas.gameObject.SetActive(player.Gas > 0&& !player.ConstantMass);
+            ControlIcon_Ice.gameObject.SetActive(player.Ice > 0&& !player.ConstantMass);
 
         }
         else

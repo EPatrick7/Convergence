@@ -7,7 +7,7 @@ public class CreditsMenu : MonoBehaviour
 {
     public static CreditsMenu Instance { get; private set; }
     public float CreditsDelay = 10;
-
+    public CanvasGroup NamesTween;
     Tween creditsTween;
     private void Start()
     {
@@ -40,13 +40,21 @@ public class CreditsMenu : MonoBehaviour
     }
     public IEnumerator RollDelay(float delay)
     {
+        yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(CinematicBars.notCinematic);
         yield return new WaitForSeconds(delay);
         AudioManager.Instance?.PlayerWinSucceedSFX();
         creditsDelayed = true;
         RollCredits();
     }
+    public void TweenNames()
+    {
 
+
+        creditsTween?.Kill();
+        creditsTween = NamesTween.DOFade(1, 1.5f);
+        creditsTween?.Play();
+    }
     public RectTransform CreditsHolder;
     private void RollCredits()
     {
@@ -58,6 +66,7 @@ public class CreditsMenu : MonoBehaviour
 
         creditsTween?.Kill();
         creditsTween = CreditsHolder.GetComponent<CanvasGroup>().DOFade(1, 0.5f);
+        creditsTween.onComplete += TweenNames;
         creditsTween?.Play();
     }
 }
