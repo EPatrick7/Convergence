@@ -2386,7 +2386,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: PlayerCount
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: respawn_players
@@ -2402,7 +2402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: MultiplayerCameraTest
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: random_respawn_players

@@ -199,7 +199,7 @@ public class CutsceneManager : MonoBehaviour
     }
     public IEnumerator DelayBlackHoleMultiplayer()
     {
-        yield return new WaitUntil(allCamsSame);
+        yield return new WaitUntil(CameraLook.allCamsSame);
         yield return new WaitForSeconds(3);
 
         PlayerPixelManager winner = GravityManager.GameWinner;
@@ -221,21 +221,6 @@ public class CutsceneManager : MonoBehaviour
 
         if (!PauseMenu.isPaused)
             PauseMenu.Instance.ForcePause();
-    }
-    bool allCamsSame()
-    {
-        GameObject obj=null;
-        foreach(CameraLook look in CameraLook.camLooks)
-        {
-            if (look != null && look.focusedPixel != null)
-            {
-                if (obj == null)
-                    obj = look.focusedPixel.gameObject;
-                else if (obj != look.focusedPixel.gameObject)
-                    return false;
-            }
-        }
-        return true;
     }
     private void Initialize()
     {

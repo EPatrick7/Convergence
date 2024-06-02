@@ -45,7 +45,7 @@ public class CameraLook : MonoBehaviour
         bool setPlayer=false;
         foreach (CameraLook look in CameraLook.camLooks)
         {
-            if (look != null)
+            if (look != null&&look.gameObject.activeInHierarchy)
             {
                 if (!setPlayer)
                 {
