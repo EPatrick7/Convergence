@@ -7,7 +7,7 @@ public class CreditsMenu : MonoBehaviour
 {
     public static CreditsMenu Instance { get; private set; }
     public float CreditsDelay = 10;
-
+    public CanvasGroup NamesTween;
     Tween creditsTween;
     private void Start()
     {
@@ -47,7 +47,14 @@ public class CreditsMenu : MonoBehaviour
         creditsDelayed = true;
         RollCredits();
     }
+    public void TweenNames()
+    {
 
+
+        creditsTween?.Kill();
+        creditsTween = NamesTween.DOFade(1, 1.5f);
+        creditsTween?.Play();
+    }
     public RectTransform CreditsHolder;
     private void RollCredits()
     {
@@ -59,6 +66,7 @@ public class CreditsMenu : MonoBehaviour
 
         creditsTween?.Kill();
         creditsTween = CreditsHolder.GetComponent<CanvasGroup>().DOFade(1, 0.5f);
+        creditsTween.onComplete += TweenNames;
         creditsTween?.Play();
     }
 }
