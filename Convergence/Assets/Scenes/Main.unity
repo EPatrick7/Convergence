@@ -444,6 +444,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1020614206}
     m_Modifications:
+    - target: {fileID: 56092483184876394, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_text
+      value: Hold Left Click to burn gas and propel yourself forward
+      objectReference: {fileID: 0}
+    - target: {fileID: 151325922727885316, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 370935005908027800, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 591
+      objectReference: {fileID: 0}
+    - target: {fileID: 370935005908027800, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 591
+      objectReference: {fileID: 0}
+    - target: {fileID: 702890934256100767, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfXBox
+      value: Press A to launch part of your mass away. Use the Left Joystick to aim.
+      objectReference: {fileID: 0}
+    - target: {fileID: 702890934256100767, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfSwitch
+      value: Press B to launch part of your mass away. Use the Left Joystick to aim.
+      objectReference: {fileID: 0}
+    - target: {fileID: 702890934256100767, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfGamePad
+      value: Press X to launch part of your mass away. Use the Left Joystick to aim.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1017036812349084858, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_text
+      value: Left Click to launch part of your mass away
+      objectReference: {fileID: 0}
     - target: {fileID: 1021377224636474528, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 591
@@ -451,6 +483,18 @@ PrefabInstance:
     - target: {fileID: 1021377224636474528, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_SizeDelta.y
       value: 591
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031441598340004074, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfXBox
+      value: Press Start to open the pause menu and restart
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031441598340004074, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfSwitch
+      value: Press Plus to open the pause menu and restart
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031441598340004074, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfGamePad
+      value: Press Options to open the pause menu and restart
       objectReference: {fileID: 0}
     - target: {fileID: 1144000894709134995, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_IsActive
@@ -480,9 +524,69 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cutscenes
       objectReference: {fileID: 0}
+    - target: {fileID: 2213071580979640415, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_text
+      value: Converge with the central Black Hole
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217626561382479386, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_text
+      value: Follow the Black Hole indicator to get back to the center
+      objectReference: {fileID: 0}
+    - target: {fileID: 2610262470840660332, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfGamePad
+      value: Converge with the central black hole
+      objectReference: {fileID: 0}
+    - target: {fileID: 3073708989156870245, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3073708989156870245, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8f47a86fa8c392a459b2de7a157723e3, type: 3}
+    - target: {fileID: 3073708989156870245, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3073708989156870245, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.10980392
+      objectReference: {fileID: 0}
+    - target: {fileID: 3073708989156870245, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 3073708989156870245, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.03529412
+      objectReference: {fileID: 0}
     - target: {fileID: 3441736881403769610, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3638867858354040791, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3638867858354040791, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8f47a86fa8c392a459b2de7a157723e3, type: 3}
+    - target: {fileID: 3638867858354040791, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3638867858354040791, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.10980392
+      objectReference: {fileID: 0}
+    - target: {fileID: 3638867858354040791, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 3638867858354040791, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.03529412
       objectReference: {fileID: 0}
     - target: {fileID: 3687255902358054716, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Pivot.x
@@ -564,6 +668,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4032356055953845543, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfGamePad
+      value: Hold Right Trigger to burn gas and propel yourself forward
+      objectReference: {fileID: 0}
     - target: {fileID: 4039702428135380142, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Type
       value: 0
@@ -571,7 +679,23 @@ PrefabInstance:
     - target: {fileID: 4039702428135380142, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 880481fbdb700e54abb43803d320638b, type: 3}
+      objectReference: {fileID: 21300000, guid: 8f47a86fa8c392a459b2de7a157723e3, type: 3}
+    - target: {fileID: 4039702428135380142, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4039702428135380142, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.10980392
+      objectReference: {fileID: 0}
+    - target: {fileID: 4039702428135380142, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 4039702428135380142, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.03529412
+      objectReference: {fileID: 0}
     - target: {fileID: 4039702428135380142, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_PixelsPerUnitMultiplier
       value: 1
@@ -583,10 +707,30 @@ PrefabInstance:
     - target: {fileID: 4180197170029178487, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 880481fbdb700e54abb43803d320638b, type: 3}
+      objectReference: {fileID: 21300000, guid: 8f47a86fa8c392a459b2de7a157723e3, type: 3}
+    - target: {fileID: 4180197170029178487, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4180197170029178487, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.10980392
+      objectReference: {fileID: 0}
+    - target: {fileID: 4180197170029178487, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 4180197170029178487, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.03529412
+      objectReference: {fileID: 0}
     - target: {fileID: 4218578945379139510, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -118.60614
+      objectReference: {fileID: 0}
+    - target: {fileID: 4353724761181963446, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfGamePad
+      value: Hold Left Trigger to shield yourself and slow down
       objectReference: {fileID: 0}
     - target: {fileID: 4557384951718628728, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -607,10 +751,38 @@ PrefabInstance:
     - target: {fileID: 5186592803954872919, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 880481fbdb700e54abb43803d320638b, type: 3}
+      objectReference: {fileID: 21300000, guid: 8f47a86fa8c392a459b2de7a157723e3, type: 3}
+    - target: {fileID: 5186592803954872919, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5186592803954872919, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.10980392
+      objectReference: {fileID: 0}
+    - target: {fileID: 5186592803954872919, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 5186592803954872919, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.03529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 5241495384663303679, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_text
+      value: Pause Menu
+      objectReference: {fileID: 0}
     - target: {fileID: 5622783925493847843, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651645490791717408, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 591
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651645490791717408, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 591
       objectReference: {fileID: 0}
     - target: {fileID: 5812563513103412286, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Type
@@ -619,7 +791,23 @@ PrefabInstance:
     - target: {fileID: 5812563513103412286, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 880481fbdb700e54abb43803d320638b, type: 3}
+      objectReference: {fileID: 21300000, guid: 8f47a86fa8c392a459b2de7a157723e3, type: 3}
+    - target: {fileID: 5812563513103412286, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5812563513103412286, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.10980392
+      objectReference: {fileID: 0}
+    - target: {fileID: 5812563513103412286, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.09803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 5812563513103412286, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.03529412
+      objectReference: {fileID: 0}
     - target: {fileID: 6163547081370398914, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -118.60614
@@ -648,9 +836,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -118.60614
       objectReference: {fileID: 0}
+    - target: {fileID: 6819985921250113845, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_text
+      value: Press Escape to open the pause menu and restart
+      objectReference: {fileID: 0}
     - target: {fileID: 7194707426285363643, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -240
+      objectReference: {fileID: 0}
+    - target: {fileID: 7626866525429750988, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: ToSwapIfGamePad
+      value: Follow the Black Hole indicator to get back to the center
       objectReference: {fileID: 0}
     - target: {fileID: 7668373601514523110, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -659,6 +855,10 @@ PrefabInstance:
     - target: {fileID: 7713500569840835863, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -240
+      objectReference: {fileID: 0}
+    - target: {fileID: 8757702164515230835, guid: dbe420cb95192754e8952d62c414654f, type: 3}
+      propertyPath: m_text
+      value: Hold Right Click to shield yourself and slow down
       objectReference: {fileID: 0}
     - target: {fileID: 9002220258565850996, guid: dbe420cb95192754e8952d62c414654f, type: 3}
       propertyPath: m_AnchoredPosition.x
