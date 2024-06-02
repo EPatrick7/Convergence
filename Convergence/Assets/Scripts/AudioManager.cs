@@ -131,11 +131,12 @@ public class AudioManager : MonoBehaviour
 
     public void FadeInSFX()
 	{
-        if (sfxTween != null)
+        if (sfxTween != null && !gameEnd)
 		{
             StartCoroutine(CheckIfFading());
 		} else
 		{
+            sfxTween?.Kill();
             sfxTween = sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(SFXVolume), fadeOUTTime);
             sfxTween.Play();
         }
@@ -166,15 +167,15 @@ public class AudioManager : MonoBehaviour
 
     public void FadeInMusic()
 	{
+        if (gameEnd)
+        {
+            FadeInSFX();
+        }
         musicTween.Kill();
         musicSource.Play();
         musicTween = musicMixer.DOSetFloat("MusicVol", ConvertToMixer(MusicVolume), fadeOUTTime);
         musicTween.Play();
         StartCoroutine(CheckIfPlaying());
-        if (gameEnd)
-		{
-            FadeInSFX();
-		}
         //audioMusic.Play();
         //audioMusic.DOFade(maxVol* MusicVolume, fadeINTime);
 	}
