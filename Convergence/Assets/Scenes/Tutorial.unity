@@ -1443,6 +1443,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 9c0e5dbe1455cf143b9d08b2ee199443, type: 3}
     - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: 102099474759fa04d9fc7454fb4a650b, type: 3}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
       propertyPath: m_TargetCamera
       value: 
       objectReference: {fileID: 1766043901}
@@ -1450,6 +1454,26 @@ PrefabInstance:
       propertyPath: m_TargetTexture
       value: 
       objectReference: {fileID: 8400000, guid: 5dd75491a66db2249bd8dbbee28b9a6c, type: 2}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_ControlledAudioTrackCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_DirectAudioMutes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_DirectAudioVolumes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_EnabledAudioTracks.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_TargetAudioSources.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3172877444973402305, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
       propertyPath: UseAltXBox
       value: 0
@@ -2786,6 +2810,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: e26db927b54b1c44687ae1d1995c8eec, type: 3}
     - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: 07945fc09fffb2247bb195eb44e3a9b0, type: 3}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
       propertyPath: m_TargetCamera
       value: 
       objectReference: {fileID: 1766043901}
@@ -2793,6 +2821,26 @@ PrefabInstance:
       propertyPath: m_TargetTexture
       value: 
       objectReference: {fileID: 8400000, guid: fa7256cf1e42ad247a2243cb96628ffb, type: 2}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_ControlledAudioTrackCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_DirectAudioMutes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_DirectAudioVolumes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_EnabledAudioTracks.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_TargetAudioSources.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3172877444973402305, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
       propertyPath: UseAltXBox
       value: 0
@@ -6650,9 +6698,33 @@ PrefabInstance:
     m_TransformParent: {fileID: 534638307}
     m_Modifications:
     - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: 573e759996171834c9802d395a2b2876, type: 3}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
       propertyPath: m_TargetCamera
       value: 
       objectReference: {fileID: 1766043901}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_ControlledAudioTrackCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_DirectAudioMutes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_DirectAudioVolumes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_EnabledAudioTracks.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204820180198937386, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
+      propertyPath: m_TargetAudioSources.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5752378682824325904, guid: 9bf30ecd63bd1b644bd4700764b92e02, type: 3}
       propertyPath: LoafRight
       value: 
