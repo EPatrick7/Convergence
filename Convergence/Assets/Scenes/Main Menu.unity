@@ -381,7 +381,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 31fdba0ba15f368478f77db1c9e9dbcc, type: 3}
   - {fileID: 8300000, guid: 6e8a873869ed103408c1ba0dc9b163f7, type: 3}
   absorbsfx:
-  - {fileID: 8300000, guid: 9b4a27998d8b81140ba7d8a73002b353, type: 3}
+  - {fileID: 8300000, guid: 4506504f127e36344be158ac19a84b04, type: 3}
   - {fileID: 8300000, guid: bf6141220f171054993a23b64270d77a, type: 3}
 --- !u!1001 &88196628
 PrefabInstance:

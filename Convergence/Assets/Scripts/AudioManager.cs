@@ -374,7 +374,6 @@ public class AudioManager : MonoBehaviour
 
     public void PlayerWinSucceedSFX()
 	{
-        Debug.Log("PlayerWinSucceedSFX triggered");
         gameEnd = true;
         FadeOutSFX();
         FadeInMusic();
