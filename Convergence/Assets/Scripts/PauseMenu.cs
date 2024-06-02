@@ -250,7 +250,7 @@ public class PauseMenu : MonoBehaviour
         }
         if (TutorialManager.instance!=null&& RestartText!=null)
         {
-            RestartText.text = TutorialManager.instance.TutorialLive ? "End Tutorial":"Reload";
+            RestartText.text = TutorialManager.instance.TutorialLive ? "End Tutorial":"Restart";
         }
 
         TutorialManager.instance?.DisableAlpha();
