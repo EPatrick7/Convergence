@@ -60,6 +60,7 @@ public class TutorialManager : CutsceneManager
     Tween loafTween;
     public void ActivateTutorialScene(TutorialScene scene)
     {
+        AudioManager.Instance?.GeneralSelect();
         TutorialLive = true;
         scene.gameObject.SetActive(true);
         loafTween?.Kill();
