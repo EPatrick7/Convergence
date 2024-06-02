@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,15 @@ public class CreditsMenu : MonoBehaviour
 {
     public static CreditsMenu Instance { get; private set; }
     public float CreditsDelay = 10;
+
+    Tween creditsTween;
     private void Start()
     {
         Instance = this;
     }
     private void OnDestroy()
     {
+        creditsTween?.Kill();
         Instance = null;
     }
     bool creditsRolling;
@@ -46,6 +50,14 @@ public class CreditsMenu : MonoBehaviour
     public RectTransform CreditsHolder;
     private void RollCredits()
     {
+        CreditsHolder.GetComponent<CanvasGroup>().alpha = 0;
+
         CreditsHolder.gameObject.SetActive(true);
+
+
+
+        creditsTween?.Kill();
+        creditsTween = CreditsHolder.GetComponent<CanvasGroup>().DOFade(1, 0.5f);
+        creditsTween?.Play();
     }
 }
