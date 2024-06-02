@@ -838,7 +838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ac9a7968a4765478617719dbd422e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Num: 4
+  Num: 6
   clearCondition: 1
   playerPixelManager: {fileID: 1901594636}
   GiftGas: 0
