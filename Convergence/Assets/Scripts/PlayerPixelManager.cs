@@ -420,18 +420,9 @@ public class PlayerPixelManager : PixelManager
         dampener *= VelocityMagnitudeForceDampenScale.Evaluate(rigidBody.velocity.sqrMagnitude / (VelMagnOffset*radius() * radius()));
         float force = EjectionForceScale*dampener;
         rigidBody.velocity += ejectDirection * -force * radius();
-        /*
-        float ejectMulti=1;
-        if (mass() > SunTransition_MassReq)
-        {
-            ejectMulti /=5;
-        }
-        if (mass()>BlackHoleTransition_MassReq*0.9f)
-        {
-            ejectMulti *= 50;
-        }*/
+        float ejectMulti=1+((mass()/10000f)*15);
 
-        gravityManager.RegisterBody(pixel, rigidBody.velocity+ ejectDirection.normalized* EjectedSpeedMult /*+(ejectDirection* ejectMulti * EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass)) * Mathf.Max(0.25f, force))*/);
+        gravityManager.RegisterBody(pixel, rigidBody.velocity+ ejectDirection.normalized* EjectedSpeedMult* ejectMulti /*+(ejectDirection* ejectMulti * EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass)) * Mathf.Max(0.25f, force))*/);
 
         InvokeMassChanged();
 
