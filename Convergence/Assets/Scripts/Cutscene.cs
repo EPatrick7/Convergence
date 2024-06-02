@@ -60,14 +60,13 @@ public class Cutscene : MonoBehaviour
         foreach(char c in text)
         {
             caption.text += c;
-            AudioManager.Instance?.DialogueSFX();
-
+            
             if (c == '<') onSkipMode = true;
             if (c == '>') onSkipMode = false;
 
             if (!onSkipMode)
             {
-
+                AudioManager.Instance?.DialogueSFX();
                 if (c == ' ' && PerWordDelay > 0)
                 {
                     yield return new WaitForSeconds(PerWordDelay);
