@@ -47,7 +47,12 @@ public class CreditsMenu : MonoBehaviour
         creditsDelayed = true;
         RollCredits();
 
-        float timeWait = Time.timeSinceLevelLoad + 30;
+        yield return new WaitForSeconds(10);
+        creditsTween?.Kill();
+        creditsTween = NamesTween.DOFade(0, 2f);
+        creditsTween?.Play();
+
+        float timeWait = Time.timeSinceLevelLoad + 5;
         while (Time.timeSinceLevelLoad < timeWait)
         {
             yield return new WaitForFixedUpdate();
