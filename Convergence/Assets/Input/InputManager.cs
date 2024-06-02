@@ -153,7 +153,10 @@ public class InputManager : MonoBehaviour
         else
 		{
             LilRumbleContribution += MicroCollisionRumble;
-            AudioManager.Instance?.PlayerAbsorbSmallSFX();
+            if (GravityManager.GameWinner == null)
+            {
+                AudioManager.Instance?.PlayerAbsorbSmallSFX();
+            }
         }
             
         
