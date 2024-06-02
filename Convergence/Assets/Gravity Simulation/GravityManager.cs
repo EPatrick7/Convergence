@@ -272,23 +272,23 @@ public class GravityManager : MonoBehaviour
 
     [HideInInspector]
     public bool GameLost;
-    bool isWithinCamera(CameraLook look, Vector2 loc)
+    bool isWithinCamera(CameraLook look, Vector2 loc,float inflated_radius=0.1f)
     {
         Vector3 vp = look.GetComponent<Camera>().WorldToViewportPoint(loc);
-        float wiggleRoom = 0.1f;
+        float wiggleRoom = inflated_radius;
         if ((vp.x > -wiggleRoom && vp.x < 1 + wiggleRoom && vp.y > -wiggleRoom && vp.y < 1 + wiggleRoom))
         {//Object is within viewport, abort.
             return true;
         }
         return false;
     }
-    public bool isWithinACamera(Vector2 loc)
+    public bool isWithinACamera(Vector2 loc,float inflated_radius=0.1f)
     {
         if (CameraLook.camLooks != null)
         {
             foreach (CameraLook look in CameraLook.camLooks)
             {
-                if (isWithinCamera(look, loc))
+                if (isWithinCamera(look, loc, inflated_radius))
                     return true;
             }
         }
@@ -471,6 +471,7 @@ public class GravityManager : MonoBehaviour
 
             }
         }
+        int k = 0;
         //Spawn and fill arrays with new generated particles
         for (int i = 0; i < SpawnCount; i++)
         {
@@ -514,23 +515,27 @@ public class GravityManager : MonoBehaviour
                         break;
                 }
                 elements *= InitRandomElementComposition;
+                GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform); ;
+
+                if (k < NPCGoodiesRecieverCount && !isWithinACamera(loc, 4))
+                {
+                    k++;
+                    if (pixel != null )
+                        pixel.GetComponent<Rigidbody2D>().mass *= 12;
+                    GenerateGoodiesArea(loc, 0.4f);
+                }
+
+
 
                 if (InitRandomElementComposition > 0)
                 {
-                    GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
                     //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
                     RegisterBody(pixel, sharedVelocity, elements);
                 }
                 else
                 {
-                    GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform);
                     //pixel.GetComponent<PixelManager>().indManagers = indManagers; //INDIC
                     RegisterBody(pixel, sharedVelocity);
-                }
-
-                if(i<NPCGoodiesRecieverCount)
-                {
-                    GenerateGoodiesArea(loc,0.25f);
                 }
 
 
