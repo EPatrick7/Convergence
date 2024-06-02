@@ -42,10 +42,20 @@ public class CreditsMenu : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(CinematicBars.notCinematic);
-        yield return new WaitForSeconds(delay);
         AudioManager.Instance?.PlayerWinSucceedSFX();
+        yield return new WaitForSeconds(delay);
         creditsDelayed = true;
         RollCredits();
+
+        float timeWait = Time.timeSinceLevelLoad + 30;
+        while (Time.timeSinceLevelLoad < timeWait)
+        {
+            yield return new WaitForFixedUpdate();
+            if (PauseMenu.isPaused)
+                break;
+        }
+        if(!PauseMenu.isPaused)
+            PauseMenu.Instance.ForcePause();
     }
     public void TweenNames()
     {
