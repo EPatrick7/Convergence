@@ -833,6 +833,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ac9a7968a4765478617719dbd422e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Num: 0
+  clearCondition: 0
 --- !u!1001 &350162346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3195,6 +3197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ac9a7968a4765478617719dbd422e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Num: 5
+  clearCondition: 1
 --- !u!1001 &1480310741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3415,7 +3419,7 @@ MonoBehaviour:
   Toast_GameStart: {fileID: 0}
   Toast_FirstIce: {fileID: 0}
   Toast_FirstGas: {fileID: 0}
-  Toast_Death: {fileID: 0}
+  Toast_Death: {fileID: 4632962095717700184}
   Toast_GameStartDelayed: {fileID: 0}
   Toast_GalaxyLost: {fileID: 0}
   Toast_ConvergeHole: {fileID: 0}
@@ -3430,6 +3434,7 @@ MonoBehaviour:
   Loaf_IceIntro: {fileID: 1328577300}
   Loaf_GasIntro: {fileID: 2106657050}
   TutorialLive: 0
+  TutorialCleared: 0
 --- !u!4 &1576063079 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1794329209082054581, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
@@ -3695,6 +3700,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ac9a7968a4765478617719dbd422e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Num: 0
+  clearCondition: 0
 --- !u!1001 &1755211569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4027,6 +4034,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ac9a7968a4765478617719dbd422e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Num: 0
+  clearCondition: 0
 --- !u!1001 &1901594633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5657,10 +5666,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a625e6edd88cf4409e358f05be2d815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ToSwapIfGamePad: Press Options to open the pause menu if you need to restart the
-    round.
-  ToSwapIfXBox: Press Start to open the pause menu if you need to restart the round.
-  ToSwapIfSwitch: 
+  ToSwapIfGamePad: Press Options to open the pause menu if you want to exit the tutorial.
+  ToSwapIfXBox: Press Start to open the pause menu if you want to exit the tutorial.
+  ToSwapIfSwitch: Press Plus to open the pause menu if you want to exit the tutorial.
   UseAltXBox: 1
   DefaultText: 
 --- !u!1 &1144000894067203014
@@ -5681,7 +5689,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1220907201428092374
 GameObject:
   m_ObjectHideFlags: 0
@@ -7472,7 +7480,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart Menu
+  m_text: Tutorial Cleared
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7825,7 +7833,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -118.60614, y: -37}
+  m_AnchoredPosition: {x: -125, y: -37}
   m_SizeDelta: {x: 75, y: 8.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &6389905630771297009
@@ -7932,7 +7940,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press Escape to open the pause menu if you need to restart the round.
+  m_text: Press Escape to open the pause menu if you want to exit the tutorial.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7995,7 +8003,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -21.703144, y: -11.784145, z: -73.14942, w: -17.67624}
+  m_margin: {x: -21.703144, y: -11.784145, z: -62.139137, w: -17.67624}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

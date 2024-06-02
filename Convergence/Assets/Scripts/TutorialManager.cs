@@ -38,6 +38,9 @@ public class TutorialManager : CutsceneManager
 
     [HideInInspector]
     public bool TutorialLive;
+
+    [HideInInspector]
+    public bool TutorialCleared;
     Tween loafTween;
     public void ActivateTutorialScene(TutorialScene scene)
     {
@@ -82,6 +85,7 @@ public class TutorialManager : CutsceneManager
     }
     private void OnDestroy()
     {
+        
         loafTween?.Kill();
         instance = null;
     }

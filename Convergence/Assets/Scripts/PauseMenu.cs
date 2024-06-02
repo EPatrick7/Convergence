@@ -172,7 +172,7 @@ public class PauseMenu : MonoBehaviour
             l.GetComponent<Volume>().enabled = state;
         }
     }
-
+    
     public void FadeInPPVol()
 	{
         foreach (CameraLook l in CameraLook.camLooks)
@@ -244,7 +244,11 @@ public class PauseMenu : MonoBehaviour
         {
             PauseText.text = "- GAME OVER -";
         }
-        if(TutorialManager.instance!=null&& RestartText!=null)
+        if (TutorialManager.instance != null && PauseText != null &&TutorialManager.instance.TutorialCleared)
+        {
+            PauseText.text = "- GAME OVER -";
+        }
+        if (TutorialManager.instance!=null&& RestartText!=null)
         {
             RestartText.text = TutorialManager.instance.TutorialLive ? "End Tutorial":"Reload";
         }
@@ -428,6 +432,7 @@ public class PauseMenu : MonoBehaviour
     public bool hasDeregistered;
     public void OnDestroy()
     {
+        tween?.Kill();
         isPaused = false;
         if (isPauseMenu&&!hasDeregistered)
         {
