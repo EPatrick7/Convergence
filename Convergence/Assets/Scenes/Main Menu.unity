@@ -825,6 +825,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 450458044}
+  - {fileID: 1332419148}
   - {fileID: 996237073}
   m_Father: {fileID: 913227156}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7195,7 +7196,6 @@ RectTransform:
   - {fileID: 1529278577}
   - {fileID: 14381385}
   - {fileID: 577270561}
-  - {fileID: 1332419148}
   m_Father: {fileID: 267388371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -22303,12 +22303,12 @@ RectTransform:
   m_Children:
   - {fileID: 1946708846}
   - {fileID: 1482062847}
-  m_Father: {fileID: 996237073}
+  m_Father: {fileID: 267388371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 13.417, y: -239.68692}
-  m_SizeDelta: {x: 672.234, y: 122.827}
+  m_AnchoredPosition: {x: 57.326958, y: -207.72437}
+  m_SizeDelta: {x: 672.234, y: 98.803}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1332419149
 CanvasGroup:
@@ -23091,7 +23091,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -256.4172, y: -59.31305}
+  m_AnchoredPosition: {x: -256.41727, y: -70.7352}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1482062849
@@ -23118,7 +23118,7 @@ MonoBehaviour:
     -- License: Attribution 4.0\r</size>\nDistant explosion.wav by juskiddink<size=14>
     -- https://freesound.org/s/108640/-- License: Attribution 4.0\r</size>\nshields3.ogg
     by PhreaKsAccount<size=15> -- https://freesound.org/s/46494/ -- License: Attribution
-    3.0\r</size>\nButton Selection by BoostSound<size=11> -- https://www.youtube.com/watch?v=YNSbL-Cek1c&ab_channel=BoostSound</size>"
+    3.0\r</size>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -23181,7 +23181,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 29.79403, y: -67.65336, z: -493.28525, w: 23.01021}
+  m_margin: {x: 29.79403, y: -67.65336, z: -493.28525, w: 53.81013}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -24537,7 +24537,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -256.4172, y: -38.07907}
+  m_AnchoredPosition: {x: -256.41727, y: -49.5011}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1946708847
