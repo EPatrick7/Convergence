@@ -27,6 +27,9 @@ public class SunManager : MonoBehaviour
     private CanvasGroup opUI;
 
     [SerializeField]
+    private CanvasGroup credUI;
+
+    [SerializeField]
     private TextMeshProUGUI title;
     private Image icon;
     [SerializeField]
@@ -47,7 +50,7 @@ public class SunManager : MonoBehaviour
 
     //private Camera camera;
 
-    private Tween TcamSize, Ttext, TMtext, Tcam, opTween, mainTween, skipTween;
+    private Tween TcamSize, Ttext, TMtext, Tcam, opTween, mainTween, skipTween,creditsTween;
     public static bool OptionsOpen;
 
     // Start is called before the first frame update
@@ -282,8 +285,17 @@ public class SunManager : MonoBehaviour
         mainTween.Play();
     }
 
+    public void FadeCredits()
+    {
+        creditsTween?.Kill();
+        creditsTween = credUI.DOFade(1f, 1.5f);
+        creditsTween.Play();
+
+    }
     private void FadeInOptions()
 	{
+        
+
         opUI.interactable = true;
         float alpha = 0;
         opTween?.Kill();
@@ -291,11 +303,15 @@ public class SunManager : MonoBehaviour
         {
             opUI.alpha = alpha;
         });
+        opTween.onComplete += FadeCredits;
         opTween.Play();
     }
 
     private void FadeOutOptions()
-	{
+    {
+        creditsTween?.Kill();
+        creditsTween = credUI.DOFade(0, 0.5f);
+        creditsTween.Play();
         opUI.interactable = false;
         float alpha = 1;
         opTween?.Kill();
