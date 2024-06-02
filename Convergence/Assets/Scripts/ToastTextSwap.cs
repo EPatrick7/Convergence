@@ -11,6 +11,7 @@ public class ToastTextSwap : MonoBehaviour
     public bool UseAltXBox;
     [HideInInspector]
     public string DefaultText;
+    
     private void Start()
     {
         DefaultText = GetComponent<TextMeshProUGUI>().text;
@@ -20,7 +21,6 @@ public class ToastTextSwap : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.25f);
 
             if (InputManager.inputManagers.Count > 0 && InputManager.inputManagers[0].playerInput.devices.Count>0&& InputManager.inputManagers[0].HasGamepad())
             {
@@ -41,6 +41,7 @@ public class ToastTextSwap : MonoBehaviour
             {
                 GetComponent<TextMeshProUGUI>().text = DefaultText;
             }
+            yield return new WaitForSeconds(0.25f);
         }
     }
 }

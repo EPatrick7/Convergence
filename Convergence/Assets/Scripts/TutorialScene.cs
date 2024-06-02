@@ -10,6 +10,10 @@ public class TutorialScene : MonoBehaviour
     public ClearCondition clearCondition;
     bool isCleared;
     bool isSuperCleared;
+
+    public PlayerPixelManager playerPixelManager;
+    public float GiftGas;
+    public float GiftIce;
     private void FixedUpdate()
     {
         if (isCleared)
@@ -64,6 +68,11 @@ public class TutorialScene : MonoBehaviour
         if(Time.timeSinceLevelLoad>0.1f)
         {
             GravityManager.Instance.PreRegister_Block(transform);
+        }
+        if (playerPixelManager != null)
+        {
+            playerPixelManager.Gas += GiftGas;
+            playerPixelManager.Ice+=GiftIce;
         }
     }
 }
