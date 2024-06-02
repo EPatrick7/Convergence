@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class AudioSlider : MonoBehaviour
 {
-    private AudioManager audioManager;
     public enum AudioSliderType {None,Music,SFX};
     UnityEngine.UI.Slider slider;
-    public AudioSliderType type;    
+    public AudioSliderType type;
+    private bool init;
     void Start()
     {
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        init = true;
         slider = GetComponent<UnityEngine.UI.Slider>();
 
         if(type == AudioSliderType.Music)
@@ -21,6 +21,7 @@ public class AudioSlider : MonoBehaviour
             slider.value = PlayerPrefs.GetFloat("Volume_SFX", slider.value);
         }
         UpdateValue();
+        init = false;
     }
 
     public void UpdateValue()
@@ -28,14 +29,17 @@ public class AudioSlider : MonoBehaviour
         if (type == AudioSliderType.Music)
 		{
             PlayerPrefs.SetFloat("Volume_Music", slider.value);
+            AudioManager.Instance?.AdjustVolume();
         } else if (type == AudioSliderType.SFX)
 		{
             PlayerPrefs.SetFloat("Volume_SFX", slider.value);
+            AudioManager.Instance?.AdjustVolume();
+            if (!init)
+            {
+                AudioManager.Instance?.HoverClick();
+            }
         }
-        if (audioManager != null)
-		{
-            AudioManager.Instance.AdjustVolume(); //audioManager.AdjustVolume();
-		}
+
     }
 
     /*

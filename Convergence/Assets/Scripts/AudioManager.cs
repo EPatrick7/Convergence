@@ -113,6 +113,8 @@ public class AudioManager : MonoBehaviour
 
     public void AdjustVolume()
     {
+        musicTween?.Kill();
+        sfxTween?.Kill();
         SFXVolume = PlayerPrefs.GetFloat("Volume_SFX", 1f);
         MusicVolume = PlayerPrefs.GetFloat("Volume_Music", 1f);
         sfxMixer.SetFloat("SFXVol", Mathf.Log10(SFXVolume) * 20);
@@ -134,7 +136,8 @@ public class AudioManager : MonoBehaviour
             StartCoroutine(CheckIfFading());
 		} else
 		{
-            sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(SFXVolume), fadeOUTTime);
+            sfxTween = sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(SFXVolume), fadeOUTTime);
+            sfxTween.Play();
         }
     }
 
@@ -144,7 +147,8 @@ public class AudioManager : MonoBehaviour
         {
             if (!absorbSFXSource.isPlaying)
             {
-                sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(SFXVolume), fadeOUTTime);
+                sfxTween = sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(SFXVolume), fadeOUTTime);
+                sfxTween.Play();
             }
             //Debug.Log("Checking Music");
             yield return new WaitForSeconds(.5f); // Check every second
@@ -164,7 +168,8 @@ public class AudioManager : MonoBehaviour
 	{
         musicTween.Kill();
         musicSource.Play();
-        musicMixer.DOSetFloat("MusicVol", ConvertToMixer(MusicVolume), fadeOUTTime);
+        musicTween = musicMixer.DOSetFloat("MusicVol", ConvertToMixer(MusicVolume), fadeOUTTime);
+        musicTween.Play();
         StartCoroutine(CheckIfPlaying());
         if (gameEnd)
 		{
