@@ -451,6 +451,14 @@ public class GravityManager : MonoBehaviour
                 GameObject playerObj = Instantiate(Player, transform.position + new Vector3(playerLoc.x, playerLoc.y, 0), Player.transform.rotation, transform);
                 RegisterBody(playerObj, playerVelocity);
                 playerObj.GetComponent<PlayerPixelManager>().PlayerID = i + 1;
+                foreach(CameraLook look in CameraLook.camLooks)
+                {
+                    if(look.PlayerID==i+1)
+                    {
+                        look.transform.position = new Vector3(playerObj.transform.position.x, playerObj.transform.position.y,look.transform.position.z);
+
+                    }
+                }
                 foreach (PlayerHud hud in PlayerHud.huds)
                 {
                     if (hud.PlayerID == playerObj.GetComponent<PlayerPixelManager>().PlayerID)
@@ -880,9 +888,9 @@ public class GravityManager : MonoBehaviour
                             else if (borderBehavior == BorderNPCBehavior.Wrap)
                             {
                                 float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
-                                if (bh_dist > wrap_dist && !inView)
+                                if (bh_dist > wrap_dist*0.85f && !inView)
                                 {
-                                    Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
+                                    Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist * 0.85f;
                                     bool isSeen = isWithinACamera(target);
                                     if(!isSeen)
                                         this_pixel.transform.position = target;
@@ -900,9 +908,9 @@ public class GravityManager : MonoBehaviour
                                 else
                                 {
                                     float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
-                                    if (bh_dist > wrap_dist && !inView)
+                                    if (bh_dist > wrap_dist * 0.85f && !inView)
                                     {
-                                        Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
+                                        Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist*0.85f;
                                         bool isSeen = isWithinACamera(target);
                                         if (!isSeen)
                                             this_pixel.transform.position = target;
