@@ -50,6 +50,7 @@ public class OnlinePixelManager : MonoBehaviour
         }
 
 
+        pixelManager.PlayerIcon.gameObject.layer = LayerMask.NameToLayer("P" + pixelManager.PlayerID);
         Debug.Log("Activated Player " + pixelManager.PlayerID);
         GravityManager.Instance.PreRegister(transform);
     }
