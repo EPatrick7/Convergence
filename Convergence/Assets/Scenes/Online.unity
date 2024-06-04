@@ -382,6 +382,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 710178676920801405, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: PlayerNames.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 710178676920801405, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: PlayerNames.Array.data[0]
+      value: Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 710178676920801405, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: PlayerNames.Array.data[1]
+      value: Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 710178676920801405, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: PlayerNames.Array.data[2]
+      value: Green
+      objectReference: {fileID: 0}
+    - target: {fileID: 710178676920801405, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
+      propertyPath: PlayerNames.Array.data[3]
+      value: Yellow
+      objectReference: {fileID: 0}
     - target: {fileID: 2910614106267335051, guid: b12c391538fe6a34c9f248cd9bb413af, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

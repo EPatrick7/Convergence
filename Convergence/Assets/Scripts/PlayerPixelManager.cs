@@ -176,7 +176,8 @@ public class PlayerPixelManager : PixelManager
     {
         if (!hasRegistered)
         {
-            Debug.LogWarning("Tried to get MouseDirection, Input not Ready!");
+            if(GetComponent<OnlinePixelManager>() == null) //Expected Behavior For Online Pixels
+                Debug.LogWarning("Tried to get MouseDirection, Input not Ready!");
             return Vector2.zero;
         }
         Vector2 mousePos = MousePos();
@@ -569,7 +570,7 @@ public class PlayerPixelManager : PixelManager
     #endregion
     public void Bonk(bool isLarger, bool isMicroscopic, bool isSlightlySmaller)
     {
-        camLook.inputManager.BonkRumble(isLarger, isMicroscopic, isSlightlySmaller);
+        camLook?.inputManager?.BonkRumble(isLarger, isMicroscopic, isSlightlySmaller);
     }
     #region Shield
     private void StartShield(InputAction.CallbackContext context)

@@ -23,9 +23,9 @@ public class MultiplayerManager : MonoBehaviour
 
     public const byte AddPlayer = 1;
 
-    public void SendBirthEvent(GravityBody body)
+    public void SendBirthEvent(int playerId)
     {
-        object[] content = new object[] {body};
+        object[] content = new object[] { playerId };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All};
         PhotonNetwork.RaiseEvent(AddPlayer, content, raiseEventOptions, SendOptions.SendReliable);
 
@@ -62,24 +62,36 @@ public class MultiplayerManager : MonoBehaviour
         int id =PhotonNetwork.LocalPlayer.ActorNumber;
 
         GameObject g= PhotonNetwork.Instantiate("OnlinePixel", GravityManager.Instance.DesiredPlayerPos+ new Vector2(id*10,id*10), Quaternion.identity);
-        GravityManager.Instance.PreRegister(g.transform);
+        
     }
 
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
-        object[] data = (object[])photonEvent.CustomData;
+       // Debug.Log(eventCode);
+        object[] data;
         switch (eventCode)
         {
             case InitializeEvent:
 
+                data = (object[])photonEvent.CustomData;
                 InitializeGame((int)data[0]);
                 Debug.Log("Initializing Game {Seed=" + (int)data[0]+"}...");
                 break;
             case AddPlayer:
 
-
-                break;
+               data = (object[])photonEvent.CustomData;
+                //Dirty replace later:
+               foreach(PlayerPixelManager p in FindObjectsOfType<PlayerPixelManager>())
+                {
+                    if(!p.isInitialized)
+                    {
+                        p.PlayerID = (int)data[0];
+                        GravityManager.Instance.PreRegister(p.transform);
+                        return;
+                    }
+                }
+               break;
 
         }
     }

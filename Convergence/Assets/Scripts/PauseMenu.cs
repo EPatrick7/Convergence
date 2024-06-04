@@ -235,24 +235,25 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
-
-        if (GravityManager.Instance.GameLost && PauseText != null)
+        if (GravityManager.Instance != null)
         {
-            PauseText.text = "- GAME OVER -";
+            if (GravityManager.Instance.GameLost && PauseText != null)
+            {
+                PauseText.text = "- GAME OVER -";
+            }
+            if (GravityManager.GameWinner != null && PauseText != null)
+            {
+                PauseText.text = "- GAME OVER -";
+            }
+            if (TutorialManager.instance != null && PauseText != null && TutorialManager.instance.TutorialCleared)
+            {
+                PauseText.text = "- GAME OVER -";
+            }
+            if (TutorialManager.instance != null && RestartText != null)
+            {
+                RestartText.text = TutorialManager.instance.TutorialLive ? "End Tutorial" : "Restart";
+            }
         }
-        if (GravityManager.GameWinner!=null&& PauseText!=null)
-        {
-            PauseText.text = "- GAME OVER -";
-        }
-        if (TutorialManager.instance != null && PauseText != null &&TutorialManager.instance.TutorialCleared)
-        {
-            PauseText.text = "- GAME OVER -";
-        }
-        if (TutorialManager.instance!=null&& RestartText!=null)
-        {
-            RestartText.text = TutorialManager.instance.TutorialLive ? "End Tutorial":"Restart";
-        }
-
         TutorialManager.instance?.DisableAlpha();
 
         openedMenu = Time.timeSinceLevelLoad;

@@ -58,8 +58,11 @@ public class PixelManager : MonoBehaviour
 
     [HideInInspector]
     public Vector3 startPos;
+    [HideInInspector]
+    public bool isInitialized;
     public void Initialize()
     {
+        isInitialized = true;
         startPos = transform.position;
         rigidBody = GetComponent<Rigidbody2D>();
         playerPixel = GetComponent<PlayerPixelManager>();

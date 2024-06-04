@@ -365,7 +365,8 @@ public class GravityManager : MonoBehaviour
 
             if (pixel.GetComponent<PlayerPixelManager>() != null)
             {
-                pixel.GetComponent<PlayerPixelManager>().PlayerID = 1;
+                if (pixel.GetComponent<OnlinePixelManager>()==null)
+                    pixel.GetComponent<PlayerPixelManager>().PlayerID = 1;
                 foreach (PlayerHud hud in PlayerHud.huds)
                 {
                     if (hud.PlayerID == pixel.GetComponent<PlayerPixelManager>().PlayerID)
