@@ -96,7 +96,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         {
             if(!isStarted&&isHost&&room.PlayerCount>1)
             {
-                yield return new WaitForSeconds(5f);
+                yield return new WaitForSeconds(2f);
                 SetUp();
             }
             yield return new WaitForEndOfFrame();

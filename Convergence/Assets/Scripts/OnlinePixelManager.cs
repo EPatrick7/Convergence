@@ -46,6 +46,7 @@ public class OnlinePixelManager : MonoBehaviour
             foreach (InputManager manager in InputManager.inputManagers)
             {
                 manager.PlayerId = pixelManager.PlayerID;
+                pixelManager.PlayerIcon.GetComponent<SpriteRenderer>().color = manager.PlayerColors[pixelManager.PlayerID - 1];
             }
         }
 
