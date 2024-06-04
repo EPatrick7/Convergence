@@ -23,6 +23,7 @@ struct GravityBody {
     float2 elements;
 
     uint id;
+    uint sendOnly;
 };
 
 RWStructuredBuffer<GravityBody> bodyBuffer;
@@ -75,7 +76,7 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
 
     //Dont do anything if we are only here because the number of bodies % 8 != 0
     //Also root out when x==y, (we dont want self gravitation)
-    if (index1!=index2 && index1 < numBodies && index2 <numBodies)
+    if (index1 != index2 && index1 < numBodies && index2 < numBodies && bodyBuffer[index1].sendOnly == 0)
     {
         
         GravityBody body1=bodyBuffer[index1];

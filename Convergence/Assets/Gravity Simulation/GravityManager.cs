@@ -25,9 +25,10 @@ public struct GravityBody
     public float radius;
 
     public Vector2 elements;
-    
+
 
     public uint id;
+    public uint sendOnly;
     public GravityBody(uint id)
     {
         this.id = id;
@@ -36,8 +37,13 @@ public struct GravityBody
         dx = Vector4.zero;
         dy = Vector4.zero;
         mass = 0;
-        elements = new Vector3(0,0);
+        elements = new Vector3(0, 0);
         radius = 1;
+        sendOnly = 0;
+    }
+    public void makeSendOnly()
+    {
+        sendOnly = 1;
     }
 
     public Vector2 acceleration()
@@ -103,6 +109,11 @@ public class GravityManager : MonoBehaviour
 
             genBodies++;
             numBodies++;
+
+            if (GravityManager.Instance.isOnline&&g.GetComponent<PhotonView>()!=null&&!g.GetComponent<PhotonView>().IsMine)
+            {
+                b.makeSendOnly();
+            }
         }
         public int FetchBody(uint id)
         {
@@ -156,7 +167,7 @@ public class GravityManager : MonoBehaviour
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     bool asyncDone=true; // Whether or not the compute shader is done working
     int NUM_FLOATS=14;
-    int NUM_UINTS = 1;
+    int NUM_UINTS = 2;
     public static GravityManager Instance;
 
 

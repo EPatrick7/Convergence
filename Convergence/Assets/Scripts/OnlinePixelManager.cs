@@ -16,6 +16,8 @@ public class OnlinePixelManager : MonoBehaviour
 
         pixelManager = GetComponent<PlayerPixelManager>();
         pixelManager.PlayerID = view.CreatorActorNr;
+
+        pixelManager.PlayerIcon.GetComponent<SpriteRenderer>().color = CameraLook.camLooks[0].inputManager.PlayerColors[pixelManager.PlayerID - 1];
         if (isMine)
         {
             foreach (CameraLook look in CameraLook.camLooks)
@@ -38,7 +40,6 @@ public class OnlinePixelManager : MonoBehaviour
                         cam.cullingMask = LayerMask.GetMask("Default", "TransparentFX", "Ignore Raycast", "Ignore Pixel", "Water", "UI", "Shield", "Black Hole", "Player", "P1", "P2", "P3");
                         break;
                 }
-                pixelManager.PlayerIcon.GetComponent<SpriteRenderer>().color = look.inputManager.PlayerColors[pixelManager.PlayerID - 1];
             }
             foreach (PlayerHud hud in PlayerHud.huds)
             {

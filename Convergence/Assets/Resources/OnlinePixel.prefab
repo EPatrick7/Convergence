@@ -101,7 +101,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 1
-  m_UseLocal: 0
+  m_UseLocal: 1
 --- !u!114 &7811251895302433696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,9 +117,9 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 1
+  Synchronization: 2
   OwnershipTransfer: 0
-  observableSearch: 1
+  observableSearch: 2
   ObservedComponents:
   - {fileID: 8182819485163165596}
   - {fileID: 3723322754184726737}
@@ -153,4 +153,4 @@ MonoBehaviour:
   m_SynchronizeVelocity: 1
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 1
-  m_TeleportIfDistanceGreaterThan: 60
+  m_TeleportIfDistanceGreaterThan: 80
