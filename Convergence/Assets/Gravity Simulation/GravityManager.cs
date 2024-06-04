@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -162,6 +163,8 @@ public class GravityManager : MonoBehaviour
     public static PlayerPixelManager GameWinner;
     [HideInInspector]
     public bool isMultiplayer;
+    [HideInInspector]
+    public bool isOnline;
     [Header("Init")]
     [Tooltip("If true then we will not spawn player.")]
     public bool MenuSim;
@@ -947,8 +950,13 @@ public class GravityManager : MonoBehaviour
 
                     Vector2 acceleration = gravUniverse.bodies[i].acceleration();
                     gravUniverse.pixels[i].GetComponent<PixelManager>().CheckTransitions();
-                    gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale, Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(), 0.1f);
+                    if(!isOnline)
+                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale, Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(), 0.1f);
+                    else if (this_pixel.GetComponent<PhotonView>()==null|| this_pixel.GetComponent<PhotonView>().IsMine)
+                    {
+                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale, Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(), 0.1f);
 
+                    }
                     if (!float.IsNaN(acceleration.x) && !float.IsNaN(acceleration.y))
                     {
                         //Update acceleration of gravity

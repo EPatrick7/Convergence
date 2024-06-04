@@ -45,6 +45,7 @@ public class MultiplayerManager : MonoBehaviour
         {
             if (g.GetComponent<GravityManager>()!=null)
             {
+                g.GetComponent<GravityManager>().isOnline = true;
                 g.GetComponent<GravityManager>().RandomSeed = seed;
                 g.GetComponent<GravityManager>().Initialized += DoAddPlayer;
             }
@@ -61,7 +62,7 @@ public class MultiplayerManager : MonoBehaviour
 
         int id =PhotonNetwork.LocalPlayer.ActorNumber;
 
-        GameObject g= PhotonNetwork.Instantiate("OnlinePixel", GravityManager.Instance.DesiredPlayerPos+ new Vector2(id*10,id*10), Quaternion.identity);
+        GameObject g= PhotonNetwork.Instantiate("OnlinePixel", GravityManager.Instance.DesiredPlayerPos+ new Vector2(id*50,id*50), Quaternion.identity);
         
     }
 

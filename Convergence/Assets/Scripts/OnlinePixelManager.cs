@@ -21,6 +21,23 @@ public class OnlinePixelManager : MonoBehaviour
             foreach (CameraLook look in CameraLook.camLooks)
             {
                 look.PlayerID = pixelManager.PlayerID;
+                Camera cam = look.GetComponent<Camera>();
+
+                switch (look.PlayerID)
+                {
+                    case 1:
+                        cam.cullingMask = LayerMask.GetMask("Default", "TransparentFX", "Ignore Raycast", "Ignore Pixel", "Water", "UI", "Shield", "Black Hole", "Player", "P2", "P3", "P4");
+                        break;
+                    case 2:
+                        cam.cullingMask = LayerMask.GetMask("Default", "TransparentFX", "Ignore Raycast", "Ignore Pixel", "Water", "UI", "Shield", "Black Hole", "Player", "P1", "P3", "P4");
+                        break;
+                    case 3:
+                        cam.cullingMask = LayerMask.GetMask("Default", "TransparentFX", "Ignore Raycast", "Ignore Pixel", "Water", "UI", "Shield", "Black Hole", "Player", "P1", "P2", "P4");
+                        break;
+                    case 4:
+                        cam.cullingMask = LayerMask.GetMask("Default", "TransparentFX", "Ignore Raycast", "Ignore Pixel", "Water", "UI", "Shield", "Black Hole", "Player", "P1", "P2", "P3");
+                        break;
+                }
             }
             foreach (PlayerHud hud in PlayerHud.huds)
             {
