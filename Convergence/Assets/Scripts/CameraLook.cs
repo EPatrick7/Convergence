@@ -266,7 +266,7 @@ public class CameraLook : MonoBehaviour
         }
         else if (focusedPixel != null)
         {
-            if(focusedPixel.playerPixel.hasWonGame&&!inWinState&&GravityManager.Instance.isMultiplayer)
+            if(focusedPixel.playerPixel!=null&&focusedPixel.playerPixel.hasWonGame&&!inWinState&&GravityManager.Instance.isMultiplayer)
             {
                 AudioManager.Instance?.PlayerWinSucceedSFX();
                 inWinState = true;

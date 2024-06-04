@@ -45,15 +45,22 @@ public class RoomManager : MonoBehaviourPunCallbacks
         inRoom = true;
         room = PhotonNetwork.CurrentRoom;
         isHost =PhotonNetwork.IsMasterClient;
-        Debug.Log("Sucessfully joined room '" + ROOMNAME+"' with "+PhotonNetwork.CurrentRoom.PlayerCount+" Players");
+        Debug.Log("Sucessfully joined room '" + ROOMNAME+"' with "+PhotonNetwork.CurrentRoom.PlayerCount+" Player(s)");
         StartCoroutine(RoomLoop());
     }
-
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log("Lost Connection: " + cause);
+    }
+    private void OnDestroy()
+    {
+        PhotonNetwork.Disconnect();
+    }
     public IEnumerator RoomLoop()
     {
         while (PhotonNetwork.IsConnected)
         {
-            if(!isStarted&&isHost&&room.PlayerCount>1)
+            if(!isStarted&&isHost&&room.PlayerCount>0)
             {
                 SetUp();
             }
@@ -68,8 +75,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public void SetUp()
     {
         isStarted = true;
+        PhotonNetwork.CurrentRoom.IsOpen = false;
 
-        Debug.LogError("Game Startup Aborted: No Startup Function Exists");
+        int seed = Random.Range(100, 100000);
+
+        MultiplayerManager.Instance.SendInitEvent(seed);
+
+        
     }
 
     public void UpdateStatusText()
@@ -100,7 +112,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
                 wasConnected = true;
                 StatusImage.color = isStalled ? Color.red : Color.gray;
-                StatusText.text = isStalled ? "<color=red>Login Failed" : "Logging In...";
+                StatusText.text = isStalled ? "<color=red>Server Busy" : "Logging In...";
             }
         }
     }

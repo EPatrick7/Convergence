@@ -378,6 +378,8 @@ public class GravityManager : MonoBehaviour
             }
         }
     }
+    [HideInInspector]
+    public Vector2 DesiredPlayerPos;
     public IEnumerator Initialize()
     {
         if (RandomSeed <= 0)
@@ -438,6 +440,22 @@ public class GravityManager : MonoBehaviour
         }
         if (!MenuSim)
         {
+            if(PlayerCount<=0)
+            {
+                Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;
+                if (playerLoc.sqrMagnitude <= InnerSpawnRadius * InnerSpawnRadius)
+                {
+                    playerLoc = playerLoc.normalized * (SpawnRadius);
+                }
+                DesiredPlayerPos = playerLoc;
+                foreach (CameraLook look in CameraLook.camLooks)
+                {
+                look.transform.position = new Vector3(DesiredPlayerPos.x, DesiredPlayerPos.y, look.transform.position.z);
+
+                }
+
+                GenerateGoodiesArea(DesiredPlayerPos, 1);
+            }
             for (int i = 0; i < PlayerCount; i++)
             {
                 Vector2 playerLoc = UnityEngine.Random.insideUnitCircle * SpawnRadius;

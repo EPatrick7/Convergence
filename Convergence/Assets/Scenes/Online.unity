@@ -123,6 +123,16 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &21631662 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5948541786327904545, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+  m_PrefabInstance: {fileID: 1755211569}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &254746697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1649820373411464530, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+  m_PrefabInstance: {fileID: 5000439724359602891}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &310275793
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,7 +1229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &646564903
 Transform:
   m_ObjectHideFlags: 0
@@ -1367,7 +1377,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1250794409138385040, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
   m_PrefabInstance: {fileID: 1755211569}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 21631662}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd9a98ce92cc67d48a14ed8e1c25383d, type: 3}
@@ -1881,8 +1891,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d4db059b19e9e409c65944f4d93bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerObject: {fileID: 0}
   EnableOnStart:
-  - {fileID: 646564902}
+  - {fileID: 254746697}
+  - {fileID: 1579255361}
+  - {fileID: 21631662}
   - {fileID: 1416547399}
   DisableOnStart:
   - {fileID: 310275793}
@@ -1915,6 +1928,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StatusText: {fileID: 310275795}
   StatusImage: {fileID: 728286450}
+--- !u!1 &1579255361 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8976998228422601944, guid: feb029235071d4c48b72722df6377ca9, type: 3}
+  m_PrefabInstance: {fileID: 8674023030252005857}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1755211569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1946,6 +1964,10 @@ PrefabInstance:
     - target: {fileID: 5948541786327904545, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: m_Name
       value: IndicatorManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948541786327904545, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7867901936837988434, guid: ddb7ff57ae618974fac985d7dc86167e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2656,6 +2678,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 646564903}
     m_Modifications:
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 5032970477705407407, guid: 6e2d9d35f2618c74790bfcee96418994, type: 3}
+    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+      propertyPath: PlayerCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: indicatorManager
       value: 
       objectReference: {fileID: 878192728}
@@ -2678,6 +2708,10 @@ PrefabInstance:
     - target: {fileID: 1649820373411464530, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: m_Name
       value: GravityManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 1649820373411464530, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1794329209082054581, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2793,6 +2827,10 @@ PrefabInstance:
     - target: {fileID: 8976998228422601944, guid: feb029235071d4c48b72722df6377ca9, type: 3}
       propertyPath: m_Name
       value: Backgrounds
+      objectReference: {fileID: 0}
+    - target: {fileID: 8976998228422601944, guid: feb029235071d4c48b72722df6377ca9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
