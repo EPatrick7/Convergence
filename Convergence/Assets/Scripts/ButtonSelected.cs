@@ -39,7 +39,7 @@ public class ButtonSelected : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if ((EventSystem.current != null && EventSystem.current.currentSelectedGameObject == gameObject))
         {
-            if (GravityManager.Instance.isMultiplayer&&InputManager.GamePadDetected)
+            if (GravityManager.Instance==null||(GravityManager.Instance.isMultiplayer&&InputManager.GamePadDetected))
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow)&& GetComponent<Selectable>().navigation.selectOnLeft!=null)
                 {
