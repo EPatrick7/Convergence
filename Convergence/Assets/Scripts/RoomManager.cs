@@ -60,7 +60,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         while (PhotonNetwork.IsConnected)
         {
-            if(!isStarted&&isHost&&room.PlayerCount>0)
+            if(!isStarted&&isHost&&room.PlayerCount>1)
             {
                 SetUp();
             }

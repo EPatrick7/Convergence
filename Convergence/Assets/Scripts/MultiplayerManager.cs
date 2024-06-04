@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class MultiplayerManager : MonoBehaviour
 {
+
     public GameObject PlayerObject;
     #region Event IDs
     public const byte InitializeEvent = 0;
