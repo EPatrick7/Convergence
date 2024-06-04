@@ -234,18 +234,20 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        
-        if(GravityManager.Instance.isMultiplayer&&PlayerId==1&&playerInput.currentControlScheme=="Gamepad")
+        if (GravityManager.Instance != null)
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+            if (GravityManager.Instance.isMultiplayer && PlayerId == 1 && playerInput.currentControlScheme == "Gamepad")
             {
-                if (PauseMenu.isPaused)
+                if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
                 {
-                    PauseMenu.Instance.UnPause();
-                }
-                else
-                {
-                    PauseMenu.Instance.Pause();
+                    if (PauseMenu.isPaused)
+                    {
+                        PauseMenu.Instance.UnPause();
+                    }
+                    else
+                    {
+                        PauseMenu.Instance.Pause();
+                    }
                 }
             }
         }
