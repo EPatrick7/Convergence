@@ -26,11 +26,26 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         Instance = this;
         PhotonNetwork.ConnectUsingSettings();
+
+
+
     }
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinRoom(ROOMNAME);
-       
+
+        foreach (CameraLook look in CameraLook.camLooks)
+        {
+            look.PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
+        }
+        foreach (PlayerHud hud in PlayerHud.huds)
+        {
+            hud.PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
+        }
+        foreach (InputManager manager in InputManager.inputManagers)
+        {
+            manager.PlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
+        }
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
