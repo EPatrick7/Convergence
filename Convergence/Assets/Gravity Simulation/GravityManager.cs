@@ -819,8 +819,13 @@ public class GravityManager : MonoBehaviour
 
                     PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
 
+
                     if(this_pixel.playerPixel != null)
                     {
+                        if (GameWinner != null)
+                        {
+                            this_pixel.rigidBody.drag = 0.25f;
+                        }
                         float bh_dist = Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position);
                         if (bh_dist>wrap_dist&&world_wrap&&this_pixel.playerPixel.camLook.LastNumPixelsInView<=1)
                         {
