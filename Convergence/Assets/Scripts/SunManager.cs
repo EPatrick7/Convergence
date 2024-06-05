@@ -104,7 +104,7 @@ public class SunManager : MonoBehaviour
 
         FadeInSkipUI();
 
-        FadeOutMainButtons();
+        FadeOutMainButtons(1f);
 
         Vector3 newPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
         
@@ -135,7 +135,7 @@ public class SunManager : MonoBehaviour
 
         FadeInSkipUI();
 
-        FadeOutMainButtons();
+        FadeOutMainButtons(1f);
         Vector3 newPos = new Vector3(gameObject.transform.position.x + Camera.main.pixelWidth/3f, gameObject.transform.position.y, Camera.main.transform.position.z); //set z to 0 so no clipping out
 
         if (ppVol.TryGet<DepthOfField>(out dOF))
@@ -168,11 +168,16 @@ public class SunManager : MonoBehaviour
 
     public void onlineStart()
     {
-
-        FadeOutMainButtons();
-        FadeInOnline();
+        FadeOutOnline();
+        sceneStart();
 
     }
+
+    public void onlinePreMenu()
+	{
+        FadeInOnline();
+        FadeOutMainButtons(.5f);
+	}
 
     public void onlineBack()
 	{
@@ -215,7 +220,7 @@ public class SunManager : MonoBehaviour
         }
 
         OptionsOpen = true;
-        FadeOutMainButtons();
+        FadeOutMainButtons(1f);
         FadeInOptions();
 
         if (Time.timeSinceLevelLoad < delayClickTime&&!InputManager.GamePadDetected)
@@ -274,16 +279,19 @@ public class SunManager : MonoBehaviour
         button.gameObject.GetComponent<Button>().enabled = true;
     }
 
-    private void FadeOutMainButtons()
+    private void FadeOutMainButtons(float fadeTime)
 	{
         PauseMenu.Instance.isPressingFire = false;
         mainUI.interactable = false;
-        float alpha = 1;
+        //float alpha = 1;
         mainTween?.Kill();
+        mainTween = mainUI.DOFade(0f, fadeTime);
+        /*
         mainTween = DOTween.To(()=> alpha, x => alpha = x, 0, 1).OnUpdate(() =>
         {
             mainUI.alpha = alpha;
         });
+        */
         mainTween.Play();
     }
 
@@ -292,12 +300,15 @@ public class SunManager : MonoBehaviour
         //Don't need to comment out, cutscene skip works fine w/ disabled buttons
         //Disabling them so you cant spam click them when going to optiosn
         mainUI.interactable = true;
-        float alpha = 0;
+        //float alpha = 0;
         mainTween?.Kill();
+        mainTween = mainUI.DOFade(1f, 1f);
+        /*
         mainTween = DOTween.To(() => alpha, x => alpha = x, 1, 1).OnUpdate(() =>
         {
             mainUI.alpha = alpha;
         });
+        */
         mainTween.Play();
     }
 
@@ -339,8 +350,8 @@ public class SunManager : MonoBehaviour
         });
         */
         Sequence onlineTween = DOTween.Sequence();
-        onlineTween.Append(onlineUI.DOFade(0f, 1f));
-        onlineTween.Insert(0, onlineUI.gameObject.GetComponent<RectTransform>().DOLocalMoveX(-300, 1f));
+        onlineTween.Append(onlineUI.DOFade(0f, .75f));
+        onlineTween.Insert(0, onlineUI.gameObject.GetComponent<RectTransform>().DOLocalMoveX(-500, 1f));
         onlineTween.Play();
     }
 

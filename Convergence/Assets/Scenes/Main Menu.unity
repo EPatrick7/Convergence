@@ -1052,7 +1052,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
-  btnState: 0
+  btnState: 5
 --- !u!114 &323171064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1188,7 +1188,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1398485246}
         m_TargetAssemblyTypeName: SunManager, Assembly-CSharp
-        m_MethodName: onlineStart
+        m_MethodName: onlinePreMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1556,7 +1556,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1398485246}
         m_TargetAssemblyTypeName: SunManager, Assembly-CSharp
-        m_MethodName: sceneStart
+        m_MethodName: onlineStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1573,7 +1573,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1681,7 +1681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
-  btnState: 0
+  btnState: 2
 --- !u!222 &439108639
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7661,18 +7661,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 21826835}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: SoloSelect
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 267388372}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: LoadSceneDelayed
@@ -7707,7 +7695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
-  btnState: 0
+  btnState: 1
 --- !u!1 &996237072
 GameObject:
   m_ObjectHideFlags: 0
@@ -23452,18 +23440,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 21826835}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: TutorialSelect
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 267388372}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: LoadSceneDelayed
@@ -23550,7 +23526,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1398485246}
         m_TargetAssemblyTypeName: SunManager, Assembly-CSharp
-        m_MethodName: sceneStart
+        m_MethodName: onlineStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23567,7 +23543,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -23675,7 +23651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
-  btnState: 0
+  btnState: 2
 --- !u!222 &1422286261
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25795,7 +25771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
-  btnState: 0
+  btnState: 2
 --- !u!114 &1950528537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25932,18 +25908,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1398485246}
         m_TargetAssemblyTypeName: SunManager, Assembly-CSharp
         m_MethodName: sceneStart
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 21826835}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: MultiSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26321,7 +26285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverScale: 1.1
   normalScale: 1
-  btnState: 0
+  btnState: 4
 --- !u!114 &2126210974
 MonoBehaviour:
   m_ObjectHideFlags: 0

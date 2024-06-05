@@ -16,7 +16,7 @@ public class AudioManager : MonoBehaviour
     private AudioMixer musicMixer, sfxMixer;
 
     [SerializeField]
-    private float fadeINTime, fadeOUTTime,fadeCHANGETime, maxVol, rumbleFadeTime;
+    private float fadeINTime, fadeOUTTime,fadeCHANGETime, maxVol;
 
     [SerializeField]
     private List<AudioClip> sfx = new List<AudioClip>();
@@ -39,7 +39,7 @@ public class AudioManager : MonoBehaviour
     private bool gameEnd = false;
     private bool tutorialRestart = false;
     private float transitionNum = 0;
-    private float sfxFadeTime;
+    private Mode savedMode;
 
     private enum Mode
 	{
@@ -74,9 +74,13 @@ public class AudioManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        sfxFadeTime = fadeOUTTime;
+        savedMode = gameMode;
         transitionNum++;
         soloSelected = false;
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+		{
+            tutorialRestart = true;
+		}
         if (!tutorialRestart)
         {
             musicSource.clip = music[(int)gameMode];
@@ -169,7 +173,7 @@ public class AudioManager : MonoBehaviour
 	{
         if (gameEnd)
         {
-            FadeInSFX();
+            //FadeInSFX();
         }
         musicTween.Kill();
         musicSource.Play();
@@ -183,6 +187,7 @@ public class AudioManager : MonoBehaviour
     private void RestartMusic()
 	{
         //Debug.LogWarning("Fading Out Music and waiting to restart");
+        gameMode = savedMode;
         FadeOutMusic();
         StartCoroutine(RestartWait());
 
@@ -404,7 +409,6 @@ public class AudioManager : MonoBehaviour
     public void PlayerWinSucceedSFX()
 	{
         gameEnd = true;
-        sfxFadeTime = rumbleFadeTime;
         FadeOutSFX();
         gameMode = Mode.Win;
         musicSource.clip = music[(int)gameMode];
