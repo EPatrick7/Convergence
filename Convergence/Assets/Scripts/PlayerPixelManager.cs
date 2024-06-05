@@ -100,7 +100,8 @@ public class PlayerPixelManager : PixelManager
     public PlayerInput pInput;
 
     private bool canEject = true;
-    private bool isPropelling = false;
+    [HideInInspector]
+    public bool isPropelling = false;
 
 
     [HideInInspector]
@@ -585,7 +586,10 @@ public class PlayerPixelManager : PixelManager
     #region Shield
     private void StartShield(InputAction.CallbackContext context)
     {
-        
+        StartShield();
+    }
+    public void StartShield()
+    {
         if (Shield == null) return;
         if (hasWonGame)
             return;
@@ -615,7 +619,11 @@ public class PlayerPixelManager : PixelManager
         Gizmos.DrawWireSphere(transform.position, ShieldRadius());
     }
     */
-    private void CancelShield(InputAction.CallbackContext context)
+    public void CancelShield(InputAction.CallbackContext context)
+    {
+        CancelShield();
+    }
+    public void CancelShield()
     {
         if (Shield == null) return;
 

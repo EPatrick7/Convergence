@@ -32,13 +32,14 @@ public class MultiplayerManager : MonoBehaviour
     }
     public const byte PlayerUpdate= 2;
 
-    public void SendUpdateEvent(int playerID,Vector3 data)
+    public void SendUpdateEvent(int playerID,Vector3 data,bool isPropelling,bool isShielding)
     {
-        object[] content = new object[] {playerID, data };
+        object[] content = new object[] {playerID, data,isPropelling,isShielding};
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
         PhotonNetwork.RaiseEvent(PlayerUpdate, content, raiseEventOptions, SendOptions.SendReliable);
 
     }
+
     #endregion
 
     public static MultiplayerManager Instance;
@@ -105,7 +106,7 @@ public class MultiplayerManager : MonoBehaviour
                 PlayerPixelManager player = OnlinePixelManager.FetchPlayer((int)data[0]);
                 if(player!=null)
                 {
-                    player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1]);
+                    player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1], (bool)data[2], (bool)data[3]);
                 }
                 break;
 

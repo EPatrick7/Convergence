@@ -2,19 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.InputSystem;
 
 public class OnlinePixelManager : MonoBehaviour
 {
     public static List<OnlinePixelManager> onlinePixels;
+    bool isPropelling, isShielding;
 
-
-    public void UpdateStats(Vector3 input)
+    public void UpdateStats(Vector3 input,bool isPropelling,bool isShielding)
     {
         if(pixelManager!=null)
         {
             pixelManager.rigidBody.mass = input.x;
             pixelManager.Ice=input.y;
             pixelManager.Gas=input.z;
+
+            this.isPropelling = isPropelling;
+            this.isShielding = isShielding;
+            UpdateVisibles();
+            
+        }
+    }
+    public void UpdateVisibles()
+    {
+        if (!isMine)
+        {
+            if (isPropelling && !pixelManager.GasJet.isPlaying)
+            {
+                pixelManager.GasJet.Play();
+            }
+
+            if (!isPropelling && pixelManager.GasJet.isPlaying)
+            {
+                pixelManager.GasJet.Stop();
+            }
+
+            if (!pixelManager.isShielding && isShielding)
+                pixelManager.StartShield();
+            if (pixelManager.isShielding && !isShielding)
+                pixelManager.StartShield();
         }
     }
     public Vector3 FetchStats()
@@ -25,7 +51,7 @@ public class OnlinePixelManager : MonoBehaviour
     float timeSinceLast;
     public void StatsChanged()
     {
-            MultiplayerManager.Instance.SendUpdateEvent(pixelManager.PlayerID, FetchStats());
+            MultiplayerManager.Instance.SendUpdateEvent(pixelManager.PlayerID, FetchStats(),pixelManager.isPropelling,pixelManager.isShielding);
         
     }
     public static PlayerPixelManager FetchPlayer(int PlayerID)
@@ -114,6 +140,10 @@ public class OnlinePixelManager : MonoBehaviour
         {
             timeSinceLast = Time.timeSinceLevelLoad + 0.5f;
             StatsChanged();
+        }
+        if(!isMine)
+        {
+            UpdateVisibles();
         }
     }
 }
