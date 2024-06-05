@@ -5,12 +5,55 @@ using Photon.Pun;
 
 public class OnlinePixelManager : MonoBehaviour
 {
+    public static List<OnlinePixelManager> onlinePixels;
+
+
+    public void UpdateStats(Vector3 input)
+    {
+        if(pixelManager!=null)
+        {
+            pixelManager.rigidBody.mass = input.x;
+            pixelManager.Ice=input.y;
+            pixelManager.Gas=input.z;
+        }
+    }
+    public Vector3 FetchStats()
+    {
+        return new Vector3(pixelManager.rigidBody.mass, pixelManager.Ice, pixelManager.Gas);
+    }
+
+    float timeSinceLast;
+    public void StatsChanged()
+    {
+            MultiplayerManager.Instance.SendUpdateEvent(pixelManager.PlayerID, FetchStats());
+        
+    }
+    public static PlayerPixelManager FetchPlayer(int PlayerID)
+    {
+        if (onlinePixels == null)
+            onlinePixels = new List<OnlinePixelManager>();
+        foreach (OnlinePixelManager onlinePixel in onlinePixels)
+        {
+            if (onlinePixel.pixelManager.PlayerID == PlayerID)
+                return onlinePixel.pixelManager;
+        }
+        return null;
+    }
     PhotonView view;
     bool isMine;
     PlayerPixelManager pixelManager;
+    private void OnDestroy()
+    {
+
+        if (onlinePixels == null)
+            onlinePixels = new List<OnlinePixelManager>();
+        onlinePixels.Remove(this);
+    }
     private void OnEnable()
     {
-        
+        if(onlinePixels==null)
+            onlinePixels=new List<OnlinePixelManager>();
+        onlinePixels.Add(this);
         view = GetComponent<PhotonView>();
         isMine = view.IsMine;
 
@@ -50,6 +93,10 @@ public class OnlinePixelManager : MonoBehaviour
                 manager.PlayerId = pixelManager.PlayerID;
             }
         }
+        else
+        {
+            GetComponent<Rigidbody2D>().isKinematic = true;
+        }
 
 
         pixelManager.PlayerIcon.gameObject.layer = LayerMask.NameToLayer("P" + pixelManager.PlayerID);
@@ -59,5 +106,14 @@ public class OnlinePixelManager : MonoBehaviour
     public void EjectPixel(float mass, Vector2 pos,Vector2 vel)
     {
         MultiplayerManager.Instance?.SendPlayerEjectEvent(mass, pos, vel);
+    }
+
+    private void FixedUpdate()
+    {
+        if (isMine&& Time.timeSinceLevelLoad > timeSinceLast)
+        {
+            timeSinceLast = Time.timeSinceLevelLoad + 0.5f;
+            StatsChanged();
+        }
     }
 }

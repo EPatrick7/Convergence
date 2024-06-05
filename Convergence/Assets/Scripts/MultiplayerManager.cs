@@ -30,6 +30,15 @@ public class MultiplayerManager : MonoBehaviour
         PhotonNetwork.RaiseEvent(PlayerEject, content, raiseEventOptions, SendOptions.SendReliable);
 
     }
+    public const byte PlayerUpdate= 2;
+
+    public void SendUpdateEvent(int playerID,Vector3 data)
+    {
+        object[] content = new object[] {playerID, data };
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(PlayerUpdate, content, raiseEventOptions, SendOptions.SendReliable);
+
+    }
     #endregion
 
     public static MultiplayerManager Instance;
@@ -88,6 +97,16 @@ public class MultiplayerManager : MonoBehaviour
                 pixel.GetComponent<PixelManager>().Initialize();
                 GravityManager.Instance.RegisterBody(pixel, (Vector2)data[2]);
 
+                break;
+            case PlayerUpdate:
+
+                data = (object[])photonEvent.CustomData;
+
+                PlayerPixelManager player = OnlinePixelManager.FetchPlayer((int)data[0]);
+                if(player!=null)
+                {
+                    player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1]);
+                }
                 break;
 
         }
