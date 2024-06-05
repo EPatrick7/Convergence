@@ -28,7 +28,7 @@ public class OnlinePixelManager : MonoBehaviour
     {
         if (!isMine)
         {
-            if (pixelManager.Gas < 0)
+            if (pixelManager.Gas <= 0)
                 isPropelling = false;
             
 
