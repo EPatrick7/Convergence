@@ -29,6 +29,10 @@ public class OnlinePixelManager : MonoBehaviour
     {
         if (!isMine)
         {
+            if (pixelManager.Gas < 0)
+                isPropelling = false;
+            
+
             if (isPropelling && !pixelManager.GasJet.isPlaying)
             {
                 pixelManager.GasJet.Play();
