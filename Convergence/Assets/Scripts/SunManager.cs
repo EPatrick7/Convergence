@@ -50,8 +50,10 @@ public class SunManager : MonoBehaviour
 
     //private Camera camera;
 
-    private Tween TcamSize, Ttext, TMtext, Tcam, opTween, mainTween, skipTween,creditsTween;
+    private Tween TcamSize, Ttext, TMtext, Tcam, opTween, mainTween, skipTween, creditsTween;
     public static bool OptionsOpen;
+
+    public CanvasGroup onlineUI;
 
     // Start is called before the first frame update
     void Start()
@@ -163,6 +165,20 @@ public class SunManager : MonoBehaviour
         cam.Insert(1, icon.DOColor(newICol, 2)); //fade out icon
         cam.Play();
     }
+
+    public void onlineStart()
+    {
+
+        FadeOutMainButtons();
+        FadeInOnline();
+
+    }
+
+    public void onlineBack()
+	{
+        FadeOutOnline();
+        FadeInMainButtons();
+	}
 
     /*
     public void multiStart()
@@ -292,10 +308,44 @@ public class SunManager : MonoBehaviour
         creditsTween.Play();
 
     }
+
+    private void FadeInOnline()
+    {
+        //onlineUI.
+        onlineUI.interactable = true;
+        /*
+        float alpha = 1;
+        
+        onlineTween = DOTween.To(() => alpha, x => alpha = x, 0, 1).OnUpdate(() =>
+        {
+            onlineUI.alpha = alpha;
+        });
+        */
+        Sequence onlineTween = DOTween.Sequence();
+        onlineTween.Append(onlineUI.DOFade(1f, 1f));
+        onlineTween.Insert(0, onlineUI.gameObject.GetComponent<RectTransform>().DOLocalMoveX(0, 1f));
+        onlineTween.Play();
+    }
+
+    private void FadeOutOnline()
+    {
+        onlineUI.interactable = false;
+        /*
+        float alpha = 0;
+        onlineTween?.Kill();
+        onlineTween = DOTween.To(() => alpha, x => alpha = x, 1, 1).OnUpdate(() =>
+        {
+            onlineUI.alpha = alpha;
+        });
+        */
+        Sequence onlineTween = DOTween.Sequence();
+        onlineTween.Append(onlineUI.DOFade(0f, 1f));
+        onlineTween.Insert(0, onlineUI.gameObject.GetComponent<RectTransform>().DOLocalMoveX(-300, 1f));
+        onlineTween.Play();
+    }
+
     private void FadeInOptions()
 	{
-        
-
         opUI.interactable = true;
         float alpha = 0;
         opTween?.Kill();
