@@ -21,13 +21,13 @@ public class MultiplayerManager : MonoBehaviour
 
     }
 
-    public const byte AddPlayer = 1;
+    public const byte PlayerEject = 1;
 
-    public void SendBirthEvent(int playerId)
+    public void SendPlayerEjectEvent(float mass, Vector2 pos,Vector2 velocity)
     {
-        object[] content = new object[] { playerId };
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All};
-        PhotonNetwork.RaiseEvent(AddPlayer, content, raiseEventOptions, SendOptions.SendReliable);
+        object[] content = new object[] { mass,pos,velocity};
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others};
+        PhotonNetwork.RaiseEvent(PlayerEject, content, raiseEventOptions, SendOptions.SendReliable);
 
     }
     #endregion
@@ -79,20 +79,16 @@ public class MultiplayerManager : MonoBehaviour
                 InitializeGame((int)data[0]);
                 Debug.Log("Initializing Game {Seed=" + (int)data[0]+"}...");
                 break;
-            case AddPlayer:
+            case PlayerEject:
+                data = (object[])photonEvent.CustomData;
+                Vector3 pos = (Vector2)data[1];
+                GameObject pixel = Instantiate(GravityManager.Instance.Pixel, pos, GravityManager.Instance.Pixel.transform.rotation, transform.parent);
+                pixel.GetComponent<Rigidbody2D>().mass = (float)data[0];
+                pixel.transform.localScale = Vector3.one * pixel.GetComponent<PixelManager>().radius(pixel.GetComponent<Rigidbody2D>().mass);
+                pixel.GetComponent<PixelManager>().Initialize();
+                GravityManager.Instance.RegisterBody(pixel, (Vector2)data[2]);
 
-               data = (object[])photonEvent.CustomData;
-                //Dirty replace later:
-               foreach(PlayerPixelManager p in FindObjectsOfType<PlayerPixelManager>())
-                {
-                    if(!p.isInitialized)
-                    {
-                        p.PlayerID = (int)data[0];
-                        GravityManager.Instance.PreRegister(p.transform);
-                        return;
-                    }
-                }
-               break;
+                break;
 
         }
     }

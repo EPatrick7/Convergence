@@ -56,5 +56,8 @@ public class OnlinePixelManager : MonoBehaviour
         Debug.Log("Activated Player " + pixelManager.PlayerID);
         GravityManager.Instance.PreRegister(transform);
     }
-
+    public void EjectPixel(float mass, Vector2 pos,Vector2 vel)
+    {
+        MultiplayerManager.Instance?.SendPlayerEjectEvent(mass, pos, vel);
+    }
 }

@@ -360,7 +360,6 @@ public class PlayerPixelManager : PixelManager
 
         if (cam == null) return;
 
-
         CutsceneManager.Instance?.PlayerEjected();
 
         camLook.inputManager.EjectRumble();
@@ -373,10 +372,10 @@ public class PlayerPixelManager : PixelManager
 		{
             AudioManager.Instance?.PlayerEjectBig();
 		}
-        
+        Vector2 pos = transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.63f);
 
         // Create ejected pixel
-        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.63f), Pixel.transform.rotation, transform.parent);
+        GameObject pixel = Instantiate(Pixel, pos, Pixel.transform.rotation, transform.parent);
 
         // Handle mass of player and ejected pixel
         /* Legacy Mass
@@ -425,16 +424,22 @@ public class PlayerPixelManager : PixelManager
         float force = EjectionForceScale*dampener;
         rigidBody.velocity += ejectDirection * -force * radius();
         float ejectMulti=1+((mass()/10000f)*15);
-
-        gravityManager.RegisterBody(pixel, rigidBody.velocity+ ejectDirection.normalized* EjectedSpeedMult* ejectMulti /*+(ejectDirection* ejectMulti * EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass)) * Mathf.Max(0.25f, force))*/);
+        Vector2 vel = rigidBody.velocity + ejectDirection.normalized * EjectedSpeedMult * ejectMulti;
+        gravityManager.RegisterBody(pixel,vel  /*+(ejectDirection* ejectMulti * EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass)) * Mathf.Max(0.25f, force))*/);
 
         InvokeMassChanged();
 
+
+
+        GetComponent<OnlinePixelManager>()?.EjectPixel(ejectedMass,pos,vel);
+
         StartCoroutine(EjectReset(EjectionRate));
+
         if (mass() <= 5.0f)
         {
             Starve();
         }
+
     }
     
     public void Starve()
