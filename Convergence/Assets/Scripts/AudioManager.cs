@@ -16,7 +16,7 @@ public class AudioManager : MonoBehaviour
     private AudioMixer musicMixer, sfxMixer;
 
     [SerializeField]
-    private float fadeINTime, fadeOUTTime,fadeCHANGETime, maxVol, rumbleFadeTime;
+    private float fadeINTime, fadeOUTTime, fadeCHANGETime, maxVol;
 
     [SerializeField]
     private List<AudioClip> sfx = new List<AudioClip>();
@@ -39,16 +39,16 @@ public class AudioManager : MonoBehaviour
     private bool gameEnd = false;
     private bool tutorialRestart = false;
     private float transitionNum = 0;
-    private float sfxFadeTime;
+    private Mode savedMode;
 
     private enum Mode
-	{
+    {
         Menu,
         Solo,
         Multiplayer,
         Tutorial,
         Win
-	}
+    }
     private Mode gameMode;
 
     private static AudioManager instance = null;
@@ -74,9 +74,28 @@ public class AudioManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        sfxFadeTime = fadeOUTTime;
+        savedMode = gameMode;
         transitionNum++;
         soloSelected = false;
+        switch (SceneManager.GetActiveScene().name)
+		{
+            case "Main":
+                gameMode = Mode.Solo;
+                break;
+
+            case "Multi":
+                gameMode = Mode.Multiplayer;
+                break;
+
+            case "Tutorial":
+                tutorialRestart = true;
+                gameMode = Mode.Tutorial;
+                break;
+
+            case "Main Menu":
+                gameMode = Mode.Menu;
+                break;
+		}
         if (!tutorialRestart)
         {
             musicSource.clip = music[(int)gameMode];
@@ -93,7 +112,7 @@ public class AudioManager : MonoBehaviour
             FadeInSFX();
             FadeInMusic();
         }
-        
+
         /*
         switch (gameMode)
 		{
@@ -104,12 +123,12 @@ public class AudioManager : MonoBehaviour
         */
     }
 
-	#region Core Functions
+    #region Core Functions
 
-	private float ConvertToMixer(float input)
-	{
+    private float ConvertToMixer(float input)
+    {
         return Mathf.Log10(input) * 20;
-	}
+    }
 
     public void AdjustVolume()
     {
@@ -120,22 +139,23 @@ public class AudioManager : MonoBehaviour
         sfxMixer.SetFloat("SFXVol", Mathf.Log10(SFXVolume) * 20);
         musicMixer.SetFloat("MusicVol", Mathf.Log10(MusicVolume) * 20);
     }
-	
+
     public void FadeOutSFX()
-	{
+    {
         sfxTween?.Kill();
         sfxTween = sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(0.001f), fadeOUTTime);
         sfxTween.OnComplete(absorbSFXSource.Stop);
         sfxTween.Play();
-	}
+    }
 
     public void FadeInSFX()
-	{
+    {
         if (sfxTween != null && !gameEnd)
-		{
+        {
             StartCoroutine(CheckIfFading());
-		} else
-		{
+        }
+        else
+        {
             sfxTween?.Kill();
             sfxTween = sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(SFXVolume), fadeOUTTime);
             sfxTween.Play();
@@ -143,11 +163,12 @@ public class AudioManager : MonoBehaviour
     }
 
     IEnumerator CheckIfFading()
-	{
+    {
         while (sfxTween != null)
         {
             if (!absorbSFXSource.isPlaying)
             {
+                absorbSFXSource.clip = null;
                 sfxTween = sfxMixer.DOSetFloat("SFXVol", ConvertToMixer(SFXVolume), fadeOUTTime);
                 sfxTween.Play();
             }
@@ -157,19 +178,19 @@ public class AudioManager : MonoBehaviour
     }
 
     public void FadeOutMusic()
-	{
+    {
         musicTween?.Kill();
         musicTween = musicMixer.DOSetFloat("MusicVol", ConvertToMixer(0.001f), fadeOUTTime);
         musicTween.OnComplete(musicSource.Stop);
         musicTween.Play();
         //Debug.Log("FadeOutMusic called");
-	}
+    }
 
     public void FadeInMusic()
-	{
+    {
         if (gameEnd)
         {
-            FadeInSFX();
+            //FadeInSFX();
         }
         musicTween.Kill();
         musicSource.Play();
@@ -178,15 +199,16 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(CheckIfPlaying());
         //audioMusic.Play();
         //audioMusic.DOFade(maxVol* MusicVolume, fadeINTime);
-	}
+    }
 
     private void RestartMusic()
-	{
+    {
         //Debug.LogWarning("Fading Out Music and waiting to restart");
+        gameMode = savedMode;
         FadeOutMusic();
         StartCoroutine(RestartWait());
 
-	}
+    }
 
     IEnumerator RestartWait()
     {
@@ -215,37 +237,37 @@ public class AudioManager : MonoBehaviour
     #region Menu Buttons
 
     public void MenuSelect()
-	{
+    {
         sfxSource.PlayOneShot(sfx[0]);
         FadeOutMusic();
-	}
+    }
 
     public void GeneralSelect()
-	{
+    {
         sfxSource.PlayOneShot(sfx[2]);
-	}
+    }
 
     public void BackSelect()
-	{
+    {
         sfxSource.PlayOneShot(sfx[4]);
-	}
+    }
 
     public void HoverClick()
-	{
+    {
         if (!soloSelected)
-		{
+        {
             sfxSource.PlayOneShot(sfx[3]);
         }
-	}
+    }
 
     public void TutorialRestartSelect()
-	{
+    {
         sfxSource.PlayOneShot(sfx[4]);
         tutorialRestart = true;
-	}
+    }
 
     public void MainSelect()
-	{
+    {
         tutorialRestart = false;
         playerSFXSource.Stop();
         absorbSFXSource.Stop();
@@ -254,40 +276,40 @@ public class AudioManager : MonoBehaviour
         BackSelect();
         FadeOutMusic();
         gameMode = Mode.Menu;
-	}
+    }
 
     public void SoloSelect()
-	{
+    {
         soloSelected = true;
         StartCoroutine(FirstPopWait());
         sfxSource.PlayOneShot(sfx[5]);
         MenuSelect();
         gameMode = Mode.Solo;
-	}
+    }
 
     public void MultiSelect()
-	{
+    {
         soloSelected = true;
         StartCoroutine(FirstPopWait());
         sfxSource.PlayOneShot(sfx[5]);
         MenuSelect();
         gameMode = Mode.Multiplayer;
-	}
+    }
 
     public void TutorialSelect()
-	{
+    {
         MenuSelect();
         gameMode = Mode.Tutorial;
-	}
+    }
 
     #endregion
 
     #region SFX
 
     public void InDangerSpeed()
-	{
+    {
         if (!indicatorSFXSource.isPlaying)
-		{
+        {
             indicatorSFXSource.volume = 0f;
             indicatorSFXSource.DOFade(1f, 1f);
             indicatorSFXSource.PlayOneShot(sfx[7]);
@@ -312,23 +334,23 @@ public class AudioManager : MonoBehaviour
     }
 
     public void DialogueSFX()
-	{
+    {
         sfxSource.PlayOneShot(sfx[6]);
-	}
+    }
 
     public void StartPlayerJet()
-	{
+    {
         if (propelTween != null)
-		{
+        {
             jetSFXSource.volume = 1;
             propelTween.Kill();
-		}
+        }
         jetSFXSource.clip = playersfx[0];
         jetSFXSource.Play();
-	}
+    }
 
     public void StopPlayerJet()
-	{
+    {
         // Debug.Log("StopPlayerJet");
         //sfxSource.PlayOneShot(playersfx[1]);
         //playerSFXSource.time = playerSFXSource.clip.length * .975f;
@@ -341,76 +363,75 @@ public class AudioManager : MonoBehaviour
     }
 
     private void PlayerSFXSourceReset()
-	{
+    {
         jetSFXSource.Stop();
         jetSFXSource.volume = 1;
-	}
+    }
 
     public void PlayerEject()
-	{
+    {
         absorbSFXSource.PlayOneShot(playersfx[2]);
-	}
+    }
 
     public void PlayerEjectBig()
-	{
+    {
         absorbSFXSource.PlayOneShot(playersfx[5]); //so PlayerJet sfx doesn't fade it out
     }
 
     public void PlayerShieldUp()
-	{
+    {
         playerSFXSource.PlayOneShot(playersfx[3]);
-	}
+    }
 
     IEnumerator FirstPopWait()
     {
         float sceneNum = transitionNum;
         yield return new WaitForSeconds(2f);
         if (SceneManager.GetActiveScene().name != "Main Menu" || !soloSelected || sceneNum != transitionNum) //check for soloSelected to fix weird bug where FirstPopWait() was being called when switching back to main menu really quick after skipping cutscene
-		{
+        {
             yield break;
-		}
+        }
         sfxSource.PlayOneShot(sfx[1]);
     }
 
     public void PlayerAbsorbBigSFX()
-	{
+    {
         absorb2SFXSource.PlayOneShot(absorbsfx[0]);
-		//absorbSFXSource.PlayOneShot(absorbsfx[Random.Range(0, absorbsfx.Count)]);
-	}
+        //absorbSFXSource.PlayOneShot(absorbsfx[Random.Range(0, absorbsfx.Count)]);
+    }
 
     public void PlayerAbsorbSmallSFX()
-	{
+    {
         absorb2SFXSource.PlayOneShot(absorbsfx[1]);
-	}
+    }
 
     public void PlayerExpandSFX()
-	{
+    {
         playerSFXSource.PlayOneShot(playersfx[4]);
-	}
+    }
 
     public void PlayerWinSFX()
-	{
+    {
         absorbSFXSource.PlayOneShot(sfx[7]);
         absorbSFXSource.PlayOneShot(sfx[8]);
         FadeOutMusic();
-	}
+    }
 
     public void PlayerWinFailSFX()
-	{
+    {
         absorbSFXSource.Stop();
         FadeInMusic();
-	}
+    }
 
     public void PlayerWinSucceedSFX()
-	{
+    {
         gameEnd = true;
-        sfxFadeTime = rumbleFadeTime;
         FadeOutSFX();
         gameMode = Mode.Win;
         musicSource.clip = music[(int)gameMode];
         FadeInMusic();
     }
 
-	#endregion
+    #endregion
 
 }
