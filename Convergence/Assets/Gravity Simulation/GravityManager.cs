@@ -916,6 +916,11 @@ public class GravityManager : MonoBehaviour
                         }
                         if (gravUniverse.pixels[i].GetComponent<PlayerPixelManager>() == null)
                         {
+                            if (!inView && this_pixel.planetType==PixelManager.PlanetType.BlackHole&&!this_pixel.ConstantMass&&this_pixel.mass()<SunTransition_MassReq)
+                            {
+                                this_pixel.planetType=PixelManager.PlanetType.Sun;
+                            }
+
                             if (borderBehavior == BorderNPCBehavior.Despawn)
                             {
                                 if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
