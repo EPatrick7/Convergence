@@ -304,12 +304,14 @@ public class PlayerPixelManager : PixelManager
             //g.transform.DOScale(.1f, 9);
             r.PlayerID = PlayerID;
 
-            camLook.respawner = r;
+            if(camLook!=null)
+                camLook.respawner = r;
 
         }
         else if (GravityManager.GameWinner != null)
         {
-            camLook.focusedPixel = GravityManager.GameWinner;
+            if(camLook!=null)
+                camLook.focusedPixel = GravityManager.GameWinner;
         }
     }
     public void Ambient()
