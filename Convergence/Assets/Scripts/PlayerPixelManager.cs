@@ -102,7 +102,9 @@ public class PlayerPixelManager : PixelManager
     private bool canEject = true;
     private bool isPropelling = false;
 
-    bool hasRegistered;
+
+    [HideInInspector]
+    public bool hasRegistered;
     [HideInInspector]
     public bool hasWonGame;
     float dangerUntil;
@@ -443,7 +445,8 @@ public class PlayerPixelManager : PixelManager
             StarvationFX.Play();
         }
         RunDeath();
-        CutsceneManager.Instance?.PlayerConsumed();
+        if(hasRegistered)
+            CutsceneManager.Instance?.PlayerConsumed();
         Destroy(gameObject);
     }
     

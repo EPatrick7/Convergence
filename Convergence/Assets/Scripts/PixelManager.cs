@@ -387,7 +387,9 @@ public class PixelManager : MonoBehaviour
             if(other.isPlayer)
             {
                 other.playerPixel.RunDeath();
-                CutsceneManager.Instance?.PlayerConsumed(playerPixel);
+
+                if (other.playerPixel.hasRegistered)
+                    CutsceneManager.Instance?.PlayerConsumed(playerPixel);
 
                // Debug.LogFormat("{0} | {1} | {2} | {3}", other.playerPixel, other.playerPixel.PlayerID, PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID), playerPixel);
                 if(other.playerPixel!=null&& playerPixel!=null&&GravityManager.GameWinner==null)
