@@ -60,7 +60,7 @@ public class OnlinePixelManager : MonoBehaviour
     float timeSinceLast;
     public void StatsChanged()
     {
-            MultiplayerManager.Instance.SendUpdateEvent(pixelManager.PlayerID, FetchStats(),pixelManager.isPropelling,pixelManager.isShielding);
+            MultiplayerManager.Instance.SendUpdateEvent(pixelManager.PlayerID, FetchStats(),pixelManager.isPropelling,pixelManager.isShielding,pixelManager.lastJetRot);
         
     }
     public static PlayerPixelManager FetchPlayer(int PlayerID)

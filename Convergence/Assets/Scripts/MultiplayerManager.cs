@@ -23,18 +23,18 @@ public class MultiplayerManager : MonoBehaviour
 
     public const byte PlayerEject = 1;
 
-    public void SendPlayerEjectEvent(float mass, Vector2 pos,Vector2 velocity,float lastJetRot)
+    public void SendPlayerEjectEvent(float mass, Vector2 pos,Vector2 velocity)
     {
-        object[] content = new object[] { mass,pos,velocity,lastJetRot};
+        object[] content = new object[] { mass,pos,velocity};
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others};
         PhotonNetwork.RaiseEvent(PlayerEject, content, raiseEventOptions, SendOptions.SendReliable);
 
     }
     public const byte PlayerUpdate= 2;
 
-    public void SendUpdateEvent(int playerID,Vector3 data,bool isPropelling,bool isShielding)
+    public void SendUpdateEvent(int playerID,Vector3 data,bool isPropelling,bool isShielding, float lastJetRot)
     {
-        object[] content = new object[] {playerID, data,isPropelling,isShielding};
+        object[] content = new object[] {playerID, data,isPropelling,isShielding, lastJetRot };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
         PhotonNetwork.RaiseEvent(PlayerUpdate, content, raiseEventOptions, SendOptions.SendReliable);
 
