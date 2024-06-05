@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.InputSystem;
+using UnityEditor.VersionControl;
 
 public class OnlinePixelManager : MonoBehaviour
 {
     public static List<OnlinePixelManager> onlinePixels;
     bool isPropelling, isShielding;
-
-    public void UpdateStats(Vector3 input,bool isPropelling,bool isShielding)
+    float propAngle;
+    public void UpdateStats(Vector3 input,bool isPropelling,bool isShielding,float propAngle)
     {
         if(pixelManager!=null)
         {
@@ -19,6 +20,7 @@ public class OnlinePixelManager : MonoBehaviour
 
             this.isPropelling = isPropelling;
             this.isShielding = isShielding;
+            this.propAngle= propAngle;
             UpdateVisibles();
             
         }
@@ -41,6 +43,9 @@ public class OnlinePixelManager : MonoBehaviour
                 pixelManager.StartShield();
             if (pixelManager.isShielding && !isShielding)
                 pixelManager.StartShield();
+
+
+            pixelManager.GasJet.transform.rotation = Quaternion.Euler(0f, 0f, propAngle);
         }
     }
     public Vector3 FetchStats()

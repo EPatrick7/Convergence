@@ -23,9 +23,9 @@ public class MultiplayerManager : MonoBehaviour
 
     public const byte PlayerEject = 1;
 
-    public void SendPlayerEjectEvent(float mass, Vector2 pos,Vector2 velocity)
+    public void SendPlayerEjectEvent(float mass, Vector2 pos,Vector2 velocity,float lastJetRot)
     {
-        object[] content = new object[] { mass,pos,velocity};
+        object[] content = new object[] { mass,pos,velocity,lastJetRot};
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others};
         PhotonNetwork.RaiseEvent(PlayerEject, content, raiseEventOptions, SendOptions.SendReliable);
 
@@ -106,7 +106,7 @@ public class MultiplayerManager : MonoBehaviour
                 PlayerPixelManager player = OnlinePixelManager.FetchPlayer((int)data[0]);
                 if(player!=null)
                 {
-                    player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1], (bool)data[2], (bool)data[3]);
+                    player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1], (bool)data[2], (bool)data[3], (float)data[4]);
                 }
                 break;
 

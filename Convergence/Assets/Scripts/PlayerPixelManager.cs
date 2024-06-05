@@ -524,11 +524,15 @@ public class PlayerPixelManager : PixelManager
             StartCoroutine(DelayedRegister());
         }*/
         Vector2 diff = MouseDirection();
-
-        float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-        GasJet.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
-
+        if (hasRegistered)
+        {
+            float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+            lastJetRot = rot_z - 90;
+            GasJet.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+        }
     }
+    [HideInInspector]
+    public float lastJetRot;
     private IEnumerator Propel(float interval)
     {
         int streak=0;
