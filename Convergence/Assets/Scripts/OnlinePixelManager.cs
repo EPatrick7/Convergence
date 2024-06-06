@@ -39,12 +39,15 @@ public class OnlinePixelManager : MonoBehaviour
     {
         GravityManager.Instance.GravRunStart -= UpdateOnPass;
         actionQueued = false;
-        pixelManager.rigidBody.mass = last_input.x;
-        pixelManager.Ice = last_input.y;
-        pixelManager.Gas = last_input.z;
+        if (pixelManager != null && pixelManager.rigidBody != null)
+        {
+            pixelManager.rigidBody.mass = last_input.x;
+            pixelManager.Ice = last_input.y;
+            pixelManager.Gas = last_input.z;
 
 
-        GravityManager.Instance.UpdateTexture(pixelManager);
+            GravityManager.Instance.UpdateTexture(pixelManager);
+        }
 
     }
     public void UpdateVisibles()
@@ -157,7 +160,7 @@ public class OnlinePixelManager : MonoBehaviour
         }
         else
         {
-            GetComponent<Rigidbody2D>().isKinematic = true;
+         //   GetComponent<Rigidbody2D>().isKinematic = true;
         }
 
 
