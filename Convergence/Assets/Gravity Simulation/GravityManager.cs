@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Photon.Pun;
 using System;
 using System.Collections;
@@ -12,14 +13,52 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 #region DataStructure
+[System.Serializable]
+public struct OnlineBodyUpdate
+{
+    public int id;
+    public Vector2 pos;
+    public Vector2 vel;
+    public Vector2 acc;
+    public float mass;
+    public Vector2 elements;
+
+    public OnlineBodyUpdate(GravityBody body,PixelManager pixel)
+    {
+        id = body.id;
+        pos = new Vector2(body.x, body.y);
+        acc = new Vector2(body.dx, body.dy);
+        vel = pixel.rigidBody.velocity;
+        mass = body.mass;
+        elements = body.elements;
+    }
+    public void UpdateBody(GravityBody body,PixelManager pixel)
+    {
+        body.id =id;
+        body.x = pos.x;
+        body.y = pos.y;
+        body.dx = acc.x;
+        body.dy = acc.y;
+        body.mass = mass;
+        body.elements = elements;
+
+        pixel.transform.position = new Vector3(pos.x,pos.y,pixel.transform.position.z);
+        pixel.rigidBody.mass = mass;
+        pixel.rigidBody.velocity = vel;
+        pixel.Ice = body.elements[0];
+        pixel.Gas = body.elements[1];
+
+    }
+}
+
 //If you ever add more floats to GravityBody, be sure to adjust the sizeof(float) * # of floats in buffer setup, and the corresponding struct in compute shader!
 [System.Serializable]
 public struct GravityBody
 {
     public float x;
     public float y;
-    public Vector4 dx;
-    public Vector4 dy;
+    public float dx;
+    public float dy;
 
     public float mass;
     public float radius;
@@ -27,15 +66,15 @@ public struct GravityBody
     public Vector2 elements;
 
 
-    public uint id;
-    public uint sendOnly;
-    public GravityBody(uint id)
+    public int id;
+    public int sendOnly;
+    public GravityBody(int id)
     {
         this.id = id;
         x = 0;
         y = 0;
-        dx = Vector4.zero;
-        dy = Vector4.zero;
+        dx = 0;
+        dy = 0;
         mass = 0;
         elements = new Vector3(0, 0);
         radius = 1;
@@ -48,7 +87,7 @@ public struct GravityBody
 
     public Vector2 acceleration()
     {
-        return new Vector2((dx.x+ dx.y+ dx.z+ dx.w)/4f, (dy.x+ dy.y+ dy.z+ dy.w)/4f);
+        return new Vector2((dx)/4f, (dy/4f));
     }
     public Vector2 pos()
     {
@@ -56,8 +95,8 @@ public struct GravityBody
     }
     public void resetVectors(Vector2 pos)
     {
-        dx = Vector4.zero;
-        dy = Vector4.zero;
+        dx = 0;
+        dy = 0;
         x = pos.x;
         y = pos.y;
     }
@@ -87,6 +126,7 @@ public class GravityManager : MonoBehaviour
         {
             bodies = new List<GravityBody>();
             pixels = new List<GameObject>();
+            onlineBodies = new List<OnlineBodyUpdate>();
         }
         public void AddBody(GameObject g,Vector2 initialVel,float InitialSize)
         {
@@ -115,11 +155,11 @@ public class GravityManager : MonoBehaviour
                 b.makeSendOnly();
             }
         }
-        public int FetchBody(uint id)
+        public int FetchBody(int id)
         {
             return bodies.BinarySearch(new GravityBody(id), new BodyComparer());
         }
-        public bool RemoveBody(uint id)
+        public bool RemoveBody(int id)
         {
             int tid = FetchBody(id);
             if (tid >=0)
@@ -142,8 +182,9 @@ public class GravityManager : MonoBehaviour
         }
         public List<GravityBody> bodies;//The array of all bodies in use (bodies and pixels should have 1 to 1 correspondance)
         public List<GameObject> pixels; //The array of all pixels in use
+        public List<OnlineBodyUpdate> onlineBodies;//The array of all incoming updates from the server;
         public int numBodies;//Number of bodies in use;
-        private uint genBodies;//Number of generated bodies;
+        private int genBodies;//Number of generated bodies;
     }
 
     [System.Serializable]
@@ -166,8 +207,8 @@ public class GravityManager : MonoBehaviour
     GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     bool asyncDone=true; // Whether or not the compute shader is done working
-    int NUM_FLOATS=14;
-    int NUM_UINTS = 2;
+    int NUM_FLOATS=8;
+    int NUM_INTS = 2;
     public static GravityManager Instance;
 
 
@@ -807,6 +848,30 @@ public class GravityManager : MonoBehaviour
     {
         return AllowSimulation;
     }
+    public void AddUpdateToQueue(OnlineBodyUpdate onlineBodyUpdate)
+    {
+        gravUniverse.onlineBodies.Add(onlineBodyUpdate);
+    }
+
+    int contextWidth= 24;
+    public void CheckUpdate(int i,GravityBody body, PixelManager pixel)
+    {
+        if (!isOnline)
+            return;
+        if (pixel.isPlayer)
+            return;
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        int numSteps =1+ gravUniverse.numBodies / contextWidth;
+        int k = (SimulationStep % numSteps) * contextWidth;
+        if (i > k && i-10 < k)
+        {
+            MultiplayerManager.Instance.SendBodyUpdateEvent(new OnlineBodyUpdate(body,pixel));
+        }
+
+
+    }
     public IEnumerator GravRun()
     {
         //Run forever
@@ -834,6 +899,27 @@ public class GravityManager : MonoBehaviour
                 }
             }
 
+            if(isOnline)
+            {
+                //k* O(log n) Fetch the body and then run update. (K is number of updates to apply)
+                foreach(OnlineBodyUpdate onlineBodyUpdate in gravUniverse.onlineBodies)
+                {
+                    int i = gravUniverse.FetchBody(onlineBodyUpdate.id);
+
+                    if (i>=0 && i<gravUniverse.bodies.Count && gravUniverse.pixels[i]!=null)
+                    {
+                      //  Debug.Log("Updating Body " + i);
+                        GravityBody body = gravUniverse.bodies[i];
+
+                        //Update Body
+                        onlineBodyUpdate.UpdateBody(body, gravUniverse.pixels[i].GetComponent<PixelManager>());
+
+                        gravUniverse.ReplaceBody(i, body);
+                    }
+                }
+                gravUniverse.onlineBodies.Clear();
+            }
+
             //O(n) run through each body and update it according to the last compute shader run
             for (int i = 0; i < gravUniverse.numBodies; i++)
             {
@@ -852,8 +938,9 @@ public class GravityManager : MonoBehaviour
 
                     PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
 
+                    CheckUpdate(i, body, this_pixel);
 
-                    if(this_pixel.playerPixel != null)
+                    if (this_pixel.playerPixel != null)
                     {
                         if (GameWinner != null)
                         {
@@ -1029,7 +1116,7 @@ public class GravityManager : MonoBehaviour
             {
                 if (bodyBuffer != null)
                     bodyBuffer.Release();
-                bodyBuffer = new ComputeBuffer(numBodies, sizeof(float) * NUM_FLOATS+sizeof(uint)*NUM_UINTS);
+                bodyBuffer = new ComputeBuffer(numBodies, sizeof(float) * NUM_FLOATS+sizeof(int)*NUM_INTS);
                 bodyBuffer.SetData(bodies);
 
                 _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
@@ -1041,7 +1128,7 @@ public class GravityManager : MonoBehaviour
 
                 if (bodyBuffer == null)
                 {
-                    bodyBuffer = new ComputeBuffer(1, sizeof(float) * NUM_FLOATS + sizeof(uint) * NUM_UINTS);
+                    bodyBuffer = new ComputeBuffer(1, sizeof(float) * NUM_FLOATS + sizeof(int) * NUM_INTS);
                     _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
                 }
 

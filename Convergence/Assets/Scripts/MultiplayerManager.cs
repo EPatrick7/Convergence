@@ -48,6 +48,16 @@ public class MultiplayerManager : MonoBehaviour
         PhotonNetwork.RaiseEvent(PlayerDeath, content, raiseEventOptions, SendOptions.SendReliable);
 
     }
+    public const byte BodyUpdate= 4;
+
+    public void SendBodyUpdateEvent(OnlineBodyUpdate onlineBodyUpdate)
+    {
+
+        object[] content = new object[] { onlineBodyUpdate.id, onlineBodyUpdate.pos, onlineBodyUpdate.vel, onlineBodyUpdate.acc, onlineBodyUpdate.mass, onlineBodyUpdate.elements };
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(BodyUpdate, content, raiseEventOptions, SendOptions.SendUnreliable);
+
+    }
     #endregion
 
     public static MultiplayerManager Instance;
@@ -130,6 +140,23 @@ public class MultiplayerManager : MonoBehaviour
                     player.RunDeath();
                     Destroy(player.gameObject);
                 }
+                break;
+            case BodyUpdate:
+
+                data = (object[])photonEvent.CustomData;
+
+                OnlineBodyUpdate inputBody=new OnlineBodyUpdate();
+                inputBody.id = (int)data[0];
+                inputBody.pos = (Vector2)data[1];
+                inputBody.vel = (Vector2)data[2];
+                inputBody.acc = (Vector2)data[3];
+                inputBody.mass = (float) data[4];
+                inputBody.elements = (Vector2) data[5];
+
+
+
+                GravityManager.Instance?.AddUpdateToQueue(inputBody);
+
                 break;
 
         }

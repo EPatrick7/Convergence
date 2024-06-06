@@ -7,7 +7,7 @@
 //Just increase the darkness when close, brightness when far, then just run special code in compute when
 //O(1) lookup finds that this particle-particle pair has been together for a hot minute
 
-//By passing in a float2 for mouse pos, and a bool/uint/float2 for the rest of the mouse movement/click data,
+//By passing in a float2 for mouse pos, and a bool/int/float2 for the rest of the mouse movement/click data,
 //We can add custom movement for planets (Basically all circles within range move), alternatively
 //The above method can be used to move only related particles close to mouse.
 
@@ -15,15 +15,15 @@
 struct GravityBody {
     float x;
     float y;
-    float4 dx;
-    float4 dy;
+    float dx;
+    float dy;
     float mass;
     float radius;
 
     float2 elements;
 
-    uint id;
-    uint sendOnly;
+    int id;
+    int sendOnly;
 };
 
 RWStructuredBuffer<GravityBody> bodyBuffer;
@@ -32,7 +32,7 @@ float distance_scale;
 float min_dist;
 float drift_power;
 float2 drift;
-uint numBodies;
+int numBodies;
 
 
 float distanceTo(float2 p1,float2 p2);
@@ -98,8 +98,8 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
         float acceleration= (body2.mass*g)/(dist*dist);
         acceleration/=numSamples;
         //Apply acceleration...
-        body1.dx[0]+=(acceleration)*dir.x;
-        body1.dy[0]+=(acceleration)*dir.y;
+        body1.dx+=(acceleration)*dir.x;
+        body1.dy+=(acceleration)*dir.y;
         
         
         //SAMPLE 1: Left Vector:
@@ -110,8 +110,8 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
         acceleration= (body2.mass*g)/(dist*dist);
         acceleration/=numSamples;
         //Apply acceleration...
-        body1.dx[1]+=(acceleration)*dir.x;
-        body1.dy[1]+=(acceleration)*dir.y;
+        body1.dx+=(acceleration)*dir.x;
+        body1.dy+=(acceleration)*dir.y;
 
         
         //SAMPLE 2: Up Vector:
@@ -122,8 +122,8 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
         acceleration= (body2.mass*g)/(dist*dist);
         acceleration/=numSamples;
         //Apply acceleration...
-        body1.dx[2]+=(acceleration)*dir.x;
-        body1.dy[2]+=(acceleration)*dir.y;
+        body1.dx+=(acceleration)*dir.x;
+        body1.dy+=(acceleration)*dir.y;
         
         //SAMPLE 3: Down Vector:
         pos1=float2(body1.x,body1.y-(1*body1_radius));
@@ -133,8 +133,8 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
         acceleration= (body2.mass*g)/(dist*dist);
         acceleration/=numSamples;
         //Apply acceleration...
-        body1.dx[3]+=(acceleration)*dir.x;
-        body1.dy[3]+=(acceleration)*dir.y;
+        body1.dx+=(acceleration)*dir.x;
+        body1.dy+=(acceleration)*dir.y;
 
 
 
@@ -143,8 +143,8 @@ void GravitySimulation (uint3 id : SV_DispatchThreadID)
             //Calculate drift here:
             acceleration= drift_power/numBodies;
             dir =-normalize(float2(body1.x-drift.x,body1.y-drift.y));
-            body1.dx+=float4(1,1,1,1)* acceleration*dir.x;
-            body1.dy+=float4(1,1,1,1)*acceleration*dir.y;
+            body1.dx+= acceleration*dir.x;
+            body1.dy+=acceleration*dir.y;
             //
         }
 
