@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.InputSystem;
+using System;
 
 public class OnlinePixelManager : MonoBehaviour
 {
     public static List<OnlinePixelManager> onlinePixels;
     bool isPropelling, isShielding;
     float propAngle;
-    public void UpdateStats(Vector3 input,bool isPropelling,bool isShielding,float propAngle)
+    public void UpdateStats(Vector3 input,bool isPropelling,bool isShielding,float propAngle,float time)
     {
-        if(pixelManager!=null)
+        if(pixelManager!=null&&(time > pixelManager.lastTime))
         {
+            pixelManager.lastTime = time;
             pixelManager.rigidBody.mass = input.x;
             pixelManager.Ice=input.y;
             pixelManager.Gas=input.z;

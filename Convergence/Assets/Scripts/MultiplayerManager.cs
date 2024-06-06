@@ -5,7 +5,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class MultiplayerManager : MonoBehaviour
 {
 
@@ -31,10 +31,11 @@ public class MultiplayerManager : MonoBehaviour
 
     }
     public const byte PlayerUpdate= 2;
+    private static readonly DateTime referencePoint = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     public void SendPlayerUpdateEvent(int playerID,Vector3 data,bool isPropelling,bool isShielding, float lastJetRot)
     {
-        object[] content = new object[] {playerID, data,isPropelling,isShielding, lastJetRot };
+        object[] content = new object[] {playerID, data,isPropelling,isShielding, lastJetRot, (float)(DateTime.UtcNow- referencePoint).TotalSeconds };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
         PhotonNetwork.RaiseEvent(PlayerUpdate, content, raiseEventOptions, SendOptions.SendUnreliable);
 
@@ -43,7 +44,7 @@ public class MultiplayerManager : MonoBehaviour
 
     public void SendPlayerDeathEvent(int playerID)
     {
-        object[] content = new object[] { playerID };
+        object[] content = new object[] { playerID};
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
         PhotonNetwork.RaiseEvent(PlayerDeath, content, raiseEventOptions, SendOptions.SendReliable);
 
@@ -53,7 +54,7 @@ public class MultiplayerManager : MonoBehaviour
     public void SendBodyUpdateEvent(OnlineBodyUpdate onlineBodyUpdate)
     {
 
-        object[] content = new object[] { onlineBodyUpdate.id, onlineBodyUpdate.pos, onlineBodyUpdate.vel, onlineBodyUpdate.acc, onlineBodyUpdate.mass, onlineBodyUpdate.elements };
+        object[] content = new object[] { onlineBodyUpdate.id, onlineBodyUpdate.pos, onlineBodyUpdate.vel, onlineBodyUpdate.acc, onlineBodyUpdate.mass, onlineBodyUpdate.elements,(float)(System.DateTime.Now- referencePoint).TotalSeconds};
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
         PhotonNetwork.RaiseEvent(BodyUpdate, content, raiseEventOptions, SendOptions.SendUnreliable);
 
@@ -96,6 +97,7 @@ public class MultiplayerManager : MonoBehaviour
 
     public void OnEvent(EventData photonEvent)
     {
+        
         byte eventCode = photonEvent.Code;
        // Debug.Log(eventCode);
         object[] data;
@@ -125,7 +127,7 @@ public class MultiplayerManager : MonoBehaviour
                 player = OnlinePixelManager.FetchPlayer((int)data[0]);
                 if(player!=null)
                 {
-                    player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1], (bool)data[2], (bool)data[3], (float)data[4]);
+                    player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1], (bool)data[2], (bool)data[3], (float)data[4], (float)data[5]);
                 }
                 break;
             case PlayerDeath:
@@ -152,7 +154,7 @@ public class MultiplayerManager : MonoBehaviour
                 inputBody.acc = (Vector2)data[3];
                 inputBody.mass = (float) data[4];
                 inputBody.elements = (Vector2) data[5];
-
+                inputBody.time= (float)data[6];
 
 
                 GravityManager.Instance?.AddUpdateToQueue(inputBody);

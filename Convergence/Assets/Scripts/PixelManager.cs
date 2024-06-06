@@ -60,6 +60,9 @@ public class PixelManager : MonoBehaviour
     public Vector3 startPos;
     [HideInInspector]
     public bool isInitialized;
+
+    [HideInInspector]
+    public float lastTime;
     public void Initialize()
     {
         isInitialized = true;

@@ -22,6 +22,9 @@ public struct OnlineBodyUpdate
     public Vector2 acc;
     public float mass;
     public Vector2 elements;
+    public float time;
+    private static readonly DateTime referencePoint = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
 
     public OnlineBodyUpdate(GravityBody body,PixelManager pixel)
     {
@@ -31,6 +34,7 @@ public struct OnlineBodyUpdate
         vel = pixel.rigidBody.velocity;
         mass = body.mass;
         elements = body.elements;
+        time = (float)(DateTime.UtcNow - referencePoint).TotalSeconds;
     }
     public void UpdateBody(GravityBody body,PixelManager pixel)
     {
@@ -853,7 +857,8 @@ public class GravityManager : MonoBehaviour
         gravUniverse.onlineBodies.Add(onlineBodyUpdate);
     }
 
-    int contextWidth= 24;
+    [Tooltip("DO NOT MAKE THIS TOO HIGH BECAUSE IT CONTROLS DATA SENT TO SERVER!")]
+    int contextWidth= 100;
     public void CheckUpdate(int i,GravityBody body, PixelManager pixel)
     {
         if (!isOnline)
@@ -906,21 +911,25 @@ public class GravityManager : MonoBehaviour
                 {
                     int i = gravUniverse.FetchBody(onlineBodyUpdate.id);
 
-                    if (i>=0 && i<gravUniverse.bodies.Count && gravUniverse.pixels[i]!=null)
+                    if (i >= 0 && i < gravUniverse.bodies.Count && gravUniverse.pixels[i] != null)
                     {
-                      //  Debug.Log("Updating Body " + i);
                         GravityBody body = gravUniverse.bodies[i];
                         PixelManager this_pixel = gravUniverse.pixels[i].GetComponent<PixelManager>();
-
-                        if (this_pixel.isPlayer)
+                        if (onlineBodyUpdate.time > this_pixel.lastTime)
                         {
-                            Debug.LogError("Online Body Update ID Leak! (Tried to update a player planet)");
-                        }    
+                            this_pixel.lastTime = onlineBodyUpdate.time;
+                            //  Debug.Log("Updating Body " + i);
 
-                        //Update Body
-                        onlineBodyUpdate.UpdateBody(body, this_pixel);
+                            if (this_pixel.isPlayer)
+                            {
+                                Debug.LogError("Online Body Update ID Leak! (Tried to update a player planet)");
+                            }
 
-                        gravUniverse.ReplaceBody(i, body);
+                            //Update Body
+                            onlineBodyUpdate.UpdateBody(body, this_pixel);
+
+                            gravUniverse.ReplaceBody(i, body);
+                        }
                     }
                 }
                 gravUniverse.onlineBodies.Clear();
@@ -952,17 +961,20 @@ public class GravityManager : MonoBehaviour
                         {
                             this_pixel.rigidBody.drag = 0.25f;
                         }
-                        float bh_dist = Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position);
-                        if (bh_dist>wrap_dist&&world_wrap&&this_pixel.playerPixel.camLook.LastNumPixelsInView<=1)
+                        if (this_pixel.playerPixel.camLook != null)
                         {
+                            float bh_dist = Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position);
+                            if (bh_dist > wrap_dist && world_wrap && this_pixel.playerPixel.camLook.LastNumPixelsInView <= 1)
+                            {
 
-                            Vector3 localP = this_pixel.transform.InverseTransformPoint(this_pixel.playerPixel.camLook.transform.position);
-                            this_pixel.transform.position = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
-                            this_pixel.playerPixel.camLook.transform.position=this_pixel.transform.TransformPoint(localP);
+                                Vector3 localP = this_pixel.transform.InverseTransformPoint(this_pixel.playerPixel.camLook.transform.position);
+                                this_pixel.transform.position = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
+                                this_pixel.playerPixel.camLook.transform.position = this_pixel.transform.TransformPoint(localP);
+                            }
+
+                            if (PlayerCount <= 1)
+                                CutsceneManager.Instance?.DistToBlackHole(bh_dist);
                         }
-
-                        if(PlayerCount <= 1)
-                            CutsceneManager.Instance?.DistToBlackHole(bh_dist);
                     }
 
                     if(PlayerRespawner.playerRespawners!=null&&this_pixel!=null&&random_respawn_players)
