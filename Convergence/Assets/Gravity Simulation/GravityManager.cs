@@ -927,11 +927,14 @@ public class GravityManager : MonoBehaviour
                             {
                                 Debug.LogError("Online Body Update ID Leak! (Tried to update a player planet)");
                             }
+                            else
+                            {
 
-                            //Update Body
-                            onlineBodyUpdate.UpdateBody(body, this_pixel);
+                                //Update Body
+                                onlineBodyUpdate.UpdateBody(body, this_pixel);
 
-                            gravUniverse.ReplaceBody(i, body);
+                                gravUniverse.ReplaceBody(i, body);
+                            }
                         }
                     }
                 }

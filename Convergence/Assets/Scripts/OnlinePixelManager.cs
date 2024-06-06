@@ -17,7 +17,10 @@ public class OnlinePixelManager : MonoBehaviour
     bool actionQueued;
     public void UpdateStats(Vector3 input,bool isPropelling,bool isShielding,float propAngle,double time)
     {
-
+        if(isMine)
+        {
+            Debug.LogWarning("Another player just told the local player what to do!");
+        }
         if (pixelManager!=null&&(time > pixelManager.lastTime))
         {
             pixelManager.lastTime = time;

@@ -274,7 +274,7 @@ public class CameraLook : MonoBehaviour
             }
             if (!freezeFollow)
             {
-                transform.position = new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(focusedPixel.transform.position.x, focusedPixel.transform.position.y, transform.position.z),0.5f);
             }
             if(finalizedMergedCam)
             {

@@ -61,11 +61,12 @@ public class PixelManager : MonoBehaviour
     [HideInInspector]
     public bool isInitialized;
     [HideInInspector]
-    public bool RunCutscene;
+    public bool RunCutscene=true;
     [HideInInspector]
     public double lastTime;
     public void Initialize()
     {
+        RunCutscene = true;
         isInitialized = true;
         startPos = transform.position;
         rigidBody = GetComponent<Rigidbody2D>();
@@ -77,7 +78,6 @@ public class PixelManager : MonoBehaviour
     }
     private void Start()
     {
-        RunCutscene = true;
         Initialize();
         
         rigidBody.velocity += InitialVelocity;
