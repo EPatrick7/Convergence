@@ -910,9 +910,15 @@ public class GravityManager : MonoBehaviour
                     {
                       //  Debug.Log("Updating Body " + i);
                         GravityBody body = gravUniverse.bodies[i];
+                        PixelManager this_pixel = gravUniverse.pixels[i].GetComponent<PixelManager>();
+
+                        if (this_pixel.isPlayer)
+                        {
+                            Debug.LogError("Online Body Update ID Leak! (Tried to update a player planet)");
+                        }    
 
                         //Update Body
-                        onlineBodyUpdate.UpdateBody(body, gravUniverse.pixels[i].GetComponent<PixelManager>());
+                        onlineBodyUpdate.UpdateBody(body, this_pixel);
 
                         gravUniverse.ReplaceBody(i, body);
                     }
