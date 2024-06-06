@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using System;
 using UnityEngine.Windows;
 using static GravityManager;
+using UnityEditor.VersionControl;
 
 public class OnlinePixelManager : MonoBehaviour
 {
@@ -57,16 +58,15 @@ public class OnlinePixelManager : MonoBehaviour
     {
         if (!isMine)
         {
-            if (pixelManager.Gas <= 0)
-                isPropelling = false;
-            
 
-            if (isPropelling && !pixelManager.GasJet.isPlaying)
+            pixelManager.GasJet.transform.localScale = new Vector3(Mathf.Max(1, transform.localScale.x / 15f), Mathf.Max(1, transform.localScale.y / 15f), Mathf.Max(1, transform.localScale.z / 15f));
+
+            if ((isPropelling&&pixelManager.Gas>0) && !pixelManager.GasJet.isPlaying)
             {
                 pixelManager.GasJet.Play();
             }
 
-            if (!isPropelling && pixelManager.GasJet.isPlaying)
+            if ((!isPropelling||pixelManager.Gas<=0) && pixelManager.GasJet.isPlaying)
             {
                 pixelManager.GasJet.Stop();
             }
