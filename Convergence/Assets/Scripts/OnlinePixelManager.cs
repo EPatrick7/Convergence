@@ -71,7 +71,7 @@ public class OnlinePixelManager : MonoBehaviour
             if (!pixelManager.isShielding && isShielding)
                 pixelManager.StartShield();
             if (pixelManager.isShielding && !isShielding)
-                pixelManager.StartShield();
+                pixelManager.CancelShield();
 
 
             pixelManager.GasJet.transform.rotation = Quaternion.Euler(0f, 0f, propAngle);
