@@ -48,10 +48,14 @@ public class SunManager : MonoBehaviour
     public Selectable ExitOptions;
     public Selectable Options;
 
+    public Selectable Online;
+    public Selectable ExitOnline;
+
     //private Camera camera;
 
     private Tween TcamSize, Ttext, TMtext, Tcam, opTween, mainTween, skipTween, creditsTween;
     public static bool OptionsOpen;
+    public static bool OnlineOpen;
 
     public CanvasGroup onlineUI;
 
@@ -177,13 +181,42 @@ public class SunManager : MonoBehaviour
     }
 
     public void onlinePreMenu()
-	{
+    {
+        if (Time.timeSinceLevelLoad < timeOptionsOpened)
+        {
+            return;
+        }
+        OnlineOpen = true;
+
+
+        if (Time.timeSinceLevelLoad < delayClickTime && !InputManager.GamePadDetected)
+            EventSystem.current.SetSelectedGameObject(null);
+        else if (EventSystem.current.currentSelectedGameObject != null)
+            EventSystem.current.SetSelectedGameObject(Online.gameObject);
+        timeOptionsOpened = Time.timeSinceLevelLoad + 0.25f;
+        timeOptionsClosed = Time.timeSinceLevelLoad + 0.25f;
+
+
         FadeInOnline();
         FadeOutMainButtons(.5f);
 	}
 
     public void onlineBack()
-	{
+    {
+        if (Time.timeSinceLevelLoad < timeOptionsOpened)
+        {
+            return;
+        }
+
+        OnlineOpen = false;
+
+
+        if (Time.timeSinceLevelLoad < delayClickTime && !InputManager.GamePadDetected)
+            EventSystem.current.SetSelectedGameObject(null);
+        else if (EventSystem.current.currentSelectedGameObject != null)
+            EventSystem.current.SetSelectedGameObject(ExitOnline.gameObject);
+        timeOptionsClosed = Time.timeSinceLevelLoad + 0.25f;
+        timeOptionsOpened = Time.timeSinceLevelLoad + 0.25f;
         FadeOutOnline();
         FadeInMainButtons();
 	}
@@ -325,6 +358,7 @@ public class SunManager : MonoBehaviour
 
     private void FadeInOnline()
     {
+
         //onlineUI.
         onlineUI.interactable = true;
         /*
@@ -356,6 +390,8 @@ public class SunManager : MonoBehaviour
         onlineTween.Append(onlineUI.DOFade(0f, .75f));
         onlineTween.Insert(0, onlineUI.gameObject.GetComponent<RectTransform>().DOLocalMoveX(-500, 1f));
         onlineTween.Play();
+
+
     }
 
     private void FadeInOptions()
@@ -394,6 +430,7 @@ public class SunManager : MonoBehaviour
 
     void OnDestroy()
 	{
+        OnlineOpen = false;
         OptionsOpen = false;
         DOTween.KillAll();
         if (ppVol.TryGet<DepthOfField>(out dOF))

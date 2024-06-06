@@ -18,6 +18,7 @@ public class PauseMenu : MonoBehaviour
 {
     public Selectable SelectIfGamepad;
     public Selectable AltSelectIfGamepad;
+    public Selectable AltAltSelectIfGamepad;
 
     public static PauseMenu Instance;
 
@@ -93,6 +94,15 @@ public class PauseMenu : MonoBehaviour
                     else if (UnityEngine.Input.GetKey(KeyCode.UpArrow) || UnityEngine.Input.GetKey(KeyCode.Return) || UnityEngine.Input.GetKey(KeyCode.DownArrow) || UnityEngine.Input.GetKey(KeyCode.LeftArrow) || UnityEngine.Input.GetKey(KeyCode.RightArrow))
                     {
                         EventSystem.current.SetSelectedGameObject(AltSelectIfGamepad.gameObject);
+                    }
+                }
+                else if (AltAltSelectIfGamepad != null && SunManager.OnlineOpen)
+                {
+                    if (InputManager.GamePadDetected)
+                        EventSystem.current.SetSelectedGameObject(AltAltSelectIfGamepad.gameObject);
+                    else if (UnityEngine.Input.GetKey(KeyCode.UpArrow) || UnityEngine.Input.GetKey(KeyCode.Return) || UnityEngine.Input.GetKey(KeyCode.DownArrow) || UnityEngine.Input.GetKey(KeyCode.LeftArrow) || UnityEngine.Input.GetKey(KeyCode.RightArrow))
+                    {
+                        EventSystem.current.SetSelectedGameObject(AltAltSelectIfGamepad.gameObject);
                     }
                 }
                 else
