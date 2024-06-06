@@ -32,14 +32,22 @@ public class MultiplayerManager : MonoBehaviour
     }
     public const byte PlayerUpdate= 2;
 
-    public void SendUpdateEvent(int playerID,Vector3 data,bool isPropelling,bool isShielding, float lastJetRot)
+    public void SendPlayerUpdateEvent(int playerID,Vector3 data,bool isPropelling,bool isShielding, float lastJetRot)
     {
         object[] content = new object[] {playerID, data,isPropelling,isShielding, lastJetRot };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-        PhotonNetwork.RaiseEvent(PlayerUpdate, content, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(PlayerUpdate, content, raiseEventOptions, SendOptions.SendUnreliable);
 
     }
+    public const byte PlayerDeath = 3;
 
+    public void SendPlayerDeathEvent(int playerID)
+    {
+        object[] content = new object[] { playerID };
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(PlayerDeath, content, raiseEventOptions, SendOptions.SendReliable);
+
+    }
     #endregion
 
     public static MultiplayerManager Instance;
@@ -81,6 +89,7 @@ public class MultiplayerManager : MonoBehaviour
         byte eventCode = photonEvent.Code;
        // Debug.Log(eventCode);
         object[] data;
+        PlayerPixelManager player;
         switch (eventCode)
         {
             case InitializeEvent:
@@ -103,10 +112,23 @@ public class MultiplayerManager : MonoBehaviour
 
                 data = (object[])photonEvent.CustomData;
 
-                PlayerPixelManager player = OnlinePixelManager.FetchPlayer((int)data[0]);
+                player = OnlinePixelManager.FetchPlayer((int)data[0]);
                 if(player!=null)
                 {
                     player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1], (bool)data[2], (bool)data[3], (float)data[4]);
+                }
+                break;
+            case PlayerDeath:
+
+                data = (object[])photonEvent.CustomData;
+
+                Debug.Log("Player " + (int)data[0]+" has died!");
+
+                player = OnlinePixelManager.FetchPlayer((int)data[0]);
+                if(player!=null)
+                {
+                    player.RunDeath();
+                    Destroy(player.gameObject);
                 }
                 break;
 

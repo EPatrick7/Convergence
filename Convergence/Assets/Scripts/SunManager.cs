@@ -166,8 +166,11 @@ public class SunManager : MonoBehaviour
         cam.Play();
     }
 
-    public void onlineStart()
+    public void onlineStart(TMP_InputField data)
     {
+        if(data.text!="")
+            RoomManager.ROOMNAME = data.text;
+
         FadeOutOnline();
         sceneStart();
 

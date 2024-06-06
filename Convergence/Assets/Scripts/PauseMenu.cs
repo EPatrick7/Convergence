@@ -373,10 +373,10 @@ public class PauseMenu : MonoBehaviour
     bool alreadyLoadedScene;
     public void LoadSceneDelayed(int id)
     {
-        if (id == 2 && (isPressingHome||UnityEngine.Input.GetKey(KeyCode.LeftShift)))
+     /*   if (id == 2 && (isPressingHome||UnityEngine.Input.GetKey(KeyCode.LeftShift)))
         {
             id = 4;
-        }
+        }*/
         if (menuFrozen==null)
         {
             delayedLoadedID = id;

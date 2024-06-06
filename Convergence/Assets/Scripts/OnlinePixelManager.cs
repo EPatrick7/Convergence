@@ -17,8 +17,8 @@ public class OnlinePixelManager : MonoBehaviour
             pixelManager.Ice=input.y;
             pixelManager.Gas=input.z;
 
-            this.isPropelling = isPropelling;
-            this.isShielding = isShielding;
+            this.isPropelling = isPropelling&&pixelManager.Gas>0;
+            this.isShielding = isShielding&&pixelManager.Ice>0;
             this.propAngle= propAngle;
             UpdateVisibles();
             
@@ -59,7 +59,7 @@ public class OnlinePixelManager : MonoBehaviour
     float timeSinceLast;
     public void StatsChanged()
     {
-            MultiplayerManager.Instance.SendUpdateEvent(pixelManager.PlayerID, FetchStats(),pixelManager.isPropelling,pixelManager.isShielding,pixelManager.lastJetRot);
+            MultiplayerManager.Instance.SendPlayerUpdateEvent(pixelManager.PlayerID, FetchStats(),pixelManager.isPropelling,pixelManager.isShielding,pixelManager.lastJetRot);
         
     }
     public static PlayerPixelManager FetchPlayer(int PlayerID)
@@ -78,6 +78,11 @@ public class OnlinePixelManager : MonoBehaviour
     PlayerPixelManager pixelManager;
     private void OnDestroy()
     {
+        if(PhotonNetwork.IsConnected)
+        {
+            MultiplayerManager.Instance.SendPlayerDeathEvent(pixelManager.PlayerID);
+        }
+
 
         if (onlinePixels == null)
             onlinePixels = new List<OnlinePixelManager>();
@@ -146,7 +151,7 @@ public class OnlinePixelManager : MonoBehaviour
     {
         if (isMine&& Time.timeSinceLevelLoad > timeSinceLast)
         {
-            timeSinceLast = Time.timeSinceLevelLoad + 0.5f;
+            timeSinceLast = Time.timeSinceLevelLoad + 0.1f;
             StatsChanged();
         }
         if(!isMine)
