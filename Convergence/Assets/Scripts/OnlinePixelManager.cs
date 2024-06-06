@@ -4,9 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.InputSystem;
 using System;
-using UnityEngine.Windows;
 using static GravityManager;
-using UnityEditor.VersionControl;
 
 public class OnlinePixelManager : MonoBehaviour
 {
