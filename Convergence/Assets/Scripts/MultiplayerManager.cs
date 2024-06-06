@@ -31,13 +31,13 @@ public class MultiplayerManager : MonoBehaviour
 
     }
     public const byte PlayerUpdate= 2;
-    private static readonly DateTime referencePoint = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    private static readonly DateTime referencePoint = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     public void SendPlayerUpdateEvent(int playerID,Vector3 data,bool isPropelling,bool isShielding, float lastJetRot)
     {
-        object[] content = new object[] {playerID, data,isPropelling,isShielding, lastJetRot, (float)(DateTime.UtcNow- referencePoint).TotalSeconds };
+        object[] content = new object[] {playerID, data,isPropelling,isShielding, lastJetRot, (DateTime.UtcNow- referencePoint).TotalSeconds };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-        PhotonNetwork.RaiseEvent(PlayerUpdate, content, raiseEventOptions, SendOptions.SendUnreliable);
+        PhotonNetwork.RaiseEvent(PlayerUpdate, content, raiseEventOptions, SendOptions.SendReliable);
 
     }
     public const byte PlayerDeath = 3;
@@ -54,7 +54,7 @@ public class MultiplayerManager : MonoBehaviour
     public void SendBodyUpdateEvent(OnlineBodyUpdate onlineBodyUpdate)
     {
 
-        object[] content = new object[] { onlineBodyUpdate.id, onlineBodyUpdate.pos, onlineBodyUpdate.vel, onlineBodyUpdate.acc, onlineBodyUpdate.mass, onlineBodyUpdate.elements,(float)(System.DateTime.Now- referencePoint).TotalSeconds};
+        object[] content = new object[] { onlineBodyUpdate.id, onlineBodyUpdate.pos, onlineBodyUpdate.vel, onlineBodyUpdate.acc, onlineBodyUpdate.mass, onlineBodyUpdate.elements,(System.DateTime.Now- referencePoint).TotalSeconds};
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
         PhotonNetwork.RaiseEvent(BodyUpdate, content, raiseEventOptions, SendOptions.SendUnreliable);
 
@@ -127,7 +127,7 @@ public class MultiplayerManager : MonoBehaviour
                 player = OnlinePixelManager.FetchPlayer((int)data[0]);
                 if(player!=null)
                 {
-                    player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1], (bool)data[2], (bool)data[3], (float)data[4], (float)data[5]);
+                    player.GetComponent<OnlinePixelManager>().UpdateStats((Vector3)data[1], (bool)data[2], (bool)data[3], (float)data[4],(double)data[5]);
                 }
                 break;
             case PlayerDeath:
@@ -154,7 +154,7 @@ public class MultiplayerManager : MonoBehaviour
                 inputBody.acc = (Vector2)data[3];
                 inputBody.mass = (float) data[4];
                 inputBody.elements = (Vector2) data[5];
-                inputBody.time= (float)data[6];
+                inputBody.time= (double)data[6];
 
 
                 GravityManager.Instance?.AddUpdateToQueue(inputBody);

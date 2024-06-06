@@ -4,27 +4,48 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.Windows;
+using static GravityManager;
 
 public class OnlinePixelManager : MonoBehaviour
 {
     public static List<OnlinePixelManager> onlinePixels;
     bool isPropelling, isShielding;
     float propAngle;
-    public void UpdateStats(Vector3 input,bool isPropelling,bool isShielding,float propAngle,float time)
+
+    Vector3 last_input;
+    bool actionQueued;
+    public void UpdateStats(Vector3 input,bool isPropelling,bool isShielding,float propAngle,double time)
     {
-        if(pixelManager!=null&&(time > pixelManager.lastTime))
+
+        if (pixelManager!=null&&(time > pixelManager.lastTime))
         {
             pixelManager.lastTime = time;
-            pixelManager.rigidBody.mass = input.x;
-            pixelManager.Ice=input.y;
-            pixelManager.Gas=input.z;
+            
 
             this.isPropelling = isPropelling&&pixelManager.Gas>0;
             this.isShielding = isShielding&&pixelManager.Ice>0;
             this.propAngle= propAngle;
             UpdateVisibles();
-            
+            last_input = input;
+            if (!actionQueued)
+            {
+                actionQueued = true;
+                GravityManager.Instance.GravRunStart += UpdateOnPass;
+            }
         }
+    }
+    public void UpdateOnPass()
+    {
+        GravityManager.Instance.GravRunStart -= UpdateOnPass;
+        actionQueued = false;
+        pixelManager.rigidBody.mass = last_input.x;
+        pixelManager.Ice = last_input.y;
+        pixelManager.Gas = last_input.z;
+
+
+        GravityManager.Instance.UpdateTexture(pixelManager);
+
     }
     public void UpdateVisibles()
     {

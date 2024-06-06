@@ -62,7 +62,7 @@ public class PixelManager : MonoBehaviour
     public bool isInitialized;
 
     [HideInInspector]
-    public float lastTime;
+    public double lastTime;
     public void Initialize()
     {
         isInitialized = true;

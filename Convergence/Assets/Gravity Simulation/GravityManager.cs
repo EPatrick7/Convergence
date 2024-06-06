@@ -22,8 +22,8 @@ public struct OnlineBodyUpdate
     public Vector2 acc;
     public float mass;
     public Vector2 elements;
-    public float time;
-    private static readonly DateTime referencePoint = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    public double time;
+    private static readonly DateTime referencePoint = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
 
     public OnlineBodyUpdate(GravityBody body,PixelManager pixel)
@@ -34,7 +34,7 @@ public struct OnlineBodyUpdate
         vel = pixel.rigidBody.velocity;
         mass = body.mass;
         elements = body.elements;
-        time = (float)(DateTime.UtcNow - referencePoint).TotalSeconds;
+        time = (DateTime.UtcNow - referencePoint).TotalSeconds;
     }
     public void UpdateBody(GravityBody body,PixelManager pixel)
     {
@@ -868,7 +868,7 @@ public class GravityManager : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-        int numSteps =1+ gravUniverse.numBodies / contextWidth;
+        int numSteps =Mathf.CeilToInt(gravUniverse.numBodies /(float) contextWidth);
         int k = (SimulationStep % numSteps) * contextWidth;
         if (i > k && i-10 < k)
         {
@@ -877,11 +877,14 @@ public class GravityManager : MonoBehaviour
 
 
     }
+    public Action GravRunStart;
     public IEnumerator GravRun()
     {
         //Run forever
         while (true)
         {
+            GravRunStart?.Invoke();
+            
             if (WaitForPlayerInput && !AllowSimulation)
             {
                 yield return new WaitUntil(simulationUnfrozen);

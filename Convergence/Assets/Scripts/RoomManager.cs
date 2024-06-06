@@ -140,7 +140,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
             if (inRoom)
             {
                 StatusImage.color =  Color.green;
-                StatusText.text = isStarted?"<color=green> Starting...": "<color=green>Waiting For Players...";
+                StatusText.text = isStarted?"<color=green> Starting...": "<color=green>Waiting For Players...\n("+room.PlayerCount+"/2)";
             }
             else
             {

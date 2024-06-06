@@ -254,7 +254,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.16461182, y: -0.109375, z: -1.2411499, w: -3.322235}
+  m_margin: {x: 0.16461182, y: 19.952087, z: -1.2411499, w: -35.08612}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2702,16 +2702,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5032970477705407407, guid: 6e2d9d35f2618c74790bfcee96418994, type: 3}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
-      propertyPath: SpawnCount
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: PlayerCount
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
-      propertyPath: SpawnRadius
-      value: 650
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: indicatorManager
