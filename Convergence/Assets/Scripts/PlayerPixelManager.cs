@@ -261,7 +261,9 @@ public class PlayerPixelManager : PixelManager
         hasWonGame = true;
         AudioManager.Instance?.PlayerAbsorbBigSFX();
         BlackHoleState.RadiusScalar *= 1.3f;
-        CutsceneManager.Instance?.BlackHoleConsumed();
+
+        if (RunCutscene)
+            CutsceneManager.Instance?.BlackHoleConsumed();
 
         CreditsMenu.Instance?.DelayRollCredits();
 
@@ -363,7 +365,8 @@ public class PlayerPixelManager : PixelManager
 
         if (cam == null) return;
 
-        CutsceneManager.Instance?.PlayerEjected();
+        if (RunCutscene)
+            CutsceneManager.Instance?.PlayerEjected();
 
         camLook.inputManager.EjectRumble();
         Vector2 ejectDirection = MouseDirection();
@@ -453,7 +456,7 @@ public class PlayerPixelManager : PixelManager
             StarvationFX.Play();
         }
         RunDeath();
-        if(hasRegistered)
+        if(hasRegistered&&RunCutscene)
             CutsceneManager.Instance?.PlayerConsumed();
         Destroy(gameObject);
     }
@@ -564,7 +567,7 @@ public class PlayerPixelManager : PixelManager
                     float propulsionForce = radius() * -PropulsionForceScale*dampener;
                     rigidBody.velocity += propelDirection * propulsionForce;
 
-                    if (Gas > 0f)
+                    if (Gas > 0f&&RunCutscene)
                     {
                         CutsceneManager.Instance?.PlayerPropelled();
                     }
@@ -606,7 +609,9 @@ public class PlayerPixelManager : PixelManager
 
         if (Ice > 0f)
         {
-            CutsceneManager.Instance?.PlayerShielded();
+
+            if (RunCutscene)
+                CutsceneManager.Instance?.PlayerShielded();
             AudioManager.Instance?.PlayerShieldUp();
         }
 

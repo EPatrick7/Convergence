@@ -790,7 +790,7 @@ public class GravityManager : MonoBehaviour
             if (mass > 5000)
             {
                 targ = LateSun;
-                if (pixel.GetComponent<PlayerPixelManager>()!=null && pixel.GetComponent<SpriteRenderer>().sprite != targ)
+                if (pixel.GetComponent<PlayerPixelManager>()!=null && pixel.GetComponent<SpriteRenderer>().sprite != targ&&pixel.RunCutscene)
                 {
                     CutsceneManager.Instance?.IsBlueStar();
                 }
@@ -975,7 +975,7 @@ public class GravityManager : MonoBehaviour
                                 this_pixel.playerPixel.camLook.transform.position = this_pixel.transform.TransformPoint(localP);
                             }
 
-                            if (PlayerCount <= 1)
+                            if (PlayerCount <= 1&&this_pixel.RunCutscene)
                                 CutsceneManager.Instance?.DistToBlackHole(bh_dist);
                         }
                     }

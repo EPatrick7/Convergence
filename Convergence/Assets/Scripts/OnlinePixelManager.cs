@@ -182,6 +182,10 @@ public class OnlinePixelManager : MonoBehaviour
         }
         if(!isMine)
         {
+            if(pixelManager!=null)
+            {
+                pixelManager.RunCutscene = false;
+            }
             UpdateVisibles();
         }
     }

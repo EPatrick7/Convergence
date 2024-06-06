@@ -60,7 +60,8 @@ public class PixelManager : MonoBehaviour
     public Vector3 startPos;
     [HideInInspector]
     public bool isInitialized;
-
+    [HideInInspector]
+    public bool RunCutscene;
     [HideInInspector]
     public double lastTime;
     public void Initialize()
@@ -76,6 +77,7 @@ public class PixelManager : MonoBehaviour
     }
     private void Start()
     {
+        RunCutscene = true;
         Initialize();
         
         rigidBody.velocity += InitialVelocity;
@@ -360,13 +362,16 @@ public class PixelManager : MonoBehaviour
 
         if (playerPixel != null)
         {
-            CutsceneManager.Instance?.ConsumeMass(mass());
+            if(RunCutscene)
+                CutsceneManager.Instance?.ConsumeMass(mass());
             if (other.Ice > 0 && other.Ice > other.Gas)
             {
-                CutsceneManager.Instance?.ElementConsumed(ElementType.Ice);
+                if (RunCutscene)
+                    CutsceneManager.Instance?.ElementConsumed(ElementType.Ice);
             }
             else if (other.Gas > 0 && other.Gas > other.Ice)
             {
+                if (RunCutscene)
                     CutsceneManager.Instance?.ElementConsumed(ElementType.Gas);
             }
             if (GravityManager.GameWinner==null&& other.ConstantMass && other.planetType == PlanetType.BlackHole)
@@ -391,7 +396,7 @@ public class PixelManager : MonoBehaviour
             {
                 other.playerPixel.RunDeath();
 
-                if (other.playerPixel.hasRegistered)
+                if (other.playerPixel.hasRegistered&&RunCutscene)
                     CutsceneManager.Instance?.PlayerConsumed(playerPixel);
 
                // Debug.LogFormat("{0} | {1} | {2} | {3}", other.playerPixel, other.playerPixel.PlayerID, PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID), playerPixel);
