@@ -19,7 +19,7 @@ public class OnlinePixelManager : MonoBehaviour
     {
         if(isMine)
         {
-            Debug.LogWarning("Another player just told the local player what to do!");
+            Debug.LogError("Player Update Leak! (Another client told the local plaer what to do)");
         }
         if (pixelManager!=null&&(time > pixelManager.lastTime))
         {
