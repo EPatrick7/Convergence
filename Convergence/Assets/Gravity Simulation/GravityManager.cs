@@ -144,6 +144,9 @@ public class GravityManager : MonoBehaviour
             b.mass = g.GetComponent<Rigidbody2D>().mass;
             b.radius = g.GetComponent<PixelManager>().radius();
             b.elements = g.GetComponent<PixelManager>().elements();
+
+            g.GetComponent<PixelManager>().internal_id = b.id;
+
             g.transform.localScale =Vector3.one * b.radius;
             if (g.GetComponent<PlayerPixelManager>() == null)
                 g.name = "Body (" + numBodies + ")";
@@ -412,6 +415,7 @@ public class GravityManager : MonoBehaviour
             PreRegister(sub_c);
         }
     }
+
     public void PreRegister(Transform c)
     {
         c.gameObject.SetActive(true);
@@ -738,6 +742,7 @@ public class GravityManager : MonoBehaviour
     public float wrap_dist;
     void Start()
     {
+        desiredKills = new List<int>();
         wrap_dist = SpawnRadius * 3f;
         GameWinner = null;
         Instance = this;
@@ -877,6 +882,14 @@ public class GravityManager : MonoBehaviour
 
 
     }
+
+
+    public void KillBody(int id)
+    {
+        desiredKills.Add(id);
+    }
+    List<int> desiredKills;
+
     public Action GravRunStart;
     public IEnumerator GravRun()
     {
@@ -909,8 +922,22 @@ public class GravityManager : MonoBehaviour
 
             if(isOnline)
             {
+                foreach(int id in desiredKills)
+                {
+
+                    int i = gravUniverse.FetchBody(id);
+
+                    if (i >= 0 && i < gravUniverse.bodies.Count && gravUniverse.pixels[i] != null)
+                    {
+                        Destroy(gravUniverse.pixels[i].gameObject);
+                        gravUniverse.RemoveBody(gravUniverse.bodies[i].id);
+
+                    }
+                }
+                desiredKills.Clear();
+
                 //k* O(log n) Fetch the body and then run update. (K is number of updates to apply)
-                foreach(OnlineBodyUpdate onlineBodyUpdate in gravUniverse.onlineBodies)
+                foreach (OnlineBodyUpdate onlineBodyUpdate in gravUniverse.onlineBodies)
                 {
                     int i = gravUniverse.FetchBody(onlineBodyUpdate.id);
 
@@ -1036,7 +1063,7 @@ public class GravityManager : MonoBehaviour
                             {
                                 if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
                                 {
-                                    Destroy(gravUniverse.pixels[i].gameObject);
+                                    this_pixel.Kill();
                                 }
                             }
                             else if (borderBehavior == BorderNPCBehavior.Wrap)
@@ -1056,7 +1083,7 @@ public class GravityManager : MonoBehaviour
                                 {
                                     if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
                                     {
-                                        Destroy(gravUniverse.pixels[i].gameObject);
+                                        this_pixel.Kill();
                                     }
                                 }
                                 else

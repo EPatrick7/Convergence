@@ -458,7 +458,7 @@ public class PlayerPixelManager : PixelManager
         RunDeath();
         if(hasRegistered&&RunCutscene)
             CutsceneManager.Instance?.PlayerConsumed();
-        Destroy(gameObject);
+        Kill();
     }
     
     private IEnumerator EjectReset(float duration)

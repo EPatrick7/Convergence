@@ -403,7 +403,7 @@ public class PixelManager : MonoBehaviour
                 if(other.playerPixel!=null&& playerPixel!=null&&GravityManager.GameWinner==null)
                     PlayerKillNotifier.GetNotifier(other.playerPixel.PlayerID)?.Notify(playerPixel,playerPixel.pInput.GetComponent<InputManager>().PlayerNames[playerPixel.PlayerID-1]+ " Player");
             }
-            Destroy(other.gameObject);
+            other.Kill();
             /*
             if (isPlayer && other.mass() > (mass()/10))
 			{
@@ -415,6 +415,21 @@ public class PixelManager : MonoBehaviour
         InvokeMassChanged();
         other.InvokeMassChanged();
     }
+    [HideInInspector]
+    public int internal_id;
+    public void Kill()
+    {
+        if (GravityManager.Instance == null || !GravityManager.Instance.isOnline)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            MultiplayerManager.Instance.SendKillBodyEvent(internal_id);
+            Destroy(gameObject);
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         if(!Application.isPlaying&&Application.isEditor)
