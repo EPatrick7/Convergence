@@ -181,12 +181,12 @@ public class OnlinePixelManager : MonoBehaviour
             timeSinceLast = Time.timeSinceLevelLoad + 0.1f;
             StatsChanged();
         }
-        if(!isMine)
+        if (pixelManager != null)
         {
-            if(pixelManager!=null)
-            {
-                pixelManager.RunCutscene = false;
-            }
+            pixelManager.RunCutscene = isMine;
+        }
+        if (!isMine)
+        {
             UpdateVisibles();
         }
     }
