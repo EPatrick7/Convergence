@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Unity.Mathematics;
+using Photon.Pun;
 
 public class PixelManager : MonoBehaviour
 {
@@ -425,9 +426,16 @@ public class PixelManager : MonoBehaviour
         }
         else
         {
-            if (playerPixel == null || playerPixel.GetComponent<OnlinePixelManager>().isMine)
+            if (playerPixel == null)
             {//Kill NPCS no questions asked, if it is a player make sure you own it before you kill it.
-
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    MultiplayerManager.Instance.SendKillBodyEvent(internal_id);
+                    Destroy(gameObject);
+                }
+            }
+            else if (playerPixel.GetComponent<OnlinePixelManager>().isMine)
+            {
                 MultiplayerManager.Instance.SendKillBodyEvent(internal_id);
                 Destroy(gameObject);
             }
