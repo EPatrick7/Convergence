@@ -2703,8 +2703,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5032970477705407407, guid: 6e2d9d35f2618c74790bfcee96418994, type: 3}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+      propertyPath: SpawnCount
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: PlayerCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
+      propertyPath: SpawnRadius
+      value: 625
       objectReference: {fileID: 0}
     - target: {fileID: 1269890533375989698, guid: 9ab05ed89b537bb428b5d3a300e8c87a, type: 3}
       propertyPath: indicatorManager
