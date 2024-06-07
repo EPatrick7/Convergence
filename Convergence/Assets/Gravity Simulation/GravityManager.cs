@@ -888,7 +888,7 @@ public class GravityManager : MonoBehaviour
 
     [Tooltip("DO NOT MAKE THIS TOO HIGH BECAUSE IT CONTROLS DATA SENT TO SERVER!")]
     // int contextWidth= 32;
-    int contextWidth = 64;
+    int contextWidth = 128;
 
     int contextTemp2 =0;
     int contextTemp=0;
