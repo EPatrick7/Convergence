@@ -164,7 +164,13 @@ public class GravityManager : MonoBehaviour
         }
         public int FetchBody(int id)
         {
-            return bodies.BinarySearch(new GravityBody(id), new BodyComparer());
+            int i= bodies.BinarySearch(new GravityBody(id), new BodyComparer());
+            if(i<0||i>=bodies.Count || bodies[i].id!=id)
+            {
+                return -1;
+            }
+
+            return i;
         }
         public bool RemoveBody(int id)
         {
