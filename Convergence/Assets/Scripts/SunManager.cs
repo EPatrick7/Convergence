@@ -174,6 +174,10 @@ public class SunManager : MonoBehaviour
     {
         if(data.text!="")
             RoomManager.ROOMNAME = data.text;
+        else
+        {
+            RoomManager.ROOMNAME = "CONVERGE";
+        }
 
         FadeOutOnline();
         sceneStart();
