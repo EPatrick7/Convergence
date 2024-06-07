@@ -869,7 +869,7 @@ public class GravityManager : MonoBehaviour
     }
 
     [Tooltip("DO NOT MAKE THIS TOO HIGH BECAUSE IT CONTROLS DATA SENT TO SERVER!")]
-    int contextWidth= 100;
+    int contextWidth= 320;
     public void CheckUpdate(int i,GravityBody body, PixelManager pixel)
     {
         if (!isOnline)
@@ -940,6 +940,7 @@ public class GravityManager : MonoBehaviour
                         {
                             Debug.LogError("Kill Body ID Leak! (Tried to kill a player planet)");
                         }
+                        else
                         {
                             Destroy(gravUniverse.pixels[i].gameObject);
                             gravUniverse.RemoveBody(gravUniverse.bodies[i].id);

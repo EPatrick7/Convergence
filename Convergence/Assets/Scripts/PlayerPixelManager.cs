@@ -270,6 +270,19 @@ public class PlayerPixelManager : PixelManager
     }
     public void RunDeath()
     {
+
+        if (camLook != null && gravityManager.isOnline)
+        {
+            foreach (PlayerPixelManager p in GameObject.FindObjectsOfType<PlayerPixelManager>())
+            {
+                if (p != this)
+                {
+                    camLook.focusedPixel = p;
+                    break;
+                }
+            }
+        }
+
         AudioManager.Instance?.StopPlayerJet();
         AudioManager.Instance?.NormalSpeed();
         if (RespawnFX != null && GravityManager.Instance.respawn_players)
