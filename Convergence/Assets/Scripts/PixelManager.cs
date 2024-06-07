@@ -433,6 +433,12 @@ public class PixelManager : MonoBehaviour
                     MultiplayerManager.Instance.SendKillBodyEvent(internal_id);
                     Destroy(gameObject);
                 }
+                else
+                {
+                    //Make it invisible?
+                    GetComponent<SpriteRenderer>().sprite = null;
+                    spriteTransitioner.GetComponent<SpriteRenderer>().sprite = null;
+                }
             }
             else if (playerPixel.GetComponent<OnlinePixelManager>().isMine)
             {

@@ -148,9 +148,24 @@ public class RoomManager : MonoBehaviourPunCallbacks
                 wasConnected = true;
                 StatusImage.color = isStalled ? Color.red : Color.gray;
                 StatusText.text = isStalled ? "<color=red>Server Busy" : "Logging In...";
+
+                if(isStalled)
+                {
+                    if (tryAgainTime == 0)
+                    {
+                        tryAgainTime = Time.timeSinceLevelLoad + 5;
+                    }
+                    else if (Time.timeSinceLevelLoad > tryAgainTime)
+                    {
+                        isStalled = false;
+                        tryAgainTime = 0;
+                        PhotonNetwork.JoinRoom(ROOMNAME);
+                    }
+                }
             }
         }
     }
+    float tryAgainTime;
     void Update()
     {
         UpdateStatusText();
