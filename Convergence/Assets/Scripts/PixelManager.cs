@@ -425,8 +425,12 @@ public class PixelManager : MonoBehaviour
         }
         else
         {
-            MultiplayerManager.Instance.SendKillBodyEvent(internal_id);
-            Destroy(gameObject);
+            if (playerPixel == null || playerPixel.GetComponent<OnlinePixelManager>().isMine)
+            {//Kill NPCS no questions asked, if it is a player make sure you own it before you kill it.
+
+                MultiplayerManager.Instance.SendKillBodyEvent(internal_id);
+                Destroy(gameObject);
+            }
         }
     }
 

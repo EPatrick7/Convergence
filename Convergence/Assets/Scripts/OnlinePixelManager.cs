@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.InputSystem;
 using System;
-using static GravityManager;
 
 public class OnlinePixelManager : MonoBehaviour
 {
@@ -101,7 +100,8 @@ public class OnlinePixelManager : MonoBehaviour
         return null;
     }
     PhotonView view;
-    bool isMine;
+    [HideInInspector]
+    public bool isMine;
     PlayerPixelManager pixelManager;
     private void OnDestroy()
     {

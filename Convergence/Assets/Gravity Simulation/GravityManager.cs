@@ -929,8 +929,15 @@ public class GravityManager : MonoBehaviour
 
                     if (i >= 0 && i < gravUniverse.bodies.Count && gravUniverse.pixels[i] != null)
                     {
-                        Destroy(gravUniverse.pixels[i].gameObject);
-                        gravUniverse.RemoveBody(gravUniverse.bodies[i].id);
+
+                        if (gravUniverse.pixels[i].GetComponent<PhotonView>()!=null&& gravUniverse.pixels[i].GetComponent<PhotonView>().IsMine)
+                        {
+                            Debug.LogError("Kill Body ID Leak! (Tried to kill a player planet)");
+                        }
+                        {
+                            Destroy(gravUniverse.pixels[i].gameObject);
+                            gravUniverse.RemoveBody(gravUniverse.bodies[i].id);
+                        }
 
                     }
                 }
