@@ -887,7 +887,7 @@ public class GravityManager : MonoBehaviour
     }
 
     [Tooltip("DO NOT MAKE THIS TOO HIGH BECAUSE IT CONTROLS DATA SENT TO SERVER!")]
-    int contextWidth= 640;
+    int contextWidth= 32;
     int contextTemp2=0;
     int contextTemp=0;
     public void CheckUpdate(int i,GravityBody body, PixelManager pixel)
@@ -901,7 +901,7 @@ public class GravityManager : MonoBehaviour
 
 
 
-        if (i >= contextTemp2&&contextTemp<contextWidth)
+        if (i == contextTemp2&&contextTemp<contextWidth)
         {
             contextTemp++;
             contextTemp2++;
