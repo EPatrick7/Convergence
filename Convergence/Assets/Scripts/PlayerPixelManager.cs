@@ -542,6 +542,9 @@ public class PlayerPixelManager : PixelManager
         Vector2 diff = MouseDirection();
         if (hasRegistered)
         {
+            if (gravityManager.isOnline && !GetComponent<OnlinePixelManager>().isMine)
+                return;
+            
             float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
             lastJetRot = rot_z - 90;
             GasJet.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
