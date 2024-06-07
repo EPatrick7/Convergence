@@ -888,6 +888,8 @@ public class GravityManager : MonoBehaviour
 
     [Tooltip("DO NOT MAKE THIS TOO HIGH BECAUSE IT CONTROLS DATA SENT TO SERVER!")]
     int contextWidth= 640;
+    int contextTemp2=0;
+    int contextTemp=0;
     public void CheckUpdate(int i,GravityBody body, PixelManager pixel)
     {
         if (!isOnline)
@@ -897,13 +899,19 @@ public class GravityManager : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-        int numSteps =Mathf.CeilToInt(gravUniverse.numBodies /(float) contextWidth);
-        int k = (SimulationStep % numSteps) * contextWidth;
-        if (i > k && i-10 < k)
+
+
+        if (i >= contextTemp2&&contextTemp<contextWidth)
         {
+            contextTemp++;
+            contextTemp2++;
             MultiplayerManager.Instance.SendBodyUpdateEvent(new OnlineBodyUpdate(body,pixel));
         }
 
+        if(contextTemp2>=gravUniverse.bodies.Count)
+        {
+            contextTemp2 = 0;
+        }
 
     }
 
@@ -946,7 +954,10 @@ public class GravityManager : MonoBehaviour
 
             if(isOnline)
             {
-                foreach(int id in desiredKills)
+
+                contextTemp = 0;
+
+                foreach (int id in desiredKills)
                 {
 
                     int i = gravUniverse.FetchBody(id);
