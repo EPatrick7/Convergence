@@ -405,13 +405,31 @@ public class GravityManager : MonoBehaviour
             if (InitRandomElementComposition>0)
             {
                 RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform), sharedVelocity, elements);
+
             }
             else
             {
                 RegisterBody(Instantiate(Pixel, transform.position + new Vector3(loc.x, loc.y, 0), Pixel.transform.rotation, transform), sharedVelocity);
             }
+
+
+            if (isOnline)
+            {
+                SendSpawnEvent(transform.position + new Vector3(loc.x, loc.y, 0),sharedVelocity,elements);
+            }
         }
 
+    }
+    public void SendSpawnEvent(Vector2 pos,Vector2 vel,Vector2 elements)
+    {
+        MultiplayerManager.Instance.SendSpawnBodyEvent(pos, vel, elements);
+    }
+    public void RecieveSpawnEvent(Vector2 pos, Vector2 vel, Vector2 elements)
+    {
+        if(elements.sqrMagnitude>0)
+            RegisterBody(Instantiate(Pixel,pos, Pixel.transform.rotation, transform), vel,elements);
+        else
+            RegisterBody(Instantiate(Pixel, pos, Pixel.transform.rotation, transform), vel);
     }
     public void PreRegister_Block(Transform c)
     {
@@ -869,7 +887,7 @@ public class GravityManager : MonoBehaviour
     }
 
     [Tooltip("DO NOT MAKE THIS TOO HIGH BECAUSE IT CONTROLS DATA SENT TO SERVER!")]
-    int contextWidth= 320;
+    int contextWidth= 640;
     public void CheckUpdate(int i,GravityBody body, PixelManager pixel)
     {
         if (!isOnline)

@@ -70,6 +70,16 @@ public class MultiplayerManager : MonoBehaviour
         PhotonNetwork.RaiseEvent(KillBody, content, raiseEventOptions, SendOptions.SendReliable);
 
     }
+
+    public const byte SpawnBody = 6;
+
+    public void SendSpawnBodyEvent(Vector2 pos, Vector2 velocity,Vector2 elements)
+    {
+        object[] content = new object[] { pos, velocity,elements };
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(SpawnBody, content, raiseEventOptions, SendOptions.SendReliable);
+
+    }
     #endregion
 
     public static MultiplayerManager Instance;
@@ -176,6 +186,12 @@ public class MultiplayerManager : MonoBehaviour
                 data = (object[])photonEvent.CustomData;
 
                 GravityManager.Instance.KillBody((int)data[0]);
+                break;
+            case SpawnBody:
+                data = (object[])photonEvent.CustomData;
+
+                GravityManager.Instance.RecieveSpawnEvent((Vector2)data[0], (Vector2)data[1], (Vector2)data[2]);
+
                 break;
 
         }

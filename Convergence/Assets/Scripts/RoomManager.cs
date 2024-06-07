@@ -13,6 +13,7 @@ using UnityEngine.UI;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager Instance;
+    public GravityManager GravityManager;
 
     public static string ROOMNAME = "CONVERGE";
     public TextMeshProUGUI StatusText;
@@ -115,8 +116,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
         int seed = Random.Range(100, 100000);
 
         MultiplayerManager.Instance.SendInitEvent(seed);
+        GravityManager.DoParticleRespawn = true;//Only host should spawn new particles.
 
-        
+
+
+
     }
 
     public void UpdateStatusText()
