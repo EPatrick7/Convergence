@@ -1,5 +1,4 @@
 
-using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -22,16 +21,16 @@ public class RoomManager :MonoBehaviour
     bool isStalled;
     bool isStarted;
     bool isHost;
-    Room room;
-    /*
+    //Room room;
     void Start()
     {
         Instance = this;
-        PhotonNetwork.ConnectUsingSettings();
-
+        
+        
 
 
     }
+    /*
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinRoom(ROOMNAME);
