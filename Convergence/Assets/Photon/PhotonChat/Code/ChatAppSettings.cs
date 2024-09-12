@@ -6,7 +6,7 @@
 // <author>developer@photonengine.com</author>
 // ----------------------------------------------------------------------------
 
-#if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2017_4_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
 
@@ -14,7 +14,7 @@
 namespace Photon.Chat
 {
     using System;
-    using ExitGames.Client.Photon;
+    using Photon.Client;
     #if SUPPORTED_UNITY
     using UnityEngine.Serialization;
     #endif
@@ -56,7 +56,7 @@ namespace Photon.Chat
         public bool EnableProtocolFallback = true;
 
         /// <summary>Log level for the network lib.</summary>
-        public DebugLevel NetworkLogging = DebugLevel.ERROR;
+        public LogLevel NetworkLogging = LogLevel.Error;
 
         /// <summary>If true, the default nameserver address for the Photon Cloud should be used.</summary>
         public bool IsDefaultNameServer { get { return string.IsNullOrEmpty(this.Server); } }

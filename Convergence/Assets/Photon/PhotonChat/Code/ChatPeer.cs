@@ -4,7 +4,7 @@
 // <copyright company="Exit Games GmbH">Photon Chat Api - Copyright (C) 2014 Exit Games GmbH</copyright>
 // ----------------------------------------------------------------------------------------------------------------------
 
-#if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2017_4_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
 
@@ -13,11 +13,10 @@ namespace Photon.Chat
     using System;
     using System.Diagnostics;
     using System.Collections.Generic;
-    using ExitGames.Client.Photon;
+    using Photon.Client;
 
     #if SUPPORTED_UNITY || NETFX_CORE
-    using Hashtable = ExitGames.Client.Photon.Hashtable;
-    using SupportClass = ExitGames.Client.Photon.SupportClass;
+    using SupportClass = Photon.Client.SupportClass;
     #endif
 
 
@@ -30,12 +29,17 @@ namespace Photon.Chat
         public string NameServerHost = "ns.photonengine.io";
 
         /// <summary>Name Server port per protocol (the UDP port is different than TCP, etc).</summary>
-        private static readonly Dictionary<ConnectionProtocol, int> ProtocolToNameServerPort = new Dictionary<ConnectionProtocol, int>() { { ConnectionProtocol.Udp, 5058 }, { ConnectionProtocol.Tcp, 4533 }, { ConnectionProtocol.WebSocket, 80 }, { ConnectionProtocol.WebSocketSecure, 443 } };
+        private static readonly Dictionary<ConnectionProtocol, int> ProtocolToNameServerPort = new Dictionary<ConnectionProtocol, int>() { { ConnectionProtocol.Udp, 5058 }, { ConnectionProtocol.Tcp, 4533 }, { ConnectionProtocol.WebSocket, 9093 }, { ConnectionProtocol.WebSocketSecure, 19093 } }; //, { ConnectionProtocol.RHttp, 6063 } };
 
         /// <summary>Name Server Address for Photon Cloud (based on current protocol). You can use the default values and usually won't have to set this value.</summary>
         public string NameServerAddress { get { return this.GetNameServerAddress(); } }
 
-        virtual internal bool IsProtocolSecure { get { return this.UsedProtocol == ConnectionProtocol.WebSocketSecure; } }
+        /// <summary>If not zero, this is used for the name server port on connect. Independent of protocol (so this better matches). Set by ChatClient.ConnectUsingSettings.</summary>
+        /// <remarks>This is reset when the protocol fallback is used.</remarks>
+        public ushort NameServerPortOverride;
+
+
+        internal virtual bool IsProtocolSecure { get { return this.UsedProtocol == ConnectionProtocol.WebSocketSecure; } }
 
         /// <summary> Chat Peer constructor. </summary>
         /// <param name="listener">Chat listener implementation.</param>
@@ -69,14 +73,14 @@ namespace Photon.Chat
             #else
             // to support WebGL export in Unity, we find and assign the SocketWebTcp class (if it's in the project).
             // alternatively class SocketWebTcp might be in the Photon3Unity3D.dll
-            websocketType = Type.GetType("ExitGames.Client.Photon.SocketWebTcp, PhotonWebSocket", false);
+            websocketType = Type.GetType("Photon.Client.SocketWebTcp, PhotonWebSocket", false);
             if (websocketType == null)
             {
-                websocketType = Type.GetType("ExitGames.Client.Photon.SocketWebTcp, Assembly-CSharp-firstpass", false);
+                websocketType = Type.GetType("Photon.Client.SocketWebTcp, Assembly-CSharp-firstpass", false);
             }
             if (websocketType == null)
             {
-                websocketType = Type.GetType("ExitGames.Client.Photon.SocketWebTcp, Assembly-CSharp", false);
+                websocketType = Type.GetType("Photon.Client.SocketWebTcp, Assembly-CSharp", false);
             }
             #endif
 
@@ -92,9 +96,6 @@ namespace Photon.Chat
             #endif
         }
 
-        /// <summary>If not zero, this is used for the name server port on connect. Independent of protocol (so this better matches). Set by ChatClient.ConnectUsingSettings.</summary>
-        /// <remarks>This is reset when the protocol fallback is used.</remarks>
-        public ushort NameServerPortOverride;
 
         /// <summary>
         /// Gets the NameServer Address (with prefix and port), based on the set protocol (this.UsedProtocol).
@@ -107,7 +108,7 @@ namespace Photon.Chat
 
             if (this.NameServerPortOverride != 0)
             {
-                this.Listener.DebugReturn(DebugLevel.INFO, string.Format("Using NameServerPortInAppSettings as port for Name Server: {0}", this.NameServerPortOverride));
+                this.Listener.DebugReturn(LogLevel.Info, string.Format("Using NameServerPortInAppSettings as port for Name Server: {0}", this.NameServerPortOverride));
                 protocolPort = this.NameServerPortOverride;
             }
 
@@ -128,18 +129,21 @@ namespace Photon.Chat
 
         /// <summary> Authenticates on NameServer. </summary>
         /// <returns>If the authentication operation request could be sent.</returns>
-        public bool AuthenticateOnNameServer(string appId, string appVersion, string region, AuthenticationValues authValues)
+        protected internal bool AuthenticateOnNameServer(string appId, string appVersion, string region, AuthenticationValues authValues)
         {
-            if (this.DebugOut >= DebugLevel.INFO)
+            if (this.LogLevel >= LogLevel.Info)
             {
-                this.Listener.DebugReturn(DebugLevel.INFO, "OpAuthenticate()");
+                this.Listener.DebugReturn(LogLevel.Info, "OpAuthenticate()");
             }
 
-            var opParameters = new Dictionary<byte, object>();
+            ParameterDictionary opParameters = new ParameterDictionary();
 
             opParameters[ParameterCode.AppVersion] = appVersion;
             opParameters[ParameterCode.ApplicationId] = appId;
             opParameters[ParameterCode.Region] = region;
+
+            //opParameters[193] = (byte)0;  // encryption mode
+            //opParameters[195] = (byte)0;  // expected protocol
 
             if (authValues != null)
             {
@@ -169,7 +173,7 @@ namespace Photon.Chat
                 }
             }
 
-            return this.SendOperation(ChatOperationCode.Authenticate, opParameters, new SendOptions() { Reliability = true, Encrypt = this.IsEncryptionAvailable });
+            return this.SendOperation(ChatOperationCode.Authenticate, opParameters, new SendOptions() { Reliability = true, Encrypt = true });
         }
     }
 
@@ -192,8 +196,6 @@ namespace Photon.Chat
 
         /// <summary>Authenticates users by their PSN Account and token on PS4. Set token as "token", env as "env" and userName as "userName" via AddAuthParameter().</summary>
         PlayStation4 = 4,
-        [Obsolete("Use PlayStation4 or PlayStation5 as needed")]
-        PlayStation = 4,
 
         /// <summary>Authenticates users by their Xbox Account. Pass the XSTS token via SetAuthPostData().</summary>
         Xbox = 5,
@@ -206,8 +208,6 @@ namespace Photon.Chat
 
         /// <summary>Authenticates users by their PSN Account and token on PS5. Set token as "token", env as "env" and userName as "userName" via AddAuthParameter().</summary>
         PlayStation5 = 12,
-        [Obsolete("Use PlayStation4 or PlayStation5 as needed")]
-        Playstation5 = 12,
 
         /// <summary>Authenticates users with Epic Online Services (EOS). Set token as "token" and ownershipToken as "ownershipToken" via AddAuthParameter(). The ownershipToken is optional.</summary>
         Epic = 13,
@@ -364,6 +364,8 @@ namespace Photon.Chat
         public const byte Address = 230;
         /// <summary>(225) User's ID</summary>
         public const byte UserId = 225;
+        /// <summary>(245) Code of "data". Used optionally in an OpAuthenticate response (among other uses).</summary>
+        public const byte Data = (byte)245;
     }
 
     /// <summary>
@@ -449,6 +451,10 @@ namespace Photon.Chat
 
         /// <summary>(32753) The Authentication ticket expired. Usually, this is refreshed behind the scenes. Connect (and authorize) again.</summary>
         public const int AuthenticationTicketExpired = 0x7FF1;
-    }
 
+        /// <summary>
+        /// (32743) for operations with defined limits (as in calls per second, content count or size).
+        /// </summary>
+        public const int OperationLimitReached = 32743; // 0x7FFF - 24,
+    }
 }

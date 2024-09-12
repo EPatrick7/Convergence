@@ -1,5 +1,4 @@
 using JetBrains.Annotations;
-using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -157,10 +156,11 @@ public class GravityManager : MonoBehaviour
             genBodies++;
             numBodies++;
 
-            if (GravityManager.Instance.isOnline&&g.GetComponent<PhotonView>()!=null&&!g.GetComponent<PhotonView>().IsMine)
+          /*  if (GravityManager.Instance.isOnline&&g.GetComponent<PhotonView>()!=null&&!g.GetComponent<PhotonView>().IsMine)
             {
                 b.makeSendOnly();
             }
+          */
         }
         public int FetchBody(int id)
         {
@@ -422,7 +422,7 @@ public class GravityManager : MonoBehaviour
     }
     public void SendSpawnEvent(Vector2 pos,Vector2 vel,Vector2 elements)
     {
-        MultiplayerManager.Instance.SendSpawnBodyEvent(pos, vel, elements);
+      //  MultiplayerManager.Instance.SendSpawnBodyEvent(pos, vel, elements);
     }
     public void RecieveSpawnEvent(Vector2 pos, Vector2 vel, Vector2 elements)
     {
@@ -898,16 +898,16 @@ public class GravityManager : MonoBehaviour
             return;
         if (pixel.isPlayer)
             return;
-        if (!PhotonNetwork.IsMasterClient)
+      /*  if (!PhotonNetwork.IsMasterClient)
             return;
-
+      */
 
 
         if (i == contextTemp2&&contextTemp<contextWidth)
         {
             contextTemp++;
             contextTemp2++;
-            MultiplayerManager.Instance.SendBodyUpdateEvent(new OnlineBodyUpdate(body,pixel));
+        //    MultiplayerManager.Instance.SendBodyUpdateEvent(new OnlineBodyUpdate(body,pixel));
         }
 
         if(contextTemp2>=gravUniverse.bodies.Count)
@@ -967,15 +967,15 @@ public class GravityManager : MonoBehaviour
                     if (i >= 0 && i < gravUniverse.bodies.Count && gravUniverse.pixels[i] != null)
                     {
 
-                        if (gravUniverse.pixels[i].GetComponent<PhotonView>()!=null&& gravUniverse.pixels[i].GetComponent<PhotonView>().IsMine)
+                      /*  if (gravUniverse.pixels[i].GetComponent<PhotonView>()!=null&& gravUniverse.pixels[i].GetComponent<PhotonView>().IsMine)
                         {
                             Debug.LogError("Kill Body ID Leak! (Tried to kill a player planet)");
                         }
                         else
-                        {
+                        {*/
                             Destroy(gravUniverse.pixels[i].gameObject);
                             gravUniverse.RemoveBody(gravUniverse.bodies[i].id);
-                        }
+                      //  }
 
                     }
                 }
@@ -1151,7 +1151,7 @@ public class GravityManager : MonoBehaviour
                     gravUniverse.pixels[i].GetComponent<PixelManager>().CheckTransitions();
                     if(!isOnline)
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale, Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(), 0.1f);
-                    else if (this_pixel.GetComponent<PhotonView>()==null|| this_pixel.GetComponent<PhotonView>().IsMine)
+                    else// if (this_pixel.GetComponent<PhotonView>()==null|| this_pixel.GetComponent<PhotonView>().IsMine)
                     {
                         gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale, Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(), 0.1f);
 

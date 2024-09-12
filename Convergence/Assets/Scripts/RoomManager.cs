@@ -1,5 +1,4 @@
-using Photon.Pun;
-using Photon.Pun.Demo.PunBasics;
+
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class RoomManager : MonoBehaviourPunCallbacks
+public class RoomManager :MonoBehaviour
 {
     public static RoomManager Instance;
     public GravityManager GravityManager;
@@ -24,6 +23,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     bool isStarted;
     bool isHost;
     Room room;
+    /*
     void Start()
     {
         Instance = this;
@@ -174,4 +174,5 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         UpdateStatusText();
     }
+    */
 }

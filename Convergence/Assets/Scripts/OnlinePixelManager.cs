@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 using UnityEngine.InputSystem;
 using System;
 
@@ -85,7 +84,7 @@ public class OnlinePixelManager : MonoBehaviour
     float timeSinceLast;
     public void StatsChanged()
     {
-            MultiplayerManager.Instance.SendPlayerUpdateEvent(pixelManager.PlayerID, FetchStats(),pixelManager.isPropelling,pixelManager.isShielding,pixelManager.lastJetRot);
+           // MultiplayerManager.Instance.SendPlayerUpdateEvent(pixelManager.PlayerID, FetchStats(),pixelManager.isPropelling,pixelManager.isShielding,pixelManager.lastJetRot);
         
     }
     public static PlayerPixelManager FetchPlayer(int PlayerID)
@@ -99,17 +98,16 @@ public class OnlinePixelManager : MonoBehaviour
         }
         return null;
     }
-    PhotonView view;
     [HideInInspector]
     public bool isMine;
     PlayerPixelManager pixelManager;
     private void OnDestroy()
     {
-        if(PhotonNetwork.IsConnected)
+      /*  if(PhotonNetwork.IsConnected)
         {
             MultiplayerManager.Instance.SendPlayerDeathEvent(pixelManager.PlayerID);
         }
-
+      */
 
         if (onlinePixels == null)
             onlinePixels = new List<OnlinePixelManager>();
@@ -120,11 +118,11 @@ public class OnlinePixelManager : MonoBehaviour
         if(onlinePixels==null)
             onlinePixels=new List<OnlinePixelManager>();
         onlinePixels.Add(this);
-        view = GetComponent<PhotonView>();
-        isMine = view.IsMine;
+       // view = GetComponent<PhotonView>();
+       // isMine = view.IsMine;
 
         pixelManager = GetComponent<PlayerPixelManager>();
-        pixelManager.PlayerID = view.CreatorActorNr;
+      //  pixelManager.PlayerID = view.CreatorActorNr;
 
         pixelManager.PlayerIcon.GetComponent<SpriteRenderer>().color = CameraLook.camLooks[0].inputManager.PlayerColors[pixelManager.PlayerID - 1];
         if (isMine)
@@ -171,7 +169,7 @@ public class OnlinePixelManager : MonoBehaviour
     }
     public void EjectPixel(float mass, Vector2 pos,Vector2 vel)
     {
-        MultiplayerManager.Instance?.SendPlayerEjectEvent(mass, pos, vel);
+      //  MultiplayerManager.Instance?.SendPlayerEjectEvent(mass, pos, vel);
     }
 
     private void FixedUpdate()
