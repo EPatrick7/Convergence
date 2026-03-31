@@ -1,21 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 #region NetworkDataStructure
 [System.Serializable]
 public struct NetworkedPlayerInputs
 {
     //Normalized float2 of the direction we are aiming
-    public float2 mouseDirection;
+    public float2 aimDirection;
     public bool justEjected;
     public bool isPropelling;
     public bool isShielding;
 
     public NetworkedPlayerInputs(Vector2 mouseDirection,bool justEjected,bool isPropelling,bool isShielding)
     {
-        this.mouseDirection = new float2(mouseDirection.normalized.x, mouseDirection.normalized.y);
+        this.aimDirection = new float2(mouseDirection.normalized.x, mouseDirection.normalized.y);
         this.justEjected = justEjected;
         this.isPropelling = isPropelling;
         this.isShielding = isShielding;
@@ -52,8 +54,8 @@ public struct NetworkedPlayerGravityBody
         mass = body.mass;
         radius = body.radius;
 
-        gas = body.elements[0];
-        ice = body.elements[1];
+        gas = body.elements[1];
+        ice = body.elements[0];
 
         lastPlayerInputs = new NetworkedPlayerInputs(pixel.MouseDirection(), false, pixel.isPropelling&& pixel.Gas>0, pixel.isShielding && pixel.Ice>0);
     }
@@ -82,8 +84,8 @@ public struct NetworkedGravityBody
         mass = body.mass;
         radius = body.radius;
 
-        gas = body.elements[0];
-        ice = body.elements[1];
+        gas = body.elements[1];
+        ice = body.elements[0];
         distance = localDistance;
     }
 }
@@ -134,11 +136,59 @@ public class NetworkGravityBroadcaster : MonoBehaviour
 {
     private GravityManager m_GravityManager;
     public NetworkedGravityUniverse gravityUniverse;
+
+    public enum SimulationMode {Realtime,Stepped}
+    public SimulationMode simulationMode;
+
+
+
+    [Header("Stepped Simulation Data")]
+    public bool awaitingSimulation;
+    public NetworkedPlayerInputs currentInputs;
+
     private void Start()
     {
         m_GravityManager = GetComponent<GravityManager>();
     }
+    public bool StepReady()
+    {
+        if (simulationMode == SimulationMode.Realtime)
+            return true;
 
+        return awaitingSimulation;
+    }
+    public void CompleteStep()
+    {
+        PlayerPixelManager player = PlayerPixelManager.MostRecentInstance;
+        if (player != null)
+        {
+            if(currentInputs.justEjected)
+            {
+                player.Eject(currentInputs.aimDirection);
+            }
+            if(currentInputs.isShielding)
+            {
+                player.StartShield();
+            }
+            else
+            {
+                player.CancelShield();
+            }
+
+            if (currentInputs.isPropelling)
+            {
+                player.StartPropel();
+            }
+            else
+            {
+                player.CancelPropel();
+            }
+        }
+        
+
+        awaitingSimulation = false;
+        currentInputs = new NetworkedPlayerInputs();
+    }
 
     public void UpdateData(NetworkedGravityUniverse newUniverse)
     {

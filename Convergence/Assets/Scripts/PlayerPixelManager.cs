@@ -349,6 +349,104 @@ public class PlayerPixelManager : PixelManager
     #endregion
 
     #region Eject
+    public void Eject(Vector2 ejectDirection)
+    {
+        if (Time.timeSinceLevelLoad < 0.1f)
+            return;
+        if (!canEject) return;
+        if (hasWonGame)
+            return;
+        if (GravityManager.Instance.SimulationFrozen())
+            return;
+
+        if (cam == null) return;
+
+        justEjected = true;
+        CutsceneManager.Instance?.PlayerEjected();
+
+
+        if (ejectDirection == Vector2.zero)
+        {
+            ejectDirection=lastMousePos;
+        }
+        ejectDirection = ejectDirection.normalized;
+        lastMousePos = ejectDirection;
+
+
+        camLook.inputManager.EjectRumble();
+
+        if (mass() < 750)
+        {
+            AudioManager.Instance?.PlayerEject();
+        }
+        else
+        {
+            AudioManager.Instance?.PlayerEjectBig();
+        }
+
+
+        // Create ejected pixel
+        GameObject pixel = Instantiate(Pixel, transform.position + new Vector3(ejectDirection.x, ejectDirection.y, 0) * (transform.localScale.x * 0.63f), Pixel.transform.rotation, transform.parent);
+
+        // Handle mass of player and ejected pixel
+        /* Legacy Mass
+        float ejectedMass = Mathf.Round(mass() * SplitScale * 64) / 64f;
+
+        ejectedMass /= Mathf.Min(6, Mathf.Max(1, (mass() / 500f)));
+        */
+        float splitMultiplier = 1;
+        if (mass() > SunTransition_MassReq * 1.25f)
+        {
+            splitMultiplier *= postSunSplitScale_Multiplier;
+        }
+        splitMultiplier *= RadiusSplitScale_Multiplier.Evaluate(radius() / 1000f);
+        float ejectedMass = Mathf.Round(radius() * splitMultiplier * SplitScale * 64) / 64f;
+
+        rigidBody.mass -= ejectedMass;
+
+        pixel.GetComponent<PixelManager>().Initialize();
+        pixel.GetComponent<Rigidbody2D>().mass = ejectedMass;
+        pixel.transform.localScale = Vector3.one * pixel.GetComponent<PixelManager>().radius(ejectedMass);
+
+        // Handle ejection push
+        /*Legacy Force
+        float force = (ejectedMass + Mathf.Clamp(ejectedMass / Mathf.Log(ejectedMass), 0f, Mathf.Pow(ejectedMass, 2f))) * EjectionForceScale;
+
+
+        if (mass() <= 5.0f)
+        {
+            force = 0;
+        }
+        rigidBody.velocity += (ejectDirection * force) / mass() * -1 * Mathf.Max(1, (mass() / 600f));
+
+        gravityManager.RegisterBody(pixel, (ejectDirection * force) / pixel.GetComponent<PixelManager>().mass());
+        */
+        float dampener = PlanetForceDampenScale.Evaluate(mass() / SunTransition_MassReq);
+        if (mass() >= SunTransition_MassReq)
+        {
+            dampener *= SunForceDampenScale.Evaluate((mass() - SunTransition_MassReq) / (BlackHoleTransition_MassReq - SunTransition_MassReq));
+        }
+        if (mass() >= BlackHoleTransition_MassReq)
+        {
+            dampener *= BHForceDampenScale.Evaluate((mass() - BlackHoleTransition_MassReq) / (10000f - BlackHoleTransition_MassReq));
+        }
+        dampener *= RadiusForceDampenScale.Evaluate(radius() / 1000f);
+        dampener *= VelocityMagnitudeForceDampenScale.Evaluate(rigidBody.velocity.sqrMagnitude / (VelMagnOffset * radius() * radius()));
+        float force = EjectionForceScale * dampener;
+        rigidBody.velocity += ejectDirection * -force * radius();
+        float ejectMulti = 1 + ((mass() / 10000f) * 15);
+
+        gravityManager.RegisterBody(pixel, rigidBody.velocity + ejectDirection.normalized * EjectedSpeedMult * ejectMulti /*+(ejectDirection* ejectMulti * EjectedSpeedMult* Mathf.Max(1,radius(ejectedMass)) * Mathf.Max(0.25f, force))*/);
+
+        InvokeMassChanged();
+
+        StartCoroutine(EjectReset(EjectionRate));
+        if (mass() <= 5.0f)
+        {
+            Starve();
+        }
+    }
+
     private void Eject(InputAction.CallbackContext context)
     {
         if (Time.timeSinceLevelLoad < 0.1f)
@@ -483,7 +581,11 @@ public class PlayerPixelManager : PixelManager
         }
         GasJet.Stop();
     }
-    private void StartPropel(InputAction.CallbackContext context)
+    public void StartPropel(InputAction.CallbackContext context)
+    {
+        StartPropel();
+    }
+    public void StartPropel()
     {
         if (isPropelling) return;
 
@@ -498,7 +600,11 @@ public class PlayerPixelManager : PixelManager
         StartCoroutine(Propel(PropulsionRate));
     }
 
-    private void CancelPropel(InputAction.CallbackContext context)
+    public void CancelPropel(InputAction.CallbackContext context)
+    {
+        CancelPropel();
+    }
+    public void CancelPropel()
     {
         if (!isPropelling) return;
 
@@ -576,7 +682,11 @@ public class PlayerPixelManager : PixelManager
         camLook.inputManager.BonkRumble(isLarger, isMicroscopic, isSlightlySmaller);
     }
     #region Shield
-    private void StartShield(InputAction.CallbackContext context)
+    public void StartShield(InputAction.CallbackContext context)
+    {
+        StartShield();
+    }
+    public void StartShield()
     {
         
         if (Shield == null) return;
@@ -608,7 +718,11 @@ public class PlayerPixelManager : PixelManager
         Gizmos.DrawWireSphere(transform.position, ShieldRadius());
     }
     */
-    private void CancelShield(InputAction.CallbackContext context)
+    public void CancelShield(InputAction.CallbackContext context)
+    {
+        CancelShield();
+    }
+    public void CancelShield()
     {
         if (Shield == null) return;
 

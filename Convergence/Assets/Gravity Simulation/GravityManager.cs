@@ -1040,7 +1040,14 @@ public class GravityManager : MonoBehaviour
             //Run forever
             while (true)
             {
-
+                if (!gravityBroadcaster.StepReady())
+                {
+                    float timeScale = Time.timeScale;
+                    Time.timeScale = 0;
+                    yield return new WaitUntil(gravityBroadcaster.StepReady);
+                    Time.timeScale = timeScale;
+                }
+                gravityBroadcaster.CompleteStep();
                 if (WaitForPlayerInput && !AllowSimulation)
                 {
                     yield return new WaitUntil(simulationUnfrozen);
