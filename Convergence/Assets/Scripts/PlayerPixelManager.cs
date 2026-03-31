@@ -10,6 +10,7 @@ using DG.Tweening;
 
 public class PlayerPixelManager : PixelManager
 {
+    public static PlayerPixelManager MostRecentInstance;
     [Tooltip("The prefab of the ejected pixel")]
     public GameObject Pixel;
 
@@ -100,7 +101,8 @@ public class PlayerPixelManager : PixelManager
     public PlayerInput pInput;
 
     private bool canEject = true;
-    private bool isPropelling = false;
+    [HideInInspector]
+    public bool isPropelling = false;
 
     bool hasRegistered;
     [HideInInspector]
@@ -109,10 +111,12 @@ public class PlayerPixelManager : PixelManager
     public bool inDanger = false;
     Coroutine dangerAwait; [HideInInspector]
     Vector2 lastMousePos = new Vector2(0, -1);
+    [HideInInspector]
+    public bool justEjected;
 
     private void Start()
     {
-
+        MostRecentInstance = this;
         gravityManager =GravityManager.Instance;
 
         gameObject.layer = 8;
@@ -357,7 +361,7 @@ public class PlayerPixelManager : PixelManager
 
         if (cam == null) return;
 
-
+        justEjected = true;
         CutsceneManager.Instance?.PlayerEjected();
 
         camLook.inputManager.EjectRumble();

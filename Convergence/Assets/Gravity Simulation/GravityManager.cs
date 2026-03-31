@@ -151,6 +151,7 @@ public class GravityManager : MonoBehaviour
         }
     }
 
+    NetworkGravityBroadcaster gravityBroadcaster;
     GravUniverse gravUniverse;//Where the simulation data is stored.
     ComputeBuffer bodyBuffer; //The buffer for all bodies in the simulation
     bool asyncDone=true; // Whether or not the compute shader is done working
@@ -660,6 +661,7 @@ public class GravityManager : MonoBehaviour
     public float wrap_dist;
     void Start()
     {
+        gravityBroadcaster = GetComponent<NetworkGravityBroadcaster>();
         wrap_dist = SpawnRadius * 3f;
         GameWinner = null;
         Instance = this;
@@ -776,256 +778,545 @@ public class GravityManager : MonoBehaviour
     }
     public IEnumerator GravRun()
     {
-        //Run forever
-        while (true)
+        //Legacy Behaivor:
+        if (gravityBroadcaster == null)
         {
-            if (WaitForPlayerInput && !AllowSimulation)
+            //Run forever
+            while (true)
             {
-                yield return new WaitUntil(simulationUnfrozen);
-            }
-            if (DoParticleRespawn)
-            {
-                for(int i =1;i%8!=0&&gravUniverse.numBodies < SpawnCount;i++)
-                    Respawn();
-            }
-            SimulationStep++;
-
-            wrap_dist = SpawnRadius * 2f;
-            foreach (CameraLook look in CameraLook.camLooks)
-            {
-                look.LastNumPixelsInView = look.NumPixelsInView;
-                look.NumPixelsInView = 0;
-                if(look.focusedPixel!=null&&look.focusedPixel.mass()>500)
-                {//If at least one player is large, then switch the wrap distance to the larger one.
-                    wrap_dist = SpawnRadius * 3f;
-                }
-            }
-
-            //O(n) run through each body and update it according to the last compute shader run
-            for (int i = 0; i < gravUniverse.numBodies; i++)
-            {
-                if (gravUniverse.pixels[i] == null)
+                if (WaitForPlayerInput && !AllowSimulation)
                 {
-                    if(gravUniverse.RemoveBody(gravUniverse.bodies[i].id))
-                        i--;
+                    yield return new WaitUntil(simulationUnfrozen);
                 }
-                else if (i < gravUniverse.bodies.Count)
+                if (DoParticleRespawn)
                 {
-                    GravityBody body = gravUniverse.bodies[i];
-                    body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
-                    body.radius = gravUniverse.pixels[i].GetComponent<PixelManager>().radius();
+                    for (int i = 1; i % 8 != 0 && gravUniverse.numBodies < SpawnCount; i++)
+                        Respawn();
+                }
+                SimulationStep++;
 
-
-
-                    PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
-
-
-                    if(this_pixel.playerPixel != null)
-                    {
-                        if (GameWinner != null)
-                        {
-                            this_pixel.rigidBody.drag = 0.25f;
-                        }
-                        float bh_dist = Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position);
-                        if (bh_dist>wrap_dist&&world_wrap&&this_pixel.playerPixel.camLook.LastNumPixelsInView<=1)
-                        {
-
-                            Vector3 localP = this_pixel.transform.InverseTransformPoint(this_pixel.playerPixel.camLook.transform.position);
-                            this_pixel.transform.position = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
-                            this_pixel.playerPixel.camLook.transform.position=this_pixel.transform.TransformPoint(localP);
-                        }
-
-                        if(PlayerCount <= 1)
-                            CutsceneManager.Instance?.DistToBlackHole(bh_dist);
+                wrap_dist = SpawnRadius * 2f;
+                foreach (CameraLook look in CameraLook.camLooks)
+                {
+                    look.LastNumPixelsInView = look.NumPixelsInView;
+                    look.NumPixelsInView = 0;
+                    if (look.focusedPixel != null && look.focusedPixel.mass() > 500)
+                    {//If at least one player is large, then switch the wrap distance to the larger one.
+                        wrap_dist = SpawnRadius * 3f;
                     }
+                }
 
-                    if(PlayerRespawner.playerRespawners!=null&&this_pixel!=null&&random_respawn_players)
+                //O(n) run through each body and update it according to the last compute shader run
+                for (int i = 0; i < gravUniverse.numBodies; i++)
+                {
+                    if (gravUniverse.pixels[i] == null)
                     {
-                        foreach(PlayerRespawner respawner in PlayerRespawner.playerRespawners)
+                        if (gravUniverse.RemoveBody(gravUniverse.bodies[i].id))
+                            i--;
+                    }
+                    else if (i < gravUniverse.bodies.Count)
+                    {
+                        GravityBody body = gravUniverse.bodies[i];
+                        body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
+                        body.radius = gravUniverse.pixels[i].GetComponent<PixelManager>().radius();
+
+
+
+                        PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
+
+
+                        if (this_pixel.playerPixel != null)
                         {
-                            if(respawner!=null && !respawner.LerpNow && Vector2.Distance(this_pixel.transform.position,respawner.transform.position) < this_pixel.transform.localScale.x*1.2f)
+                            if (GameWinner != null)
                             {
-                                respawner.transform.position = RespawnPos();
+                                this_pixel.rigidBody.drag = 0.25f;
+                            }
+                            float bh_dist = Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position);
+                            if (bh_dist > wrap_dist && world_wrap && this_pixel.playerPixel.camLook.LastNumPixelsInView <= 1)
+                            {
+
+                                Vector3 localP = this_pixel.transform.InverseTransformPoint(this_pixel.playerPixel.camLook.transform.position);
+                                this_pixel.transform.position = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
+                                this_pixel.playerPixel.camLook.transform.position = this_pixel.transform.TransformPoint(localP);
+                            }
+                            this_pixel.playerPixel.justEjected = false;
+
+                            if (PlayerCount <= 1)
+                                CutsceneManager.Instance?.DistToBlackHole(bh_dist);
+                        }
+
+                        if (PlayerRespawner.playerRespawners != null && this_pixel != null && random_respawn_players)
+                        {
+                            foreach (PlayerRespawner respawner in PlayerRespawner.playerRespawners)
+                            {
+                                if (respawner != null && !respawner.LerpNow && Vector2.Distance(this_pixel.transform.position, respawner.transform.position) < this_pixel.transform.localScale.x * 1.2f)
+                                {
+                                    respawner.transform.position = RespawnPos();
+                                }
                             }
                         }
-                    }
-                    if (CameraLook.camLooks != null)
-                    {
-                        bool inView=false;
-                        foreach (CameraLook look in CameraLook.camLooks)
+                        if (CameraLook.camLooks != null)
                         {
-
-                            if (this_pixel != null&&this_pixel.GetComponent<PlayerPixelManager>() == null&& look.focusedPixel!=null)
+                            bool inView = false;
+                            foreach (CameraLook look in CameraLook.camLooks)
                             {
-                                PlayerPixelManager player = look.focusedPixel;
-                                if (look.focusedPixel.shieldActivated&&!this_pixel.ConstantMass)
+
+                                if (this_pixel != null && this_pixel.GetComponent<PlayerPixelManager>() == null && look.focusedPixel != null)
                                 {
-                                    //this_pixel
-                                    if (Vector2.Distance(player.transform.position, this_pixel.transform.position)<player.ShieldRadius())
+                                    PlayerPixelManager player = look.focusedPixel;
+                                    if (look.focusedPixel.shieldActivated && !this_pixel.ConstantMass)
                                     {
-                                       this_pixel.transform.position=player.transform.position+ (this_pixel.transform.position-player.transform.position).normalized*(player.ShieldRadius()+(this_pixel.transform.lossyScale.x));
+                                        //this_pixel
+                                        if (Vector2.Distance(player.transform.position, this_pixel.transform.position) < player.ShieldRadius())
+                                        {
+                                            this_pixel.transform.position = player.transform.position + (this_pixel.transform.position - player.transform.position).normalized * (player.ShieldRadius() + (this_pixel.transform.lossyScale.x));
+                                        }
+
+
                                     }
-
-                                    
+                                    if (this_pixel.mass() > player.mass() && !(this_pixel.planetType != PixelManager.PlanetType.BlackHole && player.planetType == PixelManager.PlanetType.BlackHole) && this_pixel.AboutToHitMutual(player))
+                                    {
+                                        player.WarnDanger();
+                                    }
                                 }
-                                if (this_pixel.mass()>player.mass() && !(this_pixel.planetType!=PixelManager.PlanetType.BlackHole && player.planetType==PixelManager.PlanetType.BlackHole) && this_pixel.AboutToHitMutual(player))
+
+
+                                if (isWithinCamera(look, this_pixel.transform.position))
                                 {
-                                    player.WarnDanger();
+                                    look.NumPixelsInView++;
+                                    inView = true;
                                 }
                             }
-
-
-                            if(isWithinCamera(look,this_pixel.transform.position))
+                            if (gravUniverse.pixels[i].GetComponent<PlayerPixelManager>() == null)
                             {
-                                look.NumPixelsInView++;
-                                inView = true;
-                            }
-                        }
-                        if (gravUniverse.pixels[i].GetComponent<PlayerPixelManager>() == null)
-                        {
-                            if (!inView && this_pixel.planetType==PixelManager.PlanetType.BlackHole&&!this_pixel.ConstantMass&&this_pixel.mass()<SunTransition_MassReq)
-                            {
-                                this_pixel.planetType=PixelManager.PlanetType.Sun;
-                            }
-
-                            if (borderBehavior == BorderNPCBehavior.Despawn)
-                            {
-                                if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
+                                if (!inView && this_pixel.planetType == PixelManager.PlanetType.BlackHole && !this_pixel.ConstantMass && this_pixel.mass() < SunTransition_MassReq)
                                 {
-                                    Destroy(gravUniverse.pixels[i].gameObject);
+                                    this_pixel.planetType = PixelManager.PlanetType.Sun;
                                 }
-                            }
-                            else if (borderBehavior == BorderNPCBehavior.Wrap)
-                            {
-                                float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
-                                if (bh_dist > wrap_dist*0.85f && !inView)
-                                {
-                                    Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist * 0.85f;
-                                    bool isSeen = isWithinACamera(target);
-                                    if(!isSeen)
-                                        this_pixel.transform.position = target;
-                                }
-                            }
-                            else if (borderBehavior == BorderNPCBehavior.WrapHybrid)
-                            {
-                                if (this_pixel.mass() < SunTransition_MassReq*0.75f)
+
+                                if (borderBehavior == BorderNPCBehavior.Despawn)
                                 {
                                     if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
                                     {
                                         Destroy(gravUniverse.pixels[i].gameObject);
                                     }
                                 }
-                                else
+                                else if (borderBehavior == BorderNPCBehavior.Wrap)
                                 {
                                     float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
                                     if (bh_dist > wrap_dist * 0.85f && !inView)
                                     {
-                                        Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist*0.85f;
+                                        Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist * 0.85f;
                                         bool isSeen = isWithinACamera(target);
                                         if (!isSeen)
                                             this_pixel.transform.position = target;
                                     }
                                 }
+                                else if (borderBehavior == BorderNPCBehavior.WrapHybrid)
+                                {
+                                    if (this_pixel.mass() < SunTransition_MassReq * 0.75f)
+                                    {
+                                        if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
+                                        {
+                                            Destroy(gravUniverse.pixels[i].gameObject);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
+                                        if (bh_dist > wrap_dist * 0.85f && !inView)
+                                        {
+                                            Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist * 0.85f;
+                                            bool isSeen = isWithinACamera(target);
+                                            if (!isSeen)
+                                                this_pixel.transform.position = target;
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
 
 
-                    Vector2 acceleration = gravUniverse.bodies[i].acceleration();
-                    gravUniverse.pixels[i].GetComponent<PixelManager>().CheckTransitions();
-                    gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale, Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(), 0.1f);
+                        Vector2 acceleration = gravUniverse.bodies[i].acceleration();
+                        gravUniverse.pixels[i].GetComponent<PixelManager>().CheckTransitions();
+                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale, Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(), 0.1f);
 
-                    if (!float.IsNaN(acceleration.x) && !float.IsNaN(acceleration.y))
-                    {
-                        //Update acceleration of gravity
-
-                        if (gravUniverse.pixels[i].GetComponent<PixelManager>().spawnBhole == true) //put above cover galaxy particles
+                        if (!float.IsNaN(acceleration.x) && !float.IsNaN(acceleration.y))
                         {
-                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = 7500;
-                        } else
-						{
-                            gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(Mathf.Min(32767, body.mass));
-                        }
-                        gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
+                            //Update acceleration of gravity
 
-                        if(acceleration.sqrMagnitude>15)
-                        {
-                            if (this_pixel.isPlayer)
+                            if (gravUniverse.pixels[i].GetComponent<PixelManager>().spawnBhole == true) //put above cover galaxy particles
                             {
-                                this_pixel.playerPixel.Shield.Bonk();
+                                gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = 7500;
+                            }
+                            else
+                            {
+                                gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(Mathf.Min(32767, body.mass));
+                            }
+                            gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
+
+                            if (acceleration.sqrMagnitude > 15)
+                            {
+                                if (this_pixel.isPlayer)
+                                {
+                                    this_pixel.playerPixel.Shield.Bonk();
+                                }
+                            }
+
+                            UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
+                        }
+                        else
+                        {
+                            //Debug.Log("NAN acceleration at bodies[" + i + "]!");
+                        }
+                        //Reset for next pass (each of the multithreaded gravity calcs just += acceleration, so we must reset after fetching)
+
+
+                        //Update position for next pass
+                        body.resetVectors(new Vector2(gravUniverse.pixels[i].transform.position.x, gravUniverse.pixels[i].transform.position.y));
+                        body.updateElements(new Vector2(gravUniverse.pixels[i].GetComponent<PixelManager>().Ice, gravUniverse.pixels[i].GetComponent<PixelManager>().Gas));
+                        gravUniverse.ReplaceBody(i, body);
+
+                    }
+                }
+
+
+                GravityBody[] bodies = gravUniverse.bodyArray();
+                //O(1) Update compute shader internal values (These can change freely, and cost little to just resend so we dont mind this)
+                _compute.SetFloat("g", g);
+                _compute.SetFloat("distance_scale", distance_scale);
+                _compute.SetFloat("drift_power", drift_power);
+                _compute.SetFloat("min_dist", min_dist);
+                _compute.SetVector("drift", offset_drift);
+
+
+                //
+                int numBodies = gravUniverse.numBodies;
+
+                //O(n) Update body buffer in the shader with new gravity body information (With new acclerations / pos etc.)
+                if (numBodies > 0)
+                {
+                    if (bodyBuffer != null)
+                        bodyBuffer.Release();
+                    bodyBuffer = new ComputeBuffer(numBodies, sizeof(float) * NUM_FLOATS + sizeof(uint) * NUM_UINTS);
+                    bodyBuffer.SetData(bodies);
+
+                    _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
+                    _compute.SetInt("numBodies", bodyBuffer.count);
+                }
+                else
+                {
+                    _compute.SetInt("numBodies", 0);
+
+                    if (bodyBuffer == null)
+                    {
+                        bodyBuffer = new ComputeBuffer(1, sizeof(float) * NUM_FLOATS + sizeof(uint) * NUM_UINTS);
+                        _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
+                    }
+
+                }
+
+                //O(n^2) Request the compute shader to pass through each combiation of x,y from x in [0..numBodies) and y in [0..numBodies]
+                while (numBodies % 8 != 0)
+                {
+                    numBodies++;
+                }
+                _compute.Dispatch(_compute.FindKernel("GravitySimulation"), numBodies / 8, numBodies / 8, 1);
+                //This is still blazing fast despite O(n^2) because it runs on GPU in 8x8x1 Threads
+
+                asyncDone = false;
+                AsyncGPUReadback.Request(bodyBuffer, OnCompleteReadback);
+                //After the gpu is done cooking, lets ask for our body buffer (with all calculated data back)
+
+                yield return new WaitUntil(isAsyncDone);
+                //Wait until it is done^
+
+                //Wait for next sample time
+                yield return new WaitForSecondsRealtime(TimePerGravitySample);
+            }
+        }
+        else
+        {   //NEW CODE:
+            //Run forever
+            while (true)
+            {
+
+                if (WaitForPlayerInput && !AllowSimulation)
+                {
+                    yield return new WaitUntil(simulationUnfrozen);
+                }
+                if (DoParticleRespawn)
+                {
+                    for (int i = 1; i % 8 != 0 && gravUniverse.numBodies < SpawnCount; i++)
+                        Respawn();
+                }
+                SimulationStep++;
+
+                wrap_dist = SpawnRadius * 2f;
+                foreach (CameraLook look in CameraLook.camLooks)
+                {
+                    look.LastNumPixelsInView = look.NumPixelsInView;
+                    look.NumPixelsInView = 0;
+                    if (look.focusedPixel != null && look.focusedPixel.mass() > 500)
+                    {//If at least one player is large, then switch the wrap distance to the larger one.
+                        wrap_dist = SpawnRadius * 3f;
+                    }
+                }
+
+                //Start building a new networked view of the universe:
+                NetworkedGravityUniverse networkedGravityUniverse = new NetworkedGravityUniverse(null);
+
+                Vector3 playerPos = transform.position;
+                if (PlayerPixelManager.MostRecentInstance != null)
+                {
+                    playerPos = PlayerPixelManager.MostRecentInstance.transform.position;
+                }
+
+                //O(n) run through each body and update it according to the last compute shader run
+                for (int i = 0; i < gravUniverse.numBodies; i++)
+                {
+                    if (gravUniverse.pixels[i] == null)
+                    {
+                        if (gravUniverse.RemoveBody(gravUniverse.bodies[i].id))
+                            i--;
+                    }
+                    else if (i < gravUniverse.bodies.Count)
+                    {
+                        GravityBody body = gravUniverse.bodies[i];
+                        body.mass = gravUniverse.pixels[i].GetComponent<Rigidbody2D>().mass;
+                        body.radius = gravUniverse.pixels[i].GetComponent<PixelManager>().radius();
+
+
+
+                        PixelManager this_pixel = gravUniverse.pixels[i]?.GetComponent<PixelManager>();
+
+
+                        if (this_pixel != null)
+                        {
+                            if (PlayerPixelManager.MostRecentInstance == null || PlayerPixelManager.MostRecentInstance.gameObject != this_pixel.gameObject)
+                            {
+                                networkedGravityUniverse.registerBody(body, this_pixel,Vector2.Distance(this_pixel.transform.position,playerPos));
+                            }
+                            else
+                            {
+                                networkedGravityUniverse.registerPlayerBody(body, this_pixel.playerPixel);
+
+                                this_pixel.playerPixel.justEjected = false;
                             }
                         }
 
-                        UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
-                    }
-                    else
-                    {
-                        //Debug.Log("NAN acceleration at bodies[" + i + "]!");
-                    }
-                    //Reset for next pass (each of the multithreaded gravity calcs just += acceleration, so we must reset after fetching)
-                   
 
-                    //Update position for next pass
-                    body.resetVectors(new Vector2(gravUniverse.pixels[i].transform.position.x, gravUniverse.pixels[i].transform.position.y));
-                    body.updateElements(new Vector2(gravUniverse.pixels[i].GetComponent<PixelManager>().Ice, gravUniverse.pixels[i].GetComponent<PixelManager>().Gas));
-                    gravUniverse.ReplaceBody(i, body);
+                        if (this_pixel.playerPixel != null)
+                        {
+                            if (GameWinner != null)
+                            {
+                                this_pixel.rigidBody.drag = 0.25f;
+                            }
+                            float bh_dist = Vector2.Distance(this_pixel.playerPixel.transform.position, transform.position);
+                            if (bh_dist > wrap_dist && world_wrap && this_pixel.playerPixel.camLook.LastNumPixelsInView <= 1)
+                            {
 
+                                Vector3 localP = this_pixel.transform.InverseTransformPoint(this_pixel.playerPixel.camLook.transform.position);
+                                this_pixel.transform.position = (transform.position - this_pixel.transform.position).normalized * wrap_dist;
+                                this_pixel.playerPixel.camLook.transform.position = this_pixel.transform.TransformPoint(localP);
+                            }
+
+                            if (PlayerCount <= 1)
+                                CutsceneManager.Instance?.DistToBlackHole(bh_dist);
+                        }
+
+                        if (PlayerRespawner.playerRespawners != null && this_pixel != null && random_respawn_players)
+                        {
+                            foreach (PlayerRespawner respawner in PlayerRespawner.playerRespawners)
+                            {
+                                if (respawner != null && !respawner.LerpNow && Vector2.Distance(this_pixel.transform.position, respawner.transform.position) < this_pixel.transform.localScale.x * 1.2f)
+                                {
+                                    respawner.transform.position = RespawnPos();
+                                }
+                            }
+                        }
+                        if (CameraLook.camLooks != null)
+                        {
+                            bool inView = false;
+                            foreach (CameraLook look in CameraLook.camLooks)
+                            {
+
+                                if (this_pixel != null && this_pixel.GetComponent<PlayerPixelManager>() == null && look.focusedPixel != null)
+                                {
+                                    PlayerPixelManager player = look.focusedPixel;
+                                    if (look.focusedPixel.shieldActivated && !this_pixel.ConstantMass)
+                                    {
+                                        //this_pixel
+                                        if (Vector2.Distance(player.transform.position, this_pixel.transform.position) < player.ShieldRadius())
+                                        {
+                                            this_pixel.transform.position = player.transform.position + (this_pixel.transform.position - player.transform.position).normalized * (player.ShieldRadius() + (this_pixel.transform.lossyScale.x));
+                                        }
+
+
+                                    }
+                                    if (this_pixel.mass() > player.mass() && !(this_pixel.planetType != PixelManager.PlanetType.BlackHole && player.planetType == PixelManager.PlanetType.BlackHole) && this_pixel.AboutToHitMutual(player))
+                                    {
+                                        player.WarnDanger();
+                                    }
+                                }
+
+
+                                if (isWithinCamera(look, this_pixel.transform.position))
+                                {
+                                    look.NumPixelsInView++;
+                                    inView = true;
+                                }
+                            }
+                            if (gravUniverse.pixels[i].GetComponent<PlayerPixelManager>() == null)
+                            {
+                                if (!inView && this_pixel.planetType == PixelManager.PlanetType.BlackHole && !this_pixel.ConstantMass && this_pixel.mass() < SunTransition_MassReq)
+                                {
+                                    this_pixel.planetType = PixelManager.PlanetType.Sun;
+                                }
+
+                                if (borderBehavior == BorderNPCBehavior.Despawn)
+                                {
+                                    if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
+                                    {
+                                        Destroy(gravUniverse.pixels[i].gameObject);
+                                    }
+                                }
+                                else if (borderBehavior == BorderNPCBehavior.Wrap)
+                                {
+                                    float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
+                                    if (bh_dist > wrap_dist * 0.85f && !inView)
+                                    {
+                                        Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist * 0.85f;
+                                        bool isSeen = isWithinACamera(target);
+                                        if (!isSeen)
+                                            this_pixel.transform.position = target;
+                                    }
+                                }
+                                else if (borderBehavior == BorderNPCBehavior.WrapHybrid)
+                                {
+                                    if (this_pixel.mass() < SunTransition_MassReq * 0.75f)
+                                    {
+                                        if (body.pos().sqrMagnitude > (SpawnRadius * SpawnRadius * 8) && !inView)
+                                        {
+                                            Destroy(gravUniverse.pixels[i].gameObject);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        float bh_dist = Vector2.Distance(this_pixel.transform.position, transform.position);
+                                        if (bh_dist > wrap_dist * 0.85f && !inView)
+                                        {
+                                            Vector3 target = (transform.position - this_pixel.transform.position).normalized * wrap_dist * 0.85f;
+                                            bool isSeen = isWithinACamera(target);
+                                            if (!isSeen)
+                                                this_pixel.transform.position = target;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+                        Vector2 acceleration = gravUniverse.bodies[i].acceleration();
+                        gravUniverse.pixels[i].GetComponent<PixelManager>().CheckTransitions();
+                        gravUniverse.pixels[i].transform.localScale = Vector3.Lerp(gravUniverse.pixels[i].transform.localScale, Vector3.one * gravUniverse.pixels[i].GetComponent<PixelManager>().radius(), 0.1f);
+
+                        if (!float.IsNaN(acceleration.x) && !float.IsNaN(acceleration.y))
+                        {
+                            //Update acceleration of gravity
+
+                            if (gravUniverse.pixels[i].GetComponent<PixelManager>().spawnBhole == true) //put above cover galaxy particles
+                            {
+                                gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = 7500;
+                            }
+                            else
+                            {
+                                gravUniverse.pixels[i].GetComponent<SpriteRenderer>().sortingOrder = Mathf.RoundToInt(Mathf.Min(32767, body.mass));
+                            }
+                            gravUniverse.pixels[i].GetComponent<Rigidbody2D>().velocity += acceleration;
+
+                            if (acceleration.sqrMagnitude > 15)
+                            {
+                                if (this_pixel.isPlayer)
+                                {
+                                    this_pixel.playerPixel.Shield.Bonk();
+                                }
+                            }
+
+                            UpdateTexture(gravUniverse.pixels[i].GetComponent<PixelManager>());
+                        }
+                        else
+                        {
+                            //Debug.Log("NAN acceleration at bodies[" + i + "]!");
+                        }
+                        //Reset for next pass (each of the multithreaded gravity calcs just += acceleration, so we must reset after fetching)
+
+
+                        //Update position for next pass
+                        body.resetVectors(new Vector2(gravUniverse.pixels[i].transform.position.x, gravUniverse.pixels[i].transform.position.y));
+                        body.updateElements(new Vector2(gravUniverse.pixels[i].GetComponent<PixelManager>().Ice, gravUniverse.pixels[i].GetComponent<PixelManager>().Gas));
+                        gravUniverse.ReplaceBody(i, body);
+
+                    }
                 }
-            }
+
+                gravityBroadcaster.UpdateData(networkedGravityUniverse);
+
+                GravityBody[] bodies = gravUniverse.bodyArray();
+                //O(1) Update compute shader internal values (These can change freely, and cost little to just resend so we dont mind this)
+                _compute.SetFloat("g", g);
+                _compute.SetFloat("distance_scale", distance_scale);
+                _compute.SetFloat("drift_power", drift_power);
+                _compute.SetFloat("min_dist", min_dist);
+                _compute.SetVector("drift", offset_drift);
 
 
-            GravityBody[] bodies = gravUniverse.bodyArray();
-            //O(1) Update compute shader internal values (These can change freely, and cost little to just resend so we dont mind this)
-            _compute.SetFloat("g", g);
-            _compute.SetFloat("distance_scale", distance_scale);
-            _compute.SetFloat("drift_power", drift_power);
-            _compute.SetFloat("min_dist", min_dist);
-            _compute.SetVector("drift", offset_drift);
+                //
+                int numBodies = gravUniverse.numBodies;
 
-
-            //
-            int numBodies = gravUniverse.numBodies;
-
-            //O(n) Update body buffer in the shader with new gravity body information (With new acclerations / pos etc.)
-            if (numBodies > 0)
-            {
-                if (bodyBuffer != null)
-                    bodyBuffer.Release();
-                bodyBuffer = new ComputeBuffer(numBodies, sizeof(float) * NUM_FLOATS+sizeof(uint)*NUM_UINTS);
-                bodyBuffer.SetData(bodies);
-
-                _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
-                _compute.SetInt("numBodies", bodyBuffer.count);
-            }
-            else
-            {
-                _compute.SetInt("numBodies", 0);
-
-                if (bodyBuffer == null)
+                //O(n) Update body buffer in the shader with new gravity body information (With new acclerations / pos etc.)
+                if (numBodies > 0)
                 {
-                    bodyBuffer = new ComputeBuffer(1, sizeof(float) * NUM_FLOATS + sizeof(uint) * NUM_UINTS);
+                    if (bodyBuffer != null)
+                        bodyBuffer.Release();
+                    bodyBuffer = new ComputeBuffer(numBodies, sizeof(float) * NUM_FLOATS + sizeof(uint) * NUM_UINTS);
+                    bodyBuffer.SetData(bodies);
+
                     _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
+                    _compute.SetInt("numBodies", bodyBuffer.count);
+                }
+                else
+                {
+                    _compute.SetInt("numBodies", 0);
+
+                    if (bodyBuffer == null)
+                    {
+                        bodyBuffer = new ComputeBuffer(1, sizeof(float) * NUM_FLOATS + sizeof(uint) * NUM_UINTS);
+                        _compute.SetBuffer(0, "bodyBuffer", bodyBuffer);
+                    }
+
                 }
 
+                //O(n^2) Request the compute shader to pass through each combiation of x,y from x in [0..numBodies) and y in [0..numBodies]
+                while (numBodies % 8 != 0)
+                {
+                    numBodies++;
+                }
+                _compute.Dispatch(_compute.FindKernel("GravitySimulation"), numBodies / 8, numBodies / 8, 1);
+                //This is still blazing fast despite O(n^2) because it runs on GPU in 8x8x1 Threads
+
+                asyncDone = false;
+                AsyncGPUReadback.Request(bodyBuffer, OnCompleteReadback);
+                //After the gpu is done cooking, lets ask for our body buffer (with all calculated data back)
+
+                yield return new WaitUntil(isAsyncDone);
+                //Wait until it is done^
+
+                //Wait for next sample time
+                yield return new WaitForSecondsRealtime(TimePerGravitySample);
             }
-            
-            //O(n^2) Request the compute shader to pass through each combiation of x,y from x in [0..numBodies) and y in [0..numBodies]
-            while(numBodies%8!=0)
-            {
-                numBodies++;
-            }
-            _compute.Dispatch(_compute.FindKernel("GravitySimulation"), numBodies / 8, numBodies/8,1);
-            //This is still blazing fast despite O(n^2) because it runs on GPU in 8x8x1 Threads
 
-            asyncDone = false;
-            AsyncGPUReadback.Request(bodyBuffer, OnCompleteReadback);
-            //After the gpu is done cooking, lets ask for our body buffer (with all calculated data back)
 
-            yield return new WaitUntil(isAsyncDone);
-            //Wait until it is done^
-
-            //Wait for next sample time
-            yield return new WaitForSecondsRealtime(TimePerGravitySample);
         }
     }
     //Is the compute shader done cooking?
