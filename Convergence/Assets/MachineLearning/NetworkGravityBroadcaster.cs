@@ -6,58 +6,83 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 #region NetworkDataStructure
+
+[System.Serializable]
+public struct SerializableVector2
+{
+    public float x;
+    public float y;
+    public SerializableVector2(float x, float y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+    public SerializableVector2(float2 v)
+    {
+        x = v.x;
+        y = v.y;
+    }
+}
+
 [System.Serializable]
 public struct NetworkedPlayerInputs
 {
     //Normalized float2 of the direction we are aiming
-    public float2 aimDirection;
+    public SerializableVector2 aimDirection;
     public bool justEjected;
     public bool isPropelling;
     public bool isShielding;
 
-    public NetworkedPlayerInputs(Vector2 mouseDirection,bool justEjected,bool isPropelling,bool isShielding)
+    public bool wantsToRestartGame;
+
+    public NetworkedPlayerInputs(Vector2 mouseDirection,bool justEjected,bool isPropelling,bool isShielding,bool wantsToRestartGame)
     {
-        this.aimDirection = new float2(mouseDirection.normalized.x, mouseDirection.normalized.y);
+        this.aimDirection = new SerializableVector2(mouseDirection.normalized.x, mouseDirection.normalized.y);
         this.justEjected = justEjected;
         this.isPropelling = isPropelling;
         this.isShielding = isShielding;
+        this.wantsToRestartGame = wantsToRestartGame;
     }
 }
 
 [System.Serializable]
 public struct NetworkedPlayerGravityBody
 {
-    public float2 pos;
-    public float2 vel;
-    public float2 acc;
+    public SerializableVector2 pos;
+    public SerializableVector2 vel;
+    public SerializableVector2 acc;
 
     public float mass;
     public float radius;
 
     public float gas;
     public float ice;
+    public bool inDanger;
 
     public NetworkedPlayerInputs lastPlayerInputs;
 
+
     public NetworkedPlayerGravityBody(GravityBody body, PlayerPixelManager pixel)
     {
-        pos = new float2(body.x, body.y);
+        pos = new SerializableVector2(body.x, body.y);
         if (pixel.GetComponent<Rigidbody2D>() == null)
         {
-            vel = new float2(0, 0);
+            vel = new SerializableVector2(0, 0);
         }
         else
         {
-            vel = new float2(pixel.GetComponent<Rigidbody2D>().velocity.x, pixel.GetComponent<Rigidbody2D>().velocity.y);
+            vel = new SerializableVector2(pixel.GetComponent<Rigidbody2D>().velocity.x, pixel.GetComponent<Rigidbody2D>().velocity.y);
         }
-        acc = new float2(body.acceleration().x, body.acceleration().y);
+        acc = new SerializableVector2(body.acceleration().x, body.acceleration().y);
         mass = body.mass;
         radius = body.radius;
 
         gas = body.elements[1];
         ice = body.elements[0];
 
-        lastPlayerInputs = new NetworkedPlayerInputs(pixel.MouseDirection(), false, pixel.isPropelling&& pixel.Gas>0, pixel.isShielding && pixel.Ice>0);
+        lastPlayerInputs = new NetworkedPlayerInputs(pixel.MouseDirection(), false, pixel.isPropelling&& pixel.Gas>0, pixel.isShielding && pixel.Ice>0,false);
+
+        inDanger = pixel.inDanger;
     }
 }
 
@@ -65,9 +90,9 @@ public struct NetworkedPlayerGravityBody
 [System.Serializable]
 public struct NetworkedGravityBody
 {
-    public float2 pos;
-    public float2 vel;
-    public float2 acc;
+    public SerializableVector2 pos;
+    public SerializableVector2 vel;
+    public SerializableVector2 acc;
 
     public float mass;
     public float radius;
@@ -78,9 +103,9 @@ public struct NetworkedGravityBody
     public float distance;
     public NetworkedGravityBody(GravityBody body,GameObject pixel,float localDistance=float.MaxValue)
     {
-        pos=new float2(body.x,body.y);
-        vel = new float2(pixel.GetComponent<Rigidbody2D>().velocity.x, pixel.GetComponent<Rigidbody2D>().velocity.y);
-        acc = new float2(body.acceleration().x, body.acceleration().y);
+        pos=new SerializableVector2(body.x,body.y);
+        vel = new SerializableVector2(pixel.GetComponent<Rigidbody2D>().velocity.x, pixel.GetComponent<Rigidbody2D>().velocity.y);
+        acc = new SerializableVector2(body.acceleration().x, body.acceleration().y);
         mass = body.mass;
         radius = body.radius;
 
@@ -94,35 +119,12 @@ public struct NetworkedGravityBody
 [System.Serializable]
 public class NetworkedGravityUniverse
 {
-    public List<NetworkedGravityBody> networkedGravityBodies;
+    public NetworkedGravityBody[] networkedGravityBodies;
     public NetworkedPlayerGravityBody localPlayer;
     public NetworkedGravityUniverse(GravityManager.GravUniverse gravUniverse)
     {
-        networkedGravityBodies = new List<NetworkedGravityBody>();
+        networkedGravityBodies = new NetworkedGravityBody[gravUniverse.bodies.Count];
         localPlayer = new NetworkedPlayerGravityBody();
-        if (gravUniverse != null)
-        {
-            for (int i = 0; i < gravUniverse.bodies.Count; i++)
-            {
-                GravityBody body = gravUniverse.bodies[i];
-                if (i < gravUniverse.pixels.Count)
-                {
-                    GameObject pixel = gravUniverse.pixels[i];
-
-                    if (pixel != null&&pixel.GetComponent<Rigidbody2D>()!=null)
-                    {
-                        networkedGravityBodies.Add(new NetworkedGravityBody(body, pixel));
-                    }
-                }
-            }
-        }
-    }
-    public void registerBody(GravityBody body,PixelManager pixel,float distance)
-    {
-        if (pixel != null && pixel.GetComponent<Rigidbody2D>() != null)
-        {
-            networkedGravityBodies.Add(new NetworkedGravityBody(body, pixel.gameObject, distance));
-        }
     }
     public void registerPlayerBody(GravityBody body, PlayerPixelManager pixel)
     {
@@ -148,6 +150,7 @@ public class NetworkGravityBroadcaster : MonoBehaviour
 
     private void Start()
     {
+        awaitingSimulation = true;
         m_GravityManager = GetComponent<GravityManager>();
     }
     public bool StepReady()
@@ -159,12 +162,14 @@ public class NetworkGravityBroadcaster : MonoBehaviour
     }
     public void CompleteStep()
     {
+        if (!awaitingSimulation)
+            return;
         PlayerPixelManager player = PlayerPixelManager.MostRecentInstance;
         if (player != null)
         {
             if(currentInputs.justEjected)
             {
-                player.Eject(currentInputs.aimDirection);
+                player.Eject(new Vector2(currentInputs.aimDirection.x, currentInputs.aimDirection.y));
             }
             if(currentInputs.isShielding)
             {

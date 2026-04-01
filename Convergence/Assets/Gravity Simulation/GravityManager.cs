@@ -2,13 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.InputSystem;
-using UnityEngine.LowLevel;
 using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
 
 #region DataStructure
 //If you ever add more floats to GravityBody, be sure to adjust the sizeof(float) * # of floats in buffer setup, and the corresponding struct in compute shader!
@@ -1071,7 +1067,8 @@ public class GravityManager : MonoBehaviour
                 }
 
                 //Start building a new networked view of the universe:
-                NetworkedGravityUniverse networkedGravityUniverse = new NetworkedGravityUniverse(null);
+                NetworkedGravityUniverse networkedGravityUniverse = new NetworkedGravityUniverse(gravUniverse);
+                List<NetworkedGravityBody> networkedGravityBodies = new List<NetworkedGravityBody>();
 
                 Vector3 playerPos = transform.position;
                 if (PlayerPixelManager.MostRecentInstance != null)
@@ -1102,7 +1099,10 @@ public class GravityManager : MonoBehaviour
                         {
                             if (PlayerPixelManager.MostRecentInstance == null || PlayerPixelManager.MostRecentInstance.gameObject != this_pixel.gameObject)
                             {
-                                networkedGravityUniverse.registerBody(body, this_pixel,Vector2.Distance(this_pixel.transform.position,playerPos));
+                                if (this_pixel != null && this_pixel.GetComponent<Rigidbody2D>() != null)
+                                {
+                                    networkedGravityBodies.Add(new NetworkedGravityBody(body, this_pixel.gameObject, Vector2.Distance(this_pixel.transform.position,playerPos)));
+                                }
                             }
                             else
                             {
@@ -1266,7 +1266,8 @@ public class GravityManager : MonoBehaviour
 
                     }
                 }
-
+                networkedGravityBodies.Sort((a, b) => a.distance.CompareTo(b.distance));
+                networkedGravityUniverse.networkedGravityBodies = networkedGravityBodies.ToArray();
                 gravityBroadcaster.UpdateData(networkedGravityUniverse);
 
                 GravityBody[] bodies = gravUniverse.bodyArray();
