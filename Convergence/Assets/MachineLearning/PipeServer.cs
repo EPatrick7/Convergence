@@ -1,35 +1,55 @@
+using System;
 using System.IO;
 using System.IO.Pipes;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 [RequireComponent(typeof(NetworkGravityBroadcaster))]
 public class PipeServer : MonoBehaviour
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
     private NamedPipeServerStream pipeServer;
-    private Thread serverThread;
+#else
+    private Socket socketServer;
+    private Socket clientSocket;
+    private string socketPath = "/tmp/galaxy.sock";
+#endif
 
+    private Thread serverThread;
     private NetworkGravityBroadcaster broadcaster;
     private bool isRunning = true;
+
+    public GameObject HookUI;
+
     void Start()
     {
-        broadcaster= GetComponent<NetworkGravityBroadcaster>();
+        broadcaster = GetComponent<NetworkGravityBroadcaster>();
         serverThread = new Thread(StartServer);
         serverThread.IsBackground = true;
         serverThread.Start();
     }
-    public GameObject HookUI;
+
     private void Update()
     {
         if (PauseMenu.isPaused)
-        {
             PauseMenu.Instance.UnPause();
-        }
     }
+
     void StartServer()
+    {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        RunWindowsPipe();
+#else
+        RunUnixSocket();
+#endif
+    }
+
+    // ================= WINDOWS =================
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+    void RunWindowsPipe()
     {
         pipeServer = new NamedPipeServerStream(
             "GalaxyPipe",
@@ -39,38 +59,89 @@ public class PipeServer : MonoBehaviour
             PipeOptions.None
         );
 
-        Debug.Log("Waiting for Python client...");
+        Debug.Log("Waiting for Python client (Windows pipe)...");
         pipeServer.WaitForConnection();
-        Debug.Log("Python connected!");
+        Debug.Log("Connected!");
 
-        if(HookUI!=null)
-        {
-            HookUI.gameObject.SetActive(false);
-        }
+        MainLoop(
+            () => ReadFromPipe(),
+            (data) => WriteToPipe(data)
+        );
+    }
 
-        while (isRunning &&pipeServer.IsConnected)
+    string ReadFromPipe()
+    {
+        byte[] buffer = new byte[4096];
+        int bytesRead = pipeServer.Read(buffer, 0, buffer.Length);
+        return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+    }
+
+    void WriteToPipe(string data)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(data);
+        pipeServer.Write(bytes, 0, bytes.Length);
+        pipeServer.Flush();
+    }
+#endif
+
+    // ================= MAC / LINUX =================
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+    void RunUnixSocket()
+    {
+        if (File.Exists(socketPath))
+            File.Delete(socketPath);
+
+        socketServer = new Socket(AddressFamily.Unix, SocketType.Stream, 0);
+        socketServer.Bind(new UnixDomainSocketEndPoint(socketPath));
+        socketServer.Listen(1);
+
+        Debug.Log("Waiting for Python client (Unix socket)...");
+        clientSocket = socketServer.Accept();
+        Debug.Log("Connected!");
+
+        MainLoop(
+            () => ReadFromSocket(),
+            (data) => WriteToSocket(data)
+        );
+    }
+
+    string ReadFromSocket()
+    {
+        byte[] buffer = new byte[4096];
+        int bytesRead = clientSocket.Receive(buffer);
+        return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+    }
+
+    void WriteToSocket(string data)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(data);
+        clientSocket.Send(bytes);
+    }
+#endif
+
+    // ================= SHARED LOOP =================
+    void MainLoop(Func<string> reader, Action<string> writer)
+    {
+        if (HookUI != null)
+            HookUI.SetActive(false);
+
+        StringBuilder incoming = new StringBuilder();
+
+        while (isRunning)
         {
             try
             {
                 // SEND STATE
                 string json = JsonUtility.ToJson(broadcaster.gravityUniverse) + "\n";
-                byte[] sendBytes = Encoding.UTF8.GetBytes(json);
+                writer(json);
 
-                pipeServer.Write(sendBytes, 0, sendBytes.Length);
-                pipeServer.Flush();
+                // READ INPUT
+                string data = reader();
+                incoming.Append(data);
 
-                // READ RESPONSE
-                byte[] buffer = new byte[4096];
-                StringBuilder incoming = new StringBuilder();
-
-                int bytesRead = pipeServer.Read(buffer, 0, buffer.Length);
-                incoming.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
-
-                string data = incoming.ToString();
-
-                if (data.Contains("\n"))
+                if (incoming.ToString().Contains("\n"))
                 {
-                    string[] parts = data.Split('\n');
+                    string[] parts = incoming.ToString().Split('\n');
 
                     foreach (string part in parts)
                     {
@@ -82,47 +153,62 @@ public class PipeServer : MonoBehaviour
                         broadcaster.currentInputs = inputs;
                         broadcaster.awaitingSimulation = true;
 
-
-
-                        if(broadcaster.currentInputs.wantsToRestartGame)
+                        if (inputs.wantsToRestartGame)
                         {
                             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
                             pipeServer?.Close();
+#else
+                            clientSocket?.Close();
+#endif
 
                             if (HookUI != null)
-                            {
-                                HookUI.gameObject.SetActive(true);
-                            }
+                                HookUI.SetActive(true);
                         }
                     }
 
                     incoming.Clear();
                 }
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                Debug.Log("Pipe error: " + e.Message);
+                Debug.Log("IPC error: " + e.Message);
                 break;
             }
         }
 
-        if (HookUI != null)
-        {
-            HookUI.gameObject.SetActive(true);
-        }
-        isRunning = false;
-        pipeServer.Close();
+        Cleanup();
     }
+
+    void Cleanup()
+    {
+        if (HookUI != null)
+            HookUI.SetActive(true);
+
+        isRunning = false;
+
+    #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        pipeServer?.Close();
+    #else
+            clientSocket?.Close();
+            socketServer?.Close();
+            if (File.Exists(socketPath))
+                File.Delete(socketPath);
+    #endif
+    }
+
     private void OnDestroy()
     {
         isRunning = false;
-        pipeServer?.Close();
+        Cleanup();
         serverThread?.Abort();
     }
+
     void OnApplicationQuit()
     {
         isRunning = false;
-        pipeServer?.Close();
+        Cleanup();
         serverThread?.Abort();
     }
 }
