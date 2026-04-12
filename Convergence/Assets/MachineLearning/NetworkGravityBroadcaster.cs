@@ -75,7 +75,7 @@ public struct NetworkedPlayerGravityBody
         }
         acc = new SerializableVector2(body.acceleration().x, body.acceleration().y);
         mass = body.mass;
-        radius = body.radius;
+        radius = pixel.transform.localScale.x;
 
         gas = body.elements[1];
         ice = body.elements[0];
@@ -107,7 +107,7 @@ public struct NetworkedGravityBody
         vel = new SerializableVector2(pixel.GetComponent<Rigidbody2D>().velocity.x, pixel.GetComponent<Rigidbody2D>().velocity.y);
         acc = new SerializableVector2(body.acceleration().x, body.acceleration().y);
         mass = body.mass;
-        radius = body.radius;
+        radius = pixel.transform.localScale.x;
 
         gas = body.elements[1];
         ice = body.elements[0];
