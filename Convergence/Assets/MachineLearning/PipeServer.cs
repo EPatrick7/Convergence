@@ -155,13 +155,14 @@ public class PipeServer : MonoBehaviour
 
                         if (inputs.wantsToRestartGame)
                         {
+                            Time.timeScale = 1;
                             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
                             pipeServer?.Close();
 #else
                             clientSocket?.Close();
-#endif
+#endif 
 
                             if (HookUI != null)
                                 HookUI.SetActive(true);
