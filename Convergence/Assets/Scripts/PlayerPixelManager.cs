@@ -11,6 +11,8 @@ using DG.Tweening;
 public class PlayerPixelManager : PixelManager
 {
     public static PlayerPixelManager MostRecentInstance;
+    [HideInInspector]
+    public bool isAIPuppet;
     [Tooltip("The prefab of the ejected pixel")]
     public GameObject Pixel;
 
@@ -143,6 +145,8 @@ public class PlayerPixelManager : PixelManager
     //Delays registering the inputs until a system is located.
 
     #region Inputs
+    [HideInInspector]
+    public float aimAngle = float.MinValue;
     public IEnumerator DelayedRegister()
     {
         while (pInput == null)
@@ -178,6 +182,18 @@ public class PlayerPixelManager : PixelManager
     }
     public Vector2 MouseDirection()
     {
+        if (aimAngle != float.MinValue)
+        {
+            float radians = aimAngle * Mathf.Deg2Rad;
+
+            Vector2 dir = new Vector2(
+                Mathf.Cos(radians),
+                Mathf.Sin(radians)
+            );
+
+            return dir.normalized;
+        }
+
         if (!hasRegistered)
         {
             Debug.LogWarning("Tried to get MouseDirection, Input not Ready!");
@@ -216,13 +232,18 @@ public class PlayerPixelManager : PixelManager
     {
         if (!hasRegistered)
         {
-            Debug.LogWarning("Tried to get MouseDirection, Input not Ready!");
+            if(!isAIPuppet)
+                Debug.LogWarning("Tried to get MouseDirection, Input not Ready!");
             return Vector2.zero;
         }
         return pInput.actions.FindActionMap("Player").FindAction("MousePosition").ReadValue<Vector2>();
     }
     public void RegisterInputs()
     {
+        if (isAIPuppet)
+        {
+            return;
+        }
         if (hasRegistered)
         {
             Debug.LogWarning("Cannot double register a player!");

@@ -28,16 +28,16 @@ public struct SerializableVector2
 public struct NetworkedPlayerInputs
 {
     //Normalized float2 of the direction we are aiming
-    public SerializableVector2 aimDirection;
+    public float aimAngle;
     public bool justEjected;
     public bool isPropelling;
     public bool isShielding;
 
     public bool wantsToRestartGame;
 
-    public NetworkedPlayerInputs(Vector2 mouseDirection,bool justEjected,bool isPropelling,bool isShielding,bool wantsToRestartGame)
+    public NetworkedPlayerInputs(float aimAngle, bool justEjected,bool isPropelling,bool isShielding,bool wantsToRestartGame)
     {
-        this.aimDirection = new SerializableVector2(mouseDirection.normalized.x, mouseDirection.normalized.y);
+        this.aimAngle = aimAngle;
         this.justEjected = justEjected;
         this.isPropelling = isPropelling;
         this.isShielding = isShielding;
@@ -80,7 +80,7 @@ public struct NetworkedPlayerGravityBody
         gas = body.elements[1];
         ice = body.elements[0];
 
-        lastPlayerInputs = new NetworkedPlayerInputs(pixel.MouseDirection(), false, pixel.isPropelling&& pixel.Gas>0, pixel.isShielding && pixel.Ice>0,false);
+        lastPlayerInputs = new NetworkedPlayerInputs(pixel.aimAngle, false, pixel.isPropelling&& pixel.Gas>0, pixel.isShielding && pixel.Ice>0,false);
 
         inDanger = pixel.inDanger;
     }
@@ -128,6 +128,8 @@ public class NetworkedGravityUniverse
     }
     public void registerPlayerBody(GravityBody body, PlayerPixelManager pixel)
     {
+        pixel.DeregisterInputs();
+        pixel.isAIPuppet = true;
         localPlayer = new NetworkedPlayerGravityBody(body, pixel);
     }
 }
@@ -167,9 +169,10 @@ public class NetworkGravityBroadcaster : MonoBehaviour
         PlayerPixelManager player = PlayerPixelManager.MostRecentInstance;
         if (player != null)
         {
+            player.aimAngle = currentInputs.aimAngle;
             if(currentInputs.justEjected)
             {
-                player.Eject(new Vector2(currentInputs.aimDirection.x, currentInputs.aimDirection.y));
+                player.Eject(player.MouseDirection());
             }
             if(currentInputs.isShielding)
             {
